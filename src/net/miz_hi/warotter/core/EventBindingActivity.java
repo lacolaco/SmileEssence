@@ -53,7 +53,7 @@ public abstract class EventBindingActivity extends BindingActivity
 	@Override
 	public void onActivityResult(int reqCode, int resultCode, Intent data)
 	{
-		if(callback.indexOfKey(reqCode) > 0)
+		if(!(callback.indexOfKey(reqCode) < 0))
 		{
 			callback.get(reqCode).run(resultCode, data);
 		}
