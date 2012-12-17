@@ -23,7 +23,8 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        binding:text="text" />
+        binding:text="text"
+        binding:visibility="textVisibility" />
 
     <Button
         android:id="@+id/button1"

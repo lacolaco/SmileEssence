@@ -26,12 +26,14 @@ import net.miz_hi.warotter.core.ViewModel;
 import net.miz_hi.warotter.util.ActivityCallback;
 import net.miz_hi.warotter.util.EnumPreferenceKey;
 import net.miz_hi.warotter.util.EnumRequestCode;
+import net.miz_hi.warotter.view.MainActivity;
 import net.miz_hi.warotter.view.WebViewActivity;
 
 public class StartActivityViewModel extends ViewModel
 {
 	public StringObservable text = new StringObservable();
 	public StringObservable buttonAuth = new StringObservable("認証ページへ");
+	public BooleanObservable textVisibility = new BooleanObservable(true);
 	public BooleanObservable buttonAuthVisibility = new BooleanObservable();
 	public RequestToken req;
 	public Twitter twitter;
@@ -39,34 +41,34 @@ public class StartActivityViewModel extends ViewModel
 	
 	public StartActivityViewModel()
 	{
-	}
-	
-	@Override
-	public void onActivityCreated()
-	{
 		initialize();
 	}
 	
+
 	@Override
-	public void onActivityResumed()
-	{
+	public void onActivityCreated()
+	{	
 		if(isAuthed)
 		{
 			moveToTimeline();
 		}
 	}
 	
+	@Override
+	public void onActivityResumed()
+	{
+	}
+	
 	public void initialize()
 	{
 		buttonAuthVisibility.set(false);
-		isAuthed = (Boolean) Warotter.getWarotter().getPreferenceValue(EnumPreferenceKey.AUTHORIZED);
-		if(isAuthed != null && isAuthed.booleanValue())
+		isAuthed = (Boolean) Warotter.getPreferenceValue(EnumPreferenceKey.AUTHORIZED);
+		if(isAuthed)
 		{
-			text.set(String.format("%1$sでログインします",(String)Warotter.getWarotter().getPreferenceValue(EnumPreferenceKey.SCREEN_NAME)));
+			text.set(String.format("%1$sでログインします",(String)Warotter.getPreferenceValue(EnumPreferenceKey.SCREEN_NAME)));
 		}
 		else
 		{
-			isAuthed = false;
 			text.set("認証してください");
 			buttonAuthVisibility.set(true); 
 		}
@@ -81,9 +83,10 @@ public class StartActivityViewModel extends ViewModel
 			@Override
 			public void run()
 			{
-				eventAggregator.publish("toast", new ToastMessage("move!!"), null);				
+				eventAggregator.publish("startActivity", new StartActivityMessage(new Intent(), MainActivity.class), null);	
+				textVisibility.set(false);
 			}
-		}, 1000);
+		}, 1500);
 		
 	}
 	
@@ -116,11 +119,10 @@ public class StartActivityViewModel extends ViewModel
 								accessToken = twitter.getOAuthAccessToken(req, verifier);
 								if(accessToken != null)
 								{
-									Warotter app = Warotter.getWarotter();
-									app.putPreferenceValue(EnumPreferenceKey.TOKEN, accessToken.getToken());
-									app.putPreferenceValue(EnumPreferenceKey.TOKEN_SECRET, accessToken.getTokenSecret());
-									app.putPreferenceValue(EnumPreferenceKey.SCREEN_NAME, accessToken.getScreenName());
-									app.putPreferenceValue(EnumPreferenceKey.AUTHORIZED, true);		
+									Warotter.putPreferenceValue(EnumPreferenceKey.TOKEN, accessToken.getToken());
+									Warotter.putPreferenceValue(EnumPreferenceKey.TOKEN_SECRET, accessToken.getTokenSecret());
+									Warotter.putPreferenceValue(EnumPreferenceKey.SCREEN_NAME, accessToken.getScreenName());
+									Warotter.putPreferenceValue(EnumPreferenceKey.AUTHORIZED, true);		
 									eventAggregator.publish("toast", new ToastMessage("認証成功しました"), null);
 								}
 								else

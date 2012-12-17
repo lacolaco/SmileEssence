@@ -8,11 +8,11 @@ public abstract class ViewModel
 
 	public ViewModel(){	}
 	
-	public void onActivityCreated(){};
+	public abstract void onActivityCreated();
 	
-	public void onActivityResumed(){};
+	public abstract void onActivityResumed();
 
-	public void setEventAggregator(EventAggregator ea)
+	public final void setEventAggregator(EventAggregator ea)
 	{
 		this.eventAggregator = ea;		
 	}

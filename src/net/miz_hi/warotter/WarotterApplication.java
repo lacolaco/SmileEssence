@@ -12,7 +12,6 @@ public class WarotterApplication extends Application
 	{
 	    super.onCreate();
 	    Binder.init(this);
-	    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-	    Warotter.initialize(pref);
+	    Warotter.initialize(this);
     }
 }
