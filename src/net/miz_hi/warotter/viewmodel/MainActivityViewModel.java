@@ -7,21 +7,30 @@ import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 
+import android.R.color;
+import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Handler;
 import android.view.View;
 import gueei.binding.Command;
 import gueei.binding.collections.ArrayListObservable;
+import gueei.binding.cursor.CursorField;
 import gueei.binding.observables.IntegerObservable;
+import gueei.binding.observables.ObjectObservable;
 import gueei.binding.observables.StringObservable;
 import net.miz_hi.warotter.R;
 import net.miz_hi.warotter.Warotter;
+import net.miz_hi.warotter.core.ToastMessage;
 import net.miz_hi.warotter.core.ViewModel;
 import net.miz_hi.warotter.model.Statuses;
 
 public class MainActivityViewModel extends ViewModel
 {
 	public StringObservable title = new StringObservable("Home");
-	public IntegerObservable naviSrc = new IntegerObservable(R.drawable.navi_right);
+	public ObjectObservable clickedItem = new ObjectObservable();
+	public IntegerObservable listBackground = new IntegerObservable(Color.WHITE);
+	public IntegerObservable titleBackground = new IntegerObservable(Color.BLACK);
+	public IntegerObservable infoBackground = new IntegerObservable(Color.BLACK);
 	public final ArrayListObservable listTimeline = new ArrayListObservable(StatusViewModel.class);
 	
 	public MainActivityViewModel()
@@ -38,7 +47,9 @@ public class MainActivityViewModel extends ViewModel
 			for(Status st : list)
 			{
 				Statuses.put(st);
-				statuses.add(new StatusViewModel(st.getId()));
+				ViewModel vm = new StatusViewModel(st.getId());
+				vm.setEventAggregator(eventAggregator);
+				statuses.add(vm);
 			}
 		}
 		catch (TwitterException e)
@@ -69,4 +80,17 @@ public class MainActivityViewModel extends ViewModel
 			}
 		});
 	}
+	
+	public Command onItemClicked = new Command()
+	{
+		
+		@Override
+		public void Invoke(View arg0, Object... arg1)
+		{
+			if(clickedItem.get() instanceof StatusViewModel)
+			{
+				eventAggregator.publish("toast", new ToastMessage(((StatusViewModel)clickedItem.get()).screenName.get()), null);
+			}
+		}
+	};
 }

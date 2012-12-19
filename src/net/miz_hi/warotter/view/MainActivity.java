@@ -6,17 +6,18 @@ import net.miz_hi.warotter.R;
 import net.miz_hi.warotter.WarotterApplication;
 import net.miz_hi.warotter.core.EventBindingActivity;
 import net.miz_hi.warotter.core.ViewModel;
+import net.miz_hi.warotter.util.EnumRequestCode;
 import net.miz_hi.warotter.viewmodel.MainActivityViewModel;
 import gueei.binding.Command;
 import gueei.binding.labs.EventSubscriber;
 import gueei.binding.observables.StringObservable;
-import gueei.binding.v30.app.BindingActivityV30;
 import android.app.Application;
 import android.os.Bundle;
 import android.view.View;
 
 public class MainActivity extends EventBindingActivity
 {
+
 	
 	public void onCreate(Bundle bundle)
 	{
@@ -41,7 +42,7 @@ public class MainActivity extends EventBindingActivity
 	public void onDestroy()
 	{
 		super.onDestroy();
-		moveTaskToBack(true);
+		finishActivity(EnumRequestCode.MAIN.ordinal());
 	}
 	
 

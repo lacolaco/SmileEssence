@@ -1,5 +1,6 @@
 package net.miz_hi.warotter.core;
 
+import android.os.Handler;
 import gueei.binding.labs.EventAggregator;
 
 public abstract class ViewModel
@@ -8,9 +9,11 @@ public abstract class ViewModel
 
 	public ViewModel(){	}
 	
-	public abstract void onActivityCreated();
+	public Handler handler = new Handler();
 	
-	public abstract void onActivityResumed();
+	public void onActivityCreated(){};
+	
+	public void onActivityResumed(){};
 
 	public final void setEventAggregator(EventAggregator ea)
 	{

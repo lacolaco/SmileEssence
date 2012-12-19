@@ -8,6 +8,7 @@ import net.miz_hi.warotter.core.EventBindingActivity;
 import net.miz_hi.warotter.core.ViewModel;
 import net.miz_hi.warotter.viewmodel.StartActivityViewModel;
 import android.os.Bundle;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.Toast;
 
 public class StartActivity extends EventBindingActivity

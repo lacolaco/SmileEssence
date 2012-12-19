@@ -83,7 +83,16 @@ public class StartActivityViewModel extends ViewModel
 			@Override
 			public void run()
 			{
-				eventAggregator.publish("startActivity", new StartActivityMessage(new Intent(), MainActivity.class), null);	
+				eventAggregator.publish("startActivity", new StartActivityMessage(new Intent(), MainActivity.class, EnumRequestCode.MAIN.ordinal(),
+						new ActivityCallback()
+						{
+							
+							@Override
+							public void run(int result, Intent data)
+							{
+								eventAggregator.publish("finish", null, null);								
+							}
+						}), null);	
 				textVisibility.set(false);
 			}
 		}, 1500);
@@ -122,7 +131,9 @@ public class StartActivityViewModel extends ViewModel
 									Warotter.putPreferenceValue(EnumPreferenceKey.TOKEN, accessToken.getToken());
 									Warotter.putPreferenceValue(EnumPreferenceKey.TOKEN_SECRET, accessToken.getTokenSecret());
 									Warotter.putPreferenceValue(EnumPreferenceKey.SCREEN_NAME, accessToken.getScreenName());
-									Warotter.putPreferenceValue(EnumPreferenceKey.AUTHORIZED, true);		
+									Warotter.putPreferenceValue(EnumPreferenceKey.USER_ID, accessToken.getUserId());
+									Warotter.putPreferenceValue(EnumPreferenceKey.AUTHORIZED, true);
+									Warotter.setAccount();
 									eventAggregator.publish("toast", new ToastMessage("îFèÿê¨å˜ÇµÇ‹ÇµÇΩ"), null);
 								}
 								else

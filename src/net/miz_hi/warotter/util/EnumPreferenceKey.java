@@ -6,6 +6,7 @@ public enum EnumPreferenceKey
 	TOKEN(EnumValueType.STRING, "token"),
 	TOKEN_SECRET(EnumValueType.STRING, "token_secret"),
 	SCREEN_NAME(EnumValueType.STRING, "screen_name"),
+	USER_ID(EnumValueType.LONG, "user_id"),
 	;
 	
 	private final EnumValueType type;

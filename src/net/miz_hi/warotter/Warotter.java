@@ -13,16 +13,19 @@ import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.conf.ConfigurationBuilder;
+import net.miz_hi.warotter.model.Account;
 import net.miz_hi.warotter.util.EnumPreferenceKey;
 import net.miz_hi.warotter.util.EnumPreferenceKey.EnumValueType;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
 public class Warotter
 {
 	private static Application app;
+	private static Account account;
 	private static Twitter twitterInstance;
 	private static TwitterStream twitterStream;
 	private static SharedPreferences preference;
@@ -55,27 +58,27 @@ public class Warotter
 		editor.commit();
 	}
 
-	public static Object getPreferenceValue(EnumPreferenceKey key)
+	public static  <T> T getPreferenceValue(EnumPreferenceKey key)
 	{
 		if(key.getType() == EnumValueType.BOOLEAN)
 		{
-			return preference.getBoolean(key.getKey(), false);
+			return (T)(Boolean)preference.getBoolean(key.getKey(), false);
 		}
 		else if(key.getType() == EnumValueType.STRING)
 		{
-			return preference.getString(key.getKey(), "");
+			return (T)preference.getString(key.getKey(), "");
 		}
 		else if(key.getType() == EnumValueType.INTEGER)
 		{
-			return preference.getInt(key.getKey(), 0);
+			return (T)(Integer)preference.getInt(key.getKey(), 0);
 		}
 		else if(key.getType() == EnumValueType.FLOAT)
 		{
-			return preference.getFloat(key.getKey(), 0.0F);
+			return (T)(Float)preference.getFloat(key.getKey(), 0.0F);
 		}
 		else if(key.getType() == EnumValueType.LONG)
 		{
-			return preference.getLong(key.getKey(), 0L);
+			return (T)(Long)preference.getLong(key.getKey(), 0L);
 		}
 		else
 		{
@@ -137,16 +140,38 @@ public class Warotter
 		return app;
 	}
 	
+	public static Account getAccount()
+	{
+		return account;
+	}
+	
+	public static void setAccount()
+	{
+		if((Boolean) getPreferenceValue(EnumPreferenceKey.AUTHORIZED))
+		{
+			Warotter.account = new Account(Warotter.<String>getPreferenceValue(EnumPreferenceKey.SCREEN_NAME), Warotter.<Long>getPreferenceValue(EnumPreferenceKey.USER_ID));
+		}
+	}
+	
 	public static File getApplicationFile(String fileName)
 	{
 		File file = new File(app.getExternalCacheDir(), fileName);
 		return file;
+	}
+	
+	public static Resources getResource()
+	{
+		return app.getResources();
 	}
 
 	public static void initialize(Application app)
 	{
 		Warotter.preference = PreferenceManager.getDefaultSharedPreferences(app);
 		Warotter.app = app;
+		if((Boolean) getPreferenceValue(EnumPreferenceKey.AUTHORIZED))
+		{
+			Warotter.account = new Account(Warotter.<String>getPreferenceValue(EnumPreferenceKey.SCREEN_NAME), Warotter.<Long>getPreferenceValue(EnumPreferenceKey.USER_ID));
+		}
 	}
 	
 	public static final String HOMEPAGE_URL = "http://warotter.web.fc2.com/";

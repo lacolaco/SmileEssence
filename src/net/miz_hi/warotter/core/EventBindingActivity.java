@@ -10,6 +10,7 @@ import net.miz_hi.warotter.util.ActivityCallback;
 import net.miz_hi.warotter.viewmodel.StartActivityViewModel;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.SparseArray;
@@ -31,6 +32,7 @@ public abstract class EventBindingActivity extends BindingActivity
     public void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
+        
         EventAggregator ea = EventAggregator.getInstance(this);
         viewModel = getViewModel();
         viewModel.setEventAggregator(getAggregator()); 
@@ -96,6 +98,15 @@ public abstract class EventBindingActivity extends BindingActivity
 						startActivity(message.intent);		
 					}
 				}
+			}
+		});
+		ea.subscribe("finish", new EventSubscriber()
+		{
+			
+			@Override
+			public void onEventTriggered(String arg0, Object arg1, Bundle arg2)
+			{
+				finish();				
 			}
 		});
 		return ea;

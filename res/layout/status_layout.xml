@@ -3,7 +3,8 @@
     xmlns:binding="http://www.gueei.com/android-binding/"
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
-    android:padding="5dp">
+    android:padding="5dp"
+    binding:backgroundColor="backgroundColor">
 
     <ImageView
         android:id="@+id/imageView1"
@@ -20,8 +21,11 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/imageView1"
+        android:gravity="center_vertical"
         android:textSize="11sp"
-        binding:text="screenName" />
+        android:textStyle="bold"
+        binding:text="screenName"
+        binding:textColor="nameColor" />
 
     <TextView
         android:id="@+id/textView2"
@@ -30,8 +34,11 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/textView1"
-        android:textSize="10sp"
-        binding:text="name" />
+        android:gravity="center_vertical"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        binding:text="name"
+        binding:textColor="nameColor" />
 
     <TextView
         android:id="@+id/textView4"
@@ -61,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView5"
         android:layout_alignBottom="@+id/textView5"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="5dp"
         android:layout_toLeftOf="@+id/textView5"
         android:textSize="10sp"
         binding:text="createdAt" />

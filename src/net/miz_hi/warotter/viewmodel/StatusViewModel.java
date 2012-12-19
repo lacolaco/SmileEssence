@@ -7,20 +7,33 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import net.miz_hi.warotter.R;
 import net.miz_hi.warotter.Warotter;
+import net.miz_hi.warotter.core.ToastMessage;
+import net.miz_hi.warotter.core.ViewModel;
 import net.miz_hi.warotter.model.Statuses;
 
+import android.R.color;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.text.Html;
+import android.view.View;
+import gueei.binding.Command;
+import gueei.binding.Converter;
 import gueei.binding.DependentObservable;
+import gueei.binding.observables.IntegerObservable;
 import gueei.binding.observables.StringObservable;
 import twitter4j.Status;
 
-public class StatusViewModel implements Comparable<StatusViewModel>
+public class StatusViewModel extends ViewModel implements Comparable<StatusViewModel>
 {
 	private long statusId;
+	public IntegerObservable backgroundColor = new IntegerObservable(Color.WHITE);
+	public IntegerObservable nameColor = new IntegerObservable(Color.BLACK);
 	public StringObservable screenName = new StringObservable();
 	public StringObservable name = new StringObservable();
 	public StringObservable text = new StringObservable();
@@ -33,31 +46,40 @@ public class StatusViewModel implements Comparable<StatusViewModel>
 		@Override
 		public Bitmap calculateValue(Object... arg0) throws Exception
 		{
-			File file = Warotter.getApplicationFile(Statuses.get(statusId).getUser().getScreenName() + ".png");
+			final File file = Warotter.getApplicationFile(Statuses.get(statusId).getUser().getScreenName() + ".png");
 			if(file.exists())
 			{
 				return BitmapFactory.decodeFile(file.getPath());
 			}
 			else
 			{
-				try 
-				{  
-					URL url = new URL(iconUrl.get());  
-					HttpURLConnection connection = (HttpURLConnection) url.openConnection();  
-					connection.setDoInput(true);  
-					connection.connect();  
-					InputStream input = connection.getInputStream();  
-					Bitmap bm = BitmapFactory.decodeStream(input);
-					FileOutputStream fos = new FileOutputStream(file);
-					bm.compress(CompressFormat.PNG, 90, fos);
-					fos.close();
-					return bm;  
-				} 
-				catch (IOException e) 
-				{  
-					e.printStackTrace();  
-					return null;  
-				}
+				URL url = new URL(iconUrl.get());  
+				HttpURLConnection connection = (HttpURLConnection) url.openConnection();  
+				connection.setDoInput(true);  
+				connection.connect();  
+				InputStream input = connection.getInputStream();  
+				final Bitmap bm = BitmapFactory.decodeStream(input);
+				handler.post(new Runnable()
+				{
+
+					@Override
+					public void run()
+					{
+						FileOutputStream fos;
+						try 
+						{  
+							fos = new FileOutputStream(file);
+							bm.compress(CompressFormat.PNG, 90, fos);
+							fos.close();	
+						} 
+						catch (IOException e) 
+						{  
+							e.printStackTrace(); 
+						}
+						
+					}
+				});
+				return bm;  
 			}
 		}
 	};
@@ -66,6 +88,14 @@ public class StatusViewModel implements Comparable<StatusViewModel>
 	{
 		statusId = id;
 		Status st = Statuses.get(statusId);
+		if(Statuses.isMine(statusId))
+		{
+			backgroundColor.set(Warotter.getResource().getColor(R.color.LightGreen));
+		}
+		else if(Statuses.isReply(statusId))
+		{
+			backgroundColor.set(Warotter.getResource().getColor(R.color.LightRed));
+		}
 		screenName.set(st.getUser().getScreenName());
 		name.set(st.getUser().getName());
 		text.set(st.getText());
