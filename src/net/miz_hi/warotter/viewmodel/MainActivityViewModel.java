@@ -6,6 +6,7 @@ import java.util.List;
 import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.TwitterException;
+import twitter4j.TwitterStream;
 
 import android.R.color;
 import android.database.Cursor;
@@ -22,6 +23,7 @@ import net.miz_hi.warotter.R;
 import net.miz_hi.warotter.Warotter;
 import net.miz_hi.warotter.core.ToastMessage;
 import net.miz_hi.warotter.core.ViewModel;
+import net.miz_hi.warotter.core.WarotterUserStreamListener;
 import net.miz_hi.warotter.model.Statuses;
 
 public class MainActivityViewModel extends ViewModel
@@ -35,28 +37,6 @@ public class MainActivityViewModel extends ViewModel
 	
 	public MainActivityViewModel()
 	{
-		
-	}
-	
-	private List<StatusViewModel> getPublic()
-	{
-		List statuses = new ArrayList<StatusViewModel>();
-		try
-		{
-			ResponseList<Status> list = Warotter.getTwitter().getHomeTimeline();
-			for(Status st : list)
-			{
-				Statuses.put(st);
-				ViewModel vm = new StatusViewModel(st.getId());
-				vm.setEventAggregator(eventAggregator);
-				statuses.add(vm);
-			}
-		}
-		catch (TwitterException e)
-		{
-			e.printStackTrace();
-		}
-		return statuses;
 	}
 
 	@Override
@@ -68,17 +48,9 @@ public class MainActivityViewModel extends ViewModel
 	@Override
 	public void onActivityResumed()
 	{
-		Handler handler = new Handler();
-		handler.post(new Runnable()
-		{
-			
-			@Override
-			public void run()
-			{
-				listTimeline.addAll(getPublic());
-				
-			}
-		});
+		TwitterStream twitterStream = Warotter.getTwitterStream(true);
+		twitterStream.addListener(new WarotterUserStreamListener(this, listTimeline));
+		twitterStream.user();
 	}
 	
 	public Command onItemClicked = new Command()
@@ -93,4 +65,36 @@ public class MainActivityViewModel extends ViewModel
 			}
 		}
 	};
+	
+	public Command tweet = new  Command()
+	{
+		
+		@Override
+		public void Invoke(View arg0, Object... arg1)
+		{
+			eventAggregator.publish("toast", new ToastMessage("tweet"), null);			
+		}
+	};
+	
+	public Command mentions = new  Command()
+	{
+		
+		@Override
+		public void Invoke(View arg0, Object... arg1)
+		{
+			eventAggregator.publish("toast", new ToastMessage("mentions"), null);			
+		}
+	};
+	
+	public Command menu = new  Command()
+	{
+		
+		@Override
+		public void Invoke(View arg0, Object... arg1)
+		{
+			eventAggregator.publish("toast", new ToastMessage("menu"), null);			
+		}
+	};
+	
+	
 }

@@ -109,6 +109,18 @@ public abstract class EventBindingActivity extends BindingActivity
 				finish();				
 			}
 		});
+		ea.subscribe("runOnUiThread", new EventSubscriber()
+		{
+			
+			@Override
+			public void onEventTriggered(String arg0, Object arg1, Bundle arg2)
+			{
+				if(arg1 instanceof Runnable)
+				{
+					runOnUiThread((Runnable) arg1);
+				}				
+			}
+		});
 		return ea;
 	}
 

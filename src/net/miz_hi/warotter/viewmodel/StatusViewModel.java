@@ -6,12 +6,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Collection;
 
 import net.miz_hi.warotter.R;
 import net.miz_hi.warotter.Warotter;
 import net.miz_hi.warotter.core.ToastMessage;
 import net.miz_hi.warotter.core.ViewModel;
 import net.miz_hi.warotter.model.Statuses;
+import net.miz_hi.warotter.model.IconCaches;
 
 import android.R.color;
 import android.content.res.Resources;
@@ -25,6 +27,9 @@ import android.view.View;
 import gueei.binding.Command;
 import gueei.binding.Converter;
 import gueei.binding.DependentObservable;
+import gueei.binding.IObservable;
+import gueei.binding.Observable;
+import gueei.binding.Observer;
 import gueei.binding.observables.IntegerObservable;
 import gueei.binding.observables.StringObservable;
 import twitter4j.Status;
@@ -39,50 +44,7 @@ public class StatusViewModel extends ViewModel implements Comparable<StatusViewM
 	public StringObservable text = new StringObservable();
 	public StringObservable via = new StringObservable();
 	public StringObservable createdAt = new StringObservable();
-	public StringObservable iconUrl = new StringObservable();
-	public DependentObservable<Bitmap> iconBitmap = new DependentObservable<Bitmap>(Bitmap.class, iconUrl)
-	{
-		
-		@Override
-		public Bitmap calculateValue(Object... arg0) throws Exception
-		{
-			final File file = Warotter.getApplicationFile(Statuses.get(statusId).getUser().getScreenName() + ".png");
-			if(file.exists())
-			{
-				return BitmapFactory.decodeFile(file.getPath());
-			}
-			else
-			{
-				URL url = new URL(iconUrl.get());  
-				HttpURLConnection connection = (HttpURLConnection) url.openConnection();  
-				connection.setDoInput(true);  
-				connection.connect();  
-				InputStream input = connection.getInputStream();  
-				final Bitmap bm = BitmapFactory.decodeStream(input);
-				handler.post(new Runnable()
-				{
-
-					@Override
-					public void run()
-					{
-						FileOutputStream fos;
-						try 
-						{  
-							fos = new FileOutputStream(file);
-							bm.compress(CompressFormat.PNG, 90, fos);
-							fos.close();	
-						} 
-						catch (IOException e) 
-						{  
-							e.printStackTrace(); 
-						}
-						
-					}
-				});
-				return bm;  
-			}
-		}
-	};
+	public Observable<Bitmap> iconBitmap = new Observable<Bitmap>(Bitmap.class);
 	
 	public StatusViewModel(long id)
 	{
@@ -101,7 +63,7 @@ public class StatusViewModel extends ViewModel implements Comparable<StatusViewM
 		text.set(st.getText());
 		via.set("via " + Html.fromHtml(st.getSource()).toString());
 		createdAt.set(st.getCreatedAt().toLocaleString());
-		iconUrl.set(st.getUser().getProfileImageURL());
+		IconCaches.setIconBitmap(st.getUser(), iconBitmap);		
 	}
 
 	@Override
