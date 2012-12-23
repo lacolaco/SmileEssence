@@ -1,9 +1,6 @@
 package net.miz_hi.warotter.core;
 
-import android.os.Handler;
-import gueei.binding.collections.ArrayListObservable;
-import net.miz_hi.warotter.model.Statuses;
-import net.miz_hi.warotter.view.MainActivity;
+import net.miz_hi.warotter.model.StatusStore;
 import net.miz_hi.warotter.viewmodel.MainActivityViewModel;
 import net.miz_hi.warotter.viewmodel.StatusViewModel;
 import twitter4j.DirectMessage;
@@ -17,29 +14,27 @@ import twitter4j.UserStreamListener;
 public class WarotterUserStreamListener implements UserStreamListener
 {
 	private MainActivityViewModel mainViewModel;
-	private ArrayListObservable<StatusViewModel> homeTimeline;
-	
-	public WarotterUserStreamListener(MainActivityViewModel mvm, ArrayListObservable<StatusViewModel> home)
+
+	public WarotterUserStreamListener()
 	{
-		this.mainViewModel = mvm;
-		this.homeTimeline = home;
-	}	
-	
+		this.mainViewModel = MainActivityViewModel.getSingleton();
+	}
+
 	@Override
 	public void onDeletionNotice(final StatusDeletionNotice arg0)
 	{
 		mainViewModel.eventAggregator.publish("runOnUiThread", new Runnable()
 		{
-			
+
 			@Override
 			public void run()
 			{
-				StatusViewModel smv = new StatusViewModel(arg0.getStatusId());
-				homeTimeline.remove(smv);
-				Statuses.remove(arg0.getStatusId());		
+				StatusViewModel smv = StatusViewModel.createInstance(arg0.getStatusId());
+				mainViewModel.listTimeline.remove(smv);
+				StatusStore.remove(arg0.getStatusId());
 			}
 		}, null);
-		
+
 	}
 
 	@Override
@@ -57,19 +52,22 @@ public class WarotterUserStreamListener implements UserStreamListener
 	}
 
 	@Override
-	public void onStatus(final Status arg0)
+	public void onStatus(Status arg0)
 	{
-		mainViewModel.eventAggregator.publish("runOnUiThread", new Runnable()
-		{
-			
-			@Override
-			public void run()
-			{
-				Statuses.put(arg0);
-				homeTimeline.add(0, new StatusViewModel(arg0.getId()));				
-			}
-		}, null);
-		
+//		mainViewModel.eventAggregator.publish("runOnUiThread", new Runnable()
+//		{
+//
+//			@Override
+//			public void run()
+//			{
+				StatusStore.put(arg0);
+				if(arg0.isRetweet())
+				{
+					StatusStore.put(arg0.getRetweetedStatus());
+				}
+				mainViewModel.preLoadStatusQueue.add(arg0.getId());
+//			}
+//		}, null);
 	}
 
 	@Override

@@ -9,12 +9,12 @@ public class StartActivityMessage
 	public final Class clazz;
 	public final int reqCode;
 	public final ActivityCallback callback;
-	
+
 	public StartActivityMessage(Intent intent, Class clazz)
 	{
-		this(intent, clazz, -1, null);		
+		this(intent, clazz, -1, null);
 	}
-	
+
 	public StartActivityMessage(Intent intent, Class clazz, int reqCode, ActivityCallback callback)
 	{
 		this.intent = intent;
@@ -22,7 +22,7 @@ public class StartActivityMessage
 		this.reqCode = reqCode;
 		this.callback = callback;
 	}
-	
+
 	public boolean hasCallback()
 	{
 		return callback != null;
