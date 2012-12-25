@@ -11,12 +11,12 @@ import twitter4j.ResponseList;
 import twitter4j.TwitterException;
 import android.os.AsyncTask;
 
-public class PostTimelineGetter extends AsyncTask<Paging, Integer, ResponseList<twitter4j.Status>>
+public class PostMentionsGetter extends AsyncTask<Paging, Integer, ResponseList<twitter4j.Status>>
 {
 	
 	private MainActivityViewModel viewModel;
 	
-	public PostTimelineGetter(MainActivityViewModel mainViewModel)
+	public PostMentionsGetter(MainActivityViewModel mainViewModel)
 	{
 		this.viewModel = mainViewModel;
 	}
@@ -26,7 +26,7 @@ public class PostTimelineGetter extends AsyncTask<Paging, Integer, ResponseList<
 	{
 		try
 		{
-			return Warotter.getTwitter().getHomeTimeline(arg0[0]);			
+			return Warotter.getTwitter().getMentionsTimeline(arg0[0]);			
 		}
 		catch (TwitterException e)
 		{
@@ -43,7 +43,7 @@ public class PostTimelineGetter extends AsyncTask<Paging, Integer, ResponseList<
 			StatusStore.put(st);
 			list.add(StatusViewModel.createInstance(st.getId()));
 		}
-		viewModel.homeTimeline.addAll(list);	
+		viewModel.mentionsTimeline.addAll(list);	
 	}
 
 }

@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import net.miz_hi.warotter.Warotter;
 import net.miz_hi.warotter.model.IconCaches;
 
 import gueei.binding.Observable;
@@ -14,6 +15,7 @@ import twitter4j.User;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory.Options;
 import android.os.AsyncTask;
 
 public class AsyncIconGetter extends AsyncTask<User, Integer, Bitmap>
@@ -43,7 +45,9 @@ public class AsyncIconGetter extends AsyncTask<User, Integer, Bitmap>
 			connection.setDoInput(true);
 			connection.connect();
 			InputStream input = connection.getInputStream();
-			Bitmap bm = BitmapFactory.decodeStream(input);
+			Options opt = new Options();
+			opt.inPurgeable = true; //GC‰Â”\‚É‚·‚é
+			Bitmap bm = BitmapFactory.decodeStream(input, null, opt);
 			FileOutputStream fos = new FileOutputStream(file);
 			bm.compress(CompressFormat.PNG, 90, fos);
 			fos.close();

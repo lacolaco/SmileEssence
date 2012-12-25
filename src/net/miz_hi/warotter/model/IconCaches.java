@@ -15,6 +15,7 @@ import twitter4j.User;
 
 public class IconCaches
 {
+	//TODO ‚±‚±URL‚Æ‚Ìƒ}ƒbƒv‚É•Ï‚¦‚ë
 	private static HashMap<Long, Bitmap> iconCacheMap = new HashMap<Long, Bitmap>();
 	private static HashMap<Long, String> iconNameMap = new HashMap<Long, String>();
 

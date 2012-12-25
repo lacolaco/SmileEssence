@@ -17,6 +17,7 @@ import net.miz_hi.warotter.Warotter;
 import net.miz_hi.warotter.core.ToastMessage;
 import net.miz_hi.warotter.core.ViewModel;
 import net.miz_hi.warotter.core.WarotterUserStreamListener;
+import net.miz_hi.warotter.util.PostMentionsGetter;
 import net.miz_hi.warotter.util.PostTimelineGetter;
 
 public class MainActivityViewModel extends ViewModel implements Runnable
@@ -28,11 +29,12 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 	public IntegerObservable listBackground = new IntegerObservable(Color.WHITE);
 	public IntegerObservable titleBackground = new IntegerObservable(Color.BLACK);
 	public IntegerObservable infoBackground = new IntegerObservable(Color.BLACK);
-	public ArrayListObservable<StatusViewModel> listTimeline;
+	public ArrayListObservable<StatusViewModel> listTimeline = new ArrayListObservable<StatusViewModel>(StatusViewModel.class);
 	public ArrayListObservable<StatusViewModel> homeTimeline = new ArrayListObservable<StatusViewModel>(StatusViewModel.class);
 	public ArrayListObservable<StatusViewModel> mentionsTimeline = new ArrayListObservable<StatusViewModel>(StatusViewModel.class);
 	public ConcurrentLinkedQueue<Long> preLoadStatusQueue = new ConcurrentLinkedQueue<Long>();
 	public Thread queueWatcher;
+	public boolean isHomeVisible = true;
 	private static MainActivityViewModel instance;
 
 	public static MainActivityViewModel getSingleton()
@@ -46,13 +48,14 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 
 	private MainActivityViewModel()
 	{
-		listTimeline = homeTimeline;
+		listTimeline.set(homeTimeline.get());
 	}
 
 	@Override
 	public void onActivityCreated()
 	{
 		new PostTimelineGetter(this).execute(new Paging(1));
+		new PostMentionsGetter(this).execute(new Paging(1));
 		TwitterStream twitterStream = Warotter.getTwitterStream(true);
 		twitterStream.addListener(new WarotterUserStreamListener());
 		twitterStream.user();
@@ -69,6 +72,7 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 	@Override
 	public void onDispose()
 	{
+		Warotter.getTwitterStream(false).shutdown();
 		queueWatcher.stop();
 	}
 
@@ -101,7 +105,26 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 		@Override
 		public void Invoke(View arg0, Object... arg1)
 		{
-			eventAggregator.publish("toast", new ToastMessage("top:" + isScrollTop.get()), null);
+			eventAggregator.publish("runOnUiThread", new Runnable()
+			{
+				
+				@Override
+				public void run()
+				{
+					if(isHomeVisible)
+					{
+						isHomeVisible = false;
+						title.set("Mentions");
+						listTimeline.set(mentionsTimeline.get());
+					}
+					else
+					{
+						isHomeVisible = true;
+						title.set("Home");
+						listTimeline.set(homeTimeline.get());
+					}					
+				}
+			}, null);
 		}
 	};
 
@@ -134,11 +157,11 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 							StatusViewModel svm = StatusViewModel.createInstance(preLoadStatusQueue.poll());
 							if(svm != null)
 							{
-								if(listTimeline.size() >= 1000)
+								homeTimeline.add(0,svm);
+								if(svm.isRelpy)
 								{
-									listTimeline.remove(listTimeline.size());
+									mentionsTimeline.add(0, svm);
 								}
-								listTimeline.add(0,svm);
 							}
 						}							
 					}, null);					

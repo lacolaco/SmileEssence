@@ -19,6 +19,7 @@ public class StatusViewModel extends ViewModel
 {
 	private long statusId;
 	private long retweetSourceId;
+	public boolean isRelpy = false;
 	public IntegerObservable backgroundColor = new IntegerObservable(Color.WHITE);
 	public IntegerObservable nameColor = new IntegerObservable(Color.BLACK);
 	public StringObservable screenName = new StringObservable();
@@ -63,6 +64,7 @@ public class StatusViewModel extends ViewModel
 		else if (StatusStore.isReply(statusId))
 		{
 			backgroundColor.set(Warotter.getResource().getColor(R.color.LightRed));
+			isRelpy = true;
 		}
 		screenName.set(st.getUser().getScreenName());
 		name.set(st.getUser().getName());

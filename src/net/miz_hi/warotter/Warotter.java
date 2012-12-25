@@ -1,8 +1,6 @@
 package net.miz_hi.warotter;
 
 import java.io.File;
-import twitter4j.AsyncTwitter;
-import twitter4j.AsyncTwitterFactory;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.TwitterStream;
@@ -23,7 +21,6 @@ public class Warotter
 	private static Application app;
 	private static Account account;
 	private static Twitter twitterInstance;
-	private static AsyncTwitter asyncTwitterInstance;
 	private static TwitterStream twitterStream;
 	private static SharedPreferences preference;
 
@@ -101,22 +98,6 @@ public class Warotter
 		return twitterInstance;
 	}
 
-	public static AsyncTwitter getAsyncTwitter()
-	{
-		if (!(Boolean) getPreferenceValue(EnumPreferenceKey.AUTHORIZED))
-		{
-			return null;
-		}
-		if (asyncTwitterInstance == null)
-		{
-			asyncTwitterInstance = new AsyncTwitterFactory().getInstance();
-			asyncTwitterInstance.setOAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET);
-			AccessToken token = new AccessToken((String) getPreferenceValue(EnumPreferenceKey.TOKEN), (String) getPreferenceValue(EnumPreferenceKey.TOKEN_SECRET));
-			asyncTwitterInstance.setOAuthAccessToken(token);
-		}
-		return asyncTwitterInstance;
-	}
-
 	public static TwitterStream getTwitterStream(boolean reCreate)
 	{
 		if (!(Boolean) getPreferenceValue(EnumPreferenceKey.AUTHORIZED))
@@ -133,7 +114,6 @@ public class Warotter
 			cb.setUserStreamRepliesAllEnabled(false);
 			twitterStream = new TwitterStreamFactory(cb.build()).getInstance();
 		}
-		twitterStream.shutdown();
 		return twitterStream;
 	}
 
