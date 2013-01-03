@@ -1,6 +1,5 @@
 package net.miz_hi.warotter.core;
 
-import net.miz_hi.warotter.util.ActivityCallback;
 import android.content.Intent;
 
 public class StartActivityMessage

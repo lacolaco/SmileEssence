@@ -1,4 +1,4 @@
-package net.miz_hi.warotter.util;
+package net.miz_hi.warotter.core;
 
 import android.content.Intent;
 
