@@ -149,18 +149,20 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int icon_templates=0x7f02000d;
         public static final int icon_tweet_b=0x7f02000e;
         public static final int icon_tweet_w=0x7f02000f;
-        public static final int logo_1=0x7f020010;
-        public static final int shadow=0x7f020011;
+        public static final int icon_warota=0x7f020010;
+        public static final int logo_1=0x7f020011;
+        public static final int shadow=0x7f020012;
     }
     public static final class id {
+        public static final int ImageButton01=0x7f040019;
         public static final int button1=0x7f040011;
         public static final int editText1=0x7f040016;
         public static final int fullscreen=0x7f040003;
         public static final int imageView1=0x7f04000a;
         public static final int imageView2=0x7f04000b;
         public static final int imageView3=0x7f04000c;
-        public static final int imageView4=0x7f040019;
-        public static final int imageView5=0x7f040018;
+        public static final int imageView4=0x7f040018;
+        public static final int imageView5=0x7f04001c;
         public static final int left=0x7f040000;
         public static final int listView1=0x7f040006;
         public static final int listView2=0x7f040009;
@@ -175,6 +177,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int slidingmenurowtitle=0x7f040010;
         public static final int tableRow1=0x7f040017;
         public static final int tableRow2=0x7f04001a;
+        public static final int tableRow3=0x7f04001b;
         public static final int textView1=0x7f040005;
         public static final int textView2=0x7f040012;
         public static final int textView3=0x7f040015;

@@ -29,7 +29,6 @@ public class WarotterUserStreamListener implements UserStreamListener
 			@Override
 			public void run()
 			{
-				StatusViewModel smv = StatusViewModel.createInstance(arg0.getStatusId());
 				StatusStore.remove(arg0.getStatusId());
 			}
 		}, null);
@@ -51,22 +50,22 @@ public class WarotterUserStreamListener implements UserStreamListener
 	}
 
 	@Override
-	public void onStatus(Status arg0)
+	public void onStatus(final Status arg0)
 	{
-//		mainViewModel.eventAggregator.publish("runOnUiThread", new Runnable()
-//		{
-//
-//			@Override
-//			public void run()
-//			{
+		mainViewModel.eventAggregator.publish("runOnUiThread", new Runnable()
+		{
+
+			@Override
+			public void run()
+			{
 				StatusStore.put(arg0);
 				if(arg0.isRetweet())
 				{
 					StatusStore.put(arg0.getRetweetedStatus());
 				}
 				mainViewModel.preLoadStatusQueue.add(arg0.getId());
-//			}
-//		}, null);
+			}
+		}, null);
 	}
 
 	@Override

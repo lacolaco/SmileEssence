@@ -18,7 +18,7 @@
         android:textColor="@color/LightBlue"
         binding:text="textCount" />
 
-    <EditText
+    <net.miz_hi.warotter.core.CustomEditText
         android:id="@+id/editText1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,10 +31,9 @@
         android:gravity="top"
         android:inputType="textMultiLine"
         android:textSize="11sp"
-        binding:text="text" >
-
-        <requestFocus />
-    </EditText>
+        binding:text="text"
+        binding:token="token"
+        binding:cursorPos="cursorPos" />
 
     <TableLayout
         android:layout_width="wrap_content"
@@ -54,15 +53,6 @@
             android:scrollbars="horizontal" >
 
             <ImageButton
-                android:id="@+id/imageView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/icon_hash"
-                binding:onClick="commandHashtag" />
-
-            <ImageButton
                 android:id="@+id/imageView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,6 +60,15 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/icon_morse"
                 binding:onClick="commandMorse" />
+
+            <ImageButton
+                android:id="@+id/ImageButton01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/icon_warota"
+                binding:onClick="commandWarota" />
 
             <ImageButton
                 android:id="@+id/imageView1"
@@ -104,8 +103,25 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/icon_templates"
                 binding:onClick="commandTemplate" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp" >
+
+            <ImageButton
+                android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/icon_hash"
+                binding:onClick="commandHashtag" />
 
         </TableRow>
+
     </TableLayout>
 
 </LinearLayout>

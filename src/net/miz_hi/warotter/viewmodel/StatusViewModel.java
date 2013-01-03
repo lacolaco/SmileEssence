@@ -16,8 +16,8 @@ import twitter4j.Status;
 
 public class StatusViewModel extends ViewModel
 {
-	private long statusId;
-	private long retweetSourceId;
+	public long statusId;
+	public long retweetSourceId;
 	public boolean isRelpy = false;
 	public IntegerObservable backgroundColor = new IntegerObservable(Warotter.getResource().getColor(R.color.White));
 	public IntegerObservable nameColor = new IntegerObservable(Warotter.getResource().getColor(R.color.ThickGreen));

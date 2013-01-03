@@ -37,6 +37,7 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 	public Thread queueWatcher;
 	public BooleanObservable isHomeMode = new BooleanObservable(true);
 	private static MainActivityViewModel instance;
+	private boolean isAlive = true;
 
 	public static MainActivityViewModel getSingleton()
 	{
@@ -74,6 +75,7 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 	public void onDispose()
 	{
 		Warotter.getTwitterStream(false).shutdown();
+		isAlive = false;
 	}
 
 	public Command onItemClicked = new Command()
@@ -131,7 +133,7 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 	@Override
 	public void run()
 	{
-		while (true)
+		while (isAlive)
 		{
 			
 			try
@@ -144,14 +146,21 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 						@Override
 						public void run()
 						{
-							StatusViewModel svm = StatusViewModel.createInstance(preLoadStatusQueue.poll());
-							if(svm != null)
+							try
 							{
-								homeTimeline.add(0,svm);
-								if(svm.isRelpy)
+								StatusViewModel svm = StatusViewModel.createInstance(preLoadStatusQueue.poll());
+								if(svm != null)
 								{
-									mentionsTimeline.add(0, svm);
+									homeTimeline.add(0,svm);
+									if(svm.isRelpy)
+									{
+										mentionsTimeline.add(0, svm);
+									}
 								}
+							}
+							catch(Throwable t)
+							{
+								
 							}
 						}							
 					}, null);					

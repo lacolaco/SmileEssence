@@ -5,15 +5,19 @@ import gueei.binding.labs.EventAggregator;
 import gueei.binding.labs.EventSubscriber;
 
 import com.slidingmenu.lib.SlidingMenu;
+import com.slidingmenu.lib.SlidingMenu.OnCloseListener;
 
 import net.miz_hi.warotter.R;
+import net.miz_hi.warotter.Warotter;
 import net.miz_hi.warotter.core.EventBindingActivity;
 import net.miz_hi.warotter.core.ViewModel;
 import net.miz_hi.warotter.util.EnumRequestCode;
 import net.miz_hi.warotter.viewmodel.MainActivityViewModel;
 import net.miz_hi.warotter.viewmodel.TweetViewModel;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 public class MainActivity extends EventBindingActivity
 {
@@ -31,7 +35,7 @@ public class MainActivity extends EventBindingActivity
 		menu.setFadeDegree(0.35f);
 		menu.setShadowDrawable(R.drawable.shadow);
 		menu.attachToActivity(this, SlidingMenu.SLIDING_WINDOW);
-		ViewModel tweetViewModel = new TweetViewModel();
+		final TweetViewModel tweetViewModel = new TweetViewModel();
 		tweetViewModel.setEventAggregator(viewModel.eventAggregator);
 		View tweetView = Binder.bindView(menu.getContext(), Binder.inflateView(this, R.layout.tweet_layout, null, true), tweetViewModel);
 		menu.setMenu(tweetView);
