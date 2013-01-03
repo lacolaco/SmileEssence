@@ -7,7 +7,6 @@ import net.miz_hi.warotter.model.StatusStore;
 import net.miz_hi.warotter.model.IconCaches;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.text.Html;
 import gueei.binding.Observable;
 import gueei.binding.observables.BooleanObservable;
@@ -20,8 +19,8 @@ public class StatusViewModel extends ViewModel
 	private long statusId;
 	private long retweetSourceId;
 	public boolean isRelpy = false;
-	public IntegerObservable backgroundColor = new IntegerObservable(Color.WHITE);
-	public IntegerObservable nameColor = new IntegerObservable(Color.BLACK);
+	public IntegerObservable backgroundColor = new IntegerObservable(Warotter.getResource().getColor(R.color.White));
+	public IntegerObservable nameColor = new IntegerObservable(Warotter.getResource().getColor(R.color.ThickGreen));
 	public StringObservable screenName = new StringObservable();
 	public StringObservable name = new StringObservable();
 	public StringObservable text = new StringObservable();
@@ -59,7 +58,7 @@ public class StatusViewModel extends ViewModel
 		}
 		else if (StatusStore.isMine(statusId))
 		{
-			backgroundColor.set(Warotter.getResource().getColor(R.color.LightGreen));
+			nameColor.set(Warotter.getResource().getColor(R.color.DarkBlue));
 		}
 		else if (StatusStore.isReply(statusId))
 		{

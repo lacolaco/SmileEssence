@@ -6,6 +6,8 @@ import twitter4j.TwitterStream;
 
 import android.graphics.Color;
 import android.view.View;
+import gueei.binding.CollectionChangedEventArg;
+import gueei.binding.CollectionChangedEventArg.Action;
 import gueei.binding.Command;
 import gueei.binding.Observable;
 import gueei.binding.collections.ArrayListObservable;
@@ -29,12 +31,11 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 	public IntegerObservable listBackground = new IntegerObservable(Color.WHITE);
 	public IntegerObservable titleBackground = new IntegerObservable(Color.BLACK);
 	public IntegerObservable infoBackground = new IntegerObservable(Color.BLACK);
-	public ArrayListObservable<StatusViewModel> listTimeline = new ArrayListObservable<StatusViewModel>(StatusViewModel.class);
 	public ArrayListObservable<StatusViewModel> homeTimeline = new ArrayListObservable<StatusViewModel>(StatusViewModel.class);
 	public ArrayListObservable<StatusViewModel> mentionsTimeline = new ArrayListObservable<StatusViewModel>(StatusViewModel.class);
 	public ConcurrentLinkedQueue<Long> preLoadStatusQueue = new ConcurrentLinkedQueue<Long>();
 	public Thread queueWatcher;
-	public boolean isHomeVisible = true;
+	public BooleanObservable isHomeMode = new BooleanObservable(true);
 	private static MainActivityViewModel instance;
 
 	public static MainActivityViewModel getSingleton()
@@ -48,18 +49,18 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 
 	private MainActivityViewModel()
 	{
-		listTimeline.set(homeTimeline.get());
+		new PostTimelineGetter(this).execute(new Paging(1));
+		new PostMentionsGetter(this).execute(new Paging(1));
 	}
 
 	@Override
 	public void onActivityCreated()
 	{
-		new PostTimelineGetter(this).execute(new Paging(1));
-		new PostMentionsGetter(this).execute(new Paging(1));
 		TwitterStream twitterStream = Warotter.getTwitterStream(true);
 		twitterStream.addListener(new WarotterUserStreamListener());
 		twitterStream.user();
 		queueWatcher = new Thread(this, "test");
+		queueWatcher.setDaemon(true);
 		queueWatcher.start();
 		eventAggregator.publish("toast", new ToastMessage("ê⁄ë±ÇµÇ‹ÇµÇΩ"), null);
 	}
@@ -73,7 +74,6 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 	public void onDispose()
 	{
 		Warotter.getTwitterStream(false).shutdown();
-		queueWatcher.stop();
 	}
 
 	public Command onItemClicked = new Command()
@@ -111,18 +111,8 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 				@Override
 				public void run()
 				{
-					if(isHomeVisible)
-					{
-						isHomeVisible = false;
-						title.set("Mentions");
-						listTimeline.set(mentionsTimeline.get());
-					}
-					else
-					{
-						isHomeVisible = true;
-						title.set("Home");
-						listTimeline.set(homeTimeline.get());
-					}					
+					isHomeMode.toggle();
+					title.set(isHomeMode.get() ? "Home" : "Mentions" );
 				}
 			}, null);
 		}

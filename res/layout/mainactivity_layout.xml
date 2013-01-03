@@ -18,9 +18,31 @@
         binding:backgroundColor="listBackground"
         binding:clickedItem="clickedItem"
         binding:isScrollTop="isScrollTop"
-        binding:itemSource="listTimeline"
+        binding:itemSource="homeTimeline"
         binding:itemTemplate="@layout/status_layout"
-        binding:onItemClicked="onItemClicked" >
+        binding:onItemClicked="onItemClicked"
+        binding:visibility="isHomeMode" >
+
+    </net.miz_hi.warotter.core.BindableListView>
+    
+        <net.miz_hi.warotter.core.BindableListView
+        android:id="@+id/listView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/relativeLayout2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/relativeLayout1"
+        android:fastScrollEnabled="true"
+        android:smoothScrollbar="true"
+        android:transcriptMode="disabled"
+        binding:backgroundColor="listBackground"
+        binding:clickedItem="clickedItem"
+        binding:isScrollTop="isScrollTop"
+        binding:itemSource="mentionsTimeline"
+        binding:itemTemplate="@layout/status_layout"
+        binding:onItemClicked="onItemClicked" 
+        binding:visibility="NOT(isHomeMode)">
 
     </net.miz_hi.warotter.core.BindableListView>
 

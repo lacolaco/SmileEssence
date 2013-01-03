@@ -8,5 +8,7 @@
     <color name="LightRed">#FF9191</color>
     <color name="Red">#FF1E00</color>
     <color name="BrownYellow">#FFB100</color>
+    <color name="DarkBlue">#231493</color>
+    <color name="ThickGreen">#317C09</color>
     
 </resources>

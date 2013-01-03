@@ -30,7 +30,6 @@ public class WarotterUserStreamListener implements UserStreamListener
 			public void run()
 			{
 				StatusViewModel smv = StatusViewModel.createInstance(arg0.getStatusId());
-				mainViewModel.listTimeline.remove(smv);
 				StatusStore.remove(arg0.getStatusId());
 			}
 		}, null);
