@@ -8,23 +8,23 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-public class BindableListView extends ListView implements IBindableView<BindableListView>
+public class CustomListView extends ListView implements IBindableView<CustomListView>
 {
 	
 	private boolean isTop = false;
 	private View footerView;
 	
-	public BindableListView(Context context)
+	public CustomListView(Context context)
 	{
 		super(context);
 	}
 	
-	public BindableListView(Context context, AttributeSet attrs)
+	public CustomListView(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
 
-	public BindableListView(Context context, AttributeSet attrs, int defStyle)
+	public CustomListView(Context context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 	}
@@ -75,7 +75,7 @@ public class BindableListView extends ListView implements IBindableView<Bindable
 	}
 
 	@Override
-	public ViewAttribute<BindableListView, ?> createViewAttribute(String arg0)
+	public ViewAttribute<CustomListView, ?> createViewAttribute(String arg0)
 	{		
 		if(arg0.equals("isScrollTop"))
 		{
@@ -88,8 +88,8 @@ public class BindableListView extends ListView implements IBindableView<Bindable
 		return null;
 	}
 	
-	public ViewAttribute<BindableListView, Boolean> isScrollTopViewAttribute = 
-			new ViewAttribute<BindableListView, Boolean>(Boolean.class, BindableListView.this, "isScrollTop")
+	public ViewAttribute<CustomListView, Boolean> isScrollTopViewAttribute = 
+			new ViewAttribute<CustomListView, Boolean>(Boolean.class, CustomListView.this, "isScrollTop")
 	{
 		
 		@Override
@@ -105,8 +105,8 @@ public class BindableListView extends ListView implements IBindableView<Bindable
 		}
 	};
 
-	public ViewAttribute<BindableListView, View> footerViewAttribute = 
-			new ViewAttribute<BindableListView, View>(View.class, BindableListView.this, "footerView")
+	public ViewAttribute<CustomListView, View> footerViewAttribute = 
+			new ViewAttribute<CustomListView, View>(View.class, CustomListView.this, "footerView")
 	{
 
 		@Override

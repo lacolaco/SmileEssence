@@ -154,51 +154,54 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int shadow=0x7f020012;
     }
     public static final class id {
-        public static final int ImageButton01=0x7f040019;
-        public static final int button1=0x7f040011;
-        public static final int editText1=0x7f040016;
+        public static final int ImageButton01=0x7f04001a;
+        public static final int button1=0x7f040012;
+        public static final int editText1=0x7f040017;
         public static final int fullscreen=0x7f040003;
-        public static final int imageView1=0x7f04000a;
-        public static final int imageView2=0x7f04000b;
-        public static final int imageView3=0x7f04000c;
-        public static final int imageView4=0x7f040018;
-        public static final int imageView5=0x7f04001c;
+        public static final int imageView1=0x7f04000b;
+        public static final int imageView2=0x7f04000c;
+        public static final int imageView3=0x7f04000d;
+        public static final int imageView4=0x7f040019;
+        public static final int imageView5=0x7f04001d;
         public static final int left=0x7f040000;
-        public static final int listView1=0x7f040006;
-        public static final int listView2=0x7f040009;
+        public static final int linearLayout1=0x7f040006;
+        public static final int listView1=0x7f040007;
+        public static final int listView2=0x7f04000a;
         public static final int margin=0x7f040002;
-        public static final int relativeLayout1=0x7f040008;
-        public static final int relativeLayout2=0x7f040007;
+        public static final int relativeLayout1=0x7f040009;
+        public static final int relativeLayout2=0x7f040008;
         public static final int right=0x7f040001;
         public static final int selected_view=0x7f040004;
-        public static final int slidingmenulayout=0x7f04000e;
-        public static final int slidingmenumain=0x7f04000d;
-        public static final int slidingmenurowicon=0x7f04000f;
-        public static final int slidingmenurowtitle=0x7f040010;
-        public static final int tableRow1=0x7f040017;
-        public static final int tableRow2=0x7f04001a;
-        public static final int tableRow3=0x7f04001b;
+        public static final int slidingmenulayout=0x7f04000f;
+        public static final int slidingmenumain=0x7f04000e;
+        public static final int slidingmenurowicon=0x7f040010;
+        public static final int slidingmenurowtitle=0x7f040011;
+        public static final int tableRow1=0x7f040018;
+        public static final int tableRow2=0x7f04001b;
+        public static final int tableRow3=0x7f04001c;
         public static final int textView1=0x7f040005;
-        public static final int textView2=0x7f040012;
-        public static final int textView3=0x7f040015;
-        public static final int textView4=0x7f040013;
-        public static final int textView5=0x7f040014;
+        public static final int textView2=0x7f040013;
+        public static final int textView3=0x7f040016;
+        public static final int textView4=0x7f040014;
+        public static final int textView5=0x7f040015;
     }
     public static final class integer {
         public static final int num_cols=0x7f070000;
     }
     public static final class layout {
-        public static final int list=0x7f030000;
-        public static final int list_footer_layout=0x7f030001;
-        public static final int mainactivity_layout=0x7f030002;
-        public static final int shadow=0x7f030003;
-        public static final int slidemenu_layout=0x7f030004;
-        public static final int slidingmenumain=0x7f030005;
-        public static final int slidingmenumainlist=0x7f030006;
-        public static final int slidingmenurow=0x7f030007;
-        public static final int startactivity_layout=0x7f030008;
-        public static final int status_layout=0x7f030009;
-        public static final int tweet_layout=0x7f03000a;
+        public static final int dialog_menu_layout=0x7f030000;
+        public static final int dialog_status_layout=0x7f030001;
+        public static final int list=0x7f030002;
+        public static final int list_footer_layout=0x7f030003;
+        public static final int mainactivity_layout=0x7f030004;
+        public static final int menuitem_layout=0x7f030005;
+        public static final int shadow=0x7f030006;
+        public static final int slidingmenumain=0x7f030007;
+        public static final int slidingmenumainlist=0x7f030008;
+        public static final int slidingmenurow=0x7f030009;
+        public static final int startactivity_layout=0x7f03000a;
+        public static final int status_layout=0x7f03000b;
+        public static final int tweet_layout=0x7f03000c;
     }
     public static final class menu {
         public static final int mainactivity_optionsmenu=0x7f0a0000;

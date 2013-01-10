@@ -17,13 +17,13 @@ public class WarotterUserStreamListener implements UserStreamListener
 
 	public WarotterUserStreamListener()
 	{
-		this.mainViewModel = MainActivityViewModel.getSingleton();
+		this.mainViewModel = MainActivityViewModel.instance();
 	}
 
 	@Override
 	public void onDeletionNotice(final StatusDeletionNotice arg0)
 	{
-		mainViewModel.eventAggregator.publish("runOnUiThread", new Runnable()
+		mainViewModel.activity.runOnUiThread(new Runnable()
 		{
 
 			@Override
@@ -31,7 +31,7 @@ public class WarotterUserStreamListener implements UserStreamListener
 			{
 				StatusStore.remove(arg0.getStatusId());
 			}
-		}, null);
+		});
 
 	}
 
@@ -52,7 +52,7 @@ public class WarotterUserStreamListener implements UserStreamListener
 	@Override
 	public void onStatus(final Status arg0)
 	{
-		mainViewModel.eventAggregator.publish("runOnUiThread", new Runnable()
+		mainViewModel.activity.runOnUiThread(new Runnable()
 		{
 
 			@Override
@@ -65,11 +65,11 @@ public class WarotterUserStreamListener implements UserStreamListener
 				}
 				if(StatusStore.isReply(arg0.getId()))
 				{
-					mainViewModel.eventAggregator.publish("toast", new ToastMessage("リプライを受信しました"), null);
+					mainViewModel.toast("リプライを受信しました");
 				}
 				mainViewModel.preLoadStatusQueue.add(arg0.getId());
 			}
-		}, null);
+		});
 	}
 
 	@Override

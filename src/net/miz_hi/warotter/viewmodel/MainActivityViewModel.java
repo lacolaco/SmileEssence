@@ -1,13 +1,6 @@
 package net.miz_hi.warotter.viewmodel;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-import twitter4j.Paging;
-import twitter4j.TwitterStream;
-
-import android.graphics.Color;
-import android.view.View;
-import gueei.binding.CollectionChangedEventArg;
-import gueei.binding.CollectionChangedEventArg.Action;
+import gueei.binding.Binder;
 import gueei.binding.Command;
 import gueei.binding.Observable;
 import gueei.binding.collections.ArrayListObservable;
@@ -15,14 +8,26 @@ import gueei.binding.observables.BooleanObservable;
 import gueei.binding.observables.IntegerObservable;
 import gueei.binding.observables.ObjectObservable;
 import gueei.binding.observables.StringObservable;
+
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import net.miz_hi.warotter.R;
 import net.miz_hi.warotter.core.ThemeHelper;
-import net.miz_hi.warotter.core.ToastMessage;
 import net.miz_hi.warotter.core.ViewModel;
 import net.miz_hi.warotter.core.WarotterUserStreamListener;
-import net.miz_hi.warotter.model.Account;
 import net.miz_hi.warotter.model.Warotter;
 import net.miz_hi.warotter.util.PostMentionsGetter;
 import net.miz_hi.warotter.util.PostTimelineGetter;
+import twitter4j.Paging;
+import twitter4j.TwitterStream;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.os.Handler;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager.LayoutParams;
 
 public class MainActivityViewModel extends ViewModel implements Runnable
 {
@@ -39,22 +44,27 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 	public ArrayListObservable<StatusViewModel> mentionsTimeline = new ArrayListObservable<StatusViewModel>(StatusViewModel.class);
 	public ConcurrentLinkedQueue<Long> preLoadStatusQueue = new ConcurrentLinkedQueue<Long>();
 	public Thread queueWatcher;
+	public Handler handler;
 	public BooleanObservable isHomeMode = new BooleanObservable(true);
 	private static MainActivityViewModel instance;
 	private boolean isAlive = true;
+	private MenuViewModel menuViewModel;
 
-	public static MainActivityViewModel getSingleton()
+	public static MainActivityViewModel initialize(Activity activity)
 	{
-		if (instance == null)
-		{
-			instance = new MainActivityViewModel();
-		}
+		return instance = new MainActivityViewModel(activity);
+	}
+	
+	public static MainActivityViewModel instance()
+	{
 		return instance;
 	}
 
-	private MainActivityViewModel()
+	private MainActivityViewModel(Activity activity)
 	{
+		super(activity);
 		layoutInitialize();
+		handler = new Handler();
 		new PostTimelineGetter(this).execute(new Paging(1));
 		new PostMentionsGetter(this).execute(new Paging(1));
 	}
@@ -79,19 +89,16 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 		queueWatcher = new Thread(this, "test");
 		queueWatcher.setDaemon(true);
 		queueWatcher.start();
-		eventAggregator.publish("toast", new ToastMessage("ê⁄ë±ÇµÇ‹ÇµÇΩ"), null);
-	}
-
-	@Override
-	public void onActivityResumed()
-	{
+		toast("ê⁄ë±ÇµÇ‹ÇµÇΩ");
+		menuViewModel = new MenuViewModel(activity);
+		menuViewModel.setEventAggregator(eventAggregator);
 	}
 	
 	@Override
 	public void onDispose()
 	{
-		Warotter.getTwitterStream(Warotter.getMainAccount(), false).shutdown();
 		isAlive = false;
+		Warotter.getTwitterStream(Warotter.getMainAccount(), false).shutdown();
 	}
 
 	public Command onItemClicked = new Command()
@@ -102,7 +109,8 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 		{
 			if (clickedItem.get() instanceof StatusViewModel)
 			{
-				eventAggregator.publish("toast", new ToastMessage(((StatusViewModel) clickedItem.get()).screenName.get()), null);
+				StatusViewModel svm = (StatusViewModel)clickedItem.get();
+				toast(svm.screenName.get());
 			}
 		}
 	};
@@ -123,7 +131,7 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 		@Override
 		public void Invoke(View arg0, Object... arg1)
 		{
-			eventAggregator.publish("runOnUiThread", new Runnable()
+			activity.runOnUiThread(new Runnable()
 			{
 				
 				@Override
@@ -134,7 +142,7 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 					int theme = Warotter.getTheme();
 					timelineButtonRes.set(isHomeMode.get() ? ThemeHelper.getMentionsButton(theme) : ThemeHelper.getHomeButton(theme));
 				}
-			}, null);
+			});
 		}
 	};
 
@@ -144,21 +152,37 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 		@Override
 		public void Invoke(View arg0, Object... arg1)
 		{
-			eventAggregator.publish("toast", new ToastMessage("menu"), null);
+			activity.runOnUiThread(new Runnable()
+			{
+				
+				@Override
+				public void run()
+				{
+					Dialog dialog = new Dialog(activity);
+					dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+					View view = Binder.bindView(dialog.getContext(), 
+							Binder.inflateView(activity, R.layout.dialog_menu_layout, null, true), menuViewModel);
+					dialog.setContentView(view);
+					LayoutParams lp = dialog.getWindow().getAttributes();
+					DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
+					lp.width = (int) (metrics.widthPixels * 0.9);
+					lp.height = (int) (metrics.heightPixels * 0.9);
+					dialog.show();
+				}
+			});
 		}
 	};
-	
+
 	@Override
 	public void run()
 	{
 		while (isAlive)
-		{
-			
+		{			
 			try
 			{
 				if(isScrollTop.get() && preLoadStatusQueue.peek() != null)
 				{
-					eventAggregator.publish("runOnUiThread", new Runnable()
+					activity.runOnUiThread(new Runnable()
 					{
 
 						@Override
@@ -166,7 +190,7 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 						{
 							try
 							{
-								StatusViewModel svm = StatusViewModel.createInstance(preLoadStatusQueue.poll());
+								StatusViewModel svm = StatusViewModel.createInstance(activity, preLoadStatusQueue.poll());
 								if(svm != null)
 								{
 									homeTimeline.add(0,svm);
@@ -181,7 +205,7 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 								
 							}
 						}							
-					}, null);					
+					});					
 				}
 				Thread.sleep(400);
 			}

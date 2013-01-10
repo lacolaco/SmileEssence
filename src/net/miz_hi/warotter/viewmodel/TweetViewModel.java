@@ -1,6 +1,7 @@
 package net.miz_hi.warotter.viewmodel;
 
 import twitter4j.StatusUpdate;
+import android.app.Activity;
 import android.content.Context;
 import android.os.IBinder;
 import android.text.Editable;
@@ -19,6 +20,11 @@ import net.miz_hi.warotter.util.AsyncTweetTask;
 
 public class TweetViewModel extends ViewModel
 {
+	public TweetViewModel(Activity activity)
+	{
+		super(activity);
+	}
+
 	public StringObservable text = new StringObservable("");
 	public Observable<IBinder> token = new Observable<IBinder>(IBinder.class);
 	public IntegerObservable cursorPos = new IntegerObservable(); 
@@ -41,7 +47,7 @@ public class TweetViewModel extends ViewModel
 			String result;
 			if (text.isNull() || text.get().length() == 0)
 			{
-				eventAggregator.publish("toast", new ToastMessage("“ü—Í‚µ‚Ä‚­‚¾‚³‚¢"), null);
+				toast("“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
 			}
 			else
 			{

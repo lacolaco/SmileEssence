@@ -40,6 +40,24 @@ public class AuthentificationDB
 		}
 	}
 	
+	public void delete(Account account)
+	{
+		DataBaseHelper helper = new DataBaseHelper(context);
+		try
+		{
+			Dao<Account, Integer> dao = helper.getDao(Account.class);
+			dao.delete(account);
+		}
+		catch(Exception e)
+		{
+			Log.e(AuthentificationDB.class.getSimpleName(), "error on delete");
+		}
+		finally
+		{
+			helper.close();
+		}
+	}
+	
 	public List<Account> findAll()
 	{
 		DataBaseHelper helper = new DataBaseHelper(context);

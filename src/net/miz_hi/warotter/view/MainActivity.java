@@ -3,48 +3,43 @@ package net.miz_hi.warotter.view;
 import gueei.binding.Binder;
 import gueei.binding.labs.EventAggregator;
 import gueei.binding.labs.EventSubscriber;
-
-import com.slidingmenu.lib.SlidingMenu;
-import com.slidingmenu.lib.SlidingMenu.OnCloseListener;
-
+import gueei.binding.widgets.BindableLinearLayout;
 import net.miz_hi.warotter.R;
+import net.miz_hi.warotter.core.MenuDialogMessage;
 import net.miz_hi.warotter.core.EventBindingActivity;
 import net.miz_hi.warotter.core.ViewModel;
-import net.miz_hi.warotter.model.Warotter;
-import net.miz_hi.warotter.util.EnumRequestCode;
 import net.miz_hi.warotter.viewmodel.MainActivityViewModel;
+import net.miz_hi.warotter.viewmodel.MenuViewModel;
 import net.miz_hi.warotter.viewmodel.TweetViewModel;
+import android.app.AlertDialog;
 import android.os.Bundle;
-import android.os.IBinder;
+import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.view.WindowManager.LayoutParams;
+
+import com.slidingmenu.lib.SlidingMenu;
 
 public class MainActivity extends EventBindingActivity
 {
-	public SlidingMenu menu;
+	public SlidingMenu slidingMenu;
+	public AlertDialog dialog;
 
 	@Override
 	public void onCreate(Bundle bundle)
 	{
 		super.onCreate(bundle);
 		this.setAndBindRootView(R.layout.mainactivity_layout, viewModel);
-		menu = new SlidingMenu(this);
-		menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-		menu.setShadowWidthRes(R.dimen.shadow_width);
-		menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-		menu.setFadeDegree(0.35f);
-		menu.setShadowDrawable(R.drawable.shadow);
-		menu.attachToActivity(this, SlidingMenu.SLIDING_WINDOW);
-		final TweetViewModel tweetViewModel = new TweetViewModel();
+		TweetViewModel tweetViewModel = new TweetViewModel(this);
 		tweetViewModel.setEventAggregator(viewModel.eventAggregator);
-		View tweetView = Binder.bindView(menu.getContext(), Binder.inflateView(this, R.layout.tweet_layout, null, true), tweetViewModel);
-		menu.setMenu(tweetView);
+		slidingMenu = createSlidingMenu();
+		View tweetView = Binder.bindView(slidingMenu.getContext(), Binder.inflateView(this, R.layout.tweet_layout, null, true), tweetViewModel);
+		slidingMenu.setMenu(tweetView);
 	}
 
 	@Override
 	public ViewModel getViewModel()
 	{
-		return MainActivityViewModel.getSingleton();
+		return MainActivityViewModel.initialize(this);
 	}
 
 	@Override
@@ -52,7 +47,6 @@ public class MainActivity extends EventBindingActivity
 	{
 		super.onDestroy();
 		viewModel.onDispose();
-		moveTaskToBack(true);
 	}
 
 	@Override
@@ -70,13 +64,23 @@ public class MainActivity extends EventBindingActivity
 					@Override
 					public void run()
 					{
-						menu.toggle();
+						slidingMenu.toggle();
 					}
 				});
-
 			}
 		});
 		return ea;
 	}
-
+	
+	public SlidingMenu createSlidingMenu()
+	{
+		SlidingMenu menu = new SlidingMenu(this);
+		menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+		menu.setShadowWidthRes(R.dimen.shadow_width);
+		menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+		menu.setFadeDegree(0.35f);
+		menu.setShadowDrawable(R.drawable.shadow);
+		menu.attachToActivity(this, SlidingMenu.SLIDING_WINDOW);
+		return menu;
+	}
 }

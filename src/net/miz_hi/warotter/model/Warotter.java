@@ -76,7 +76,18 @@ public class Warotter
 	public static void setMainAccount(Account account)
 	{
 		mainAccount = account;
-		putPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID, account.getUserId());
+		if(mainAccount != null)
+		{
+			putPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID, account.getUserId());
+		}
+		else
+		{
+			if(twitterStream != null)
+			{
+				twitterStream.shutdown();
+			}
+			putPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID, -1L);
+		}
 	}
 	
 	public static int getTheme()

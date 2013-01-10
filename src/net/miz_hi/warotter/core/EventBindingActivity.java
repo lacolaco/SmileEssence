@@ -40,100 +40,16 @@ public abstract class EventBindingActivity extends BindingActivity
 		super.onPostResume();
 		viewModel.onActivityResumed();
 	}
-
+	
 	@Override
 	public void onActivityResult(int reqCode, int resultCode, Intent data)
 	{
-		if (!(callback.indexOfKey(reqCode) < 0))
-		{
-			callback.get(reqCode).run(resultCode, data);
-		}
+		super.onActivityResult(reqCode, resultCode, data);
 	}
 
 	protected EventAggregator getAggregator()
 	{
 		EventAggregator ea = EventAggregator.getInstance(this);
-		ea.subscribe("toast", new EventSubscriber()
-		{
-
-			@Override
-			public void onEventTriggered(String arg0, Object arg1, Bundle arg2)
-			{
-				if (arg1 instanceof ToastMessage)
-				{
-					final ToastMessage message = (ToastMessage) arg1;
-					runOnUiThread(new Runnable()
-					{
-
-						@Override
-						public void run()
-						{
-							Toast.makeText(EventBindingActivity.this, message.text, message.duration).show();
-						}
-					});
-
-				}
-			}
-		});
-		ea.subscribe("startActivity", new EventSubscriber()
-		{
-
-			@Override
-			public void onEventTriggered(String arg0, Object arg1, Bundle arg2)
-			{
-				if (arg1 instanceof StartActivityMessage)
-				{
-					final StartActivityMessage message = (StartActivityMessage) arg1;
-					runOnUiThread(new Runnable()
-					{
-						@Override
-						public void run()
-						{
-
-							if (message.hasCallback())
-							{
-								callback.put(message.reqCode, message.callback);
-								message.intent.setClass(EventBindingActivity.this, message.clazz);
-								startActivityForResult(message.intent, message.reqCode);
-							}
-							else
-							{
-								message.intent.setClass(EventBindingActivity.this, message.clazz);
-								startActivity(message.intent);
-							}
-						}
-					});
-				}
-			}
-		});
-		ea.subscribe("finish", new EventSubscriber()
-		{
-
-			@Override
-			public void onEventTriggered(String arg0, Object arg1, Bundle arg2)
-			{
-				runOnUiThread(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						finish();
-					}
-				});
-			}
-		});
-		ea.subscribe("runOnUiThread", new EventSubscriber()
-		{
-
-			@Override
-			public void onEventTriggered(String arg0, Object arg1, Bundle arg2)
-			{
-				if (arg1 instanceof Runnable)
-				{
-					runOnUiThread((Runnable) arg1);
-				}
-			}
-		});
 		return ea;
 	}
 

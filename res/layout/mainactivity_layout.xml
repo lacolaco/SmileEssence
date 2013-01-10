@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <net.miz_hi.warotter.core.BindableListView
+    <net.miz_hi.warotter.core.CustomListView
         android:id="@+id/listView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,9 +23,9 @@
         binding:onItemClicked="onItemClicked"
         binding:visibility="isHomeMode" >
 
-    </net.miz_hi.warotter.core.BindableListView>
+    </net.miz_hi.warotter.core.CustomListView>
     
-        <net.miz_hi.warotter.core.BindableListView
+        <net.miz_hi.warotter.core.CustomListView
         android:id="@+id/listView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         binding:onItemClicked="onItemClicked" 
         binding:visibility="NOT(isHomeMode)">
 
-    </net.miz_hi.warotter.core.BindableListView>
+    </net.miz_hi.warotter.core.CustomListView>
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"

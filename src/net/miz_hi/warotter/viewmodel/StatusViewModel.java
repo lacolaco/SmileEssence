@@ -6,6 +6,7 @@ import net.miz_hi.warotter.model.StatusStore;
 import net.miz_hi.warotter.model.IconCaches;
 import net.miz_hi.warotter.model.Warotter;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.text.Html;
 import gueei.binding.Observable;
@@ -29,7 +30,7 @@ public class StatusViewModel extends ViewModel
 	public BooleanObservable isRetweet = new BooleanObservable(false);
 	public Observable<Bitmap> iconBitmap = new Observable<Bitmap>(Bitmap.class);
 
-	public static StatusViewModel createInstance(long id)
+	public static StatusViewModel createInstance(Activity activity, long id)
 	{
 		Status st = StatusStore.get(id);
 		if (st == null)
@@ -38,16 +39,17 @@ public class StatusViewModel extends ViewModel
 		}
 		if (st.isRetweet())
 		{
-			return new StatusViewModel(st.getRetweetedStatus(), st.getId());
+			return new StatusViewModel(activity, st.getRetweetedStatus(), st.getId());
 		}
 		else
 		{
-			return new StatusViewModel(st, -1);
+			return new StatusViewModel(activity, st, -1);
 		}
 	}
 	
-	private StatusViewModel(Status st, long sourceId)
+	private StatusViewModel(Activity activity, Status st, long sourceId)
 	{
+		super(activity);
 		statusId = st.getId();
 		if(sourceId > 0)
 		{

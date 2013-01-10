@@ -37,11 +37,15 @@ public class PostTimelineGetter extends AsyncTask<Paging, Integer, ResponseList<
 	@Override
 	protected void onPostExecute(ResponseList<twitter4j.Status> result)
 	{
+		if(result == null)
+		{
+			return;
+		}
 		ArrayList<StatusViewModel> list = new ArrayList<StatusViewModel>();
 		for(twitter4j.Status st : result)
 		{
 			StatusStore.put(st);
-			list.add(StatusViewModel.createInstance(st.getId()));
+			list.add(StatusViewModel.createInstance(viewModel.activity, st.getId()));
 		}
 		viewModel.homeTimeline.addAll(list);	
 	}

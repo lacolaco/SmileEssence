@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -18,11 +20,12 @@ public class WebViewActivity extends Activity
 	{
 		super.onCreate(bundle);
 		WebView webView = new WebView(this);
+		
+		CookieSyncManager.createInstance(this).resetSync();
 		setContentView(webView, new LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
 		Uri uri = getIntent().getData();
 		if (uri == null)
 			finish();
-
 		webView.setWebViewClient(new WebViewClient()
 		{
 			@Override
