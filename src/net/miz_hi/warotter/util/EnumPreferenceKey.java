@@ -2,11 +2,9 @@ package net.miz_hi.warotter.util;
 
 public enum EnumPreferenceKey
 {
-	AUTHORIZED(EnumValueType.BOOLEAN, "is_authorized"),
-	TOKEN(EnumValueType.STRING, "token"),
-	TOKEN_SECRET(EnumValueType.STRING, "token_secret"),
-	SCREEN_NAME(EnumValueType.STRING, "screen_name"),
-	USER_ID(EnumValueType.LONG, "user_id"), ;
+	LAST_USED_USER_ID(EnumValueType.LONG, "user_id"),
+	THEME(EnumValueType.INTEGER, "theme");
+	
 
 	private final EnumValueType type;
 	private final String key;

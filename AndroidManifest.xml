@@ -12,6 +12,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:launchMode="standard" android:name=".view.WebViewActivity" android:configChanges="keyboardHidden|orientation"/><activity android:label="MainActivity" android:name=".view.MainActivity" android:launchMode="singleTask" android:configChanges="keyboardHidden|orientation" android:windowSoftInputMode="stateUnspecified"/></application>
+        <activity android:launchMode="standard" android:name=".view.WebViewActivity" android:configChanges="keyboardHidden|orientation"/><activity android:label="MainActivity" android:name=".view.MainActivity" android:launchMode="singleTask" android:configChanges="keyboardHidden|orientation" android:windowSoftInputMode="adjustResize"/></application>
 
 </manifest>

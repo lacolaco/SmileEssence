@@ -1,10 +1,10 @@
 package net.miz_hi.warotter.viewmodel;
 
 import net.miz_hi.warotter.R;
-import net.miz_hi.warotter.Warotter;
 import net.miz_hi.warotter.core.ViewModel;
 import net.miz_hi.warotter.model.StatusStore;
 import net.miz_hi.warotter.model.IconCaches;
+import net.miz_hi.warotter.model.Warotter;
 
 import android.graphics.Bitmap;
 import android.text.Html;

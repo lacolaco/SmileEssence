@@ -2,7 +2,6 @@ package net.miz_hi.warotter.model;
 
 import java.util.HashMap;
 
-import net.miz_hi.warotter.Warotter;
 
 import twitter4j.Status;
 import twitter4j.UserMentionEntity;
@@ -31,7 +30,7 @@ public class StatusStore
 		Status st = statusesMap.get(id);
 		for (UserMentionEntity ume : st.getUserMentionEntities())
 		{
-			if (ume.getScreenName().equals(Warotter.getAccount().screenName))
+			if (ume.getScreenName().equals(Warotter.getMainAccount().getScreenName()))
 			{
 				return true;
 			}
@@ -41,6 +40,6 @@ public class StatusStore
 
 	public static boolean isMine(long id)
 	{
-		return statusesMap.get(id).getUser().getId() == Warotter.getAccount().userId;
+		return statusesMap.get(id).getUser().getId() == Warotter.getMainAccount().getUserId();
 	}
 }

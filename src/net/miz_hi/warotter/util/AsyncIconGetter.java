@@ -7,8 +7,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import net.miz_hi.warotter.Warotter;
 import net.miz_hi.warotter.model.IconCaches;
+import net.miz_hi.warotter.model.Warotter;
 import net.miz_hi.warotter.model.IconCaches.Icon;
 
 import gueei.binding.Observable;

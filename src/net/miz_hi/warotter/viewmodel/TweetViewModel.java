@@ -12,9 +12,9 @@ import gueei.binding.Observable;
 import gueei.binding.observables.IntegerObservable;
 import gueei.binding.observables.ObjectObservable;
 import gueei.binding.observables.StringObservable;
-import net.miz_hi.warotter.Warotter;
 import net.miz_hi.warotter.core.ToastMessage;
 import net.miz_hi.warotter.core.ViewModel;
+import net.miz_hi.warotter.model.Warotter;
 import net.miz_hi.warotter.util.AsyncTweetTask;
 
 public class TweetViewModel extends ViewModel
@@ -45,7 +45,7 @@ public class TweetViewModel extends ViewModel
 			}
 			else
 			{
-				new AsyncTweetTask(eventAggregator).execute(new StatusUpdate(text.get()));
+				new AsyncTweetTask(Warotter.getMainAccount(), eventAggregator).execute(new StatusUpdate(text.get()));
 				text.set("");
 				InputMethodManager imm = (InputMethodManager) Warotter.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(token.get(), 0);		

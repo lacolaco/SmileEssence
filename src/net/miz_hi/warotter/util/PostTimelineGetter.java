@@ -2,8 +2,8 @@ package net.miz_hi.warotter.util;
 
 import java.util.ArrayList;
 
-import net.miz_hi.warotter.Warotter;
 import net.miz_hi.warotter.model.StatusStore;
+import net.miz_hi.warotter.model.Warotter;
 import net.miz_hi.warotter.viewmodel.MainActivityViewModel;
 import net.miz_hi.warotter.viewmodel.StatusViewModel;
 import twitter4j.Paging;
@@ -26,7 +26,7 @@ public class PostTimelineGetter extends AsyncTask<Paging, Integer, ResponseList<
 	{
 		try
 		{
-			return Warotter.getTwitter().getHomeTimeline(arg0[0]);			
+			return Warotter.getTwitter(Warotter.getMainAccount()).getHomeTimeline(arg0[0]);			
 		}
 		catch (TwitterException e)
 		{

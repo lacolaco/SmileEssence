@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import net.miz_hi.warotter.Warotter;
 import net.miz_hi.warotter.util.AsyncIconGetter;
 import net.miz_hi.warotter.util.StringUtils;
 

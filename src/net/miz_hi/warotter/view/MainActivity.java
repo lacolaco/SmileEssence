@@ -8,9 +8,9 @@ import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.SlidingMenu.OnCloseListener;
 
 import net.miz_hi.warotter.R;
-import net.miz_hi.warotter.Warotter;
 import net.miz_hi.warotter.core.EventBindingActivity;
 import net.miz_hi.warotter.core.ViewModel;
+import net.miz_hi.warotter.model.Warotter;
 import net.miz_hi.warotter.util.EnumRequestCode;
 import net.miz_hi.warotter.viewmodel.MainActivityViewModel;
 import net.miz_hi.warotter.viewmodel.TweetViewModel;
@@ -52,7 +52,7 @@ public class MainActivity extends EventBindingActivity
 	{
 		super.onDestroy();
 		viewModel.onDispose();
-		finishActivity(EnumRequestCode.MAIN.ordinal());
+		moveTaskToBack(true);
 	}
 
 	@Override

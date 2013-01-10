@@ -1,5 +1,21 @@
 package net.miz_hi.warotter.viewmodel;
 
+import gueei.binding.Command;
+import gueei.binding.observables.BooleanObservable;
+import gueei.binding.observables.StringObservable;
+import net.miz_hi.warotter.core.ActivityCallback;
+import net.miz_hi.warotter.core.StartActivityMessage;
+import net.miz_hi.warotter.core.ToastMessage;
+import net.miz_hi.warotter.core.ViewModel;
+import net.miz_hi.warotter.model.Account;
+import net.miz_hi.warotter.model.AuthentificationDB;
+import net.miz_hi.warotter.model.Consumers;
+import net.miz_hi.warotter.model.Consumers.Consumer;
+import net.miz_hi.warotter.model.Warotter;
+import net.miz_hi.warotter.util.EnumPreferenceKey;
+import net.miz_hi.warotter.util.EnumRequestCode;
+import net.miz_hi.warotter.view.MainActivity;
+import net.miz_hi.warotter.view.WebViewActivity;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -10,18 +26,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.view.View;
-import gueei.binding.Command;
-import gueei.binding.observables.BooleanObservable;
-import gueei.binding.observables.StringObservable;
-import net.miz_hi.warotter.Warotter;
-import net.miz_hi.warotter.core.ActivityCallback;
-import net.miz_hi.warotter.core.StartActivityMessage;
-import net.miz_hi.warotter.core.ToastMessage;
-import net.miz_hi.warotter.core.ViewModel;
-import net.miz_hi.warotter.util.EnumPreferenceKey;
-import net.miz_hi.warotter.util.EnumRequestCode;
-import net.miz_hi.warotter.view.MainActivity;
-import net.miz_hi.warotter.view.WebViewActivity;
 
 public class StartActivityViewModel extends ViewModel
 {
@@ -60,11 +64,20 @@ public class StartActivityViewModel extends ViewModel
 	public void initialize()
 	{
 		buttonAuthVisibility.set(false);
-		isAuthed = (Boolean) Warotter.getPreferenceValue(EnumPreferenceKey.AUTHORIZED);
+		long lastUsedId = (Long)Warotter.getPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID);
+		isAuthed = lastUsedId > 0 && !AuthentificationDB.instance().findAll().isEmpty();
 		if (isAuthed)
 		{
-			text.set(String.format("%1$sでログインします", (String) Warotter.getPreferenceValue(EnumPreferenceKey.SCREEN_NAME)));
-			moveToTimeline();
+			for(Account account : AuthentificationDB.instance().findAll())
+			{
+				if(account.getUserId() == lastUsedId)
+				{
+					Warotter.setMainAccount(account);
+					text.set(String.format("%1$sでログインします", account.getScreenName()));
+					moveToTimeline();
+					break;
+				}
+			}
 		}
 		else
 		{
@@ -93,7 +106,7 @@ public class StartActivityViewModel extends ViewModel
 				}), null);
 				textVisibility.set(false);
 			}
-		}, 1500);
+		}, 1200);
 
 	}
 
@@ -134,13 +147,20 @@ public class StartActivityViewModel extends ViewModel
 												AccessToken accessToken = null;
 												accessToken = twitter.getOAuthAccessToken(req, verifier);
 												if (accessToken != null)
-												{
-													Warotter.putPreferenceValue(EnumPreferenceKey.TOKEN, accessToken.getToken());
-													Warotter.putPreferenceValue(EnumPreferenceKey.TOKEN_SECRET, accessToken.getTokenSecret());
-													Warotter.putPreferenceValue(EnumPreferenceKey.SCREEN_NAME, accessToken.getScreenName());
-													Warotter.putPreferenceValue(EnumPreferenceKey.USER_ID, accessToken.getUserId());
-													Warotter.putPreferenceValue(EnumPreferenceKey.AUTHORIZED, true);
-													Warotter.setAccount();
+												{													
+													Consumer consumer;
+													if(accessToken.getScreenName().equals("miz_hi"))
+													{
+														consumer = Consumers.consumersMap.get("miz_hi");
+													}
+													else
+													{
+														consumer = Consumers.getDedault();
+													}
+													Account account = new Account(accessToken, consumer);
+													AuthentificationDB db = AuthentificationDB.instance();
+													db.save(account);
+													Warotter.setMainAccount(account);
 													eventAggregator.publish("toast", new ToastMessage("認証成功しました"), null);
 												}
 												else

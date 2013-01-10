@@ -63,6 +63,10 @@ public class WarotterUserStreamListener implements UserStreamListener
 				{
 					StatusStore.put(arg0.getRetweetedStatus());
 				}
+				if(StatusStore.isReply(arg0.getId()))
+				{
+					mainViewModel.eventAggregator.publish("toast", new ToastMessage("ƒŠƒvƒ‰ƒC‚ğóM‚µ‚Ü‚µ‚½"), null);
+				}
 				mainViewModel.preLoadStatusQueue.add(arg0.getId());
 			}
 		}, null);

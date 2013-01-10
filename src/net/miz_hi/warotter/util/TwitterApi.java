@@ -1,6 +1,7 @@
 package net.miz_hi.warotter.util;
 
-import net.miz_hi.warotter.Warotter;
+import net.miz_hi.warotter.model.Account;
+import net.miz_hi.warotter.model.Warotter;
 import twitter4j.StatusUpdate;
 import twitter4j.TwitterException;
 
@@ -12,11 +13,11 @@ public class TwitterApi
 	private static final String ERROR_STATUS_DUPLICATE = "Status is a duplicate.";
 	private static final String ERROR_STATUS_LIMIT = "User is over daily status update limit.";
 
-	public static String tweet(StatusUpdate st)
+	public static String tweet(Account account, StatusUpdate st)
 	{
 		try
 		{
-			Warotter.getTwitter().updateStatus(st);
+			Warotter.getTwitter(account).updateStatus(st);
 		}
 		catch (TwitterException e)
 		{
@@ -24,15 +25,12 @@ public class TwitterApi
 			String message = e.getErrorMessage();
 			if (code == 403)
 			{
-				if (message.equals(ERROR_STATUS_DUPLICATE))
-				{
-					return MESSAGE_TWEET_DEPLICATE;
-				}
 				if (message.equals(ERROR_STATUS_LIMIT))
 				{
 					return MESSAGE_TWEET_LIMIT;
 				}
 			}
+			return MESSAGE_TWEET_DEPLICATE;
 		}
 		return MESSAGE_TWEET_SUCCESS;
 	}

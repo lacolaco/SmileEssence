@@ -1,6 +1,6 @@
 package net.miz_hi.warotter.view;
 
-import net.miz_hi.warotter.Warotter;
+import net.miz_hi.warotter.model.Warotter;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;

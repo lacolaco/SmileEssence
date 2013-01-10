@@ -15,22 +15,26 @@ import gueei.binding.observables.BooleanObservable;
 import gueei.binding.observables.IntegerObservable;
 import gueei.binding.observables.ObjectObservable;
 import gueei.binding.observables.StringObservable;
-import net.miz_hi.warotter.Warotter;
+import net.miz_hi.warotter.core.ThemeHelper;
 import net.miz_hi.warotter.core.ToastMessage;
 import net.miz_hi.warotter.core.ViewModel;
 import net.miz_hi.warotter.core.WarotterUserStreamListener;
+import net.miz_hi.warotter.model.Account;
+import net.miz_hi.warotter.model.Warotter;
 import net.miz_hi.warotter.util.PostMentionsGetter;
 import net.miz_hi.warotter.util.PostTimelineGetter;
 
 public class MainActivityViewModel extends ViewModel implements Runnable
 {
-	public StringObservable title = new StringObservable("Home");
+	public StringObservable title = new StringObservable();
+	public IntegerObservable timelineButtonRes = new IntegerObservable();
+	public IntegerObservable postButtonRes = new IntegerObservable();
+	public IntegerObservable menuButtonRes = new IntegerObservable();
 	public ObjectObservable clickedItem = new ObjectObservable();
 	public BooleanObservable isScrollTop = new BooleanObservable(false);
 	public Observable<View> footerView = new Observable<View>(View.class);
-	public IntegerObservable listBackground = new IntegerObservable(Color.WHITE);
-	public IntegerObservable titleBackground = new IntegerObservable(Color.BLACK);
-	public IntegerObservable infoBackground = new IntegerObservable(Color.BLACK);
+	public IntegerObservable listBackground = new IntegerObservable();
+	public IntegerObservable barBackground = new IntegerObservable();
 	public ArrayListObservable<StatusViewModel> homeTimeline = new ArrayListObservable<StatusViewModel>(StatusViewModel.class);
 	public ArrayListObservable<StatusViewModel> mentionsTimeline = new ArrayListObservable<StatusViewModel>(StatusViewModel.class);
 	public ConcurrentLinkedQueue<Long> preLoadStatusQueue = new ConcurrentLinkedQueue<Long>();
@@ -50,14 +54,26 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 
 	private MainActivityViewModel()
 	{
+		layoutInitialize();
 		new PostTimelineGetter(this).execute(new Paging(1));
 		new PostMentionsGetter(this).execute(new Paging(1));
+	}
+	
+	private void layoutInitialize()
+	{
+		int theme = Warotter.getTheme();
+		title.set("Home");
+		listBackground.set(ThemeHelper.getListBgColor(theme));
+		barBackground.set(ThemeHelper.getBarBgColor(theme));
+		timelineButtonRes.set(ThemeHelper.getMentionsButton(theme));
+		postButtonRes.set(ThemeHelper.getPostButton(theme));
+		menuButtonRes.set(ThemeHelper.getMenuButton(theme));
 	}
 
 	@Override
 	public void onActivityCreated()
 	{
-		TwitterStream twitterStream = Warotter.getTwitterStream(true);
+		TwitterStream twitterStream = Warotter.getTwitterStream(Warotter.getMainAccount(), true);
 		twitterStream.addListener(new WarotterUserStreamListener());
 		twitterStream.user();
 		queueWatcher = new Thread(this, "test");
@@ -74,7 +90,7 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 	@Override
 	public void onDispose()
 	{
-		Warotter.getTwitterStream(false).shutdown();
+		Warotter.getTwitterStream(Warotter.getMainAccount(), false).shutdown();
 		isAlive = false;
 	}
 
@@ -115,6 +131,8 @@ public class MainActivityViewModel extends ViewModel implements Runnable
 				{
 					isHomeMode.toggle();
 					title.set(isHomeMode.get() ? "Home" : "Mentions" );
+					int theme = Warotter.getTheme();
+					timelineButtonRes.set(isHomeMode.get() ? ThemeHelper.getMentionsButton(theme) : ThemeHelper.getHomeButton(theme));
 				}
 			}, null);
 		}
