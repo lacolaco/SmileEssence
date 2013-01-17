@@ -8,14 +8,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import net.miz_hi.warotter.model.IconCaches;
-import net.miz_hi.warotter.model.Warotter;
 import net.miz_hi.warotter.model.IconCaches.Icon;
-
-import gueei.binding.Observable;
 import twitter4j.User;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.os.AsyncTask;
 
@@ -23,12 +20,12 @@ public class AsyncIconGetter extends AsyncTask<User, Integer, Icon>
 {
 
 	private File file;
-	private Observable<Bitmap> observable;
+	private Bitmap iconBitmap;
 
-	public AsyncIconGetter(File file, Observable<Bitmap> observable)
+	public AsyncIconGetter(File file, Bitmap observable)
 	{
 		this.file = file;
-		this.observable = observable;
+		this.iconBitmap = observable;
 	}
 
 	@Override
@@ -47,7 +44,7 @@ public class AsyncIconGetter extends AsyncTask<User, Integer, Icon>
 			connection.connect();
 			InputStream input = connection.getInputStream();
 			Options opt = new Options();
-			opt.inPurgeable = true; //GC‰Â”\‚É‚·‚é
+			opt.inPurgeable = true; // GC‰Â”\‚É‚·‚é
 			Bitmap bm = BitmapFactory.decodeStream(input, null, opt);
 			FileOutputStream fos = new FileOutputStream(file);
 			bm.compress(CompressFormat.PNG, 90, fos);
@@ -66,7 +63,7 @@ public class AsyncIconGetter extends AsyncTask<User, Integer, Icon>
 	@Override
 	protected void onPostExecute(Icon result)
 	{
-		observable.set(result.use());
+		iconBitmap = result.use();
 	}
 
 }

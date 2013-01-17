@@ -2,7 +2,6 @@ package net.miz_hi.warotter.model;
 
 import java.util.HashMap;
 
-
 import twitter4j.Status;
 import twitter4j.UserMentionEntity;
 

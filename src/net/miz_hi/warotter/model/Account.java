@@ -9,7 +9,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "accounts")
 public class Account
 {
-	
+
 	@DatabaseField(generatedId = true)
 	private Integer id;
 	@DatabaseField
@@ -24,9 +24,11 @@ public class Account
 	private String screenName;
 	@DatabaseField
 	private Long userId;
-	
-	public Account(){}
-	
+
+	public Account()
+	{
+	}
+
 	public Account(AccessToken token, Consumer consumer)
 	{
 		this.accessToken = token.getToken();
@@ -36,7 +38,7 @@ public class Account
 		this.setConsumerKey(consumer.key);
 		this.setConsumerSecret(consumer.secret);
 	}
-	
+
 	public Integer getId()
 	{
 		return id;

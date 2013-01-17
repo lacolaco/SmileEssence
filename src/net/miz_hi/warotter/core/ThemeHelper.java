@@ -1,17 +1,16 @@
 package net.miz_hi.warotter.core;
 
-import android.graphics.Color;
 import net.miz_hi.warotter.R;
-
+import android.graphics.Color;
 
 public class ThemeHelper
 {
 	public static final int WHITE = 0;
 	public static final int BLACK = 1;
-	
+
 	public static int getHomeButton(int theme)
 	{
-		switch(theme)
+		switch (theme)
 		{
 			case BLACK:
 				return R.drawable.icon_home_b;
@@ -20,10 +19,10 @@ public class ThemeHelper
 		}
 		return -1;
 	}
-	
+
 	public static int getPostButton(int theme)
 	{
-		switch(theme)
+		switch (theme)
 		{
 			case BLACK:
 				return R.drawable.icon_tweet_b;
@@ -32,10 +31,10 @@ public class ThemeHelper
 		}
 		return -1;
 	}
-	
+
 	public static int getMenuButton(int theme)
 	{
-		switch(theme)
+		switch (theme)
 		{
 			case BLACK:
 				return R.drawable.icon_menu_b;
@@ -44,10 +43,10 @@ public class ThemeHelper
 		}
 		return -1;
 	}
-	
+
 	public static int getMentionsButton(int theme)
 	{
-		switch(theme)
+		switch (theme)
 		{
 			case BLACK:
 				return R.drawable.icon_mentions_b;
@@ -56,10 +55,10 @@ public class ThemeHelper
 		}
 		return -1;
 	}
-	
+
 	public static int getListBgColor(int theme)
 	{
-		switch(theme)
+		switch (theme)
 		{
 			case WHITE:
 				return Color.WHITE;
@@ -68,10 +67,10 @@ public class ThemeHelper
 		}
 		return -1;
 	}
-	
+
 	public static int getBarBgColor(int theme)
 	{
-		switch(theme)
+		switch (theme)
 		{
 			case WHITE:
 				return Color.BLACK;

@@ -1,20 +1,12 @@
 package net.miz_hi.warotter.core;
 
-import android.widget.Toast;
-
-public class ToastMessage
+public class ToastMessage implements Message
 {
-	public final String text;
-	public final int duration;
+	public String text;
 
-	public ToastMessage(String text)
+	public ToastMessage(String string)
 	{
-		this(text, Toast.LENGTH_SHORT);
+		this.text = string;
 	}
 
-	public ToastMessage(String text, int duration)
-	{
-		this.text = text;
-		this.duration = duration;
-	}
 }

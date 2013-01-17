@@ -14,11 +14,12 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
+        android:layout_weight="1"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/LightBlue"
         binding:text="textCount" />
 
-    <net.miz_hi.warotter.core.CustomEditText
+    <EditText
         android:id="@+id/editText1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,11 +27,11 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/textView1"
         android:layout_margin="10dp"
-        android:layout_weight="5"
+        android:layout_weight="10"
         android:ems="10"
         android:gravity="top"
         android:inputType="textMultiLine"
-        android:minHeight="60dp"
+        android:minHeight="30dp"
         android:textSize="11sp"
         binding:cursorPos="cursorPos"
         binding:text="text"
@@ -42,7 +43,8 @@
         android:layout_below="@+id/editText1"
         android:layout_centerHorizontal="true"
         android:layout_gravity="left"
-        android:layout_weight="5" >
+        android:layout_weight="30"
+        android:orientation="vertical" >
 
         <TableRow
             android:id="@+id/tableRow1"

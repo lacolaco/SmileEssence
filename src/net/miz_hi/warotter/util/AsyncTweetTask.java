@@ -1,20 +1,19 @@
 package net.miz_hi.warotter.util;
 
-import net.miz_hi.warotter.core.ToastMessage;
+import net.miz_hi.warotter.core.ViewModel;
 import net.miz_hi.warotter.model.Account;
-import gueei.binding.labs.EventAggregator;
 import twitter4j.StatusUpdate;
 import android.os.AsyncTask;
 
 public class AsyncTweetTask extends AsyncTask<StatusUpdate, Integer, String>
 {
 
-	public EventAggregator eventAggregator;
+	public ViewModel viewModel;
 	public Account account;
 
-	public AsyncTweetTask(Account account, EventAggregator eventAggregator)
+	public AsyncTweetTask(Account account, ViewModel viewModel)
 	{
-		this.eventAggregator = eventAggregator;
+		this.viewModel = viewModel;
 		this.account = account;
 	}
 
@@ -27,7 +26,7 @@ public class AsyncTweetTask extends AsyncTask<StatusUpdate, Integer, String>
 	@Override
 	protected void onPostExecute(String result)
 	{
-		eventAggregator.publish("toast", new ToastMessage(result), null);
+		viewModel.toast(result);
 	}
 
 }

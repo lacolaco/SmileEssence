@@ -1,47 +1,36 @@
 package net.miz_hi.warotter.core;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.widget.Toast;
-import gueei.binding.labs.EventAggregator;
 
 public abstract class ViewModel
 {
-	public EventAggregator eventAggregator;
-	public Activity activity;
+	public Messenger messenger = new Messenger();
 
-	public ViewModel(Activity activity)
-	{
-		this.activity = activity;
-	}
+	public abstract void onActivityCreated(EventHandlerActivity activity);
 
-	public void onActivityCreated()
-	{
-	}
-
-	public void onActivityResumed()
+	public void onActivityResumed(EventHandlerActivity activity)
 	{
 	}
 	
-	public void onDispose()
-	{		
-	}
-	
-	public void onActivityResult(int reqCode, int resultCode, Intent intent)
+	public void onActivityPaused(EventHandlerActivity activity)
 	{
-		
+	}
+
+	public abstract void onActivityDestroy(EventHandlerActivity activity);
+
+	public void onActivityResult(EventHandlerActivity activity, int reqCode, int resultCode, Intent intent)
+	{
 	}
 	
+	public abstract boolean onEvent(String eventName, EventHandlerActivity activity);
+
 	public void toast(String string)
 	{
-		if(activity != null)
-		{
-			Toast.makeText(activity, string, Toast.LENGTH_SHORT).show();
-		}
+		messenger.raise("toast", new ToastMessage(string));
 	}
 
-	public final void setEventAggregator(EventAggregator ea)
+	public final void setMessenger(Messenger messenger)
 	{
-		this.eventAggregator = ea;
+		this.messenger = messenger;
 	}
 }

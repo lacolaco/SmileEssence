@@ -112,15 +112,16 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class color {
         public static final int Black=0x7f050001;
-        public static final int BrownYellow=0x7f050008;
-        public static final int DarkBlue=0x7f050009;
-        public static final int Gray=0x7f050004;
+        public static final int BrownYellow=0x7f050009;
+        public static final int DarkBlue=0x7f05000a;
+        public static final int Gray=0x7f050005;
         public static final int LightBlue=0x7f050002;
-        public static final int LightGreen=0x7f050005;
-        public static final int LightRed=0x7f050006;
-        public static final int Red=0x7f050007;
-        public static final int ThickGreen=0x7f05000a;
-        public static final int White=0x7f050003;
+        public static final int LightGreen=0x7f050006;
+        public static final int LightRed=0x7f050007;
+        public static final int MetroBlue=0x7f050003;
+        public static final int Red=0x7f050008;
+        public static final int ThickGreen=0x7f05000b;
+        public static final int White=0x7f050004;
         public static final int holo_blue_bright=0x7f050000;
     }
     public static final class dimen {
@@ -154,36 +155,45 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int shadow=0x7f020012;
     }
     public static final class id {
-        public static final int ImageButton01=0x7f04001a;
-        public static final int button1=0x7f040012;
-        public static final int editText1=0x7f040017;
+        public static final int ImageButton01=0x7f040020;
+        public static final int button1=0x7f040026;
+        public static final int button_Auth=0x7f040015;
+        public static final int editText1=0x7f04001d;
         public static final int fullscreen=0x7f040003;
-        public static final int imageView1=0x7f04000b;
-        public static final int imageView2=0x7f04000c;
-        public static final int imageView3=0x7f04000d;
-        public static final int imageView4=0x7f040019;
-        public static final int imageView5=0x7f04001d;
+        public static final int imageView1=0x7f040013;
+        public static final int imageView2=0x7f040022;
+        public static final int imageView3=0x7f040023;
+        public static final int imageView4=0x7f04001f;
+        public static final int imageView5=0x7f040025;
+        public static final int imageView_icon=0x7f040016;
+        public static final int imageView_menu=0x7f04000e;
+        public static final int imageView_timeline=0x7f04000d;
+        public static final int imageView_tweet=0x7f04000c;
         public static final int left=0x7f040000;
         public static final int linearLayout1=0x7f040006;
-        public static final int listView1=0x7f040007;
-        public static final int listView2=0x7f04000a;
+        public static final int listView_home=0x7f040007;
+        public static final int listView_mentions=0x7f04000a;
         public static final int margin=0x7f040002;
         public static final int relativeLayout1=0x7f040009;
         public static final int relativeLayout2=0x7f040008;
         public static final int right=0x7f040001;
         public static final int selected_view=0x7f040004;
-        public static final int slidingmenulayout=0x7f04000f;
-        public static final int slidingmenumain=0x7f04000e;
-        public static final int slidingmenurowicon=0x7f040010;
-        public static final int slidingmenurowtitle=0x7f040011;
-        public static final int tableRow1=0x7f040018;
-        public static final int tableRow2=0x7f04001b;
-        public static final int tableRow3=0x7f04001c;
+        public static final int slidingmenulayout=0x7f040010;
+        public static final int slidingmenumain=0x7f04000f;
+        public static final int slidingmenurowicon=0x7f040011;
+        public static final int slidingmenurowtitle=0x7f040012;
+        public static final int tableRow1=0x7f04001e;
+        public static final int tableRow2=0x7f040021;
+        public static final int tableRow3=0x7f040024;
         public static final int textView1=0x7f040005;
-        public static final int textView2=0x7f040013;
-        public static final int textView3=0x7f040016;
-        public static final int textView4=0x7f040014;
-        public static final int textView5=0x7f040015;
+        public static final int textView_createdAt=0x7f04001b;
+        public static final int textView_name=0x7f040018;
+        public static final int textView_retweetedBy=0x7f04001c;
+        public static final int textView_screenName=0x7f040017;
+        public static final int textView_source=0x7f04001a;
+        public static final int textView_text=0x7f040019;
+        public static final int textView_title=0x7f04000b;
+        public static final int text_Navigate=0x7f040014;
     }
     public static final class integer {
         public static final int num_cols=0x7f070000;

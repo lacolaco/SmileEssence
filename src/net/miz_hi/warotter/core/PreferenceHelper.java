@@ -8,12 +8,12 @@ import android.content.SharedPreferences.Editor;
 public class PreferenceHelper
 {
 	private SharedPreferences preference;
-	
+
 	public PreferenceHelper(SharedPreferences pref)
 	{
 		this.preference = pref;
 	}
-	
+
 	public void putPreferenceValue(EnumPreferenceKey key, Object value)
 	{
 		Editor editor = preference.edit();

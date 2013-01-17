@@ -1,20 +1,16 @@
 package net.miz_hi.warotter.model;
 
 import java.io.File;
+
+import net.miz_hi.warotter.core.PreferenceHelper;
+import net.miz_hi.warotter.core.ThemeHelper;
+import net.miz_hi.warotter.util.EnumPreferenceKey;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
-import twitter4j.auth.AccessToken;
-import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
-import net.miz_hi.warotter.core.PreferenceHelper;
-import net.miz_hi.warotter.core.ThemeHelper;
-import net.miz_hi.warotter.util.EnumPreferenceKey;
-import net.miz_hi.warotter.util.EnumPreferenceKey.EnumValueType;
 import android.app.Application;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
@@ -25,7 +21,9 @@ public class Warotter
 	private static TwitterStream twitterStream;
 	private static PreferenceHelper prefHelper;
 
-	private Warotter() {}
+	private Warotter()
+	{
+	}
 
 	public static void putPreferenceValue(EnumPreferenceKey key, Object value)
 	{
@@ -36,7 +34,7 @@ public class Warotter
 	{
 		return prefHelper.getPreferenceValue(key);
 	}
-	
+
 	private static ConfigurationBuilder generateConfig(Account account)
 	{
 		ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -76,26 +74,26 @@ public class Warotter
 	public static void setMainAccount(Account account)
 	{
 		mainAccount = account;
-		if(mainAccount != null)
+		if (mainAccount != null)
 		{
 			putPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID, account.getUserId());
 		}
 		else
 		{
-			if(twitterStream != null)
+			if (twitterStream != null)
 			{
 				twitterStream.shutdown();
 			}
 			putPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID, -1L);
 		}
 	}
-	
+
 	public static int getTheme()
 	{
 		int theme = getPreferenceValue(EnumPreferenceKey.THEME);
 		return theme > 0 ? theme : ThemeHelper.WHITE;
 	}
-	
+
 	public static void setTheme(int theme)
 	{
 		putPreferenceValue(EnumPreferenceKey.THEME, theme);

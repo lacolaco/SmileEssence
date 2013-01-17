@@ -1,40 +1,38 @@
 package net.miz_hi.warotter.view;
 
-import twitter4j.auth.AccessToken;
 import net.miz_hi.warotter.R;
-import net.miz_hi.warotter.core.EventBindingActivity;
-import net.miz_hi.warotter.core.ToastMessage;
+import net.miz_hi.warotter.core.EventHandlerActivity;
 import net.miz_hi.warotter.core.ViewModel;
-import net.miz_hi.warotter.model.Account;
-import net.miz_hi.warotter.model.AuthentificationDB;
-import net.miz_hi.warotter.model.Consumers;
-import net.miz_hi.warotter.model.Warotter;
-import net.miz_hi.warotter.model.Consumers.Consumer;
 import net.miz_hi.warotter.viewmodel.StartActivityViewModel;
-import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
-public class StartActivity extends EventBindingActivity
+public class StartActivity extends EventHandlerActivity
 {
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		this.setAndBindRootView(R.layout.startactivity_layout, viewModel);
+		this.setContentView(R.layout.startactivity_layout);
+		
+		Button buttonAuth = (Button)findViewById(R.id.button_Auth);
+		buttonAuth.setOnClickListener(new OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View v)
+			{
+				onEvent("authorize");
+			}
+		});
 	}
 
 	@Override
 	public ViewModel getViewModel()
 	{
-		return new StartActivityViewModel(this);
-	}
-	
-	@Override
-	public void onActivityResult(int reqCode, int resultCode, Intent data)
-	{
-		super.onActivityResult(reqCode, resultCode, data);
-		viewModel.onActivityResult(reqCode, resultCode, data);
+		return new StartActivityViewModel();
 	}
 }

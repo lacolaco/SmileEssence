@@ -1,29 +1,25 @@
 package net.miz_hi.warotter.model;
 
 import gueei.binding.Observable;
-import gueei.binding.converters.STITCH;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 import net.miz_hi.warotter.util.AsyncIconGetter;
 import net.miz_hi.warotter.util.StringUtils;
-
+import twitter4j.User;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
-import android.net.Uri;
-import twitter4j.User;
 
 public class IconCaches
 {
-	
+
 	private static HashMap<Long, Icon> iconCache = new HashMap<Long, IconCaches.Icon>();
 
-	public static void setIconBitmap(User user, Observable<Bitmap> observable)
+	public static void setIconBitmap(User user, Bitmap iconBitmap)
 	{
 		String fileName = genIconFileName(user);
 		File latestIconFile = Warotter.getApplicationFile(fileName);
@@ -33,7 +29,7 @@ public class IconCaches
 		 * URLからアイコンが更新されているかどうかの確認
 		 */
 		boolean needsCacheUpdate = true;
-		if(iconCache.containsKey(user.getId()))
+		if (iconCache.containsKey(user.getId()))
 		{
 			needsCacheUpdate = !iconCache.get(user.getId()).fileName.equals(fileName);
 		}
@@ -52,7 +48,7 @@ public class IconCaches
 			if (iconCache.containsKey(user.getId()))
 			{
 				Icon icon = iconCache.get(user.getId());
-				observable.set(icon.use());
+				iconBitmap = icon.use();
 			}
 			/*
 			 * from ファイルキャッシュ
@@ -60,15 +56,15 @@ public class IconCaches
 			else
 			{
 				Options opt = new Options();
-				opt.inPurgeable = true; //GC可能にする
+				opt.inPurgeable = true; // GC可能にする
 				Bitmap bm = BitmapFactory.decodeFile(latestIconFile.getPath(), opt);
 				putIconToMap(user, new Icon(bm, fileName));
-				observable.set(bm);
+				iconBitmap = bm;
 			}
 		}
 		else
 		{
-			AsyncIconGetter async = new AsyncIconGetter(latestIconFile, observable);
+			AsyncIconGetter async = new AsyncIconGetter(latestIconFile, iconBitmap);
 			async.execute(user);
 		}
 	}
@@ -84,29 +80,29 @@ public class IconCaches
 		{
 			iconCache.remove(user.getId());
 		}
-		
+
 		iconCache.put(user.getId(), icon);
-		
-		if(iconCache.size() > 200)
+
+		if (iconCache.size() > 200)
 		{
 			LinkedList<Icon> list = new LinkedList<IconCaches.Icon>(iconCache.values());
 			Collections.sort(list);
 			list.removeLast();
 		}
 	}
-	
+
 	public static class Icon implements Comparable<Icon>
 	{
 		public Bitmap bitmap;
 		public String fileName;
 		public int count = 0;
-		
+
 		public Icon(Bitmap bitmap, String fileName)
 		{
 			this.bitmap = bitmap;
 			this.fileName = fileName;
 		}
-		
+
 		public Bitmap use()
 		{
 			count++;
@@ -117,7 +113,7 @@ public class IconCaches
 		public int compareTo(Icon another)
 		{
 			return this.count > another.count ? 1 : (this.count == another.count ? 0 : -1);
-		}	
-		
+		}
+
 	}
 }

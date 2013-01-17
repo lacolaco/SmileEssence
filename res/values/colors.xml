@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="Black">#000</color>
-    <color name="LightBlue">#66CFFF</color>
+    <color name="LightBlue">#a0e5ff</color>
+    <color name="MetroBlue">#0bd1ff</color>
     <color name="White">#FFF</color>
     <color name="Gray">#202020</color>
     <color name="LightGreen">#91FF91</color>
-    <color name="LightRed">#FF9191</color>
+    <color name="LightRed">#FFbfba</color>
     <color name="Red">#FF1E00</color>
     <color name="BrownYellow">#FFB100</color>
     <color name="DarkBlue">#231493</color>

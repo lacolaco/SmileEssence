@@ -1,35 +1,47 @@
 package net.miz_hi.warotter.viewmodel;
 
-import android.app.Activity;
-import android.view.View;
-import gueei.binding.Command;
 import gueei.binding.observables.StringObservable;
+import net.miz_hi.warotter.core.EventHandlerActivity;
 import net.miz_hi.warotter.core.ViewModel;
 
-public class MenuItemViewModel extends ViewModel implements Runnable
+public class MenuItemViewModel extends ViewModel
 {
 	public StringObservable description = new StringObservable();
-	
+
 	public Runnable action;
 
-	@Override
-	public void run()
+	public final void run()
 	{
-		if(action != null)
+		if (action != null)
 		{
 			action.run();
 		}
 	}
 
-	public MenuItemViewModel(Activity activity, String description)
+	public MenuItemViewModel(String description)
 	{
-		super(activity);
 		this.description.set(description);
 	}
-	
+
 	public MenuItemViewModel setCommand(Runnable action)
 	{
 		this.action = action;
 		return this;
+	}
+
+	@Override
+	public void onActivityCreated(EventHandlerActivity activity)
+	{		
+	}
+
+	@Override
+	public void onActivityDestroy(EventHandlerActivity activity)
+	{	
+	}
+
+	@Override
+	public boolean onEvent(String eventName, EventHandlerActivity activity)
+	{
+		return false;	
 	}
 }

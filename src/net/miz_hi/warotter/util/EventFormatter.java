@@ -3,7 +3,7 @@ package net.miz_hi.warotter.util;
 import net.miz_hi.warotter.model.EventModel;
 import android.os.AsyncTask;
 
-public class EventAdjuster extends AsyncTask<EventModel, Integer, EventModel>
+public class EventFormatter extends AsyncTask<EventModel, Integer, EventModel>
 {
 
 	@Override

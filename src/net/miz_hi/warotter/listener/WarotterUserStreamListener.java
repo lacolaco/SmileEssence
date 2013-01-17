@@ -1,8 +1,12 @@
-package net.miz_hi.warotter.core;
+package net.miz_hi.warotter.listener;
 
+import android.app.Activity;
+import net.miz_hi.warotter.core.EventHandlerActivity;
+import net.miz_hi.warotter.model.EventListAdapter;
+import net.miz_hi.warotter.model.StatusListAdapter;
+import net.miz_hi.warotter.model.StatusModel;
 import net.miz_hi.warotter.model.StatusStore;
 import net.miz_hi.warotter.viewmodel.MainActivityViewModel;
-import net.miz_hi.warotter.viewmodel.StatusViewModel;
 import twitter4j.DirectMessage;
 import twitter4j.StallWarning;
 import twitter4j.Status;
@@ -13,26 +17,33 @@ import twitter4j.UserStreamListener;
 
 public class WarotterUserStreamListener implements UserStreamListener
 {
-	private MainActivityViewModel mainViewModel;
+	private StatusListAdapter homeListAdapter;
+	private StatusListAdapter mentionsListAdapter;
+	private EventListAdapter eventListAdapter;
 
 	public WarotterUserStreamListener()
 	{
-		this.mainViewModel = MainActivityViewModel.instance();
+	}
+	
+	public void setHomeListAdapter(StatusListAdapter adapter)
+	{
+		this.homeListAdapter = adapter;
+	}
+	
+	public void setMentionsListAdapter(StatusListAdapter adapter)
+	{
+		this.mentionsListAdapter = adapter;
+	}
+	
+	public void setEventListAdapter(EventListAdapter adapter)
+	{
+		this.eventListAdapter = adapter;
 	}
 
 	@Override
 	public void onDeletionNotice(final StatusDeletionNotice arg0)
 	{
-		mainViewModel.activity.runOnUiThread(new Runnable()
-		{
-
-			@Override
-			public void run()
-			{
-				StatusStore.remove(arg0.getStatusId());
-			}
-		});
-
+		StatusStore.remove(arg0.getStatusId());
 	}
 
 	@Override
@@ -52,24 +63,34 @@ public class WarotterUserStreamListener implements UserStreamListener
 	@Override
 	public void onStatus(final Status arg0)
 	{
-		mainViewModel.activity.runOnUiThread(new Runnable()
+		long statusId = arg0.getId();
+		StatusStore.put(arg0);
+		if (arg0.isRetweet())
 		{
-
-			@Override
-			public void run()
+			StatusStore.put(arg0.getRetweetedStatus());
+			statusId = arg0.getRetweetedStatus().getId();
+		}
+		else
+		{
+			homeListAdapter.getActivity().runOnUiThread(new Runnable()
 			{
-				StatusStore.put(arg0);
-				if(arg0.isRetweet())
+				public void run()
 				{
-					StatusStore.put(arg0.getRetweetedStatus());
+					homeListAdapter.add(StatusModel.createInstance(arg0.getId()));
 				}
-				if(StatusStore.isReply(arg0.getId()))
+			});
+			
+		}		
+		if(StatusStore.isReply(statusId))
+		{
+			mentionsListAdapter.getActivity().runOnUiThread(new Runnable()
+			{
+				public void run()
 				{
-					mainViewModel.toast("ÉäÉvÉâÉCÇéÛêMÇµÇ‹ÇµÇΩ");
+					mentionsListAdapter.add(StatusModel.createInstance(arg0.getId()));
 				}
-				mainViewModel.preLoadStatusQueue.add(arg0.getId());
-			}
-		});
+			});
+		}
 	}
 
 	@Override
@@ -111,7 +132,6 @@ public class WarotterUserStreamListener implements UserStreamListener
 	public void onFavorite(User arg0, User arg1, Status arg2)
 	{
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

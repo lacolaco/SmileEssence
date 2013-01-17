@@ -18,10 +18,10 @@ public class AuthorizeHelper
 	private Consumer consumer;
 	private Twitter twitter;
 	private RequestToken req;
-	
+
 	public static final String CALLBACK_OAUTH = "oauth://warotter";
 	public static final String OAUTH_VERIFIER = "oauth_verifier";
-	
+
 	public AuthorizeHelper(Activity activity, Consumer consumer)
 	{
 		this.activity = activity;
@@ -39,12 +39,12 @@ public class AuthorizeHelper
 			intent.setData(Uri.parse(req.getAuthenticationURL()));
 			activity.startActivityForResult(intent, EnumRequestCode.AUTHORIZE.ordinal());
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
-			
+
 		}
 	}
-	
+
 	public Account oauthRecieve(Uri uri)
 	{
 		Account account = null;
@@ -54,13 +54,13 @@ public class AuthorizeHelper
 			AccessToken accessToken = null;
 			accessToken = twitter.getOAuthAccessToken(req, verifier);
 			if (accessToken != null)
-			{													
+			{
 				account = new Account(accessToken, consumer);
 				AuthentificationDB db = AuthentificationDB.instance();
 				db.save(account);
-			}			
+			}
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 		}
 		return account;

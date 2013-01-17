@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:binding="http://www.gueei.com/android-binding/"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Black"
+    android:orientation="vertical"
+    android:padding="5dp" >
+
+    <gueei.binding.widgets.BindableLinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        binding:itemSource="status"
+        binding:itemLayout="@layout/status_layout"/>
+
+    <FrameLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/holo_blue_bright">
+
+    </FrameLayout>
+    
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/Black"
+        android:choiceMode="none"
+        android:scrollingCache="false"
+        binding:clickedItem="clickedItem"
+        binding:itemSource="items"
+        binding:itemTemplate="@layout/menuitem_layout"
+        binding:onItemClicked="onItemClicked" />
+
+</LinearLayout>

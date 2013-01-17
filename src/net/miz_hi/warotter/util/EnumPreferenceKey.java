@@ -4,7 +4,6 @@ public enum EnumPreferenceKey
 {
 	LAST_USED_USER_ID(EnumValueType.LONG, "user_id"),
 	THEME(EnumValueType.INTEGER, "theme");
-	
 
 	private final EnumValueType type;
 	private final String key;
