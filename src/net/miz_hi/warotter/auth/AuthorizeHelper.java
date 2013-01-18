@@ -1,8 +1,8 @@
-package net.miz_hi.warotter.util;
+package net.miz_hi.warotter.auth;
 
+import net.miz_hi.warotter.auth.Consumers.Consumer;
 import net.miz_hi.warotter.model.Account;
-import net.miz_hi.warotter.model.AuthentificationDB;
-import net.miz_hi.warotter.model.Consumers.Consumer;
+import net.miz_hi.warotter.util.EnumRequestCode;
 import net.miz_hi.warotter.view.WebViewActivity;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
@@ -36,7 +36,7 @@ public class AuthorizeHelper
 			twitter.setOAuthConsumer(consumer.key, consumer.secret);
 			req = twitter.getOAuthRequestToken(CALLBACK_OAUTH);
 			Intent intent = new Intent(activity, WebViewActivity.class);
-			intent.setData(Uri.parse(req.getAuthenticationURL()));
+			intent.setData(Uri.parse(req.getAuthorizationURL()));
 			activity.startActivityForResult(intent, EnumRequestCode.AUTHORIZE.ordinal());
 		}
 		catch (Exception e)

@@ -17,7 +17,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAdapter
+public abstract class QueueAdapter<T extends Comparable<T>> extends BaseAdapter
 {
 	
 	private List<T> list;
@@ -26,7 +26,7 @@ public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAda
 	private Activity activity;
 	private LayoutInflater inflater;
 	
-	public CustomListAdapter(Activity activity)
+	public QueueAdapter(Activity activity)
 	{
 		this.list = new ArrayList<T>();
 		this.activity = activity;
@@ -39,7 +39,19 @@ public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAda
 		this.list.addAll(list);
 	}
 
-	public void add(T status)
+	public void addFirst(T status)
+	{
+		synchronized (lock)
+		{
+			list.add(0, status);
+		}
+		if (notifyOnChange)
+		{
+			notifyDataSetChanged();
+		}
+	}
+	
+	public void addLast(T status)
 	{
 		synchronized (lock)
 		{
@@ -51,7 +63,19 @@ public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAda
 		}
 	}
 	
-	public void addAll(List<T> status)
+	public void addAllFirst(List<T> status)
+	{
+		synchronized (lock)
+		{
+			list.addAll(0, status);
+		}
+		if (notifyOnChange)
+		{
+			notifyDataSetChanged();
+		}
+	}
+	
+	public void addAllLast(List<T> status)
 	{
 		synchronized (lock)
 		{
@@ -68,6 +92,18 @@ public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAda
 		synchronized (lock)
 		{
 			list.add(index, status);
+		}
+		if (notifyOnChange)
+		{
+			notifyDataSetChanged();
+		}
+	}
+	
+	public void removeLast()
+	{
+		synchronized (lock)
+		{
+			list.remove(list.size() - 1);
 		}
 		if (notifyOnChange)
 		{

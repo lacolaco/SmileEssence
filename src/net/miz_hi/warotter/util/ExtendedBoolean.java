@@ -1,17 +1,19 @@
 package net.miz_hi.warotter.util;
 
-public class ToggleBoolean
+public class ExtendedBoolean
 {
 	private boolean flag;
+	private boolean initialized = false;
 	
-	public ToggleBoolean()
+	public ExtendedBoolean()
 	{
 		this.flag = false;
 	}
 	
-	public ToggleBoolean(boolean flag)
+	public ExtendedBoolean(boolean flag)
 	{
 		this.flag = flag;
+		initialized = true;
 	}
 	
 	public boolean get()
@@ -22,13 +24,20 @@ public class ToggleBoolean
 	public boolean toggle()
 	{
 		flag = !flag;
+		initialized = true;
 		return flag;
 	}
 	
 	public boolean set(boolean newValue)
 	{
 		this.flag = newValue;
+		initialized = true;
 		return flag;
+	}
+	
+	public boolean isInitialized()
+	{
+		return initialized;
 	}
 
 }

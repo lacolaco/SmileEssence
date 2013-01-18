@@ -63,34 +63,29 @@ public class WarotterUserStreamListener implements UserStreamListener
 	@Override
 	public void onStatus(final Status arg0)
 	{
-		long statusId = arg0.getId();
 		StatusStore.put(arg0);
 		if (arg0.isRetweet())
 		{
 			StatusStore.put(arg0.getRetweetedStatus());
-			statusId = arg0.getRetweetedStatus().getId();
 		}
-		else
-		{
-			homeListAdapter.getActivity().runOnUiThread(new Runnable()
-			{
-				public void run()
-				{
-					homeListAdapter.add(StatusModel.createInstance(arg0.getId()));
-				}
-			});
-			
-		}		
-		if(StatusStore.isReply(statusId))
+		final StatusModel model = StatusModel.createInstance(arg0);
+		if(StatusStore.isReply(arg0.isRetweet() ? arg0.getRetweetedStatus().getId() : arg0.getId()))
 		{
 			mentionsListAdapter.getActivity().runOnUiThread(new Runnable()
 			{
 				public void run()
 				{
-					mentionsListAdapter.add(StatusModel.createInstance(arg0.getId()));
+					mentionsListAdapter.addFirst(model);
 				}
 			});
 		}
+		homeListAdapter.getActivity().runOnUiThread(new Runnable()
+		{
+			public void run()
+			{
+				homeListAdapter.addFirst(model);
+			}
+		});
 	}
 
 	@Override

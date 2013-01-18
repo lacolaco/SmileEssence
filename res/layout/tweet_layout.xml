@@ -1,47 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:binding="http://www.gueei.com/android-binding/"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:scrollbars="vertical" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textView_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:layout_weight="1"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/LightBlue"
-        binding:text="textCount" />
+        android:textColor="@color/MetroBlue" />
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/editText_tweet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView1"
         android:layout_margin="10dp"
         android:layout_weight="10"
         android:ems="10"
         android:gravity="top"
         android:inputType="textMultiLine"
-        android:minHeight="30dp"
-        android:textSize="11sp"
-        binding:cursorPos="cursorPos"
-        binding:text="text"
-        binding:token="token" />
+        android:minHeight="60dp"
+        android:textSize="11sp"/>
 
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText1"
-        android:layout_centerHorizontal="true"
         android:layout_gravity="left"
         android:layout_weight="30"
         android:orientation="vertical" >
@@ -56,31 +44,28 @@
             android:scrollbars="horizontal" >
 
             <ImageButton
-                android:id="@+id/imageView4"
+                android:id="@+id/imageButton_morse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/icon_morse"
-                binding:onClick="commandMorse" />
+                android:background="@drawable/icon_morse"/>
 
             <ImageButton
-                android:id="@+id/ImageButton01"
+                android:id="@+id/imageButton_warota"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/icon_warota"
-                binding:onClick="commandWarota" />
+                android:background="@drawable/icon_warota" />
 
             <ImageButton
-                android:id="@+id/imageView1"
+                android:id="@+id/imageButton_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/icon_submit"
-                binding:onClick="commandSubmit" />
+                android:background="@drawable/icon_submit"/>
         </TableRow>
 
         <TableRow
@@ -90,22 +75,20 @@
             android:layout_marginBottom="10dp" >
 
             <ImageButton
-                android:id="@+id/imageView2"
+                android:id="@+id/imageButton_replace"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/icon_replace"
-                binding:onClick="commandReplace" />
+                android:background="@drawable/icon_replace" />
 
             <ImageButton
-                android:id="@+id/imageView3"
+                android:id="@+id/imageButton_template"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/icon_templates"
-                binding:onClick="commandTemplate" />
+                android:background="@drawable/icon_templates"/>
         </TableRow>
 
         <TableRow
@@ -115,13 +98,12 @@
             android:layout_marginBottom="10dp" >
 
             <ImageButton
-                android:id="@+id/imageView5"
+                android:id="@+id/imageButton_hashtag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/icon_hash"
-                binding:onClick="commandHashtag" />
+                android:background="@drawable/icon_hash"/>
 
         </TableRow>
 

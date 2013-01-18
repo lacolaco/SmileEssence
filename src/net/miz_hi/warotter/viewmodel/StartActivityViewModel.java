@@ -1,15 +1,13 @@
 package net.miz_hi.warotter.viewmodel;
 
-import gueei.binding.observables.BooleanObservable;
-import gueei.binding.observables.StringObservable;
 import net.miz_hi.warotter.R;
+import net.miz_hi.warotter.auth.AuthentificationDB;
+import net.miz_hi.warotter.auth.AuthorizeHelper;
+import net.miz_hi.warotter.auth.Consumers;
 import net.miz_hi.warotter.core.EventHandlerActivity;
 import net.miz_hi.warotter.core.ViewModel;
 import net.miz_hi.warotter.model.Account;
-import net.miz_hi.warotter.model.AuthentificationDB;
-import net.miz_hi.warotter.model.Consumers;
 import net.miz_hi.warotter.model.Warotter;
-import net.miz_hi.warotter.util.AuthorizeHelper;
 import net.miz_hi.warotter.util.EnumPreferenceKey;
 import net.miz_hi.warotter.util.EnumRequestCode;
 import net.miz_hi.warotter.view.MainActivity;

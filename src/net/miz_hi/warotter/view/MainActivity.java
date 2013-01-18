@@ -3,13 +3,20 @@ package net.miz_hi.warotter.view;
 import gueei.binding.Binder;
 import net.miz_hi.warotter.R;
 import net.miz_hi.warotter.core.EventHandlerActivity;
+import net.miz_hi.warotter.core.EventSubscriber;
+import net.miz_hi.warotter.core.Message;
 import net.miz_hi.warotter.core.ViewModel;
 import net.miz_hi.warotter.viewmodel.MainActivityViewModel;
 import net.miz_hi.warotter.viewmodel.TweetViewModel;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -33,10 +40,22 @@ public class MainActivity extends EventHandlerActivity
 		timeline.setOnClickListener(timelineClicked);
 		menu.setOnClickListener(menuClicked);
 		
+		messenger.subscribe("toggle", new EventSubscriber()
+		{
+			
+			@Override
+			public void onEventTriggered(String eventName, Message message)
+			{
+				slidingMenu.toggle();			
+			}
+		});
+		
 		TweetViewModel tweetViewModel = new TweetViewModel();
-		slidingMenu = createSlidingMenu();
-		View tweetView = Binder.bindView(slidingMenu.getContext(), Binder.inflateView(this, R.layout.tweet_layout, null, true), tweetViewModel);
-		slidingMenu.setMenu(tweetView);
+		registerViewModel(tweetViewModel);
+		
+		slidingMenu = createSlidingMenu();		
+		tweetViewModel.init(this, slidingMenu);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 
 	@Override
@@ -54,6 +73,8 @@ public class MainActivity extends EventHandlerActivity
 		menu.setFadeDegree(0.35f);
 		menu.setShadowDrawable(R.drawable.shadow);
 		menu.attachToActivity(this, SlidingMenu.SLIDING_WINDOW);
+		View rootView = LayoutInflater.from(this).inflate(R.layout.tweet_layout, null);
+		menu.setMenu(rootView);
 		return menu;
 	}
 	

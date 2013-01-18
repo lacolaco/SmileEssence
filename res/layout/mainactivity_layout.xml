@@ -13,23 +13,21 @@
         android:layout_below="@+id/relativeLayout1"
         android:fastScrollEnabled="true"
         android:smoothScrollbar="true"
-        android:transcriptMode="disabled"
         android:background="@color/White"/>
     
-        <ListView
-            android:id="@+id/listView_mentions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/relativeLayout2"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/relativeLayout1"
-            android:fastScrollEnabled="true"
-            android:smoothScrollbar="true"
-            android:transcriptMode="disabled"
-            android:background="@color/White"/>
-
-    <RelativeLayout
+    <ListView
+        android:id="@+id/listView_mentions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/relativeLayout2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/relativeLayout1"
+        android:background="@color/White"
+        android:fastScrollEnabled="true"
+        android:smoothScrollbar="true" />
+    
+<RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
@@ -67,6 +65,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="40dp"
             android:adjustViewBounds="false"
+            android:padding="10dp"
             android:src="@drawable/icon_tweet_w" />
 
         <ImageView
@@ -75,6 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:padding="10dp"
             android:src="@drawable/icon_home_w" />
 
         <ImageView
@@ -84,6 +84,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="40dp"
+            android:padding="10dp"
             android:src="@drawable/icon_menu_w" />
 
     </RelativeLayout>

@@ -11,16 +11,17 @@ import gueei.binding.observables.StringObservable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import net.miz_hi.warotter.R;
+import net.miz_hi.warotter.async.PostMentionsGetter;
+import net.miz_hi.warotter.async.PostTimelineGetter;
 import net.miz_hi.warotter.core.EventHandlerActivity;
 import net.miz_hi.warotter.core.ThemeHelper;
 import net.miz_hi.warotter.core.ViewModel;
+import net.miz_hi.warotter.listener.TimelineScrollListener;
 import net.miz_hi.warotter.listener.WarotterUserStreamListener;
 import net.miz_hi.warotter.model.StatusListAdapter;
 import net.miz_hi.warotter.model.StatusModel;
 import net.miz_hi.warotter.model.Warotter;
-import net.miz_hi.warotter.util.PostMentionsGetter;
-import net.miz_hi.warotter.util.PostTimelineGetter;
-import net.miz_hi.warotter.util.ToggleBoolean;
+import net.miz_hi.warotter.util.ExtendedBoolean;
 import twitter4j.Paging;
 import twitter4j.TwitterStream;
 import android.app.Activity;
@@ -38,7 +39,7 @@ public class MainActivityViewModel extends ViewModel
 {
 	public StatusListAdapter homeListAdapter;
 	public StatusListAdapter mentionsListAdapter;
-	public ToggleBoolean isHomeMode;
+	public ExtendedBoolean isHomeMode;
 	public Handler handler;
 	private static MainActivityViewModel instance;
 	private MenuViewModel menuViewModel;
@@ -58,19 +59,24 @@ public class MainActivityViewModel extends ViewModel
 		homeListAdapter = new StatusListAdapter(activity);
 		mentionsListAdapter = new StatusListAdapter(activity);
 		handler = new Handler();
-		new PostTimelineGetter(this).execute(new Paging(1));
-		new PostMentionsGetter(this).execute(new Paging(1));
+		new PostTimelineGetter(homeListAdapter).execute(new Paging(1));
+		new PostMentionsGetter(mentionsListAdapter).execute(new Paging(1));
 	}
 
 	@Override
 	public void onActivityCreated(EventHandlerActivity activity)
 	{
-		isHomeMode = new ToggleBoolean(true);
+		isHomeMode = new ExtendedBoolean(true);
+		((ImageView)activity.findViewById(R.id.imageView_timeline)).setImageResource(R.drawable.icon_mentions_w);
 		((TextView)activity.findViewById(R.id.textView_title)).setText("Home");
 		ListView homeListView = (ListView)activity.findViewById(R.id.listView_home);
 		ListView mentionsListView = (ListView)activity.findViewById(R.id.listView_mentions);
 		homeListView.setAdapter(homeListAdapter);
 		mentionsListView.setAdapter(mentionsListAdapter);		
+		homeListView.setOnScrollListener(new TimelineScrollListener(homeListAdapter));
+		mentionsListView.setOnScrollListener(new TimelineScrollListener(mentionsListAdapter));
+		homeListView.setVisibility(View.VISIBLE);
+		mentionsListView.setVisibility(View.INVISIBLE);
 		
 		WarotterUserStreamListener usListener = new WarotterUserStreamListener();
 		usListener.setHomeListAdapter(homeListAdapter);
@@ -120,12 +126,17 @@ public class MainActivityViewModel extends ViewModel
 	{
 		if(eventName.equals("tweet"))
 		{
+			messenger.raise("toggle", null);
 			return true;
 		}
 		else if(eventName.equals("timeline"))
 		{
-			isHomeMode.toggle();
-			String title = isHomeMode.get() ? "Home" : "Mentions";
+			boolean isHome = isHomeMode.toggle();	
+			ListView homeListView = (ListView)activity.findViewById(R.id.listView_home);
+			ListView mentionsListView = (ListView)activity.findViewById(R.id.listView_mentions);
+			homeListView.setVisibility(isHome ? View.VISIBLE : View.INVISIBLE);
+			mentionsListView.setVisibility(isHome ? View.INVISIBLE : View.VISIBLE);
+			String title = isHome ? "Home" : "Mentions";
 			TextView viewTitle = (TextView)activity.findViewById(R.id.textView_title);
 			viewTitle.setText(title);
 			viewTitle.refreshDrawableState();

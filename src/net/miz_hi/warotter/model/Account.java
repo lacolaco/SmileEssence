@@ -1,6 +1,6 @@
 package net.miz_hi.warotter.model;
 
-import net.miz_hi.warotter.model.Consumers.Consumer;
+import net.miz_hi.warotter.auth.Consumers.Consumer;
 import twitter4j.auth.AccessToken;
 
 import com.j256.ormlite.field.DatabaseField;

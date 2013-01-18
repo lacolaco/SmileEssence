@@ -1,14 +1,14 @@
 package net.miz_hi.warotter.model;
 
 import net.miz_hi.warotter.R;
-import net.miz_hi.warotter.core.CustomListAdapter;
+import net.miz_hi.warotter.core.QueueAdapter;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class StatusListAdapter extends CustomListAdapter<StatusModel>
+public class StatusListAdapter extends QueueAdapter<StatusModel>
 {
 	
 	public StatusListAdapter(Activity activity)
@@ -39,22 +39,32 @@ public class StatusListAdapter extends CustomListAdapter<StatusModel>
 		{
 			holder = (ViewHolder)convertedView.getTag();
 		}
+		
 		holder.viewBase.setBackgroundColor(model.backgroundColor);
-		holder.viewIcon.setImageBitmap(model.iconBitmap);
-		holder.viewScreenName.setText(model.screenName);
-		holder.viewScreenName.setBackgroundColor(model.nameColor);
-		holder.viewName.setText(model.name);
-		holder.viewName.setBackgroundColor(model.nameColor);
-		holder.viewText.setText(model.text);
-		holder.viewSource.setText(model.source);
-		holder.viewCreatedAt.setText(model.createdAt.toLocaleString());
-		if(model.isRetweet())
+		if(model.icon == null)
 		{
-			holder.viewRetweetedBy.setText(model.retweetedBy);
+			holder.viewIcon.setImageBitmap(IconCaches.getEmptyIcon());
+			IconCaches.setIconBitmapToView(model.getUserToShow(), holder.viewIcon, model);
 		}
 		else
 		{
-			holder.viewRetweetedBy.setVisibility(View.INVISIBLE);
+			holder.viewIcon.setImageBitmap(model.icon.use());
+		}
+		holder.viewScreenName.setText(model.screenName);
+		holder.viewScreenName.setTextColor(model.nameColor);
+		holder.viewName.setText(model.name);
+		holder.viewName.setTextColor(model.nameColor);
+		holder.viewText.setText(model.text);
+		holder.viewSource.setText(model.source);
+		holder.viewCreatedAt.setText(model.createdAtString);
+		holder.viewRetweetedBy.setText(model.retweetedBy);
+		if(model.isRetweet)
+		{
+			holder.viewRetweetedBy.setVisibility(View.VISIBLE);
+		}
+		else
+		{
+			holder.viewRetweetedBy.setVisibility(View.GONE);
 		}		
 		return convertedView;
 	}

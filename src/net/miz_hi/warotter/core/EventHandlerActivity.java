@@ -3,6 +3,8 @@ package net.miz_hi.warotter.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.miz_hi.warotter.message.ToastMessage;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +14,7 @@ public abstract class EventHandlerActivity extends Activity
 {
 
 	public List<ViewModel> viewModelList = new ArrayList<ViewModel>();
-
+	public Messenger messenger = new Messenger();
 	public abstract ViewModel getViewModel();
 
 	@Override
@@ -20,12 +22,14 @@ public abstract class EventHandlerActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		ViewModel vm = getViewModel();
+		vm.setMessenger(messenger);
 		viewModelList.add(vm);
 		
 	}
 	
 	public final void registerViewModel(ViewModel vm)
 	{
+		vm.setMessenger(messenger);
 		viewModelList.add(vm);
 	}
 

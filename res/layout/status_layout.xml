@@ -39,7 +39,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/textView_screenName"
         android:layout_marginBottom="3dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="1dp"
         android:textSize="10sp" />
 
     <TextView
@@ -55,8 +55,8 @@
         android:id="@+id/textView_createdAt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView_text"
-        android:layout_marginRight="2dp"
+        android:layout_alignTop="@id/textView_source"
+        android:layout_marginRight="4dp"
         android:layout_toLeftOf="@+id/textView_source"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textSize="9sp" />
@@ -65,8 +65,9 @@
         android:id="@+id/textView_retweetedBy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView_source"
-        android:layout_alignLeft="@+id/textView_text"
+        android:layout_alignTop="@id/textView_source"
+        android:layout_marginRight="2dp"
+        android:layout_toLeftOf="@+id/textView_createdAt"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textSize="9sp" />
 

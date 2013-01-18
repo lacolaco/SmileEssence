@@ -1,7 +1,8 @@
-package net.miz_hi.warotter.util;
+package net.miz_hi.warotter.async;
 
 import java.util.ArrayList;
 
+import net.miz_hi.warotter.model.StatusListAdapter;
 import net.miz_hi.warotter.model.StatusModel;
 import net.miz_hi.warotter.model.StatusStore;
 import net.miz_hi.warotter.model.Warotter;
@@ -11,14 +12,14 @@ import twitter4j.ResponseList;
 import twitter4j.TwitterException;
 import android.os.AsyncTask;
 
-public class PostTimelineGetter extends AsyncTask<Paging, Integer, ResponseList<twitter4j.Status>>
+public class PostMentionsGetter extends AsyncTask<Paging, Integer, ResponseList<twitter4j.Status>>
 {
 
-	private MainActivityViewModel viewModel;
+	private StatusListAdapter mentionsListAdapter;
 
-	public PostTimelineGetter(MainActivityViewModel mainViewModel)
+	public PostMentionsGetter(StatusListAdapter mentionsListAdapter)
 	{
-		this.viewModel = mainViewModel;
+		this.mentionsListAdapter = mentionsListAdapter;
 	}
 
 	@Override
@@ -26,7 +27,7 @@ public class PostTimelineGetter extends AsyncTask<Paging, Integer, ResponseList<
 	{
 		try
 		{
-			return Warotter.getTwitter(Warotter.getMainAccount()).getHomeTimeline(arg0[0]);
+			return Warotter.getTwitter(Warotter.getMainAccount()).getMentionsTimeline(arg0[0]);
 		}
 		catch (TwitterException e)
 		{
@@ -45,7 +46,13 @@ public class PostTimelineGetter extends AsyncTask<Paging, Integer, ResponseList<
 		for (twitter4j.Status st : result)
 		{
 			StatusStore.put(st);
+			if(st.isRetweet())
+			{
+				StatusStore.put(st.getRetweetedStatus());
+			}
+			list.add(StatusModel.createInstance(st));
 		}
+		mentionsListAdapter.addAllLast(list);
 	}
 
 }

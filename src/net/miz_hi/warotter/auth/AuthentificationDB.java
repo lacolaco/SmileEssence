@@ -1,8 +1,10 @@
-package net.miz_hi.warotter.model;
+package net.miz_hi.warotter.auth;
 
 import java.util.List;
 
 import net.miz_hi.warotter.core.DataBaseHelper;
+import net.miz_hi.warotter.model.Account;
+import net.miz_hi.warotter.model.Warotter;
 import android.content.Context;
 import android.util.Log;
 

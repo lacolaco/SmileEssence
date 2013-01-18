@@ -1,10 +1,11 @@
 package net.miz_hi.warotter.core;
 
+import net.miz_hi.warotter.message.ToastMessage;
 import android.content.Intent;
 
 public abstract class ViewModel
 {
-	public Messenger messenger = new Messenger();
+	public Messenger messenger;
 
 	public abstract void onActivityCreated(EventHandlerActivity activity);
 

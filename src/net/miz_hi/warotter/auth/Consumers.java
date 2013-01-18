@@ -1,6 +1,8 @@
-package net.miz_hi.warotter.model;
+package net.miz_hi.warotter.auth;
 
 import java.util.HashMap;
+
+import net.miz_hi.warotter.model.Warotter;
 
 public class Consumers
 {

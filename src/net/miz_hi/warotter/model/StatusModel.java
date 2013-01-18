@@ -2,90 +2,116 @@ package net.miz_hi.warotter.model;
 
 import java.util.Date;
 
-import gueei.binding.Observable;
-import gueei.binding.observables.BooleanObservable;
-import gueei.binding.observables.IntegerObservable;
-import gueei.binding.observables.StringObservable;
 import net.miz_hi.warotter.R;
-import net.miz_hi.warotter.core.EventHandlerActivity;
-import net.miz_hi.warotter.core.ViewModel;
+import net.miz_hi.warotter.model.IconCaches.Icon;
+import net.miz_hi.warotter.util.ExtendedBoolean;
+import net.miz_hi.warotter.util.StringUtils;
 import twitter4j.Status;
-import android.app.Activity;
-import android.graphics.Bitmap;
+import twitter4j.User;
 import android.text.Html;
 
 public class StatusModel implements Comparable<StatusModel>
 {
 	public long statusId;
-	public long statusIdToShow;
-	public Bitmap iconBitmap;
+	public Icon icon;
 	public String screenName;
 	public String name;
 	public String text;
 	public String source;
-	public String retweetedBy;	
+	public String retweetedBy;
+	public String createdAtString;
 	public Date createdAt;
 	public int backgroundColor;
 	public int nameColor;
+	public boolean isRetweet;
+	private ExtendedBoolean isReply = new ExtendedBoolean();
+	private ExtendedBoolean isMine = new ExtendedBoolean();
 
-	public static StatusModel createInstance(long id)
+	public static StatusModel createInstance(Status status)
 	{
-		Status st = StatusStore.get(id);
-		if (st == null)
+		if (status == null)
 		{
 			return null;
 		}
-		if (st.isRetweet())
-		{
-			return new StatusModel(st, st.getRetweetedStatus().getId());
-		}
 		else
 		{
-			return new StatusModel(st, st.getId());
+			return new StatusModel(status);
 		}
 	}
 
-	private StatusModel(Status status, long statusIdToShow)
+	private StatusModel(Status status)
 	{
-		statusId = status.getId();
-		this.statusIdToShow = statusIdToShow;
-		
-		Status statusToShow = !isRetweet() ? status : StatusStore.get(statusIdToShow);
-
-		if (isRetweet())
+		isRetweet = status.isRetweet();
+		if(isRetweet)
 		{
+			Status sourceStatus = status.getRetweetedStatus();
+			statusId = sourceStatus.getId();
+			screenName = sourceStatus.getUser().getScreenName();
+			name = sourceStatus.getUser().getName();
+			text = sourceStatus.getText();
+			source = "via " + Html.fromHtml(sourceStatus.getSource()).toString();
+			createdAt = sourceStatus.getCreatedAt();
+			createdAtString = StringUtils.dateToString(createdAt);
+			retweetedBy = "(RT:"+ status.getUser().getScreenName() + ")";
 			backgroundColor = Warotter.getResource().getColor(R.color.LightBlue);
-			retweetedBy = "(RTed by "+ status.getUser().getScreenName() + ")";
+			IconCaches.setIconBitmapToView(sourceStatus.getUser(), null, this);
 		}
-		else if (isMine())
+		else
 		{
+			statusId = status.getId();
+			screenName = status.getUser().getScreenName();
+			name = status.getUser().getName();
+			text = status.getText();
+			source = "via " + Html.fromHtml(status.getSource()).toString();
+			createdAt = status.getCreatedAt();
+			createdAtString = StringUtils.dateToString(createdAt);
+			retweetedBy = "";
+			IconCaches.setIconBitmapToView(status.getUser(), null, this);
+			if (isReply())
+			{
+				backgroundColor = Warotter.getResource().getColor(R.color.LightRed);
+			}
+			else
+			{
+				backgroundColor = Warotter.getResource().getColor(R.color.White);
+			}
+		}		
+		if (isMine())
+		{				
 			nameColor = Warotter.getResource().getColor(R.color.DarkBlue);
 		}
-		else if (isReply())
+		else
 		{
-			backgroundColor = Warotter.getResource().getColor(R.color.LightRed);
+			nameColor = Warotter.getResource().getColor(R.color.ThickGreen);
 		}
-		screenName = statusToShow.getUser().getScreenName();
-		name = statusToShow.getUser().getName();
-		text = statusToShow.getText();
-		source = "via " + Html.fromHtml(statusToShow.getSource()).toString();
-		createdAt = statusToShow.getCreatedAt();
-		IconCaches.setIconBitmap(statusToShow.getUser(), iconBitmap);
 	}
 	
 	public boolean isMine()
 	{
-		return StatusStore.isMine(statusIdToShow);
+		if(!isMine.isInitialized())
+		{
+			isMine.set(StatusStore.isMine(statusId));
+		}
+		return isMine.get();
 	}
 	
 	public boolean isReply()
 	{
-		return StatusStore.isReply(statusIdToShow);
+		if(!isReply.isInitialized())
+		{
+			isReply.set(StatusStore.isReply(statusId));
+		}
+		return isReply.get();
 	}
 	
-	public boolean isRetweet()
+	public User getUser()
 	{
-		return statusId != statusIdToShow;
+		return StatusStore.get(statusId).getUser();
+	}
+	
+	public User getUserToShow()
+	{
+		return StatusStore.get(statusId).getUser();
 	}
 
 	@Override
