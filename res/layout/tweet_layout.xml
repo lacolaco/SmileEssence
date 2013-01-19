@@ -9,29 +9,31 @@
         android:id="@+id/textView_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_weight="1"
+        android:layout_margin="10dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/MetroBlue" />
+        android:textColor="@color/MetroBlue"
+        android:textSize="15sp" />
 
     <EditText
         android:id="@+id/editText_tweet"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_weight="10"
+        android:layout_height="100dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
         android:ems="10"
         android:gravity="top"
         android:inputType="textMultiLine"
-        android:minHeight="60dp"
-        android:textSize="11sp"/>
+        android:textSize="11sp" >
+
+        <requestFocus />
+    </EditText>
 
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
-        android:layout_weight="30"
         android:orientation="vertical" >
 
         <TableRow
