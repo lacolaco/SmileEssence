@@ -1,12 +1,7 @@
 package net.miz_hi.warotter.viewmodel;
 
-import com.slidingmenu.lib.SlidingMenu;
-
 import gueei.binding.Command;
 import gueei.binding.DependentObservable;
-import gueei.binding.Observable;
-import gueei.binding.converters.STITCH;
-import gueei.binding.observables.IntegerObservable;
 import gueei.binding.observables.StringObservable;
 import net.miz_hi.warotter.R;
 import net.miz_hi.warotter.async.AsyncTweetTask;
@@ -17,7 +12,6 @@ import net.miz_hi.warotter.util.StringUtils;
 import net.miz_hi.warotter.view.MainActivity;
 import twitter4j.StatusUpdate;
 import android.content.Context;
-import android.os.IBinder;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -26,6 +20,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.slidingmenu.lib.SlidingMenu;
 
 public class TweetViewModel extends ViewModel
 {

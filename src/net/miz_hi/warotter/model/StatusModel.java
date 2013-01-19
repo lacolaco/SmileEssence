@@ -73,7 +73,7 @@ public class StatusModel implements Comparable<StatusModel>
 			}
 			else
 			{
-				backgroundColor = Warotter.getResource().getColor(R.color.White);
+				backgroundColor = -1;
 			}
 		}		
 		if (isMine())

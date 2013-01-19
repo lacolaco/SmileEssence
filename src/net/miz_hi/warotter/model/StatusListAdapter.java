@@ -39,7 +39,10 @@ public class StatusListAdapter extends QueueAdapter<StatusModel>
 		{
 			holder = (ViewHolder)convertedView.getTag();
 		}
-		
+		if(!model.isRetweet && !model.isReply())
+		{
+			model.backgroundColor = Warotter.getResource().getColor(position % 2 == 0 ? R.color.White : R.color.LightGray);
+		}
 		holder.viewBase.setBackgroundColor(model.backgroundColor);
 		if(model.icon == null)
 		{

@@ -116,6 +116,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int DarkBlue=0x7f05000a;
         public static final int Gray=0x7f050005;
         public static final int LightBlue=0x7f050002;
+        public static final int LightGray=0x7f05000c;
         public static final int LightGreen=0x7f050006;
         public static final int LightRed=0x7f050007;
         public static final int MetroBlue=0x7f050003;
