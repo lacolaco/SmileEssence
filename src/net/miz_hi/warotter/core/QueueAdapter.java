@@ -21,6 +21,7 @@ public abstract class QueueAdapter<T extends Comparable<T>> extends BaseAdapter
 {
 	
 	private List<T> list;
+	private int count;
 	private final Object lock = new Object();
 	private boolean notifyOnChange = true;
 	private Activity activity;
@@ -151,6 +152,7 @@ public abstract class QueueAdapter<T extends Comparable<T>> extends BaseAdapter
     public void notifyDataSetChanged()
     {
         super.notifyDataSetChanged();
+        count = list.size();
         notifyOnChange = true;
     }    
     
@@ -167,7 +169,7 @@ public abstract class QueueAdapter<T extends Comparable<T>> extends BaseAdapter
 	@Override
 	public int getCount()
 	{		
-		return list.size();
+		return count;
 	}
 
 	@Override

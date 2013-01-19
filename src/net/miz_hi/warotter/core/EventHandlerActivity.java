@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.miz_hi.warotter.message.ToastMessage;
+import net.miz_hi.warotter.model.Warotter;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,6 +23,7 @@ public abstract class EventHandlerActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		ViewModel vm = getViewModel();
+		subscribeMessenger(messenger);		
 		vm.setMessenger(messenger);
 		viewModelList.add(vm);
 		
@@ -107,7 +109,7 @@ public abstract class EventHandlerActivity extends Activity
 					{
 						if(message instanceof ToastMessage)
 						{
-							Toast.makeText(EventHandlerActivity.this, ((ToastMessage)message).text, Toast.LENGTH_SHORT).show();
+							Toast.makeText(Warotter.getApplication(), ((ToastMessage)message).text, Toast.LENGTH_SHORT).show();
 						}
 					}
 				});				

@@ -16,6 +16,7 @@ import net.miz_hi.warotter.async.PostTimelineGetter;
 import net.miz_hi.warotter.core.EventHandlerActivity;
 import net.miz_hi.warotter.core.ThemeHelper;
 import net.miz_hi.warotter.core.ViewModel;
+import net.miz_hi.warotter.dialog.OptionMenuAdapter;
 import net.miz_hi.warotter.listener.TimelineScrollListener;
 import net.miz_hi.warotter.listener.WarotterUserStreamListener;
 import net.miz_hi.warotter.model.StatusListAdapter;
@@ -42,7 +43,6 @@ public class MainActivityViewModel extends ViewModel
 	public ExtendedBoolean isHomeMode;
 	public Handler handler;
 	private static MainActivityViewModel instance;
-	private MenuViewModel menuViewModel;
 
 	public static MainActivityViewModel initialize(EventHandlerActivity activity)
 	{
@@ -85,8 +85,6 @@ public class MainActivityViewModel extends ViewModel
 		twitterStream.addListener(usListener);
 		twitterStream.user();
 		toast("ê⁄ë±ÇµÇ‹ÇµÇΩ");
-		menuViewModel = new MenuViewModel();
-		menuViewModel.setMessenger(messenger);
 	}
 
 	@Override
@@ -94,32 +92,26 @@ public class MainActivityViewModel extends ViewModel
 	{
 		Warotter.getTwitterStream(Warotter.getMainAccount(), false).shutdown();
 	}
-
-	public Command menu = new Command()
+	
+	private void changeTimeline(EventHandlerActivity activity)
 	{
-
-		@Override
-		public void Invoke(View arg0, Object... arg1)
-		{
-//			activity.runOnUiThread(new Runnable()
-//			{
-//
-//				@Override
-//				public void run()
-//				{
-//					Dialog dialog = new Dialog(activity);
-//					dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//					View view = Binder.bindView(dialog.getContext(), Binder.inflateView(activity, R.layout.dialog_menu_layout, null, true), menuViewModel);
-//					dialog.setContentView(view);
-//					LayoutParams lp = dialog.getWindow().getAttributes();
-//					DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
-//					lp.width = (int) (metrics.widthPixels * 0.9);
-//					lp.height = (int) (metrics.heightPixels * 0.9);
-//					dialog.show();
-//				}
-//			});
-		}
-	};
+		boolean isHome = isHomeMode.toggle();	
+		ListView homeListView = (ListView)activity.findViewById(R.id.listView_home);
+		ListView mentionsListView = (ListView)activity.findViewById(R.id.listView_mentions);
+		homeListView.setVisibility(isHome ? View.VISIBLE : View.INVISIBLE);
+		mentionsListView.setVisibility(isHome ? View.INVISIBLE : View.VISIBLE);
+		String title = isHome ? "Home" : "Mentions";
+		TextView viewTitle = (TextView)activity.findViewById(R.id.textView_title);
+		viewTitle.setText(title);
+		viewTitle.refreshDrawableState();
+		int res = isHomeMode.get() ? R.drawable.icon_mentions_w : R.drawable.icon_home_w;
+		((ImageView)activity.findViewById(R.id.imageView_timeline)).setImageResource(res);
+	}
+	
+	private void openMenuDialog(EventHandlerActivity activity)
+	{
+		
+	}
 
 	@Override
 	public boolean onEvent(String eventName, EventHandlerActivity activity)
@@ -131,30 +123,12 @@ public class MainActivityViewModel extends ViewModel
 		}
 		else if(eventName.equals("timeline"))
 		{
-			boolean isHome = isHomeMode.toggle();	
-			ListView homeListView = (ListView)activity.findViewById(R.id.listView_home);
-			ListView mentionsListView = (ListView)activity.findViewById(R.id.listView_mentions);
-			homeListView.setVisibility(isHome ? View.VISIBLE : View.INVISIBLE);
-			mentionsListView.setVisibility(isHome ? View.INVISIBLE : View.VISIBLE);
-			String title = isHome ? "Home" : "Mentions";
-			TextView viewTitle = (TextView)activity.findViewById(R.id.textView_title);
-			viewTitle.setText(title);
-			viewTitle.refreshDrawableState();
-			int res = isHomeMode.get() ? R.drawable.icon_mentions_w : R.drawable.icon_home_w;
-			((ImageView)activity.findViewById(R.id.imageView_timeline)).setImageResource(res);
+			changeTimeline(activity);
 			return true;
 		}
 		else if(eventName.equals("menu"))
 		{
-//			Dialog dialog = new Dialog(activity);
-//			dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//			View view = Binder.bindView(dialog.getContext(), Binder.inflateView(activity, R.layout.dialog_menu_layout, null, true), menuViewModel);
-//			dialog.setContentView(view);
-//			LayoutParams lp = dialog.getWindow().getAttributes();
-//			DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
-//			lp.width = (int) (metrics.widthPixels * 0.9);
-//			lp.height = (int) (metrics.heightPixels * 0.9);
-//			dialog.show();
+			new OptionMenuAdapter(activity, "ÉÅÉjÉÖÅ[").createMenuDialog().show();
 			return true;
 		}
 		return false;		

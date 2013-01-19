@@ -73,8 +73,7 @@ public class Warotter
 
 	public static void setMainAccount(Account account)
 	{
-		mainAccount = account;
-		if (mainAccount != null)
+		if (account != null)
 		{
 			putPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID, account.getUserId());
 		}
@@ -86,6 +85,7 @@ public class Warotter
 			}
 			putPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID, -1L);
 		}
+		mainAccount = account;
 	}
 
 	public static int getTheme()

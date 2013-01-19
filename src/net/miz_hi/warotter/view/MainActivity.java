@@ -1,6 +1,5 @@
 package net.miz_hi.warotter.view;
 
-import gueei.binding.Binder;
 import net.miz_hi.warotter.R;
 import net.miz_hi.warotter.core.EventHandlerActivity;
 import net.miz_hi.warotter.core.EventSubscriber;
@@ -10,22 +9,18 @@ import net.miz_hi.warotter.viewmodel.MainActivityViewModel;
 import net.miz_hi.warotter.viewmodel.TweetViewModel;
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 
 import com.slidingmenu.lib.SlidingMenu;
 
 public class MainActivity extends EventHandlerActivity
 {
 	public SlidingMenu slidingMenu;
-	public AlertDialog dialog;
 
 	@Override
 	public void onCreate(Bundle bundle)
@@ -76,6 +71,25 @@ public class MainActivity extends EventHandlerActivity
 		View rootView = LayoutInflater.from(this).inflate(R.layout.tweet_layout, null);
 		menu.setMenu(rootView);
 		return menu;
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+		if (keyCode != KeyEvent.KEYCODE_BACK)
+		{
+			return super.onKeyDown(keyCode, event);
+		}
+		else if(slidingMenu.isMenuShowing())
+		{
+			slidingMenu.toggle();
+			return false;
+		}
+		else
+		{
+			finish();
+			return false;
+		}
 	}
 	
 	public OnClickListener tweetClicked = new OnClickListener()

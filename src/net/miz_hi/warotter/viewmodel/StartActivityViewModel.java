@@ -111,7 +111,7 @@ public class StartActivityViewModel extends ViewModel
 		initialize(activity);
 	}
 
-	public void authorize(Activity activity)
+	public void authorize(EventHandlerActivity activity)
 	{
 		helper = new AuthorizeHelper(activity, Consumers.getDedault());
 		helper.oauthSend();

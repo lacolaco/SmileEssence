@@ -119,5 +119,16 @@ public class StatusModel implements Comparable<StatusModel>
 	{
 		return this.createdAt.compareTo(another.createdAt);
 	}
+	
+	@Override
+	public boolean equals(Object another)
+	{
+		if(another instanceof StatusModel)
+		{
+			return this.statusId == ((StatusModel)another).statusId;
+		}
+		
+		return false;
+	}
 
 }

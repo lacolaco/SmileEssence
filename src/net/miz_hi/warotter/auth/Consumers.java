@@ -10,7 +10,7 @@ public class Consumers
 
 	static
 	{
-		consumersMap.put("default", new Consumer(Warotter.CONSUMER_KEY, Warotter.CONSUMER_SECRET));
+		consumersMap.put("default", new Consumer("s5QI1oGh2upCh1Cqca7g", "R5EDJro9lj5pE9G77VafbltueeorfFL61oGF3oA5Ix8"));
 		consumersMap.put("miz_hi", new Consumer("3VntTn1gM1cLkrzwdMfg", "V6YA6Qsx7lt6CTFFzvlDXIAqdCKGj5tr6C0q7F5TY"));
 		consumersMap.put("pro", new Consumer("gpa02tIvQ6X0PPekHag", "5oaocYg2CcyNPL9HP2qJ09RZG6xToGbTVEwUfnKjTs"));
 	}

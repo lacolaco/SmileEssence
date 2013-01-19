@@ -43,7 +43,30 @@ public class WarotterUserStreamListener implements UserStreamListener
 	@Override
 	public void onDeletionNotice(final StatusDeletionNotice arg0)
 	{
-		StatusStore.remove(arg0.getStatusId());
+		Status status = StatusStore.get(arg0.getStatusId());
+		if(status == null)
+		{
+			return;
+		}
+		else
+		{
+			final StatusModel model = StatusModel.createInstance(status);
+			homeListAdapter.getActivity().runOnUiThread(new Runnable()
+			{
+				public void run()
+				{
+					homeListAdapter.remove(model);
+				}
+			});
+			mentionsListAdapter.getActivity().runOnUiThread(new Runnable()
+			{
+				public void run()
+				{
+					mentionsListAdapter.remove(model);
+				}
+			});
+			StatusStore.remove(status.getId());
+		}
 	}
 
 	@Override
