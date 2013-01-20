@@ -27,7 +27,7 @@ public class IconCaches
 	private static File cacheDir = Client.getApplication().getExternalCacheDir();
 	private static Bitmap emptyIcon;
 
-	public static void setIconBitmapToView(User user, ImageView viewIcon, StatusModel model)
+	public static void setIconBitmapToView(User user, ImageView viewIcon)
 	{
 		String fileName = genIconName(user);
 		File latestIconFile = Client.getApplicationFile(fileName);		
@@ -55,7 +55,6 @@ public class IconCaches
 			if (iconCache.containsKey(user.getId()))
 			{
 				Icon icon = iconCache.get(user.getId());
-				model.icon = icon;
 				if(viewIcon != null)
 				{
 					viewIcon.setImageBitmap(icon.use());
@@ -71,7 +70,6 @@ public class IconCaches
 				Bitmap bm = BitmapFactory.decodeFile(latestIconFile.getPath(), opt);
 				Icon icon = new Icon(bm, fileName);
 				putIconToMap(user, icon);
-				model.icon = icon;
 				if(viewIcon != null)
 				{
 					viewIcon.setImageBitmap(icon.use());
@@ -80,7 +78,7 @@ public class IconCaches
 		}
 		else
 		{
-			AsyncIconGetter.addTask(new AsyncIconGetter(user, viewIcon, model));
+			AsyncIconGetter.addTask(new AsyncIconGetter(user, viewIcon));
 		}
 	}
 

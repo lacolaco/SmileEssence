@@ -1,6 +1,5 @@
 package net.miz_hi.smileessence.viewmodel;
 
-import gueei.binding.Command;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
@@ -156,60 +155,4 @@ public class TweetViewModel extends ViewModel
 			AsyncTweetTask.addTask(new AsyncTweetTask(new StatusUpdate(text), this));
 		}
 	}
-
-	public Command commandWarota = new Command()
-	{
-
-		@Override
-		public void Invoke(View arg0, Object... arg1)
-		{
-
-
-		}
-	};
-
-	public Command commandReplace = new Command()
-	{
-
-		@Override
-		public void Invoke(View arg0, Object... arg1)
-		{
-			// TODO Auto-generated method stub
-
-		}
-	};
-
-	public Command commandTemplate = new Command()
-	{
-
-		@Override
-		public void Invoke(View arg0, Object... arg1)
-		{
-			// TODO Auto-generated method stub
-
-		}
-	};
-
-	public Command commandMorse = new Command()
-	{
-
-		@Override
-		public void Invoke(View arg0, Object... arg1)
-		{
-			// TODO Auto-generated method stub
-
-		}
-	};
-
-	public Command commandHashtag = new Command()
-	{
-
-		@Override
-		public void Invoke(View arg0, Object... arg1)
-		{
-			// TODO Auto-generated method stub
-
-		}
-	};
-
 }

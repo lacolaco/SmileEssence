@@ -2,6 +2,7 @@ package net.miz_hi.smileessence.status;
 
 import net.miz_hi.smileessence.Client;
 import twitter4j.Status;
+import twitter4j.User;
 import twitter4j.UserMentionEntity;
 
 public class StatusUtils
@@ -32,5 +33,10 @@ public class StatusUtils
 	public static boolean isMine(Status st)
 	{
 		return st.getUser().getId() == Client.getMainAccount().getUserId();
+	}
+	
+	public static boolean isMe(User user)
+	{
+		return user.getId() == Client.getMainAccount().getUserId();
 	}
 }

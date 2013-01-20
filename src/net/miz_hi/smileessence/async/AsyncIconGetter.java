@@ -22,13 +22,11 @@ public class AsyncIconGetter extends ConcurrentAsyncTask<Icon>
 {	
 	private User user;
 	private ImageView viewIcon;
-	private StatusModel model;
 
-	public AsyncIconGetter(User user, ImageView viewIcon, StatusModel model)
+	public AsyncIconGetter(User user, ImageView viewIcon)
 	{
 		this.user = user;
 		this.viewIcon = viewIcon;
-		this.model = model;
 	}
 		
 	@Override
@@ -62,7 +60,6 @@ public class AsyncIconGetter extends ConcurrentAsyncTask<Icon>
 	@Override
 	protected void onPostExecute(Icon result)
 	{
-		model.icon = result;
 		if(viewIcon != null)
 		{
 			viewIcon.setImageBitmap(result.use());

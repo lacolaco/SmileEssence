@@ -46,15 +46,9 @@ public class StatusListAdapter extends QueueAdapter<StatusModel>
 			model.backgroundColor = Client.getResource().getColor(position % 2 == 0 ? R.color.White : R.color.LightGray);
 		}
 		holder.viewBase.setBackgroundColor(model.backgroundColor);
-		if(model.icon == null)
-		{
-			holder.viewIcon.setImageBitmap(IconCaches.getEmptyIcon());
-			IconCaches.setIconBitmapToView(model.getUserToShow(), holder.viewIcon, model);
-		}
-		else
-		{
-			holder.viewIcon.setImageBitmap(model.icon.use());
-		}
+
+		holder.viewIcon.setImageBitmap(IconCaches.getEmptyIcon());
+		IconCaches.setIconBitmapToView(model.user, holder.viewIcon);
 		holder.viewScreenName.setText(model.screenName);
 		holder.viewScreenName.setTextColor(model.nameColor);
 		holder.viewName.setText(model.name);

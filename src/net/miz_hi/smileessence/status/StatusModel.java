@@ -14,7 +14,7 @@ import android.text.Html;
 public class StatusModel implements Comparable<StatusModel>
 {
 	public long statusId;
-	public Icon icon;
+	public User user;
 	public String screenName;
 	public String name;
 	public String text;
@@ -48,27 +48,29 @@ public class StatusModel implements Comparable<StatusModel>
 		{
 			Status sourceStatus = status.getRetweetedStatus();
 			statusId = sourceStatus.getId();
-			screenName = sourceStatus.getUser().getScreenName();
-			name = sourceStatus.getUser().getName();
+			user = sourceStatus.getUser();
+			screenName = user.getScreenName();
+			name = user.getName();
 			text = sourceStatus.getText();
 			source = "via " + Html.fromHtml(sourceStatus.getSource()).toString();
 			createdAt = sourceStatus.getCreatedAt();
 			createdAtString = StringUtils.dateToString(createdAt);
 			retweetedBy = "(RT:"+ status.getUser().getScreenName() + ")";
 			backgroundColor = Client.getResource().getColor(R.color.LightBlue);
-			IconCaches.setIconBitmapToView(sourceStatus.getUser(), null, this);
+			IconCaches.setIconBitmapToView(user, null);
 		}
 		else
 		{
 			statusId = status.getId();
-			screenName = status.getUser().getScreenName();
-			name = status.getUser().getName();
+			user = status.getUser();
+			screenName = user.getScreenName();
+			name = user.getName();
 			text = status.getText();
 			source = "via " + Html.fromHtml(status.getSource()).toString();
 			createdAt = status.getCreatedAt();
 			createdAtString = StringUtils.dateToString(createdAt);
 			retweetedBy = "";
-			IconCaches.setIconBitmapToView(status.getUser(), null, this);
+			IconCaches.setIconBitmapToView(status.getUser(), null);
 			if (isReply())
 			{
 				backgroundColor = Client.getResource().getColor(R.color.LightRed);
@@ -93,7 +95,7 @@ public class StatusModel implements Comparable<StatusModel>
 	{
 		if(!isMine.isInitialized())
 		{
-			isMine.set(StatusUtils.isMine(statusId));
+			isMine.set(StatusUtils.isMe(user));
 		}
 		return isMine.get();
 	}
@@ -105,16 +107,6 @@ public class StatusModel implements Comparable<StatusModel>
 			isReply.set(StatusUtils.isReply(statusId));
 		}
 		return isReply.get();
-	}
-	
-	public User getUser()
-	{
-		return StatusStore.get(statusId).getUser();
-	}
-	
-	public User getUserToShow()
-	{
-		return StatusStore.get(statusId).getUser();
 	}
 
 	@Override

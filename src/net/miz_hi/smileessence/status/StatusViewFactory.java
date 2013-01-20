@@ -27,15 +27,8 @@ public class StatusViewFactory
 			model.backgroundColor = Client.getResource().getColor(R.color.White);
 		}
 		viewStatus.setBackgroundColor(model.backgroundColor);
-		if(model.icon == null)
-		{
-			viewIcon.setImageBitmap(IconCaches.getEmptyIcon());
-			IconCaches.setIconBitmapToView(model.getUserToShow(), viewIcon, model);
-		}
-		else
-		{
-			viewIcon.setImageBitmap(model.icon.use());
-		}
+		viewIcon.setImageBitmap(IconCaches.getEmptyIcon());
+		IconCaches.setIconBitmapToView(model.user, viewIcon);
 		viewScreenName.setText(model.screenName);
 		viewScreenName.setTextColor(model.nameColor);
 		viewName.setText(model.name);

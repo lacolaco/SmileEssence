@@ -30,11 +30,8 @@ public class EventNoticer
 				{
 					public void run()
 					{
-						toast.setView(null);
-						toast.setText("ステルスモードON(user: " + model.source.getScreenName() + ")");
-						toast.setDuration(Toast.LENGTH_LONG);
-						toast.setGravity(Gravity.BOTTOM, 0, 120);
-						toast.show();
+						toast.cancel();
+						Toast.makeText(activity, "ステルスモードON", Toast.LENGTH_LONG).show();
 					}
 				});
 				return;
@@ -44,6 +41,7 @@ public class EventNoticer
 		{
 			lastUserId = model.source.getId();
 			counterSourceUser.reset();
+			counterTargetStatus.reset();
 		}
 		
 		if(lastStatusId == model.targetModel.statusId)
@@ -58,11 +56,8 @@ public class EventNoticer
 				{
 					public void run()
 					{
-						toast.setView(null);
-						toast.setText("ステルスモードON(status: " + model.targetModel.statusId + ")");
-						toast.setDuration(Toast.LENGTH_LONG);
-						toast.setGravity(Gravity.BOTTOM, 0, 120);
-						toast.show();
+						toast.cancel();
+						Toast.makeText(activity, "ステルスモードON", Toast.LENGTH_LONG).show();
 					}
 				});
 				return;
@@ -72,6 +67,7 @@ public class EventNoticer
 		{
 			lastStatusId = model.targetModel.statusId;
 			counterTargetStatus.reset();
+			counterSourceUser.reset();
 		}
 		
 		activity.runOnUiThread(new Runnable()
