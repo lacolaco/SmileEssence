@@ -23,7 +23,7 @@ import android.widget.ImageView;
 public class IconCaches
 {
 
-	private static ConcurrentHashMap<Long, Icon> iconCache = new ConcurrentHashMap<Long, Icon>(200);
+	private static ConcurrentHashMap<Long, Icon> iconCache = new ConcurrentHashMap<Long, Icon>(100);
 	private static File cacheDir = Client.getApplication().getExternalCacheDir();
 	private static Bitmap emptyIcon;
 
@@ -91,6 +91,15 @@ public class IconCaches
 	{
 		return String.format("%1$s_%2$s", user.getId(), StringUtils.parseUrlToFileName(user.getProfileImageURL()));
 	}
+	
+	public static void clearCache()
+	{
+		for (Icon icon : iconCache.values())
+		{
+			icon.bitmap.recycle();
+		}
+		iconCache.clear();
+	}
 
 	public static void putIconToMap(User user, Icon icon)
 	{
@@ -101,7 +110,7 @@ public class IconCaches
 
 		iconCache.put(user.getId(), icon);
 
-		if (iconCache.size() >= 200)
+		if (iconCache.size() >= 100)
 		{
 
 			List<Map.Entry> entries = new ArrayList<Map.Entry>(iconCache.entrySet());
@@ -116,7 +125,8 @@ public class IconCaches
 					return ((Icon)e1.getValue()).compareTo((Icon)e2.getValue());
 				}
 			});
-			iconCache.remove(entries.get(0));
+			Icon i = iconCache.remove(entries.get(0));
+			i.bitmap.recycle();
 		}
 	}
 

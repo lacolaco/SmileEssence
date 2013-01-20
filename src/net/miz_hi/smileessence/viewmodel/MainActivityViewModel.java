@@ -9,7 +9,9 @@ import net.miz_hi.smileessence.core.ViewModel;
 import net.miz_hi.smileessence.dialog.OptionMenuAdapter;
 import net.miz_hi.smileessence.listener.TimelineScrollListener;
 import net.miz_hi.smileessence.listener.WarotterUserStreamListener;
+import net.miz_hi.smileessence.status.IconCaches;
 import net.miz_hi.smileessence.status.StatusListAdapter;
+import net.miz_hi.smileessence.status.StatusStore;
 import net.miz_hi.smileessence.util.ExtendedBoolean;
 import twitter4j.Paging;
 import twitter4j.TwitterStream;
@@ -76,6 +78,8 @@ public class MainActivityViewModel extends ViewModel
 	public void onActivityDestroy(EventHandlerActivity activity)
 	{
 		Client.getTwitterStream(Client.getMainAccount(), false).shutdown();
+		IconCaches.clearCache();
+		StatusStore.clearCache();
 	}
 	
 	private void toggleTimeline(EventHandlerActivity activity)

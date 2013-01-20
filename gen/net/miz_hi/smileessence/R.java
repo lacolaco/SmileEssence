@@ -111,29 +111,29 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int viewBehind=0x7f010002;
     }
     public static final class color {
-        public static final int Black=0x7f050001;
-        public static final int BrownYellow=0x7f050009;
-        public static final int DarkBlue=0x7f05000a;
-        public static final int Gray=0x7f050005;
-        public static final int LightBlue=0x7f050002;
-        public static final int LightGray=0x7f05000c;
-        public static final int LightGreen=0x7f050006;
-        public static final int LightRed=0x7f050007;
-        public static final int MetroBlue=0x7f050003;
-        public static final int Red=0x7f050008;
-        public static final int ThickGreen=0x7f05000b;
-        public static final int White=0x7f050004;
-        public static final int holo_blue_bright=0x7f050000;
-        public static final int list_footer_layout=0x7f05000d;
+        public static final int Black=0x7f060001;
+        public static final int BrownYellow=0x7f060009;
+        public static final int DarkBlue=0x7f06000a;
+        public static final int Gray=0x7f060005;
+        public static final int LightBlue=0x7f060002;
+        public static final int LightGray=0x7f06000c;
+        public static final int LightGreen=0x7f060006;
+        public static final int LightRed=0x7f060007;
+        public static final int MetroBlue=0x7f060003;
+        public static final int Red=0x7f060008;
+        public static final int ThickGreen=0x7f06000b;
+        public static final int White=0x7f060004;
+        public static final int holo_blue_bright=0x7f060000;
+        public static final int list_footer_layout=0x7f06000d;
     }
     public static final class dimen {
-        public static final int list_padding=0x7f060005;
-        public static final int menu_header_line=0x7f060002;
-        public static final int menu_header_padding_top=0x7f060001;
-        public static final int menu_icon_side=0x7f060003;
-        public static final int menu_item_padding=0x7f060000;
-        public static final int shadow_width=0x7f060006;
-        public static final int slidingmenu_offset=0x7f060004;
+        public static final int list_padding=0x7f070005;
+        public static final int menu_header_line=0x7f070002;
+        public static final int menu_header_padding_top=0x7f070001;
+        public static final int menu_icon_side=0x7f070003;
+        public static final int menu_item_padding=0x7f070000;
+        public static final int shadow_width=0x7f070006;
+        public static final int slidingmenu_offset=0x7f070004;
     }
     public static final class drawable {
         public static final int defaultshadow=0x7f020000;
@@ -158,57 +158,57 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int shadow=0x7f020013;
     }
     public static final class id {
-        public static final int button_Auth=0x7f04001c;
-        public static final int editText_tweet=0x7f040025;
-        public static final int fullscreen=0x7f040003;
-        public static final int imageButton_hashtag=0x7f04002e;
-        public static final int imageButton_morse=0x7f040027;
-        public static final int imageButton_replace=0x7f04002b;
-        public static final int imageButton_submit=0x7f040029;
-        public static final int imageButton_template=0x7f04002c;
-        public static final int imageButton_warota=0x7f040028;
-        public static final int imageView1=0x7f04001a;
-        public static final int imageView_icon=0x7f04001d;
-        public static final int imageView_menu=0x7f040014;
-        public static final int imageView_status_favorite=0x7f040009;
-        public static final int imageView_status_reply=0x7f040007;
-        public static final int imageView_status_retweet=0x7f040008;
-        public static final int imageView_timeline=0x7f040013;
-        public static final int imageView_tweet=0x7f040012;
-        public static final int left=0x7f040000;
-        public static final int linearLayout_dialogItems=0x7f040006;
-        public static final int linearLayout_dialogTitle=0x7f040005;
-        public static final int linearLayout_toastBody=0x7f04000c;
-        public static final int listView_home=0x7f04000d;
-        public static final int listView_mentions=0x7f040010;
-        public static final int margin=0x7f040002;
-        public static final int relativeLayout1=0x7f04000f;
-        public static final int relativeLayout2=0x7f04000e;
-        public static final int relativeLayout_toastBase=0x7f04000a;
-        public static final int right=0x7f040001;
-        public static final int selected_view=0x7f040004;
-        public static final int slidingmenulayout=0x7f040017;
-        public static final int slidingmenumain=0x7f040016;
-        public static final int slidingmenurowicon=0x7f040018;
-        public static final int slidingmenurowtitle=0x7f040019;
-        public static final int tableRow1=0x7f040026;
-        public static final int tableRow2=0x7f04002a;
-        public static final int tableRow3=0x7f04002d;
-        public static final int textView1=0x7f04002f;
-        public static final int textView_count=0x7f040024;
-        public static final int textView_createdAt=0x7f040022;
-        public static final int textView_menuItem=0x7f040015;
-        public static final int textView_name=0x7f04001f;
-        public static final int textView_retweetedBy=0x7f040023;
-        public static final int textView_screenName=0x7f04001e;
-        public static final int textView_source=0x7f040021;
-        public static final int textView_text=0x7f040020;
-        public static final int textView_title=0x7f040011;
-        public static final int textView_toastText=0x7f04000b;
-        public static final int text_navigate=0x7f04001b;
+        public static final int button_Auth=0x7f05001c;
+        public static final int editText_tweet=0x7f050025;
+        public static final int fullscreen=0x7f050003;
+        public static final int imageButton_hashtag=0x7f05002e;
+        public static final int imageButton_morse=0x7f050027;
+        public static final int imageButton_replace=0x7f05002b;
+        public static final int imageButton_submit=0x7f050029;
+        public static final int imageButton_template=0x7f05002c;
+        public static final int imageButton_warota=0x7f050028;
+        public static final int imageView1=0x7f05001a;
+        public static final int imageView_icon=0x7f05001d;
+        public static final int imageView_menu=0x7f050014;
+        public static final int imageView_status_favorite=0x7f050009;
+        public static final int imageView_status_reply=0x7f050007;
+        public static final int imageView_status_retweet=0x7f050008;
+        public static final int imageView_timeline=0x7f050013;
+        public static final int imageView_tweet=0x7f050012;
+        public static final int left=0x7f050000;
+        public static final int linearLayout_dialogItems=0x7f050006;
+        public static final int linearLayout_dialogTitle=0x7f050005;
+        public static final int linearLayout_toastBody=0x7f05000c;
+        public static final int listView_home=0x7f05000d;
+        public static final int listView_mentions=0x7f050010;
+        public static final int margin=0x7f050002;
+        public static final int relativeLayout1=0x7f05000f;
+        public static final int relativeLayout2=0x7f05000e;
+        public static final int relativeLayout_toastBase=0x7f05000a;
+        public static final int right=0x7f050001;
+        public static final int selected_view=0x7f050004;
+        public static final int slidingmenulayout=0x7f050017;
+        public static final int slidingmenumain=0x7f050016;
+        public static final int slidingmenurowicon=0x7f050018;
+        public static final int slidingmenurowtitle=0x7f050019;
+        public static final int tableRow1=0x7f050026;
+        public static final int tableRow2=0x7f05002a;
+        public static final int tableRow3=0x7f05002d;
+        public static final int textView1=0x7f05002f;
+        public static final int textView_count=0x7f050024;
+        public static final int textView_createdAt=0x7f050022;
+        public static final int textView_menuItem=0x7f050015;
+        public static final int textView_name=0x7f05001f;
+        public static final int textView_retweetedBy=0x7f050023;
+        public static final int textView_screenName=0x7f05001e;
+        public static final int textView_source=0x7f050021;
+        public static final int textView_text=0x7f050020;
+        public static final int textView_title=0x7f050011;
+        public static final int textView_toastText=0x7f05000b;
+        public static final int text_navigate=0x7f05001b;
     }
     public static final class integer {
-        public static final int num_cols=0x7f070000;
+        public static final int num_cols=0x7f080000;
     }
     public static final class layout {
         public static final int dialog_menu_layout=0x7f030000;
@@ -226,7 +226,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int tweet_layout=0x7f03000c;
     }
     public static final class string {
-        public static final int app_name=0x7f080000;
+        public static final int app_name=0x7f090000;
     }
     public static final class style {
         /** 
@@ -239,11 +239,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
             backward-compatibility can go here.
         
          */
-        public static final int AppBaseTheme=0x7f090000;
+        public static final int AppBaseTheme=0x7f0a0000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f090001;
+        public static final int AppTheme=0x7f0a0001;
+    }
+    public static final class xml {
+        public static final int preference=0x7f040000;
     }
     public static final class styleable {
         /** Attributes that can be used with a SlidingMenu.

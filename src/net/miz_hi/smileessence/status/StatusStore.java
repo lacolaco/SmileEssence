@@ -24,4 +24,9 @@ public class StatusStore
 	{
 		return statusesMap.remove(id);
 	}
+	
+	public static void clearCache()
+	{
+		statusesMap.clear();
+	}
 }
