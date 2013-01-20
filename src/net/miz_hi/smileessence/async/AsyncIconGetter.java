@@ -7,10 +7,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import net.miz_hi.smileessence.model.IconCaches;
-import net.miz_hi.smileessence.model.IconCaches.Icon;
-import net.miz_hi.smileessence.model.StatusModel;
-import net.miz_hi.smileessence.model.Client;
+import net.miz_hi.smileessence.Client;
+import net.miz_hi.smileessence.status.IconCaches;
+import net.miz_hi.smileessence.status.StatusModel;
+import net.miz_hi.smileessence.status.IconCaches.Icon;
 import twitter4j.User;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;

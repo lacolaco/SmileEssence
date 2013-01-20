@@ -2,9 +2,8 @@ package net.miz_hi.smileessence.auth;
 
 import java.util.List;
 
+import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.core.DataBaseHelper;
-import net.miz_hi.smileessence.model.Account;
-import net.miz_hi.smileessence.model.Client;
 import android.content.Context;
 import android.util.Log;
 

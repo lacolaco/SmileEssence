@@ -1,7 +1,7 @@
 package net.miz_hi.smileessence.util;
 
-import net.miz_hi.smileessence.model.Account;
-import net.miz_hi.smileessence.model.Client;
+import net.miz_hi.smileessence.Client;
+import net.miz_hi.smileessence.auth.Account;
 import twitter4j.StatusUpdate;
 import twitter4j.TwitterException;
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.R.integer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,12 @@ public abstract class QueueAdapter<T extends Comparable<T>> extends BaseAdapter
 	private boolean notifyOnChange = true;
 	private EventHandlerActivity activity;
 	private LayoutInflater inflater;
+	private int capacity;
 	
-	public QueueAdapter(EventHandlerActivity activity)
+	public QueueAdapter(EventHandlerActivity activity, int capacity)
 	{
-		this.list = new ArrayList<T>();
+		this.capacity = capacity;
+		this.list = new ArrayList<T>(capacity);
 		this.activity = activity;
 		this.inflater = LayoutInflater.from(activity);
 	}
@@ -37,6 +40,10 @@ public abstract class QueueAdapter<T extends Comparable<T>> extends BaseAdapter
 		synchronized (lock)
 		{
 			list.add(0, status);
+			if(list.size() >= capacity)
+			{
+				list.remove(list.size() - 1);
+			}
 		}
 		if (notifyOnChange)
 		{
@@ -49,6 +56,10 @@ public abstract class QueueAdapter<T extends Comparable<T>> extends BaseAdapter
 		synchronized (lock)
 		{
 			list.add(status);
+			if(list.size() >= capacity)
+			{
+				list.remove(list.size() - 1);
+			}
 		}
 		if (notifyOnChange)
 		{

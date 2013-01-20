@@ -5,11 +5,12 @@ import java.util.List;
 
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
-import net.miz_hi.smileessence.optionmenu.MenuItemBase;
+import net.miz_hi.smileessence.menu.MenuItemBase;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -66,7 +67,8 @@ public abstract class DialogAdapter
 		LayoutParams lp = dialog.getWindow().getAttributes();
 		DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
 		lp.width = (int) (metrics.widthPixels * 0.9);
-		lp.height = (int) (metrics.heightPixels * 0.9);
+		lp.gravity = Gravity.CENTER;
+		//lp.height = (int) (metrics.heightPixels * 0.9);
 		return dialog;
 	}
 	

@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.model;
+package net.miz_hi.smileessence.auth;
 
 import net.miz_hi.smileessence.auth.Consumers.Consumer;
 import twitter4j.auth.AccessToken;

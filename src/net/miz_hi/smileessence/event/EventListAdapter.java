@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.model;
+package net.miz_hi.smileessence.event;
 
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.core.QueueAdapter;
@@ -10,7 +10,7 @@ public class EventListAdapter extends QueueAdapter<EventModel>
 
 	public EventListAdapter(EventHandlerActivity activity)
 	{
-		super(activity);
+		super(activity, 1000);
 	}
 
 	@Override

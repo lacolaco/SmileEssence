@@ -1,15 +1,15 @@
 package net.miz_hi.smileessence.viewmodel;
 
+import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.auth.AuthentificationDB;
 import net.miz_hi.smileessence.auth.AuthorizeHelper;
 import net.miz_hi.smileessence.auth.Consumers;
+import net.miz_hi.smileessence.core.EnumPreferenceKey;
+import net.miz_hi.smileessence.core.EnumRequestCode;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.core.ViewModel;
-import net.miz_hi.smileessence.model.Account;
-import net.miz_hi.smileessence.model.Client;
-import net.miz_hi.smileessence.util.EnumPreferenceKey;
-import net.miz_hi.smileessence.util.EnumRequestCode;
 import net.miz_hi.smileessence.view.MainActivity;
 import android.app.Activity;
 import android.content.Intent;

@@ -1,5 +1,6 @@
-package net.miz_hi.smileessence.model;
+package net.miz_hi.smileessence.status;
 
+import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.core.QueueAdapter;
@@ -14,7 +15,7 @@ public class StatusListAdapter extends QueueAdapter<StatusModel>
 	
 	public StatusListAdapter(EventHandlerActivity activity)
 	{
-		super(activity);
+		super(activity, 5000);
 	}
 
 	@Override
@@ -59,9 +60,13 @@ public class StatusListAdapter extends QueueAdapter<StatusModel>
 		holder.viewName.setText(model.name);
 		holder.viewName.setTextColor(model.nameColor);
 		holder.viewText.setText(model.text);
+		holder.viewText.setTextColor(model.textColor);
 		holder.viewSource.setText(model.source);
+		holder.viewSource.setTextColor(model.textColor);
 		holder.viewCreatedAt.setText(model.createdAtString);
+		holder.viewCreatedAt.setTextColor(model.textColor);
 		holder.viewRetweetedBy.setText(model.retweetedBy);
+		holder.viewRetweetedBy.setTextColor(model.textColor);
 		if(model.isRetweet)
 		{
 			holder.viewRetweetedBy.setVisibility(View.VISIBLE);

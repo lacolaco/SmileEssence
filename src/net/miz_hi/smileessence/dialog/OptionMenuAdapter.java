@@ -1,10 +1,10 @@
 package net.miz_hi.smileessence.dialog;
 
+import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
-import net.miz_hi.smileessence.model.Client;
-import net.miz_hi.smileessence.optionmenu.MenuItemAccountReset;
-import net.miz_hi.smileessence.optionmenu.MenuItemSetting;
+import net.miz_hi.smileessence.menu.MenuItemAccountReset;
+import net.miz_hi.smileessence.menu.MenuItemSetting;
 import android.app.Dialog;
 import android.widget.TextView;
 

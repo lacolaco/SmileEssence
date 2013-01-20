@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.optionmenu;
+package net.miz_hi.smileessence.menu;
 
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.dialog.DialogAdapter;

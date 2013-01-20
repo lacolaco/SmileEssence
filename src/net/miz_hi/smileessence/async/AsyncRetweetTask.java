@@ -1,8 +1,8 @@
 package net.miz_hi.smileessence.async;
 
+import net.miz_hi.smileessence.Client;
+import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.core.ViewModel;
-import net.miz_hi.smileessence.model.Account;
-import net.miz_hi.smileessence.model.Client;
 import net.miz_hi.smileessence.util.TwitterApi;
 
 public class AsyncRetweetTask extends ConcurrentAsyncTask<String>

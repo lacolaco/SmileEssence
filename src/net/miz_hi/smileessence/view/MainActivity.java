@@ -5,6 +5,8 @@ import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.core.EventSubscriber;
 import net.miz_hi.smileessence.core.Message;
 import net.miz_hi.smileessence.core.ViewModel;
+import net.miz_hi.smileessence.event.EventNoticer;
+import net.miz_hi.smileessence.message.EventMessage;
 import net.miz_hi.smileessence.message.TweetMessage;
 import net.miz_hi.smileessence.viewmodel.MainActivityViewModel;
 import net.miz_hi.smileessence.viewmodel.TweetViewModel;
@@ -66,6 +68,15 @@ public class MainActivity extends EventHandlerActivity
 			{
 				TweetViewModel.singleton().text = ((TweetMessage)message).text;
 				slidingMenu.toggle();			
+			}
+		});
+		messenger.subscribe("event", new EventSubscriber()
+		{
+			
+			@Override
+			public void onEventTriggered(String eventName, Message message)
+			{
+				EventNoticer.noticeEvent(MainActivity.this, ((EventMessage)message).model);				
 			}
 		});
 	}

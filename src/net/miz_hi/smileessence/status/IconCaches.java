@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.model;
+package net.miz_hi.smileessence.status;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncIconGetter;
 import net.miz_hi.smileessence.util.StringUtils;
@@ -22,7 +23,7 @@ import android.widget.ImageView;
 public class IconCaches
 {
 
-	private static ConcurrentHashMap<Long, Icon> iconCache = new ConcurrentHashMap<Long, Icon>();
+	private static ConcurrentHashMap<Long, Icon> iconCache = new ConcurrentHashMap<Long, Icon>(200);
 	private static File cacheDir = Client.getApplication().getExternalCacheDir();
 	private static Bitmap emptyIcon;
 
@@ -97,7 +98,7 @@ public class IconCaches
 
 		iconCache.put(user.getId(), icon);
 
-		if (iconCache.size() > 200)
+		if (iconCache.size() >= 200)
 		{
 
 			List<Map.Entry> entries = new ArrayList<Map.Entry>(iconCache.entrySet());

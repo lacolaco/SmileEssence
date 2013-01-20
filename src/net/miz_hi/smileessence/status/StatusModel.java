@@ -1,9 +1,10 @@
-package net.miz_hi.smileessence.model;
+package net.miz_hi.smileessence.status;
 
 import java.util.Date;
 
+import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.model.IconCaches.Icon;
+import net.miz_hi.smileessence.status.IconCaches.Icon;
 import net.miz_hi.smileessence.util.ExtendedBoolean;
 import net.miz_hi.smileessence.util.StringUtils;
 import twitter4j.Status;
@@ -23,6 +24,7 @@ public class StatusModel implements Comparable<StatusModel>
 	public Date createdAt;
 	public int backgroundColor;
 	public int nameColor;
+	public int textColor;
 	public boolean isRetweet;
 	private ExtendedBoolean isReply = new ExtendedBoolean();
 	private ExtendedBoolean isMine = new ExtendedBoolean();
@@ -84,13 +86,14 @@ public class StatusModel implements Comparable<StatusModel>
 		{
 			nameColor = Client.getResource().getColor(R.color.ThickGreen);
 		}
+		textColor = Client.getResource().getColor(R.color.Gray);
 	}
 	
 	public boolean isMine()
 	{
 		if(!isMine.isInitialized())
 		{
-			isMine.set(StatusStore.isMine(statusId));
+			isMine.set(StatusUtils.isMine(statusId));
 		}
 		return isMine.get();
 	}
@@ -99,7 +102,7 @@ public class StatusModel implements Comparable<StatusModel>
 	{
 		if(!isReply.isInitialized())
 		{
-			isReply.set(StatusStore.isReply(statusId));
+			isReply.set(StatusUtils.isReply(statusId));
 		}
 		return isReply.get();
 	}

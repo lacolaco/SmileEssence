@@ -1,5 +1,6 @@
 package net.miz_hi.smileessence.viewmodel;
 
+import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncMentionsGetter;
 import net.miz_hi.smileessence.async.AsyncTimelineGetter;
@@ -8,8 +9,7 @@ import net.miz_hi.smileessence.core.ViewModel;
 import net.miz_hi.smileessence.dialog.OptionMenuAdapter;
 import net.miz_hi.smileessence.listener.TimelineScrollListener;
 import net.miz_hi.smileessence.listener.WarotterUserStreamListener;
-import net.miz_hi.smileessence.model.StatusListAdapter;
-import net.miz_hi.smileessence.model.Client;
+import net.miz_hi.smileessence.status.StatusListAdapter;
 import net.miz_hi.smileessence.util.ExtendedBoolean;
 import twitter4j.Paging;
 import twitter4j.TwitterStream;

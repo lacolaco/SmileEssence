@@ -1,6 +1,6 @@
 package net.miz_hi.smileessence.view;
 
-import net.miz_hi.smileessence.model.Client;
+import net.miz_hi.smileessence.Client;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;

@@ -113,7 +113,7 @@ public abstract class EventHandlerActivity extends Activity
 					{
 						if(message instanceof ToastMessage)
 						{
-							Toast.makeText(EventHandlerActivity.this, ((ToastMessage)message).text, Toast.LENGTH_SHORT).show();
+							Toast.makeText(EventHandlerActivity.this, ((ToastMessage)message).text, ((ToastMessage)message).duration).show();
 						}
 					}
 				});				

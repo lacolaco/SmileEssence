@@ -1,9 +1,8 @@
-package net.miz_hi.smileessence.statusmenu;
+package net.miz_hi.smileessence.menu;
 
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
-import net.miz_hi.smileessence.model.StatusModel;
-import net.miz_hi.smileessence.optionmenu.MenuItemBase;
+import net.miz_hi.smileessence.status.StatusModel;
 
 public abstract class StatusMenuItemBase extends MenuItemBase
 {

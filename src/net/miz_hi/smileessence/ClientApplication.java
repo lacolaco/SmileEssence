@@ -1,6 +1,5 @@
 package net.miz_hi.smileessence;
 
-import net.miz_hi.smileessence.model.Client;
 import android.app.Application;
 import android.os.StrictMode;
 

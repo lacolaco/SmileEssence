@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.util;
+package net.miz_hi.smileessence.core;
 
 public enum EnumRequestCode
 {

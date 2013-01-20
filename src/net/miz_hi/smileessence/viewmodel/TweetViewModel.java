@@ -1,11 +1,11 @@
 package net.miz_hi.smileessence.viewmodel;
 
 import gueei.binding.Command;
+import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.core.ViewModel;
-import net.miz_hi.smileessence.model.Client;
 import net.miz_hi.smileessence.util.StringUtils;
 import net.miz_hi.smileessence.view.MainActivity;
 import twitter4j.StatusUpdate;
@@ -105,7 +105,12 @@ public class TweetViewModel extends ViewModel
 				StringBuilder sb = new StringBuilder(viewEdit.getText().toString());
 				sb.insert(cursor, "ƒƒƒ^‚—");
 				viewEdit.setText(sb.toString());
-				viewEdit.setSelection(cursor + sb.length());
+				cursor = cursor + sb.length();
+				if(cursor > viewEdit.getText().length())
+				{
+					cursor = viewEdit.getText().length();
+				}
+				viewEdit.setSelection(cursor);
 			}
 		});
 	}

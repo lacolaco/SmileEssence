@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.optionmenu;
+package net.miz_hi.smileessence.menu;
 
 import java.util.ArrayList;
 import java.util.List;

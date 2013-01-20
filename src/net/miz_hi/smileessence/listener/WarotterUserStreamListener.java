@@ -1,9 +1,16 @@
 package net.miz_hi.smileessence.listener;
 
-import net.miz_hi.smileessence.model.EventListAdapter;
-import net.miz_hi.smileessence.model.StatusListAdapter;
-import net.miz_hi.smileessence.model.StatusModel;
-import net.miz_hi.smileessence.model.StatusStore;
+import java.util.Date;
+
+import net.miz_hi.smileessence.Client;
+import net.miz_hi.smileessence.event.EnumEventType;
+import net.miz_hi.smileessence.event.EventListAdapter;
+import net.miz_hi.smileessence.event.EventModel;
+import net.miz_hi.smileessence.event.EventHelper;
+import net.miz_hi.smileessence.status.StatusListAdapter;
+import net.miz_hi.smileessence.status.StatusModel;
+import net.miz_hi.smileessence.status.StatusStore;
+import net.miz_hi.smileessence.status.StatusUtils;
 import twitter4j.DirectMessage;
 import twitter4j.StallWarning;
 import twitter4j.Status;
@@ -69,15 +76,11 @@ public class WarotterUserStreamListener implements UserStreamListener
 	@Override
 	public void onScrubGeo(long arg0, long arg1)
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onStallWarning(StallWarning arg0)
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -87,9 +90,13 @@ public class WarotterUserStreamListener implements UserStreamListener
 		if (arg0.isRetweet())
 		{
 			StatusStore.put(arg0.getRetweetedStatus());
+			if(StatusUtils.isMine(arg0.getRetweetedStatus()))
+			{
+				EventHelper.receive(EventModel.createInstance(arg0.getUser(), EnumEventType.RETWEET, arg0.getRetweetedStatus()));
+			}
 		}
 		final StatusModel model = StatusModel.createInstance(arg0);
-		if(StatusStore.isReply(arg0.isRetweet() ? arg0.getRetweetedStatus().getId() : arg0.getId()))
+		if(StatusUtils.isReply(arg0.isRetweet() ? arg0.getRetweetedStatus().getId() : arg0.getId()))
 		{
 			mentionsListAdapter.getActivity().runOnUiThread(new Runnable()
 			{
@@ -98,6 +105,7 @@ public class WarotterUserStreamListener implements UserStreamListener
 					mentionsListAdapter.addFirst(model);
 				}
 			});
+			EventHelper.receive(EventModel.createInstance(arg0.getUser(), EnumEventType.REPLY, arg0));
 		}
 		homeListAdapter.getActivity().runOnUiThread(new Runnable()
 		{
@@ -125,112 +133,102 @@ public class WarotterUserStreamListener implements UserStreamListener
 	@Override
 	public void onBlock(User arg0, User arg1)
 	{
-		// TODO Auto-generated method stub
-
+		if(arg1.getId() == Client.getMainAccount().getUserId())
+		{
+			EventHelper.receive(EventModel.createInstance(arg0, EnumEventType.BLOCK, null));
+		}
 	}
 
 	@Override
 	public void onDeletionNotice(long arg0, long arg1)
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onDirectMessage(DirectMessage arg0)
 	{
-		// TODO Auto-generated method stub
-
+		if(arg0.getRecipientId() == Client.getMainAccount().getUserId())
+		{
+			EventHelper.receive(EventModel.createInstance(arg0.getSender(), EnumEventType.DIRECT_MESSAGE, null));
+		}
 	}
 
 	@Override
 	public void onFavorite(User arg0, User arg1, Status arg2)
 	{
-		// TODO Auto-generated method stub
+		if(arg1.getId() == Client.getMainAccount().getUserId())
+		{
+			EventHelper.receive(EventModel.createInstance(arg0, EnumEventType.FAVORITE, arg2));
+		}
 	}
 
 	@Override
 	public void onFollow(User arg0, User arg1)
 	{
-		// TODO Auto-generated method stub
-
+		EventHelper.receive(EventModel.createInstance(arg0, EnumEventType.FOLLOW, null));
 	}
 
 	@Override
 	public void onFriendList(long[] arg0)
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onUnblock(User arg0, User arg1)
 	{
-		// TODO Auto-generated method stub
-
+		if(arg1.getId() == Client.getMainAccount().getUserId())
+		{
+			EventHelper.receive(EventModel.createInstance(arg0, EnumEventType.UNBLOCK, null));
+		}
 	}
 
 	@Override
 	public void onUnfavorite(User arg0, User arg1, Status arg2)
 	{
-		// TODO Auto-generated method stub
-
+		if(arg1.getId() == Client.getMainAccount().getUserId())
+		{
+			EventHelper.receive(EventModel.createInstance(arg0, EnumEventType.UNFAVORITE, arg2));
+		}
 	}
 
 	@Override
 	public void onUserListCreation(User arg0, UserList arg1)
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onUserListDeletion(User arg0, UserList arg1)
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onUserListMemberAddition(User arg0, User arg1, UserList arg2)
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onUserListMemberDeletion(User arg0, User arg1, UserList arg2)
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onUserListSubscription(User arg0, User arg1, UserList arg2)
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onUserListUnsubscription(User arg0, User arg1, UserList arg2)
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onUserListUpdate(User arg0, UserList arg1)
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onUserProfileUpdate(User arg0)
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 }

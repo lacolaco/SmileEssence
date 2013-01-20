@@ -1,9 +1,10 @@
-package net.miz_hi.smileessence.model;
+package net.miz_hi.smileessence;
 
 import java.io.File;
 
+import net.miz_hi.smileessence.auth.Account;
+import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.core.PreferenceHelper;
-import net.miz_hi.smileessence.util.EnumPreferenceKey;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.TwitterStream;

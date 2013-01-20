@@ -1,7 +1,7 @@
 package net.miz_hi.smileessence.core;
 
-import net.miz_hi.smileessence.model.Account;
-import net.miz_hi.smileessence.model.Client;
+import net.miz_hi.smileessence.Client;
+import net.miz_hi.smileessence.auth.Account;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 

@@ -2,9 +2,9 @@ package net.miz_hi.smileessence.async;
 
 import java.util.ArrayList;
 
-import net.miz_hi.smileessence.model.StatusModel;
-import net.miz_hi.smileessence.model.StatusStore;
-import net.miz_hi.smileessence.model.Client;
+import net.miz_hi.smileessence.Client;
+import net.miz_hi.smileessence.status.StatusModel;
+import net.miz_hi.smileessence.status.StatusStore;
 import net.miz_hi.smileessence.viewmodel.MainActivityViewModel;
 import twitter4j.Paging;
 import twitter4j.ResponseList;

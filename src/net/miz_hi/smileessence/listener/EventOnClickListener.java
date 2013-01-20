@@ -3,18 +3,20 @@ package net.miz_hi.smileessence.listener;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
+import net.miz_hi.smileessence.dialog.EventMenuAdapter;
 import net.miz_hi.smileessence.dialog.StatusMenuAdapter;
-import net.miz_hi.smileessence.status.StatusModel;
+import net.miz_hi.smileessence.event.EventModel;
+import net.miz_hi.smileessence.util.ColorUtils;
 import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class StatusOnClickListener implements OnClickListener
+public class EventOnClickListener implements OnClickListener
 {
 	private EventHandlerActivity activity;
-	private StatusModel model;
+	private EventModel model;
 	
-	public StatusOnClickListener(EventHandlerActivity activity, StatusModel model)
+	public EventOnClickListener(EventHandlerActivity activity, EventModel model)
 	{
 		this.activity = activity;
 		this.model = model;
@@ -24,7 +26,7 @@ public class StatusOnClickListener implements OnClickListener
 	@Override
 	public void onClick(final View v)
 	{
-		final StatusMenuAdapter adapter = new StatusMenuAdapter(activity, model);
+		final EventMenuAdapter adapter = new EventMenuAdapter(activity, model);
 		v.setBackgroundColor(Client.getResource().getColor(R.color.MetroBlue));
 		v.invalidate();
 		Handler hanlder = new Handler();
@@ -32,7 +34,7 @@ public class StatusOnClickListener implements OnClickListener
 		{
 			public void run()
 			{
-				v.setBackgroundColor(model.backgroundColor);
+				v.setBackgroundColor(ColorUtils.setAlpha(Client.getResource().getColor(R.color.LightGray), 200));
 				adapter.createMenuDialog().show();
 			}
 		}, 50);
