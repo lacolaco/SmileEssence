@@ -1,5 +1,8 @@
 package net.miz_hi.smileessence.view;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.core.EventSubscriber;
@@ -7,6 +10,7 @@ import net.miz_hi.smileessence.core.Message;
 import net.miz_hi.smileessence.core.ViewModel;
 import net.miz_hi.smileessence.event.EventNoticer;
 import net.miz_hi.smileessence.message.EventMessage;
+import net.miz_hi.smileessence.message.ReplyMessage;
 import net.miz_hi.smileessence.message.TweetMessage;
 import net.miz_hi.smileessence.viewmodel.MainActivityViewModel;
 import net.miz_hi.smileessence.viewmodel.TweetViewModel;
@@ -67,6 +71,20 @@ public class MainActivity extends EventHandlerActivity
 			public void onEventTriggered(String eventName, Message message)
 			{
 				TweetViewModel.singleton().text = ((TweetMessage)message).text;
+				slidingMenu.toggle();			
+			}
+		});		
+		messenger.subscribe("reply", new EventSubscriber()
+		{
+			
+			@Override
+			public void onEventTriggered(String eventName, Message message)
+			{
+				Pattern hasReply = Pattern.compile("^@([a-zA-Z0-9_]+).*");
+				String text = TweetViewModel.singleton().text.toString();
+				text = text + "@" + ((ReplyMessage)message).sendTo.getScreenName() + " ";
+				TweetViewModel.singleton().text = text;
+				TweetViewModel.singleton().inReplyTo = ((ReplyMessage)message).inReplyToStatusId;
 				slidingMenu.toggle();			
 			}
 		});

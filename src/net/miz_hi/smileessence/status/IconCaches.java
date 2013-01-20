@@ -27,6 +27,11 @@ public class IconCaches
 	private static File cacheDir = Client.getApplication().getExternalCacheDir();
 	private static Bitmap emptyIcon;
 
+	public static Icon getIcon(long id)
+	{
+		return iconCache.get(id);
+	}
+	
 	public static void setIconBitmapToView(User user, ImageView viewIcon)
 	{
 		String fileName = genIconName(user);

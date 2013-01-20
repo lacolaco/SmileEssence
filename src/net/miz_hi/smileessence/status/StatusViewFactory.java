@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 public class StatusViewFactory
 {
-	
+
 	public static View getView(LayoutInflater layoutInflater, StatusModel model)
 	{
 		View viewStatus = layoutInflater.inflate(R.layout.status_layout, null);
@@ -28,7 +28,14 @@ public class StatusViewFactory
 		}
 		viewStatus.setBackgroundColor(model.backgroundColor);
 		viewIcon.setImageBitmap(IconCaches.getEmptyIcon());
-		IconCaches.setIconBitmapToView(model.user, viewIcon);
+		if(IconCaches.getIcon(model.user.getId()) != null)
+		{
+			viewIcon.setImageBitmap(IconCaches.getIcon(model.user.getId()).use());
+		}
+		else
+		{
+			IconCaches.setIconBitmapToView(model.user, viewIcon);
+		}
 		viewScreenName.setText(model.screenName);
 		viewScreenName.setTextColor(model.nameColor);
 		viewName.setText(model.name);

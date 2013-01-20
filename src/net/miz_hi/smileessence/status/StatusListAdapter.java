@@ -5,6 +5,7 @@ import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.core.QueueAdapter;
 import net.miz_hi.smileessence.listener.StatusOnClickListener;
+import net.miz_hi.smileessence.status.IconCaches.Icon;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -48,7 +49,14 @@ public class StatusListAdapter extends QueueAdapter<StatusModel>
 		holder.viewBase.setBackgroundColor(model.backgroundColor);
 
 		holder.viewIcon.setImageBitmap(IconCaches.getEmptyIcon());
-		IconCaches.setIconBitmapToView(model.user, holder.viewIcon);
+		if(IconCaches.getIcon(model.user.getId()) != null)
+		{
+			holder.viewIcon.setImageBitmap(IconCaches.getIcon(model.user.getId()).use());
+		}
+		else
+		{
+			IconCaches.setIconBitmapToView(model.user, holder.viewIcon);
+		}
 		holder.viewScreenName.setText(model.screenName);
 		holder.viewScreenName.setTextColor(model.nameColor);
 		holder.viewName.setText(model.name);

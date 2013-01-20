@@ -154,7 +154,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int icon_templates=0x7f02000f;
         public static final int icon_tweet_w=0x7f020010;
         public static final int icon_warota=0x7f020011;
-        public static final int logo_1=0x7f020012;
+        public static final int se_logo=0x7f020012;
         public static final int shadow=0x7f020013;
     }
     public static final class id {
@@ -205,7 +205,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int textView_text=0x7f040020;
         public static final int textView_title=0x7f040011;
         public static final int textView_toastText=0x7f04000b;
-        public static final int text_Navigate=0x7f04001b;
+        public static final int text_navigate=0x7f04001b;
     }
     public static final class integer {
         public static final int num_cols=0x7f070000;

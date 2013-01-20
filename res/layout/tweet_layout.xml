@@ -1,114 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:scrollbars="vertical" >
 
-    <TextView
-        android:id="@+id/textView_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/MetroBlue"
-        android:textSize="15sp" />
-
-    <EditText
-        android:id="@+id/editText_tweet"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp"
-        android:ems="10"
-        android:gravity="top"
-        android:inputType="textMultiLine"
-        android:textSize="11sp" >
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:scrollbars="vertical" >
 
-        <requestFocus />
-    </EditText>
+        <TextView
+            android:id="@+id/textView_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/MetroBlue"
+            android:textSize="15sp" />
 
-    <TableLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:orientation="vertical" >
-
-        <TableRow
-            android:id="@+id/tableRow1"
+        <EditText
+            android:id="@+id/editText_tweet"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:gravity="right|center_vertical"
-            android:scrollbarStyle="outsideInset"
-            android:scrollbars="horizontal" >
+            android:layout_height="100dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:ems="10"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:textSize="11sp" >
 
-            <ImageButton
-                android:id="@+id/imageButton_morse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/icon_morse"/>
+            <requestFocus />
+        </EditText>
 
-            <ImageButton
-                android:id="@+id/imageButton_warota"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/icon_warota" />
-
-            <ImageButton
-                android:id="@+id/imageButton_submit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/icon_submit"/>
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow2"
+        <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp" >
+            android:layout_gravity="left"
+            android:orientation="vertical" >
 
-            <ImageButton
-                android:id="@+id/imageButton_replace"
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="right|center_vertical"
+                android:scrollbarStyle="outsideInset"
+                android:scrollbars="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/imageButton_morse"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/icon_morse" />
+
+                <ImageButton
+                    android:id="@+id/imageButton_warota"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/icon_warota" />
+
+                <ImageButton
+                    android:id="@+id/imageButton_submit"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/icon_submit" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/icon_replace" />
+                android:layout_marginBottom="10dp" >
 
-            <ImageButton
-                android:id="@+id/imageButton_template"
+                <ImageButton
+                    android:id="@+id/imageButton_replace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/icon_replace" />
+
+                <ImageButton
+                    android:id="@+id/imageButton_template"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/icon_templates" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/icon_templates"/>
-        </TableRow>
+                android:layout_marginBottom="10dp" >
 
-        <TableRow
-            android:id="@+id/tableRow3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp" >
+                <ImageButton
+                    android:id="@+id/imageButton_hashtag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/icon_hash" />
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/imageButton_hashtag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/icon_hash"/>
-
-        </TableRow>
-
-    </TableLayout>
-
-</LinearLayout>
+</ScrollView>

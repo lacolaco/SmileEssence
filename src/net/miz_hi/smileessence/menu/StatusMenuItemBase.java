@@ -8,11 +8,12 @@ public abstract class StatusMenuItemBase extends MenuItemBase
 {
 	protected StatusModel model;
 	
-	public StatusMenuItemBase(EventHandlerActivity activity, DialogAdapter factory, StatusModel model)
+	public StatusMenuItemBase(EventHandlerActivity activity, DialogAdapter adapter, StatusModel model)
 	{
-		super(activity, factory);
+		super(activity, adapter);
 		this.model = model;
 	}
 	
+	@Override
 	public abstract boolean isVisible();
 }

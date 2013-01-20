@@ -4,6 +4,10 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.menu.MenuItemAccountReset;
+import net.miz_hi.smileessence.menu.MenuItemClose;
+import net.miz_hi.smileessence.menu.MenuItemOpenFavstar;
+import net.miz_hi.smileessence.menu.MenuItemOpenFollowers;
+import net.miz_hi.smileessence.menu.MenuItemOpenFriends;
 import net.miz_hi.smileessence.menu.MenuItemSetting;
 import android.app.Dialog;
 import android.widget.TextView;
@@ -27,8 +31,13 @@ public class OptionMenuAdapter extends DialogAdapter
 		viewTitle.setTextColor(Client.getResource().getColor(R.color.White));
 		viewTitle.setText(title);
 		viewTitle.setPadding(5, 10, 0, 10);
+		
 		list.add(new MenuItemSetting(activity, this));
+		list.add(new MenuItemOpenFavstar(activity, this));
+		list.add(new MenuItemOpenFollowers(activity, this));
+		list.add(new MenuItemOpenFriends(activity, this));
 		list.add(new MenuItemAccountReset(activity, this));
+		list.add(new MenuItemClose(activity, this));
 		return super.createMenuDialog(viewTitle);
 	}
 

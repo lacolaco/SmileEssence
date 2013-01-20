@@ -7,9 +7,9 @@ import net.miz_hi.smileessence.status.StatusModel;
 public class StatusMenuWarotaRT extends StatusMenuItemBase
 {
 
-	public StatusMenuWarotaRT(EventHandlerActivity activity, DialogAdapter factory, StatusModel model)
+	public StatusMenuWarotaRT(EventHandlerActivity activity, DialogAdapter adapter, StatusModel model)
 	{
-		super(activity, factory, model);
+		super(activity, adapter, model);
 	}
 
 	@Override

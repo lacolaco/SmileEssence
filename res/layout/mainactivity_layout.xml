@@ -12,7 +12,6 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/relativeLayout1"
         android:fastScrollEnabled="true"
-        android:smoothScrollbar="true"
         android:background="@color/White"/>
     
     <ListView
@@ -24,8 +23,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/relativeLayout1"
         android:background="@color/White"
-        android:fastScrollEnabled="true"
-        android:smoothScrollbar="true" />
+        android:fastScrollEnabled="true" />
     
 <RelativeLayout
         android:id="@+id/relativeLayout1"

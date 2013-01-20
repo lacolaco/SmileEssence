@@ -3,10 +3,10 @@ package net.miz_hi.smileessence.menu;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 
-public class MenuItemSetting extends MenuItemBase
+public class MenuItemClose extends MenuItemBase
 {
 
-	public MenuItemSetting(EventHandlerActivity activity, DialogAdapter adapter)
+	public MenuItemClose(EventHandlerActivity activity, DialogAdapter adapter)
 	{
 		super(activity, adapter);
 	}
@@ -14,14 +14,13 @@ public class MenuItemSetting extends MenuItemBase
 	@Override
 	public String getText()
 	{
-		return "ê›íË";
+		return "ï¬Ç∂ÇÈ";
 	}
 
 	@Override
 	public void work()
 	{
-		// TODO Auto-generated method stub
-
+		adapter.dispose();
 	}
 
 }

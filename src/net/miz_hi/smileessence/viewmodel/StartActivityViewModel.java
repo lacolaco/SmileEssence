@@ -53,7 +53,7 @@ public class StartActivityViewModel extends ViewModel
 	public void initialize(Activity activity)
 	{
 		Button buttonAuth = (Button)activity.findViewById(R.id.button_Auth);
-		TextView textNavi = (TextView)activity.findViewById(R.id.text_Navigate);
+		TextView textNavi = (TextView)activity.findViewById(R.id.text_navigate);
 		buttonAuth.setText("認証ページヘ");
 		buttonAuth.setVisibility(View.INVISIBLE);
 		if (isAuthed())

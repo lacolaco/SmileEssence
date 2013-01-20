@@ -60,7 +60,10 @@ public abstract class DialogAdapter
 		}
 		for (MenuItemBase item : list)
 		{
-			itemsLinearLayout.addView(new MenuItemView(activity, item).getView());
+			if(item.isVisible())
+			{
+				itemsLinearLayout.addView(new MenuItemView(activity, item).getView());
+			}
 		}
 		itemsLinearLayout.setClickable(true);
 		dialog.setContentView(view);

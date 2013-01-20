@@ -8,27 +8,28 @@
         android:id="@+id/imageView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_above="@+id/text_navigate"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
-        android:src="@drawable/logo_1" />
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/se_logo" />
 
     <TextView
-        android:id="@+id/text_Navigate"
+        android:id="@+id/text_navigate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView1"
+        android:layout_above="@+id/button_Auth"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
         android:id="@+id/button_Auth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_Navigate"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:layout_marginTop="20dp" />
     
 </RelativeLayout>

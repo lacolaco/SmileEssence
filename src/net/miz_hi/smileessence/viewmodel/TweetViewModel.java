@@ -23,7 +23,8 @@ import com.slidingmenu.lib.SlidingMenu;
 public class TweetViewModel extends ViewModel
 {
 	private static TweetViewModel instance;
-	public static String text;
+	public String text;
+	public long inReplyTo;
 	
 	public static TweetViewModel singleton()
 	{
@@ -37,21 +38,18 @@ public class TweetViewModel extends ViewModel
 	private TweetViewModel()
 	{
 		text = "";
+		inReplyTo = -1;
 	}
 
 	
 	@Override
 	public void onActivityCreated(EventHandlerActivity activity)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onActivityDestroy(EventHandlerActivity activity)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public void init(EventHandlerActivity activity, SlidingMenu menu)
@@ -124,7 +122,6 @@ public class TweetViewModel extends ViewModel
 		}
 	}
 
-
 	public void onCloseSlidingMenu(SlidingMenu slidingMenu)
 	{
 		EditText viewEdit = (EditText)slidingMenu.findViewById(R.id.editText_tweet);
@@ -133,7 +130,7 @@ public class TweetViewModel extends ViewModel
 		if(StringUtils.isNullOrEmpty(viewEdit.getText().toString()))
 		{
 			text = viewEdit.getText().toString();
-		}		
+		}
 	}
 
 	@Override
@@ -152,7 +149,13 @@ public class TweetViewModel extends ViewModel
 		}
 		else
 		{
-			AsyncTweetTask.addTask(new AsyncTweetTask(new StatusUpdate(text), this));
+			StatusUpdate status = new StatusUpdate(text);
+			if(inReplyTo >= 0)
+			{
+				status.setInReplyToStatusId(inReplyTo);
+				inReplyTo = -1;
+			}
+			AsyncTweetTask.addTask(new AsyncTweetTask(status, this));
 		}
 	}
 }

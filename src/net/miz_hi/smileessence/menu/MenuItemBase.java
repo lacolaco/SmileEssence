@@ -11,14 +11,19 @@ public abstract class MenuItemBase
 	protected DialogAdapter adapter;
 	private Handler handler;
 
-	public MenuItemBase(EventHandlerActivity activity, DialogAdapter factory)
+	public MenuItemBase(EventHandlerActivity activity, DialogAdapter adapter)
 	{
 		this.activity = activity;
-		this.adapter = factory;
+		this.adapter = adapter;
 		handler = new Handler();
 	}
 
 	public abstract String getText();
+	
+	public boolean isVisible()
+	{
+		return true;
+	}
 
 	public void run()
 	{
