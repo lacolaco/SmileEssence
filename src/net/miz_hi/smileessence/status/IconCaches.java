@@ -108,9 +108,7 @@ public class IconCaches
 			iconCache.remove(user.getId());
 		}
 
-		iconCache.put(user.getId(), icon);
-
-		if (iconCache.size() >= 100)
+		if (iconCache.size() > 99)
 		{
 
 			List<Map.Entry> entries = new ArrayList<Map.Entry>(iconCache.entrySet());
@@ -126,8 +124,10 @@ public class IconCaches
 				}
 			});
 			Icon i = iconCache.remove(entries.get(0));
-			i.bitmap.recycle();
-		}
+			i = null;
+		}		
+
+		iconCache.put(user.getId(), icon);
 	}
 
 	public static Bitmap getEmptyIcon()
