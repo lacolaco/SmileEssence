@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncIconGetter;
+import net.miz_hi.smileessence.util.CountUpInteger;
 import net.miz_hi.smileessence.util.StringUtils;
 import twitter4j.User;
 import android.graphics.Bitmap;
@@ -26,6 +27,7 @@ public class IconCaches
 	private static ConcurrentHashMap<Long, Icon> iconCache = new ConcurrentHashMap<Long, Icon>(100);
 	private static File cacheDir = Client.getApplication().getExternalCacheDir();
 	private static Bitmap emptyIcon;
+	private static CountUpInteger counter = new CountUpInteger(5);
 
 	public static Icon getIcon(long id)
 	{
@@ -108,7 +110,7 @@ public class IconCaches
 			iconCache.remove(user.getId());
 		}
 
-		if (iconCache.size() > 99)
+		if (iconCache.size() > 99 && counter.isOver())
 		{
 
 			List<Map.Entry> entries = new ArrayList<Map.Entry>(iconCache.entrySet());
@@ -125,9 +127,11 @@ public class IconCaches
 			});
 			Icon i = iconCache.remove(entries.get(0));
 			i = null;
-		}		
+			counter.reset();
+		}
 
 		iconCache.put(user.getId(), icon);
+		counter.countUp();
 	}
 
 	public static Bitmap getEmptyIcon()
