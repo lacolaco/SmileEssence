@@ -46,7 +46,7 @@ public class StartActivityViewModel extends ViewModel
 	
 	private boolean isAuthed()
 	{
-		long lastUsedId = (Long) Client.getPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID);
+		Long lastUsedId = (Long) Client.getPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID);
 		return lastUsedId > 0 && !AuthentificationDB.instance().findAll().isEmpty();
 	}
 

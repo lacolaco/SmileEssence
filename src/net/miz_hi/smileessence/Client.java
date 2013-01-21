@@ -103,6 +103,11 @@ public class Client
 	{
 		Client.prefHelper = new PreferenceHelper(PreferenceManager.getDefaultSharedPreferences(app));
 		Client.app = app;
+
+		if((Integer)getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) < 0)
+		{
+			putPreferenceValue(EnumPreferenceKey.TEXT_SIZE, 10);
+		}
 	}
 
 	public static final String HOMEPAGE_URL = "http://warotter.web.fc2.com/";

@@ -41,6 +41,7 @@ public class PreferenceHelper
 
 	public <T> T getPreferenceValue(EnumPreferenceKey key)
 	{
+
 		if (key.getType() == EnumValueType.BOOLEAN)
 		{
 			return (T) (Boolean) preference.getBoolean(key.getKey(), false);

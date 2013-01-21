@@ -47,8 +47,7 @@ public class MainActivityViewModel extends ViewModel
 		mentionsListAdapter = new StatusListAdapter(activity);
 		handler = new Handler();
 		new AsyncTimelineGetter(Client.getMainAccount()).execute(new Paging(1));
-		new AsyncMentionsGetter(Client.getMainAccount()).execute(new Paging(1));
-				
+		new AsyncMentionsGetter(Client.getMainAccount()).execute(new Paging(1));		
 		WarotterUserStreamListener usListener = new WarotterUserStreamListener();
 		usListener.setHomeListAdapter(homeListAdapter);
 		usListener.setMentionsListAdapter(mentionsListAdapter);
