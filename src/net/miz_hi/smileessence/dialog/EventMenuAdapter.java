@@ -18,7 +18,7 @@ public class EventMenuAdapter extends DialogAdapter
 	}
 
 	@Override
-	public Dialog createMenuDialog()
+	public Dialog createMenuDialog(boolean init)
 	{
 		View viewEvent = EventViewFactory.getView(activity, model);
 		

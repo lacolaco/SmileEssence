@@ -33,7 +33,7 @@ public class StatusOnClickListener implements OnClickListener
 			public void run()
 			{
 				v.setBackgroundColor(model.backgroundColor);
-				adapter.createMenuDialog().show();
+				adapter.createMenuDialog(true).show();
 			}
 		}, 50);
 	}

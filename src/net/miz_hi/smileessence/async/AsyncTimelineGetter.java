@@ -3,6 +3,7 @@ package net.miz_hi.smileessence.async;
 import java.util.ArrayList;
 
 import net.miz_hi.smileessence.Client;
+import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusStore;
 import net.miz_hi.smileessence.viewmodel.MainActivityViewModel;
@@ -14,8 +15,11 @@ import android.os.AsyncTask;
 public class AsyncTimelineGetter extends AsyncTask<Paging, Integer, ResponseList<twitter4j.Status>>
 {
 
-	public AsyncTimelineGetter()
+	private Account account;
+	
+	public AsyncTimelineGetter(Account account)
 	{
+		this.account = account;
 	}
 
 	@Override
@@ -23,7 +27,7 @@ public class AsyncTimelineGetter extends AsyncTask<Paging, Integer, ResponseList
 	{
 		try
 		{
-			return Client.getTwitter(Client.getMainAccount()).getHomeTimeline(arg0[0]);
+			return Client.getTwitter(account).getHomeTimeline(arg0[0]);
 		}
 		catch (TwitterException e)
 		{

@@ -34,7 +34,7 @@ public class MenuItemParent extends MenuItemBase
 				if (!(list.get(0) instanceof MenuItemBack))
 					list.add(0, new MenuItemBack(activity, adapter, "< –ß‚é", adapter.getList()));
 				adapter.setMenuItems(list);
-				adapter.createMenuDialog().show();
+				adapter.createMenuDialog(false).show();
 			}
 		});
 	}

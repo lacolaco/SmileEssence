@@ -1,17 +1,25 @@
 package net.miz_hi.smileessence.dialog;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncRetweetTask;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
+import net.miz_hi.smileessence.menu.MenuItemBase;
 import net.miz_hi.smileessence.menu.MenuItemClose;
+import net.miz_hi.smileessence.menu.MenuItemParent;
 import net.miz_hi.smileessence.menu.StatusMenuCopyToClipboard;
 import net.miz_hi.smileessence.menu.StatusMenuFavAndRetweet;
+import net.miz_hi.smileessence.menu.StatusMenuOpenUrl;
 import net.miz_hi.smileessence.menu.StatusMenuWarotaRT;
 import net.miz_hi.smileessence.message.ReplyMessage;
 import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusViewFactory;
+import twitter4j.MediaEntity;
+import twitter4j.URLEntity;
 import android.app.Dialog;
 import android.os.Handler;
 import android.view.View;
@@ -31,7 +39,7 @@ public class StatusMenuAdapter extends DialogAdapter
 	}
 
 	@Override
-	public Dialog createMenuDialog()
+	public Dialog createMenuDialog(boolean init)
 	{	
 		View viewStatus = StatusViewFactory.getView(layoutInflater, model);
 		
@@ -43,14 +51,44 @@ public class StatusMenuAdapter extends DialogAdapter
 		viewReply.setOnClickListener(onClickReply);
 		viewRetweet.setOnClickListener(onClickRetweet);
 		viewFavorite.setOnClickListener(onClickFavorite);
-		
-		list.add(new StatusMenuWarotaRT(activity, this, model));
-		list.add(new StatusMenuFavAndRetweet(activity, this, model));
-		list.add(new StatusMenuCopyToClipboard(activity, this, model));
-		
-		list.add(new MenuItemClose(activity, this));
+
+		if(init)
+		{
+			list.add(new StatusMenuWarotaRT(activity, this, model));
+
+			list.add(new StatusMenuFavAndRetweet(activity, this, model));
+			list.add(new StatusMenuCopyToClipboard(activity, this, model));
+			if (!getURLMenu().isEmpty())
+			{
+				list.add(new MenuItemParent(activity, this, "URL‚ðŠJ‚­", getURLMenu()));
+			}
+		}
 
 		return super.createMenuDialog(viewStatus, viewCommands);
+	}
+	
+	private List<MenuItemBase> getURLMenu()
+	{
+		List<MenuItemBase> list = new ArrayList<MenuItemBase>();
+		if (model.urls != null)
+		{
+			for (URLEntity urlEntity : model.urls)
+			{
+				String url = urlEntity.getExpandedURL();
+				if (url != null)
+					list.add(new StatusMenuOpenUrl(activity, this, model, url));
+			}
+		}
+		if (model.medias != null)
+		{
+			for (MediaEntity mediaEntity : model.medias)
+			{
+				String url = mediaEntity.getExpandedURL();
+				if (url != null)
+					list.add(new StatusMenuOpenUrl(activity, this, model, url));
+			}
+		}
+		return list;
 	}
 	
 	private OnClickListener onClickReply = new OnClickListener()

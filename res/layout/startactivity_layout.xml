@@ -19,9 +19,7 @@
         android:id="@+id/text_navigate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button_Auth"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_centerInParent="true"
         android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -29,7 +27,8 @@
         android:id="@+id/button_Auth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_below="@id/text_navigate"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp" />
     
 </RelativeLayout>

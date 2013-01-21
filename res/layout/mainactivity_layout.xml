@@ -42,7 +42,6 @@
             android:layout_centerHorizontal="true"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/MetroBlue"
-            android:textSize="13sp"
             android:textStyle="bold"
             android:typeface="sans" />
 

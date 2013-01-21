@@ -3,9 +3,12 @@ package net.miz_hi.smileessence.dialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.menu.MenuItemBase;
+import net.miz_hi.smileessence.menu.MenuItemClose;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
@@ -45,7 +48,7 @@ public abstract class DialogAdapter
 		return list;
 	}
 
-	public abstract Dialog createMenuDialog();
+	public abstract Dialog createMenuDialog(boolean init);
 
 	protected Dialog createMenuDialog(View... viewTitle)
 	{
@@ -54,6 +57,7 @@ public abstract class DialogAdapter
 		View view = layoutInflater.inflate(R.layout.dialog_menu_layout, null);
 		LinearLayout titleLinearLayout = (LinearLayout)view.findViewById(R.id.linearLayout_dialogTitle);
 		LinearLayout itemsLinearLayout = (LinearLayout)view.findViewById(R.id.linearLayout_dialogItems);
+		
 		for (View v : viewTitle)
 		{
 			titleLinearLayout.addView(v);
@@ -65,6 +69,7 @@ public abstract class DialogAdapter
 				itemsLinearLayout.addView(new MenuItemView(activity, item).getView());
 			}
 		}
+		itemsLinearLayout.addView(new MenuItemView(activity, new MenuItemClose(activity, this)).getView());
 		itemsLinearLayout.setClickable(true);
 		dialog.setContentView(view);
 		LayoutParams lp = dialog.getWindow().getAttributes();

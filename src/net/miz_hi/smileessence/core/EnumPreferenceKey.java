@@ -3,7 +3,9 @@ package net.miz_hi.smileessence.core;
 public enum EnumPreferenceKey
 {
 	LAST_USED_USER_ID(EnumValueType.LONG, "user_id"),
-	THEME(EnumValueType.INTEGER, "theme");
+	TEXT_SIZE(EnumValueType.INTEGER, "text_size"),
+	
+	;
 
 	private final EnumValueType type;
 	private final String key;

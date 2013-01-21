@@ -20,6 +20,10 @@ public class StatusUtils
 	
 	public static boolean isReply(Status st)
 	{
+		if(st == null)
+		{
+			return false;
+		}
 		for (UserMentionEntity ume : st.getUserMentionEntities())
 		{
 			if (ume.getScreenName().equals(Client.getMainAccount().getScreenName()))

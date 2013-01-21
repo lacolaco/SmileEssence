@@ -3,6 +3,7 @@ package net.miz_hi.smileessence.async;
 import java.util.ArrayList;
 
 import net.miz_hi.smileessence.Client;
+import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusStore;
 import net.miz_hi.smileessence.viewmodel.MainActivityViewModel;
@@ -14,8 +15,11 @@ import android.os.AsyncTask;
 public class AsyncMentionsGetter extends AsyncTask<Paging, Integer, ResponseList<twitter4j.Status>>
 {
 
-	public AsyncMentionsGetter()
+	private Account account;
+	
+	public AsyncMentionsGetter(Account account)
 	{
+		this.account = account;
 	}
 
 	@Override

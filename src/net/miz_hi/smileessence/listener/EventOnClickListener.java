@@ -35,7 +35,7 @@ public class EventOnClickListener implements OnClickListener
 			public void run()
 			{
 				v.setBackgroundColor(ColorUtils.setAlpha(Client.getResource().getColor(R.color.LightGray), 200));
-				adapter.createMenuDialog().show();
+				adapter.createMenuDialog(true).show();
 			}
 		}, 50);
 	}

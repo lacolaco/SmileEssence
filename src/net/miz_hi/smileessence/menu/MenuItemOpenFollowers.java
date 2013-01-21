@@ -17,7 +17,7 @@ public class MenuItemOpenFollowers extends MenuItemBase
 	@Override
 	public String getText()
 	{
-		return "フォロワー一覧を開く(web)";
+		return "フォロワーを見る(web)";
 	}
 
 	@Override

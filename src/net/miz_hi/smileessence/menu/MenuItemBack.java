@@ -32,7 +32,7 @@ public class MenuItemBack extends MenuItemBase
 			public void run()
 			{
 				adapter.setMenuItems(list);
-				adapter.createMenuDialog().show();
+				adapter.createMenuDialog(false).show();
 			}
 		});
 	}

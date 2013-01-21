@@ -87,12 +87,7 @@ public class Client
 		}
 		mainAccount = account;
 	}
-
-	public static void setTheme(int theme)
-	{
-		putPreferenceValue(EnumPreferenceKey.THEME, theme);
-	}
-
+	
 	public static File getApplicationFile(String fileName)
 	{
 		File file = new File(app.getExternalCacheDir(), fileName);

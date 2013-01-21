@@ -6,6 +6,7 @@ import java.util.List;
 import net.miz_hi.smileessence.message.ToastMessage;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -78,7 +79,7 @@ public abstract class EventHandlerActivity extends Activity
 			vm.onActivityDestroy(this);
 		}
 	}
-	
+
 	public final void onEvent(String event)
 	{
 		for(ViewModel vm : viewModelList)

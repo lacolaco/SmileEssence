@@ -28,8 +28,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/textView_screenName"
-        android:gravity="top"
-        android:textSize="10sp"/>
+        android:gravity="top"/>
 
     <TextView
         android:id="@+id/textView_text"
@@ -37,10 +36,9 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView_screenName"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView_screenName"
+        android:layout_below="@+id/textView_name"
         android:layout_marginBottom="3dp"
-        android:layout_marginTop="1dp"
-        android:textSize="10sp" />
+        android:layout_marginTop="1dp" />
 
     <TextView
         android:id="@+id/textView_source"
@@ -48,8 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/textView_text"
-        android:layout_marginRight="2dp"
-        android:textSize="9sp" />
+        android:layout_marginRight="2dp"/>
     
     <TextView
         android:id="@+id/textView_createdAt"
@@ -58,8 +55,7 @@
         android:layout_alignTop="@id/textView_source"
         android:layout_marginRight="4dp"
         android:layout_toLeftOf="@+id/textView_source"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="9sp" />
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     <TextView
         android:id="@+id/textView_retweetedBy"
@@ -68,7 +64,6 @@
         android:layout_alignTop="@id/textView_source"
         android:layout_marginRight="2dp"
         android:layout_toLeftOf="@+id/textView_createdAt"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="9sp" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

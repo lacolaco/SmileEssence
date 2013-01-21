@@ -2,6 +2,7 @@ package net.miz_hi.smileessence.event;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.listener.EventOnClickListener;
 import net.miz_hi.smileessence.status.StatusViewFactory;
@@ -38,6 +39,7 @@ public class EventViewFactory
 		bodyLayout.removeAllViews();
 		viewText.setText(model.source.getScreenName() + model.type.getText());
 		viewText.setTextColor(Client.getResource().getColor(R.color.White));
+		viewText.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) + 1);
 		
 		if(model.targetModel == null)
 		{

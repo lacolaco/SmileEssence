@@ -4,6 +4,7 @@ import java.util.WeakHashMap;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -38,16 +39,22 @@ public class StatusViewFactory
 		}
 		viewScreenName.setText(model.screenName);
 		viewScreenName.setTextColor(model.nameColor);
+		viewScreenName.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE));
 		viewName.setText(model.name);
 		viewName.setTextColor(model.nameColor);
+		viewName.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE));
 		viewText.setText(model.text);
 		viewText.setTextColor(model.textColor);
+		viewText.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE));
 		viewSource.setText(model.source);
 		viewSource.setTextColor(model.textColor);
+		viewSource.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) - 1);
 		viewCreatedAt.setText(model.createdAtString);
 		viewCreatedAt.setTextColor(model.textColor);
+		viewCreatedAt.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) - 1);
 		viewRetweetedBy.setText(model.retweetedBy);
 		viewRetweetedBy.setTextColor(model.textColor);
+		viewRetweetedBy.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) - 1);
 		if(model.isRetweet)
 		{
 			viewRetweetedBy.setVisibility(View.VISIBLE);

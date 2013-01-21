@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <PreferenceCategory android:title="基本設定"><Preference android:title="文字サイズ" android:key="@string/key_setting_textSize" android:summary="文字のサイズだよ" android:defaultValue="10" /></PreferenceCategory>
     
 
 </PreferenceScreen>

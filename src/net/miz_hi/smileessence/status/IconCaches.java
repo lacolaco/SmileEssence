@@ -1,13 +1,11 @@
 package net.miz_hi.smileessence.status;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.miz_hi.smileessence.Client;
@@ -113,7 +111,7 @@ public class IconCaches
 		if (iconCache.size() > 99 && counter.isOver())
 		{
 
-			List<Map.Entry> entries = new ArrayList<Map.Entry>(iconCache.entrySet());
+			LinkedList<Map.Entry> entries = new LinkedList<Map.Entry>(iconCache.entrySet());
 			Collections.sort(entries, new Comparator()
 			{
 
@@ -125,8 +123,10 @@ public class IconCaches
 					return ((Icon)e1.getValue()).compareTo((Icon)e2.getValue());
 				}
 			});
-			Icon i = iconCache.remove(entries.get(0));
-			i = null;
+			while(iconCache.size() > 98)
+			{
+				Icon i = iconCache.remove(entries.pollFirst());
+			}
 			counter.reset();
 		}
 

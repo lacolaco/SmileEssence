@@ -7,7 +7,10 @@ import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.status.IconCaches.Icon;
 import net.miz_hi.smileessence.util.ExtendedBoolean;
 import net.miz_hi.smileessence.util.StringUtils;
+import twitter4j.HashtagEntity;
+import twitter4j.MediaEntity;
 import twitter4j.Status;
+import twitter4j.URLEntity;
 import twitter4j.User;
 import android.text.Html;
 
@@ -22,6 +25,9 @@ public class StatusModel implements Comparable<StatusModel>
 	public String retweetedBy;
 	public String createdAtString;
 	public Date createdAt;
+	public URLEntity[] urls;
+	public MediaEntity[] medias;
+	public HashtagEntity[] hashtags;
 	public int backgroundColor;
 	public int nameColor;
 	public int textColor;
@@ -44,33 +50,19 @@ public class StatusModel implements Comparable<StatusModel>
 	private StatusModel(Status status)
 	{
 		isRetweet = status.isRetweet();
+		Status shownStatus;
 		if(isRetweet)
 		{
-			Status sourceStatus = status.getRetweetedStatus();
-			statusId = sourceStatus.getId();
-			user = sourceStatus.getUser();
-			screenName = user.getScreenName();
-			name = user.getName();
-			text = sourceStatus.getText();
-			source = "via " + Html.fromHtml(sourceStatus.getSource()).toString();
-			createdAt = sourceStatus.getCreatedAt();
-			createdAtString = StringUtils.dateToString(createdAt);
+			shownStatus = status.getRetweetedStatus();
+			statusId = shownStatus.getId();
 			retweetedBy = "(RT:"+ status.getUser().getScreenName() + ")";
 			backgroundColor = Client.getResource().getColor(R.color.LightBlue);
-			IconCaches.setIconBitmapToView(user, null);
 		}
 		else
 		{
-			statusId = status.getId();
-			user = status.getUser();
-			screenName = user.getScreenName();
-			name = user.getName();
-			text = status.getText();
-			source = "via " + Html.fromHtml(status.getSource()).toString();
-			createdAt = status.getCreatedAt();
-			createdAtString = StringUtils.dateToString(createdAt);
+			shownStatus = status;
+			statusId = shownStatus.getId();
 			retweetedBy = "";
-			IconCaches.setIconBitmapToView(status.getUser(), null);
 			if (isReply())
 			{
 				backgroundColor = Client.getResource().getColor(R.color.LightRed);
@@ -79,7 +71,19 @@ public class StatusModel implements Comparable<StatusModel>
 			{
 				backgroundColor = -1;
 			}
-		}		
+		}
+		user = shownStatus.getUser();
+		screenName = user.getScreenName();
+		name = user.getName();
+		text = shownStatus.getText();
+		source = "via " + Html.fromHtml(shownStatus.getSource()).toString();
+		createdAt = shownStatus.getCreatedAt();
+		createdAtString = StringUtils.dateToString(createdAt);
+		urls = shownStatus.getURLEntities();
+		medias = shownStatus.getMediaEntities();
+		hashtags = shownStatus.getHashtagEntities();
+		IconCaches.setIconBitmapToView(user, null);
+		
 		if (isMine())
 		{				
 			nameColor = Client.getResource().getColor(R.color.DarkBlue);

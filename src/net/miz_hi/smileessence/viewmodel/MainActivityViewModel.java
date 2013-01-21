@@ -4,6 +4,7 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncMentionsGetter;
 import net.miz_hi.smileessence.async.AsyncTimelineGetter;
+import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.core.ViewModel;
 import net.miz_hi.smileessence.dialog.OptionMenuAdapter;
@@ -45,8 +46,16 @@ public class MainActivityViewModel extends ViewModel
 		homeListAdapter = new StatusListAdapter(activity);
 		mentionsListAdapter = new StatusListAdapter(activity);
 		handler = new Handler();
-		new AsyncTimelineGetter().execute(new Paging(1));
-		new AsyncMentionsGetter().execute(new Paging(1));
+		new AsyncTimelineGetter(Client.getMainAccount()).execute(new Paging(1));
+		new AsyncMentionsGetter(Client.getMainAccount()).execute(new Paging(1));
+				
+		WarotterUserStreamListener usListener = new WarotterUserStreamListener();
+		usListener.setHomeListAdapter(homeListAdapter);
+		usListener.setMentionsListAdapter(mentionsListAdapter);
+		TwitterStream twitterStream = Client.getTwitterStream(Client.getMainAccount(), true);
+		twitterStream.addListener(usListener);
+		twitterStream.user();
+		toast("接続しました");
 		return this;
 	}
 
@@ -55,7 +64,9 @@ public class MainActivityViewModel extends ViewModel
 	{
 		isHomeMode = new ExtendedBoolean(true);
 		((ImageView)activity.findViewById(R.id.imageView_timeline)).setImageResource(R.drawable.icon_mentions_w);
-		((TextView)activity.findViewById(R.id.textView_title)).setText("Home");
+		TextView viewTitle = ((TextView)activity.findViewById(R.id.textView_title));
+		viewTitle.setText("Home");
+		viewTitle.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) + 3);
 		ListView homeListView = (ListView)activity.findViewById(R.id.listView_home);
 		ListView mentionsListView = (ListView)activity.findViewById(R.id.listView_mentions);
 		homeListView.setAdapter(homeListAdapter);
@@ -64,14 +75,6 @@ public class MainActivityViewModel extends ViewModel
 		mentionsListView.setOnScrollListener(new TimelineScrollListener(mentionsListAdapter));
 		homeListView.setVisibility(View.VISIBLE);
 		mentionsListView.setVisibility(View.INVISIBLE);
-		
-		WarotterUserStreamListener usListener = new WarotterUserStreamListener();
-		usListener.setHomeListAdapter(homeListAdapter);
-		usListener.setMentionsListAdapter(mentionsListAdapter);
-		TwitterStream twitterStream = Client.getTwitterStream(Client.getMainAccount(), true);
-		twitterStream.addListener(usListener);
-		twitterStream.user();
-		toast("接続しました");
 	}
 
 	@Override
@@ -112,7 +115,7 @@ public class MainActivityViewModel extends ViewModel
 		}
 		else if(eventName.equals("menu"))
 		{
-			new OptionMenuAdapter(activity, "メニュー").createMenuDialog().show();
+			new OptionMenuAdapter(activity, "メニュー").createMenuDialog(true).show();
 			return true;
 		}
 		return false;		

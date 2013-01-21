@@ -1,6 +1,5 @@
 package net.miz_hi.smileessence.view;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.miz_hi.smileessence.R;
@@ -14,11 +13,14 @@ import net.miz_hi.smileessence.message.ReplyMessage;
 import net.miz_hi.smileessence.message.TweetMessage;
 import net.miz_hi.smileessence.viewmodel.MainActivityViewModel;
 import net.miz_hi.smileessence.viewmodel.TweetViewModel;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
@@ -51,6 +53,7 @@ public class MainActivity extends EventHandlerActivity
 		slidingMenu = createSlidingMenu();		
 		tweetViewModel.init(this, slidingMenu);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		MainActivityViewModel.singleton().initialize(this);
 	}
 	
 	private void appendMessenger()
@@ -102,7 +105,22 @@ public class MainActivity extends EventHandlerActivity
 	@Override
 	public ViewModel getViewModel()
 	{
-		return MainActivityViewModel.singleton().initialize(this);
+		return MainActivityViewModel.singleton();
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		super.onConfigurationChanged(newConfig);
+		slidingMenu.showMenu();
+		slidingMenu.showContent();
+	}
+
+	@Override
+	protected void onRestart()
+	{
+		// TODO Auto-generated method stub
+		super.onRestart();
 	}
 
 	public SlidingMenu createSlidingMenu()
@@ -168,7 +186,7 @@ public class MainActivity extends EventHandlerActivity
 		@Override
 		public void onClick(View v)
 		{
-			slidingMenu.toggle();
+			messenger.raise("toggle", null);
 		}
 	};
 

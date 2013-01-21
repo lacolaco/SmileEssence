@@ -41,7 +41,6 @@ public class EventNoticer
 		{
 			lastUserId = model.source.getId();
 			counterSourceUser.reset();
-			counterTargetStatus.reset();
 		}
 		
 		if(lastStatusId == model.targetModel.statusId)
@@ -67,7 +66,6 @@ public class EventNoticer
 		{
 			lastStatusId = model.targetModel.statusId;
 			counterTargetStatus.reset();
-			counterSourceUser.reset();
 		}
 		
 		activity.runOnUiThread(new Runnable()
@@ -80,7 +78,7 @@ public class EventNoticer
 				}
 				View v = EventViewFactory.getView(activity, model);
 				toast.setView(v);
-				toast.setGravity(Gravity.BOTTOM, 0, 120);
+				toast.setGravity(Gravity.BOTTOM, 0, 80);
 				toast.setDuration(Toast.LENGTH_LONG);
 				toast.show();
 			}

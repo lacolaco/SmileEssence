@@ -24,7 +24,7 @@ public class OptionMenuAdapter extends DialogAdapter
 	}
 
 	@Override
-	public Dialog createMenuDialog()
+	public Dialog createMenuDialog(boolean init)
 	{
 		TextView viewTitle = new TextView(activity);
 		viewTitle.setTextSize(textSize);
@@ -37,7 +37,7 @@ public class OptionMenuAdapter extends DialogAdapter
 		list.add(new MenuItemOpenFollowers(activity, this));
 		list.add(new MenuItemOpenFriends(activity, this));
 		list.add(new MenuItemAccountReset(activity, this));
-		list.add(new MenuItemClose(activity, this));
+		
 		return super.createMenuDialog(viewTitle);
 	}
 

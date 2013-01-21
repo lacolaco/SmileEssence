@@ -17,7 +17,7 @@ public class MenuItemOpenFriends extends MenuItemBase
 	@Override
 	public String getText()
 	{
-		return "フォロー一覧を開く(web)";
+		return "フォローを見る(web)";
 	}
 
 	@Override

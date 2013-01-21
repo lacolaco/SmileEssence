@@ -2,6 +2,7 @@ package net.miz_hi.smileessence.status;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.core.QueueAdapter;
 import net.miz_hi.smileessence.listener.StatusOnClickListener;
@@ -59,16 +60,22 @@ public class StatusListAdapter extends QueueAdapter<StatusModel>
 		}
 		holder.viewScreenName.setText(model.screenName);
 		holder.viewScreenName.setTextColor(model.nameColor);
+		holder.viewScreenName.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE));
 		holder.viewName.setText(model.name);
 		holder.viewName.setTextColor(model.nameColor);
+		holder.viewName.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE));
 		holder.viewText.setText(model.text);
 		holder.viewText.setTextColor(model.textColor);
+		holder.viewText.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE));
 		holder.viewSource.setText(model.source);
 		holder.viewSource.setTextColor(model.textColor);
+		holder.viewSource.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) - 1);
 		holder.viewCreatedAt.setText(model.createdAtString);
 		holder.viewCreatedAt.setTextColor(model.textColor);
+		holder.viewCreatedAt.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) - 1);
 		holder.viewRetweetedBy.setText(model.retweetedBy);
 		holder.viewRetweetedBy.setTextColor(model.textColor);
+		holder.viewRetweetedBy.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) - 1);
 		if(model.isRetweet)
 		{
 			holder.viewRetweetedBy.setVisibility(View.VISIBLE);

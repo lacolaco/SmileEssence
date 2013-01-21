@@ -2,6 +2,8 @@ package net.miz_hi.smileessence.menu;
 
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
+import net.miz_hi.smileessence.view.SettingActivity;
+import android.content.Intent;
 
 public class MenuItemSetting extends MenuItemBase
 {
@@ -20,8 +22,7 @@ public class MenuItemSetting extends MenuItemBase
 	@Override
 	public void work()
 	{
-		// TODO Auto-generated method stub
-
+		activity.startActivity(new Intent(activity, SettingActivity.class));
 	}
 
 }
