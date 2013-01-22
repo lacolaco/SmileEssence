@@ -27,7 +27,7 @@ public abstract class DialogAdapter
 	protected EventHandlerActivity activity;
 	protected List<MenuItemBase> list;
 	protected static LayoutInflater layoutInflater;
-	protected static Dialog dialog;
+	protected Dialog dialog;
 
 	public DialogAdapter(EventHandlerActivity activity)
 	{
@@ -46,6 +46,18 @@ public abstract class DialogAdapter
 	public List<MenuItemBase> getList()
 	{
 		return list;
+	}
+	
+	public boolean isShowing()
+	{
+		if(dialog == null)
+		{
+			return false;
+		}
+		else 
+		{
+			return dialog.isShowing();
+		}
 	}
 
 	public abstract Dialog createMenuDialog(boolean init);

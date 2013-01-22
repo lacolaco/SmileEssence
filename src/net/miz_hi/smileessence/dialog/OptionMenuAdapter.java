@@ -8,6 +8,7 @@ import net.miz_hi.smileessence.menu.MenuItemClose;
 import net.miz_hi.smileessence.menu.MenuItemOpenFavstar;
 import net.miz_hi.smileessence.menu.MenuItemOpenFollowers;
 import net.miz_hi.smileessence.menu.MenuItemOpenFriends;
+import net.miz_hi.smileessence.menu.MenuItemReport;
 import net.miz_hi.smileessence.menu.MenuItemSetting;
 import android.app.Dialog;
 import android.widget.TextView;
@@ -26,17 +27,23 @@ public class OptionMenuAdapter extends DialogAdapter
 	@Override
 	public Dialog createMenuDialog(boolean init)
 	{
+		
 		TextView viewTitle = new TextView(activity);
 		viewTitle.setTextSize(textSize);
 		viewTitle.setTextColor(Client.getResource().getColor(R.color.White));
 		viewTitle.setText(title);
-		viewTitle.setPadding(5, 10, 0, 10);
+		viewTitle.setPadding(10, 10, 0, 10);
 		
-		list.add(new MenuItemSetting(activity, this));
-		list.add(new MenuItemOpenFavstar(activity, this));
-		list.add(new MenuItemOpenFollowers(activity, this));
-		list.add(new MenuItemOpenFriends(activity, this));
-		list.add(new MenuItemAccountReset(activity, this));
+		if(init)
+		{
+			list.clear();
+			list.add(new MenuItemSetting(activity, this));
+			list.add(new MenuItemOpenFavstar(activity, this));
+			list.add(new MenuItemOpenFollowers(activity, this));
+			list.add(new MenuItemOpenFriends(activity, this));
+			list.add(new MenuItemReport(activity, this));			
+			list.add(new MenuItemAccountReset(activity, this));
+		}
 		
 		return super.createMenuDialog(viewTitle);
 	}

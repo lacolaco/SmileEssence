@@ -13,22 +13,22 @@ public class StatusOnClickListener implements OnClickListener
 {
 	private EventHandlerActivity activity;
 	private StatusModel model;
+	private static boolean wasTouched = false;
 	
 	public StatusOnClickListener(EventHandlerActivity activity, StatusModel model)
 	{
 		this.activity = activity;
 		this.model = model;
-	}
-	
+	}	
 	
 	@Override
 	public void onClick(final View v)
 	{
 		final StatusMenuAdapter adapter = new StatusMenuAdapter(activity, model);
+		Handler handler = new Handler();
 		v.setBackgroundColor(Client.getResource().getColor(R.color.MetroBlue));
 		v.invalidate();
-		Handler hanlder = new Handler();
-		hanlder.postDelayed(new Runnable()
+		handler.postDelayed(new Runnable()
 		{
 			public void run()
 			{

@@ -7,6 +7,7 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncRetweetTask;
+import net.miz_hi.smileessence.async.ConcurrentAsyncTaskHelper;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.menu.MenuItemBase;
 import net.miz_hi.smileessence.menu.MenuItemClose;
@@ -31,13 +32,13 @@ public class StatusMenuAdapter extends DialogAdapter
 	private StatusModel model;
 	Handler handler;
 	
-	public StatusMenuAdapter(EventHandlerActivity activity, StatusModel status)
+	public StatusMenuAdapter(EventHandlerActivity activity, StatusModel model)
 	{
 		super(activity);
 		handler = new Handler();
-		this.model = status;
+		this.model = model;
 	}
-
+	
 	@Override
 	public Dialog createMenuDialog(boolean init)
 	{	
@@ -54,6 +55,7 @@ public class StatusMenuAdapter extends DialogAdapter
 
 		if(init)
 		{
+			list.clear();
 			list.add(new StatusMenuWarotaRT(activity, this, model));
 
 			list.add(new StatusMenuFavAndRetweet(activity, this, model));
@@ -122,7 +124,7 @@ public class StatusMenuAdapter extends DialogAdapter
 			{
 				public void run()
 				{
-					AsyncRetweetTask.addTask(new AsyncRetweetTask(model.statusId, activity.getMainViewModel()));	
+					ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncRetweetTask(model.statusId, activity.getMainViewModel()));	
 					dispose();
 				}
 			}, 20);
@@ -141,7 +143,7 @@ public class StatusMenuAdapter extends DialogAdapter
 			{
 				public void run()
 				{
-					AsyncFavoriteTask.addTask(new AsyncFavoriteTask(model.statusId, activity.getMainViewModel()));
+					ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncFavoriteTask(model.statusId, activity.getMainViewModel()));
 					dispose();
 				}
 			},20);
