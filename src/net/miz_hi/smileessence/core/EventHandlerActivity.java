@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.widget.Toast;
 
 public abstract class EventHandlerActivity extends Activity
@@ -22,8 +23,9 @@ public abstract class EventHandlerActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		ViewModel vm = getViewModel();
-		subscribeMessenger(messenger);		
+		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
+		subscribeMessenger();
+		ViewModel vm = getViewModel();	
 		vm.setMessenger(messenger);
 		viewModelList.add(vm);
 		
@@ -100,7 +102,7 @@ public abstract class EventHandlerActivity extends Activity
 		}
 	}
 	
-	public Messenger subscribeMessenger(Messenger messenger)
+	public Messenger subscribeMessenger()
 	{
 		messenger.subscribe("toast", new EventSubscriber()
 		{

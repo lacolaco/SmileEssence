@@ -48,14 +48,20 @@ public class MainActivity extends EventHandlerActivity
 		appendMessenger();
 		
 		TweetViewModel tweetViewModel = TweetViewModel.singleton();
-		registerViewModel(tweetViewModel);
-		
+		registerViewModel(tweetViewModel);	
 		slidingMenu = createSlidingMenu();		
 		tweetViewModel.init(this, slidingMenu);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
 		MainActivityViewModel.singleton().initialize(this);
 	}
 	
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+	}
+
 	private void appendMessenger()
 	{
 		messenger.subscribe("toggle", new EventSubscriber()
@@ -119,8 +125,8 @@ public class MainActivity extends EventHandlerActivity
 	@Override
 	protected void onRestart()
 	{
-		// TODO Auto-generated method stub
 		super.onRestart();
+		MainActivityViewModel.singleton().restart(this);
 	}
 
 	public SlidingMenu createSlidingMenu()
@@ -159,24 +165,32 @@ public class MainActivity extends EventHandlerActivity
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event)
 	{
-		if (keyCode != KeyEvent.KEYCODE_BACK)
+		if (keyCode == KeyEvent.KEYCODE_BACK)
 		{
-			return super.onKeyDown(keyCode, event);
+			if(slidingMenu.isMenuShowing())
+			{
+				slidingMenu.toggle();
+				return false;
+			}
+			else if(!MainActivityViewModel.singleton().isHomeMode.get())
+			{
+				onEvent("timeline");
+				return false;
+			}
+			else
+			{
+				finish();
+				return false;
+			}
 		}
-		else if(slidingMenu.isMenuShowing())
+		else if(keyCode == KeyEvent.KEYCODE_MENU)
 		{
-			slidingMenu.toggle();
-			return false;
-		}
-		else if(!MainActivityViewModel.singleton().isHomeMode.get())
-		{
-			onEvent("timeline");
+			onEvent("menu");
 			return false;
 		}
 		else
 		{
-			finish();
-			return false;
+			return super.onKeyDown(keyCode, event);
 		}
 	}
 	

@@ -63,7 +63,7 @@ public class StartActivityViewModel extends ViewModel
 			{
 				if (account.getUserId() == lastUsedId)
 				{
-					Client.setMainAccount(account);
+					MainActivityViewModel.singleton().account = account;
 					textNavi.setText(String.format("%sÇ≈ÉçÉOÉCÉìÇµÇ‹Ç∑", account.getScreenName()));
 					moveToTimeline(activity);
 					break;

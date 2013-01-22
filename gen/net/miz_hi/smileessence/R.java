@@ -159,14 +159,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class id {
         public static final int button_Auth=0x7f05001f;
-        public static final int editText_tweet=0x7f050028;
+        public static final int editText_tweet=0x7f050026;
         public static final int fullscreen=0x7f050003;
-        public static final int imageButton_hashtag=0x7f050031;
-        public static final int imageButton_morse=0x7f05002a;
-        public static final int imageButton_replace=0x7f05002e;
-        public static final int imageButton_submit=0x7f05002c;
-        public static final int imageButton_template=0x7f05002f;
-        public static final int imageButton_warota=0x7f05002b;
+        public static final int imageButton_hashtag=0x7f05002f;
+        public static final int imageButton_morse=0x7f050028;
+        public static final int imageButton_replace=0x7f05002c;
+        public static final int imageButton_submit=0x7f05002a;
+        public static final int imageButton_template=0x7f05002d;
+        public static final int imageButton_warota=0x7f050029;
         public static final int imageView1=0x7f05001d;
         public static final int imageView_icon=0x7f050020;
         public static final int imageView_menu=0x7f050017;
@@ -192,19 +192,17 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int slidingmenumain=0x7f050019;
         public static final int slidingmenurowicon=0x7f05001b;
         public static final int slidingmenurowtitle=0x7f05001c;
-        public static final int tableRow1=0x7f050029;
-        public static final int tableRow2=0x7f05002d;
-        public static final int tableRow3=0x7f050030;
-        public static final int textView1=0x7f050032;
-        public static final int textView_count=0x7f050027;
-        public static final int textView_createdAt=0x7f050025;
+        public static final int tableRow1=0x7f050027;
+        public static final int tableRow2=0x7f05002b;
+        public static final int tableRow3=0x7f05002e;
+        public static final int textView1=0x7f050030;
+        public static final int textView_count=0x7f050025;
+        public static final int textView_footer=0x7f050024;
         public static final int textView_menuItem=0x7f050018;
         public static final int textView_name=0x7f050022;
-        public static final int textView_retweetedBy=0x7f050026;
         public static final int textView_screenName=0x7f050021;
         public static final int textView_seekDialog=0x7f050007;
         public static final int textView_seekLevel=0x7f050008;
-        public static final int textView_source=0x7f050024;
         public static final int textView_text=0x7f050023;
         public static final int textView_title=0x7f050014;
         public static final int textView_toastText=0x7f05000e;
