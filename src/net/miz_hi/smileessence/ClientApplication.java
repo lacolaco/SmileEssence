@@ -10,6 +10,5 @@ public class ClientApplication extends Application
 	{
 		super.onCreate();
 		Client.initialize(this);
-		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
 	}
 }

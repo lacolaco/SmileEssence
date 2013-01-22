@@ -18,8 +18,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/imageView_icon"
-        android:gravity="top"
-        android:textSize="10sp" />
+        android:gravity="top"/>
 
     <TextView
         android:id="@+id/textView_name"
@@ -41,29 +40,11 @@
         android:layout_marginTop="1dp" />
 
     <TextView
-        android:id="@+id/textView_source"
+        android:id="@+id/textView_footer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/textView_text"
         android:layout_marginRight="2dp"/>
-    
-    <TextView
-        android:id="@+id/textView_createdAt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/textView_source"
-        android:layout_marginRight="4dp"
-        android:layout_toLeftOf="@+id/textView_source"
-        android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-    <TextView
-        android:id="@+id/textView_retweetedBy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/textView_source"
-        android:layout_marginRight="2dp"
-        android:layout_toLeftOf="@+id/textView_createdAt"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

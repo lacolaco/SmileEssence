@@ -20,9 +20,7 @@ public class StatusViewFactory
 		TextView viewScreenName = (TextView)viewStatus.findViewById(R.id.textView_screenName);
 		TextView viewName = (TextView)viewStatus.findViewById(R.id.textView_name);
 		TextView viewText = (TextView)viewStatus.findViewById(R.id.textView_text);
-		TextView viewSource = (TextView)viewStatus.findViewById(R.id.textView_source);
-		TextView viewRetweetedBy = (TextView)viewStatus.findViewById(R.id.textView_retweetedBy);
-		TextView viewCreatedAt = (TextView)viewStatus.findViewById(R.id.textView_createdAt);
+		TextView viewFooter = (TextView)viewStatus.findViewById(R.id.textView_footer);
 		if(!model.isRetweet && !model.isReply())
 		{
 			model.backgroundColor = Client.getResource().getColor(R.color.White);
@@ -37,32 +35,19 @@ public class StatusViewFactory
 		{
 			IconCaches.setIconBitmapToView(model.user, viewIcon);
 		}
+		int textSize = Client.getTextSize();
 		viewScreenName.setText(model.screenName);
 		viewScreenName.setTextColor(model.nameColor);
-		viewScreenName.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE));
+		viewScreenName.setTextSize(textSize);
 		viewName.setText(model.name);
 		viewName.setTextColor(model.nameColor);
-		viewName.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE));
+		viewName.setTextSize(textSize);
 		viewText.setText(model.text);
 		viewText.setTextColor(model.textColor);
-		viewText.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE));
-		viewSource.setText(model.source);
-		viewSource.setTextColor(model.textColor);
-		viewSource.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) - 1);
-		viewCreatedAt.setText(model.createdAtString);
-		viewCreatedAt.setTextColor(model.textColor);
-		viewCreatedAt.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) - 1);
-		viewRetweetedBy.setText(model.retweetedBy);
-		viewRetweetedBy.setTextColor(model.textColor);
-		viewRetweetedBy.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) - 1);
-		if(model.isRetweet)
-		{
-			viewRetweetedBy.setVisibility(View.VISIBLE);
-		}
-		else
-		{
-			viewRetweetedBy.setVisibility(View.GONE);
-		}
+		viewText.setTextSize(textSize);
+		viewFooter.setText(model.footer);
+		viewFooter.setTextColor(model.textColor);
+		viewFooter.setTextSize(textSize - 1);
 		return viewStatus;
 	}
 }

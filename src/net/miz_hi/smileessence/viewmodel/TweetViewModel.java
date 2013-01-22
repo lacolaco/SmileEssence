@@ -3,6 +3,7 @@ package net.miz_hi.smileessence.viewmodel;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
+import net.miz_hi.smileessence.async.ConcurrentAsyncTaskHelper;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.core.ViewModel;
 import net.miz_hi.smileessence.util.StringUtils;
@@ -120,6 +121,8 @@ public class TweetViewModel extends ViewModel
 			viewEdit.setText(text);
 			text = "";
 		}
+		viewEdit.setTextSize(Client.getTextSize());
+		viewEdit.invalidate();
 	}
 
 	public void onCloseSlidingMenu(SlidingMenu slidingMenu)
@@ -155,7 +158,7 @@ public class TweetViewModel extends ViewModel
 				status.setInReplyToStatusId(inReplyTo);
 				inReplyTo = -1;
 			}
-			AsyncTweetTask.addTask(new AsyncTweetTask(status, this));
+			ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncTweetTask(status, this));
 		}
 	}
 }

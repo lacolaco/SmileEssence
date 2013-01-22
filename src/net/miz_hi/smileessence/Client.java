@@ -20,6 +20,8 @@ public class Client
 	private static Account mainAccount;
 	private static TwitterStream twitterStream;
 	private static PreferenceHelper prefHelper;
+	
+	private static int textSize;
 
 	private Client()
 	{
@@ -52,13 +54,17 @@ public class Client
 
 	public static TwitterStream getTwitterStream(Account account, boolean reCreate)
 	{
-		if (twitterStream == null || reCreate)
+		if(!reCreate)
+		{
+			return twitterStream;
+		}
+		else
 		{
 			ConfigurationBuilder cb = generateConfig(account);
 			cb.setUserStreamRepliesAllEnabled(false);
 			twitterStream = new TwitterStreamFactory(cb.build()).getInstance();
+			return twitterStream;
 		}
-		return twitterStream;
 	}
 
 	public static Application getApplication()
@@ -98,16 +104,26 @@ public class Client
 	{
 		return app.getResources();
 	}
+	
+	public static int getTextSize()
+	{
+		return textSize;
+	}
+	
+	public static void loadPreferences()
+	{
+		if((Integer)getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) < 0)
+		{
+			putPreferenceValue(EnumPreferenceKey.TEXT_SIZE, 10);
+		}
+		textSize = getPreferenceValue(EnumPreferenceKey.TEXT_SIZE);
+	}
 
 	public static void initialize(Application app)
 	{
 		Client.prefHelper = new PreferenceHelper(PreferenceManager.getDefaultSharedPreferences(app));
 		Client.app = app;
-
-		if((Integer)getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) < 0)
-		{
-			putPreferenceValue(EnumPreferenceKey.TEXT_SIZE, 10);
-		}
+		loadPreferences();
 	}
 
 	public static final String HOMEPAGE_URL = "http://warotter.web.fc2.com/";

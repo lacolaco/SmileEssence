@@ -34,9 +34,7 @@ public class StatusListAdapter extends QueueAdapter<StatusModel>
 			holder.viewScreenName = (TextView)convertedView.findViewById(R.id.textView_screenName);
 			holder.viewName = (TextView)convertedView.findViewById(R.id.textView_name);
 			holder.viewText = (TextView)convertedView.findViewById(R.id.textView_text);
-			holder.viewSource = (TextView)convertedView.findViewById(R.id.textView_source);
-			holder.viewRetweetedBy = (TextView)convertedView.findViewById(R.id.textView_retweetedBy);
-			holder.viewCreatedAt = (TextView)convertedView.findViewById(R.id.textView_createdAt);
+			holder.viewFooter = (TextView)convertedView.findViewById(R.id.textView_footer);
 			convertedView.setTag(holder);
 		}
 		else
@@ -58,32 +56,19 @@ public class StatusListAdapter extends QueueAdapter<StatusModel>
 		{
 			IconCaches.setIconBitmapToView(model.user, holder.viewIcon);
 		}
+		int textSize = Client.getTextSize();
 		holder.viewScreenName.setText(model.screenName);
 		holder.viewScreenName.setTextColor(model.nameColor);
-		holder.viewScreenName.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE));
+		holder.viewScreenName.setTextSize(textSize);
 		holder.viewName.setText(model.name);
 		holder.viewName.setTextColor(model.nameColor);
-		holder.viewName.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE));
+		holder.viewName.setTextSize(textSize);
 		holder.viewText.setText(model.text);
 		holder.viewText.setTextColor(model.textColor);
-		holder.viewText.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE));
-		holder.viewSource.setText(model.source);
-		holder.viewSource.setTextColor(model.textColor);
-		holder.viewSource.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) - 1);
-		holder.viewCreatedAt.setText(model.createdAtString);
-		holder.viewCreatedAt.setTextColor(model.textColor);
-		holder.viewCreatedAt.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) - 1);
-		holder.viewRetweetedBy.setText(model.retweetedBy);
-		holder.viewRetweetedBy.setTextColor(model.textColor);
-		holder.viewRetweetedBy.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) - 1);
-		if(model.isRetweet)
-		{
-			holder.viewRetweetedBy.setVisibility(View.VISIBLE);
-		}
-		else
-		{
-			holder.viewRetweetedBy.setVisibility(View.GONE);
-		}
+		holder.viewText.setTextSize(textSize);
+		holder.viewFooter.setText(model.footer);
+		holder.viewFooter.setTextColor(model.textColor);
+		holder.viewFooter.setTextSize(textSize - 1);
 		holder.viewBase.setOnClickListener(new StatusOnClickListener(getActivity(), model));
 		return convertedView;
 	}
@@ -92,7 +77,7 @@ public class StatusListAdapter extends QueueAdapter<StatusModel>
 	{
 		View viewBase;
 		ImageView viewIcon;
-		TextView viewScreenName, viewName, viewText, viewSource, viewRetweetedBy, viewCreatedAt;
+		TextView viewScreenName, viewName, viewText, viewFooter;
 	}
 
 }

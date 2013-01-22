@@ -39,7 +39,6 @@ public class EventViewFactory
 		bodyLayout.removeAllViews();
 		viewText.setText(model.source.getScreenName() + model.type.getText());
 		viewText.setTextColor(Client.getResource().getColor(R.color.White));
-		viewText.setTextSize((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) + 1);
 		
 		if(model.targetModel == null)
 		{

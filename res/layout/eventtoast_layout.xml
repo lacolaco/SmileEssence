@@ -23,7 +23,8 @@
             android:paddingBottom="2dp"
             android:paddingLeft="5dp"
             android:paddingTop="2dp"
-            android:text="Text"/>
+            android:text="Text"
+            android:textAppearance="@android:style/TextAppearance.Small"/>
 
         <LinearLayout
             android:id="@+id/linearLayout_toastBody"

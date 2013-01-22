@@ -40,7 +40,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/MetroBlue"
             android:textStyle="bold"
             android:typeface="sans" />

@@ -18,8 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/MetroBlue"
-            android:textSize="15sp" />
+            android:textColor="@color/MetroBlue" />
 
         <EditText
             android:id="@+id/editText_tweet"
@@ -31,8 +30,7 @@
             android:layout_marginTop="5dp"
             android:ems="10"
             android:gravity="top"
-            android:inputType="textMultiLine"
-            android:textSize="11sp" >
+            android:inputType="textMultiLine" >
 
             <requestFocus />
         </EditText>
