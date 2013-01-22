@@ -1,8 +1,10 @@
 package net.miz_hi.smileessence.event;
 
 import net.miz_hi.smileessence.core.EventHandlerActivity;
+import net.miz_hi.smileessence.message.EventMessage;
 import net.miz_hi.smileessence.message.ToastMessage;
 import net.miz_hi.smileessence.util.CountUpInteger;
+import net.miz_hi.smileessence.viewmodel.MainActivityViewModel;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
@@ -15,6 +17,11 @@ public class EventNoticer
 	private static long lastStatusId = -1;
 	private static CountUpInteger counterSourceUser = new CountUpInteger(5);
 	private static CountUpInteger counterTargetStatus = new CountUpInteger(5);
+	
+	public static void receive(EventModel event)
+	{
+		MainActivityViewModel.singleton().messenger.raise("event", new EventMessage(event));
+	}
 	
 	public static void noticeEvent(final EventHandlerActivity activity, final EventModel model)
 	{
