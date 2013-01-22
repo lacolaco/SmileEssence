@@ -21,9 +21,7 @@ public class StatusModel implements Comparable<StatusModel>
 	public String screenName;
 	public String name;
 	public String text;
-	public String source;
-	public String retweetedBy;
-	public String createdAtString;
+	public String footer;
 	public Date createdAt;
 	public URLEntity[] urls;
 	public MediaEntity[] medias;
@@ -51,18 +49,20 @@ public class StatusModel implements Comparable<StatusModel>
 	{
 		isRetweet = status.isRetweet();
 		Status shownStatus;
+		StringBuilder footerBuiler = new StringBuilder();
 		if(isRetweet)
 		{
 			shownStatus = status.getRetweetedStatus();
 			statusId = shownStatus.getId();
-			retweetedBy = "(RT:"+ status.getUser().getScreenName() + ")";
+			footerBuiler.append("(RT: ");
+			footerBuiler.append(status.getUser().getScreenName());
+			footerBuiler.append(") ");
 			backgroundColor = Client.getResource().getColor(R.color.LightBlue);
 		}
 		else
 		{
 			shownStatus = status;
 			statusId = shownStatus.getId();
-			retweetedBy = "";
 			if (isReply())
 			{
 				backgroundColor = Client.getResource().getColor(R.color.LightRed);
@@ -76,12 +76,17 @@ public class StatusModel implements Comparable<StatusModel>
 		screenName = user.getScreenName();
 		name = user.getName();
 		text = shownStatus.getText();
-		source = "via " + Html.fromHtml(shownStatus.getSource()).toString();
 		createdAt = shownStatus.getCreatedAt();
-		createdAtString = StringUtils.dateToString(createdAt);
+		
+		footerBuiler.append(StringUtils.dateToString(shownStatus.getCreatedAt()));
+		footerBuiler.append(" via ");
+		footerBuiler.append(Html.fromHtml(shownStatus.getSource()).toString());
+		footer = footerBuiler.toString();
+		
 		urls = shownStatus.getURLEntities();
 		medias = shownStatus.getMediaEntities();
 		hashtags = shownStatus.getHashtagEntities();
+		
 		IconCaches.setIconBitmapToView(user, null);
 		
 		if (isMine())
