@@ -18,7 +18,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.widget.ImageView;
 
-public class AsyncIconGetter extends ConcurrentAsyncTask<Icon>
+public class AsyncIconGetter extends ConcurrentAsyncTask<Bitmap>
 {	
 	private User user;
 	private ImageView viewIcon;
@@ -30,7 +30,7 @@ public class AsyncIconGetter extends ConcurrentAsyncTask<Icon>
 	}
 		
 	@Override
-	protected Icon doInBackground(Object... params)
+	protected Bitmap doInBackground(Object... params)
 	{
 		try
 		{
@@ -46,23 +46,23 @@ public class AsyncIconGetter extends ConcurrentAsyncTask<Icon>
 			FileOutputStream fos = new FileOutputStream(file);
 			bm.compress(CompressFormat.PNG, 90, fos);
 			fos.close();
-			Icon icon = new Icon(bm, file.getName());
-			IconCaches.putIconToMap(user, icon);
-			return icon;
+			return bm;
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
-			return null;
+			return IconCaches.getEmptyIcon();
 		}
 	}
 
 	@Override
-	protected void onPostExecute(Icon result)
+	protected void onPostExecute(Bitmap result)
 	{
+		Icon icon = new Icon(result, IconCaches.genIconName(user));
+		IconCaches.putIconToMap(user, icon);
 		if(viewIcon != null)
 		{
-			viewIcon.setImageBitmap(result.use());
+			viewIcon.setImageBitmap(icon.use());
 		}
 	}
 

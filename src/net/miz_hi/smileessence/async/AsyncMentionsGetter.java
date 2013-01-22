@@ -12,27 +12,16 @@ import twitter4j.ResponseList;
 import twitter4j.TwitterException;
 import android.os.AsyncTask;
 
-public class AsyncMentionsGetter extends AsyncTask<Paging, Integer, ResponseList<twitter4j.Status>>
+public class AsyncMentionsGetter extends ConcurrentAsyncTask<ResponseList<twitter4j.Status>>
 {
 
 	private Account account;
+	private Paging page;
 	
-	public AsyncMentionsGetter(Account account)
+	public AsyncMentionsGetter(Account account, Paging page)
 	{
 		this.account = account;
-	}
-
-	@Override
-	protected ResponseList<twitter4j.Status> doInBackground(Paging... arg0)
-	{
-		try
-		{
-			return Client.getTwitter(Client.getMainAccount()).getMentionsTimeline(arg0[0]);
-		}
-		catch (TwitterException e)
-		{
-		}
-		return null;
+		this.page = page;
 	}
 
 	@Override
@@ -56,6 +45,19 @@ public class AsyncMentionsGetter extends AsyncTask<Paging, Integer, ResponseList
 		{
 			MainActivityViewModel.singleton().mentionsListAdapter.addAllLast(list);
 		}
+	}
+
+	@Override
+	protected ResponseList<twitter4j.Status> doInBackground(Object... params)
+	{
+		try
+		{
+			return Client.getTwitter(Client.getMainAccount()).getMentionsTimeline(page);
+		}
+		catch (TwitterException e)
+		{
+		}
+		return null;
 	}
 
 }

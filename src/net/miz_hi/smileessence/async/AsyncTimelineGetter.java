@@ -12,27 +12,16 @@ import twitter4j.ResponseList;
 import twitter4j.TwitterException;
 import android.os.AsyncTask;
 
-public class AsyncTimelineGetter extends AsyncTask<Paging, Integer, ResponseList<twitter4j.Status>>
+public class AsyncTimelineGetter extends ConcurrentAsyncTask<ResponseList<twitter4j.Status>>
 {
 
 	private Account account;
+	private Paging page;
 	
-	public AsyncTimelineGetter(Account account)
+	public AsyncTimelineGetter(Account account, Paging page)
 	{
 		this.account = account;
-	}
-
-	@Override
-	protected ResponseList<twitter4j.Status> doInBackground(Paging... arg0)
-	{
-		try
-		{
-			return Client.getTwitter(account).getHomeTimeline(arg0[0]);
-		}
-		catch (TwitterException e)
-		{
-		}
-		return null;
+		this.page = page;
 	}
 
 	@Override
@@ -56,6 +45,19 @@ public class AsyncTimelineGetter extends AsyncTask<Paging, Integer, ResponseList
 		{
 			MainActivityViewModel.singleton().homeListAdapter.addAllLast(list);
 		}
+	}
+
+	@Override
+	protected ResponseList<twitter4j.Status> doInBackground(Object... params)
+	{
+		try
+		{
+			return Client.getTwitter(account).getHomeTimeline(page);
+		}
+		catch (TwitterException e)
+		{
+		}
+		return null;
 	}
 
 }

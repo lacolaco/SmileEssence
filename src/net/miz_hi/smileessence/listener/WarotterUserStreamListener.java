@@ -6,7 +6,7 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.event.EnumEventType;
 import net.miz_hi.smileessence.event.EventListAdapter;
 import net.miz_hi.smileessence.event.EventModel;
-import net.miz_hi.smileessence.event.EventHelper;
+import net.miz_hi.smileessence.event.EventNoticer;
 import net.miz_hi.smileessence.status.StatusListAdapter;
 import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusStore;
@@ -87,16 +87,14 @@ public class WarotterUserStreamListener implements UserStreamListener
 	public void onStatus(final Status arg0)
 	{
 		StatusStore.put(arg0);
-		if (arg0.isRetweet())
+		final StatusModel model = StatusModel.createInstance(arg0);
+		boolean isRetweet = arg0.isRetweet();
+		boolean isReply = StatusUtils.isReply(isRetweet ? arg0.getRetweetedStatus() : arg0);
+		if (isRetweet)
 		{
 			StatusStore.put(arg0.getRetweetedStatus());
-			if(StatusUtils.isMine(arg0.getRetweetedStatus()))
-			{
-				EventHelper.receive(EventModel.createInstance(arg0.getUser(), EnumEventType.RETWEET, arg0.getRetweetedStatus()));
-			}
 		}
-		final StatusModel model = StatusModel.createInstance(arg0);
-		if(StatusUtils.isReply(arg0.isRetweet() ? arg0.getRetweetedStatus().getId() : arg0.getId()))
+		if(isReply)
 		{
 			mentionsListAdapter.getActivity().runOnUiThread(new Runnable()
 			{
@@ -105,7 +103,6 @@ public class WarotterUserStreamListener implements UserStreamListener
 					mentionsListAdapter.addFirst(model);
 				}
 			});
-			EventHelper.receive(EventModel.createInstance(arg0.getUser(), EnumEventType.REPLY, arg0));
 		}
 		homeListAdapter.getActivity().runOnUiThread(new Runnable()
 		{
@@ -114,6 +111,16 @@ public class WarotterUserStreamListener implements UserStreamListener
 				homeListAdapter.addFirst(model);
 			}
 		});
+		
+		//noticing
+		if(isRetweet && StatusUtils.isMine(arg0.getRetweetedStatus()))
+		{
+			EventNoticer.receive(EventModel.createInstance(arg0.getUser(), EnumEventType.RETWEET, arg0.getRetweetedStatus()));
+		}
+		else if(isReply)
+		{
+			EventNoticer.receive(EventModel.createInstance(arg0.getUser(), EnumEventType.REPLY, arg0));
+		}
 	}
 
 	@Override
@@ -135,7 +142,7 @@ public class WarotterUserStreamListener implements UserStreamListener
 	{
 		if(arg1.getId() == Client.getMainAccount().getUserId())
 		{
-			EventHelper.receive(EventModel.createInstance(arg0, EnumEventType.BLOCK, null));
+			EventNoticer.receive(EventModel.createInstance(arg0, EnumEventType.BLOCK, null));
 		}
 	}
 
@@ -149,7 +156,7 @@ public class WarotterUserStreamListener implements UserStreamListener
 	{
 		if(arg0.getRecipientId() == Client.getMainAccount().getUserId())
 		{
-			EventHelper.receive(EventModel.createInstance(arg0.getSender(), EnumEventType.DIRECT_MESSAGE, null));
+			EventNoticer.receive(EventModel.createInstance(arg0.getSender(), EnumEventType.DIRECT_MESSAGE, null));
 		}
 	}
 
@@ -158,14 +165,14 @@ public class WarotterUserStreamListener implements UserStreamListener
 	{
 		if(arg1.getId() == Client.getMainAccount().getUserId())
 		{
-			EventHelper.receive(EventModel.createInstance(arg0, EnumEventType.FAVORITE, arg2));
+			EventNoticer.receive(EventModel.createInstance(arg0, EnumEventType.FAVORITE, arg2));
 		}
 	}
 
 	@Override
 	public void onFollow(User arg0, User arg1)
 	{
-		EventHelper.receive(EventModel.createInstance(arg0, EnumEventType.FOLLOW, null));
+		EventNoticer.receive(EventModel.createInstance(arg0, EnumEventType.FOLLOW, null));
 	}
 
 	@Override
@@ -178,7 +185,7 @@ public class WarotterUserStreamListener implements UserStreamListener
 	{
 		if(arg1.getId() == Client.getMainAccount().getUserId())
 		{
-			EventHelper.receive(EventModel.createInstance(arg0, EnumEventType.UNBLOCK, null));
+			EventNoticer.receive(EventModel.createInstance(arg0, EnumEventType.UNBLOCK, null));
 		}
 	}
 
@@ -187,7 +194,7 @@ public class WarotterUserStreamListener implements UserStreamListener
 	{
 		if(arg1.getId() == Client.getMainAccount().getUserId())
 		{
-			EventHelper.receive(EventModel.createInstance(arg0, EnumEventType.UNFAVORITE, arg2));
+			EventNoticer.receive(EventModel.createInstance(arg0, EnumEventType.UNFAVORITE, arg2));
 		}
 	}
 
