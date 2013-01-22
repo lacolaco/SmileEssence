@@ -26,14 +26,16 @@ public class SettingActivity extends PreferenceActivity
 			public boolean onPreferenceClick(Preference preference)
 			{
 				final SeekBarDialogHelper helper = new SeekBarDialogHelper(SettingActivity.this, "テキストサイズ");
-				helper.setSeekBarMax(20);
-				helper.setSeekBarStart((Integer)Client.getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) - 10);
-				helper.setText("デフォルト = 0");
+				helper.setSeekBarMax(16);
+				helper.setSeekBarStart(Client.getTextSize() - 8);
+				helper.setLevelCorrect(8);
+				helper.setText("デフォルト = 10");
 				helper.setOnClickListener(new OnClickListener()
 				{
 					public void onClick(DialogInterface dialog, int which)
 					{
-						Client.putPreferenceValue(EnumPreferenceKey.TEXT_SIZE, helper.getProgress() + 10);						
+						Client.putPreferenceValue(EnumPreferenceKey.TEXT_SIZE, helper.getProgress() + 8);
+						Client.loadPreferences();
 					}
 				});
 				helper.createSeekBarDialog().show();
@@ -45,7 +47,6 @@ public class SettingActivity extends PreferenceActivity
 	@Override
 	protected void onDestroy()
 	{
-		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
 

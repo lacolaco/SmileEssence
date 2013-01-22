@@ -17,11 +17,13 @@ public class SeekBarDialogHelper
 	private Activity activity;
 	private String title, text;
 	private OnClickListener listener;
-	private int seekBarMax, seekBarStart = 1;
+	private int seekBarMax;
+	private int seekBarStart = 1;
 	private LayoutInflater layoutInflater;
 	private View dialogView;
 	private TextView textView, levelView;
 	private SeekBar seekbar;
+	private int levelCorrect = 0;
 
 	public SeekBarDialogHelper(Activity activity, String title)
 	{
@@ -53,6 +55,11 @@ public class SeekBarDialogHelper
 	{
 		this.seekBarStart = i;
 	}
+	
+	public void setLevelCorrect(int addition)
+	{
+		this.levelCorrect = addition;
+	}
 
 	public int getProgress()
 	{
@@ -65,7 +72,7 @@ public class SeekBarDialogHelper
 		textView.setTextColor(Client.getResource().getColor(R.color.White));
 		seekbar.setMax(seekBarMax);
 		seekbar.setProgress(seekBarStart);
-		levelView.setText(Integer.toString(seekBarStart));
+		levelView.setText(Integer.toString(seekBarStart + levelCorrect));
 		levelView.setTextColor(Client.getResource().getColor(R.color.White));
 		seekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
 		{
@@ -79,7 +86,7 @@ public class SeekBarDialogHelper
 
 			public void onProgressChanged(SeekBar seekbar, int i, boolean flag)
 			{
-				levelView.setText(String.valueOf(i));
+				levelView.setText(String.valueOf(i + levelCorrect));
 			}
 		});
 
