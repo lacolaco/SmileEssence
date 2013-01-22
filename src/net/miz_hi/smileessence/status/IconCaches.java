@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncIconGetter;
+import net.miz_hi.smileessence.async.ConcurrentAsyncTaskHelper;
 import net.miz_hi.smileessence.util.CountUpInteger;
 import net.miz_hi.smileessence.util.StringUtils;
 import twitter4j.User;
@@ -83,7 +84,7 @@ public class IconCaches
 		}
 		else
 		{
-			AsyncIconGetter.addTask(new AsyncIconGetter(user, viewIcon));
+			ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncIconGetter(user, viewIcon));
 		}
 	}
 
@@ -94,19 +95,11 @@ public class IconCaches
 	
 	public static void clearCache()
 	{
-		for (Icon icon : iconCache.values())
-		{
-			icon.bitmap.recycle();
-		}
 		iconCache.clear();
 	}
 
 	public static void putIconToMap(User user, Icon icon)
 	{
-		if (iconCache.containsKey(user.getId()))
-		{
-			iconCache.remove(user.getId());
-		}
 
 		if (iconCache.size() > 99 && counter.isOver())
 		{
@@ -125,7 +118,7 @@ public class IconCaches
 			});
 			while(iconCache.size() > 98)
 			{
-				Icon i = iconCache.remove(entries.pollFirst());
+				iconCache.remove(entries.pollFirst().getKey());
 			}
 			counter.reset();
 		}
