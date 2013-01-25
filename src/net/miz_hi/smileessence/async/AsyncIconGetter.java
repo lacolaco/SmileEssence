@@ -22,11 +22,13 @@ public class AsyncIconGetter extends ConcurrentAsyncTask<Bitmap>
 {	
 	private User user;
 	private ImageView viewIcon;
+	private long tag;
 
 	public AsyncIconGetter(User user, ImageView viewIcon)
 	{
 		this.user = user;
 		this.viewIcon = viewIcon;
+		this.tag = user.getId();
 	}
 		
 	@Override
@@ -60,7 +62,7 @@ public class AsyncIconGetter extends ConcurrentAsyncTask<Bitmap>
 	{
 		Icon icon = new Icon(result, IconCaches.genIconName(user));
 		IconCaches.putIconToMap(user, icon);
-		if(viewIcon != null)
+		if(viewIcon != null && viewIcon.getTag().equals(tag))
 		{
 			viewIcon.setImageBitmap(icon.use());
 		}

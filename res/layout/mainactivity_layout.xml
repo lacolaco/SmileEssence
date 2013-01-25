@@ -11,9 +11,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/relativeLayout1"
-        android:fastScrollEnabled="true"
-        android:background="@color/White"/>
-    
+        android:background="@color/White"
+        android:footerDividersEnabled="true"
+        android:headerDividersEnabled="true" />
+
     <ListView
         android:id="@+id/listView_mentions"
         android:layout_width="match_parent"
@@ -24,8 +25,8 @@
         android:layout_below="@+id/relativeLayout1"
         android:background="@color/White"
         android:fastScrollEnabled="true" />
-    
-<RelativeLayout
+
+    <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
@@ -43,7 +44,6 @@
             android:textColor="@color/MetroBlue"
             android:textStyle="bold"
             android:typeface="sans" />
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -82,7 +82,6 @@
             android:layout_marginRight="40dp"
             android:padding="10dp"
             android:src="@drawable/icon_menu_w" />
-
     </RelativeLayout>
 
 </RelativeLayout>

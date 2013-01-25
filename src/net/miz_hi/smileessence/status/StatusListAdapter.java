@@ -41,6 +41,7 @@ public class StatusListAdapter extends QueueAdapter<StatusModel>
 		{
 			holder = (ViewHolder)convertedView.getTag();
 		}
+		
 		if(!model.isRetweet && !model.isReply())
 		{
 			model.backgroundColor = Client.getResource().getColor(position % 2 == 0 ? R.color.White : R.color.LightGray);
@@ -54,6 +55,7 @@ public class StatusListAdapter extends QueueAdapter<StatusModel>
 		}
 		else
 		{
+			holder.viewIcon.setTag(model.user.getId());
 			IconCaches.setIconBitmapToView(model.user, holder.viewIcon);
 		}
 		int textSize = Client.getTextSize();

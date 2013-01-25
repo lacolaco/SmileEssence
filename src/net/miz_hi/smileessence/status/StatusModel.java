@@ -48,6 +48,7 @@ public class StatusModel implements Comparable<StatusModel>
 	private StatusModel(Status status)
 	{
 		isRetweet = status.isRetweet();
+		createdAt = status.getCreatedAt();
 		Status shownStatus;
 		StringBuilder footerBuiler = new StringBuilder();
 		if(isRetweet)
@@ -76,7 +77,6 @@ public class StatusModel implements Comparable<StatusModel>
 		screenName = user.getScreenName();
 		name = user.getName();
 		text = shownStatus.getText();
-		createdAt = shownStatus.getCreatedAt();
 		
 		footerBuiler.append(StringUtils.dateToString(shownStatus.getCreatedAt()));
 		footerBuiler.append(" via ");
@@ -121,18 +121,6 @@ public class StatusModel implements Comparable<StatusModel>
 	@Override
 	public int compareTo(StatusModel another)
 	{
-		return this.createdAt.compareTo(another.createdAt);
+		return another.createdAt.compareTo(this.createdAt);
 	}
-	
-	@Override
-	public boolean equals(Object another)
-	{
-		if(another instanceof StatusModel)
-		{
-			return this.statusId == ((StatusModel)another).statusId;
-		}
-		
-		return false;
-	}
-
 }

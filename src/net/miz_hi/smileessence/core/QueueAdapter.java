@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import android.R.integer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +11,15 @@ import android.widget.BaseAdapter;
 
 public abstract class QueueAdapter<T extends Comparable<T>> extends BaseAdapter
 {
-	
-	private List<T> list;
-	private int count;
-	private final Object lock = new Object();
-	private boolean notifyOnChange = true;
+
+	private volatile List<T> list;
+	private volatile int count;
+	private volatile Object lock = new Object();
+	private volatile boolean notifyOnChange = true;
 	private EventHandlerActivity activity;
 	private LayoutInflater inflater;
 	private int capacity;
-	
+
 	public QueueAdapter(EventHandlerActivity activity, int capacity)
 	{
 		this.capacity = capacity;
@@ -28,11 +27,15 @@ public abstract class QueueAdapter<T extends Comparable<T>> extends BaseAdapter
 		this.activity = activity;
 		this.inflater = LayoutInflater.from(activity);
 	}
-	
+
 	public void setList(List<T> list)
 	{
-		this.list.clear();
-		this.list.addAll(list);
+		synchronized (lock)
+		{
+			this.list.clear();
+			this.list.addAll(list);
+		}
+		notifyDataSetChanged();
 	}
 
 	public void addFirst(T status)
@@ -50,7 +53,7 @@ public abstract class QueueAdapter<T extends Comparable<T>> extends BaseAdapter
 			notifyDataSetChanged();
 		}
 	}
-	
+
 	public void addLast(T status)
 	{
 		synchronized (lock)
@@ -66,31 +69,31 @@ public abstract class QueueAdapter<T extends Comparable<T>> extends BaseAdapter
 			notifyDataSetChanged();
 		}
 	}
-	
-	public void addAllFirst(List<T> status)
+
+	public void addAllFirst(List<T> statuses)
 	{
 		synchronized (lock)
 		{
-			list.addAll(0, status);
+			list.addAll(0, statuses);
 		}
 		if (notifyOnChange)
 		{
 			notifyDataSetChanged();
 		}
 	}
-	
-	public void addAllLast(List<T> status)
+
+	public void addAllLast(List<T> statuses)
 	{
 		synchronized (lock)
-		{
-			list.addAll(status);
+		{			
+			list.addAll(statuses);
 		}
 		if (notifyOnChange)
 		{
 			notifyDataSetChanged();
 		}
 	}
-	
+
 	public void insert(T status, int index)
 	{
 		synchronized (lock)
@@ -102,7 +105,7 @@ public abstract class QueueAdapter<T extends Comparable<T>> extends BaseAdapter
 			notifyDataSetChanged();
 		}
 	}
-	
+
 	public void removeLast()
 	{
 		synchronized (lock)
@@ -114,7 +117,7 @@ public abstract class QueueAdapter<T extends Comparable<T>> extends BaseAdapter
 			notifyDataSetChanged();
 		}
 	}
-	
+
 	public void remove(T status)
 	{
 		synchronized (lock)
@@ -126,7 +129,7 @@ public abstract class QueueAdapter<T extends Comparable<T>> extends BaseAdapter
 			notifyDataSetChanged();
 		}
 	}
-	
+
 	public void clear()
 	{
 		synchronized (lock)
@@ -138,7 +141,7 @@ public abstract class QueueAdapter<T extends Comparable<T>> extends BaseAdapter
 			notifyDataSetChanged();
 		}
 	}
-	
+
 	public void sort()
 	{
 		synchronized (lock)
@@ -150,35 +153,44 @@ public abstract class QueueAdapter<T extends Comparable<T>> extends BaseAdapter
 			notifyDataSetChanged();
 		}
 	}
-	
-    @Override
-    public void notifyDataSetChanged()
-    {
-        super.notifyDataSetChanged();
-        count = list.size();
-        notifyOnChange = true;
-    }    
-    
-    public void setNotifyOnChange(boolean notifyOnChange)
-    {
-        this.notifyOnChange = notifyOnChange;
-    }
-    
-    public EventHandlerActivity getActivity() 
-    {
-        return activity;
-    }
-	
+
+	@Override
+	public void notifyDataSetChanged()
+	{
+		super.notifyDataSetChanged();
+		count = list.size();
+		notifyOnChange = true;
+	}    
+
+	public void setNotifyOnChange(boolean notifyOnChange)
+	{
+		synchronized (lock)
+		{
+			this.notifyOnChange = notifyOnChange;
+		}
+	}
+
+	public EventHandlerActivity getActivity() 
+	{
+		return activity;
+	}
+
 	@Override
 	public int getCount()
 	{		
-		return count;
+		synchronized (lock)
+		{
+			return count;
+		}
 	}
 
 	@Override
 	public Object getItem(int position)
 	{
-		return list.get(position);
+		synchronized (lock)
+		{
+			return list.get(position);
+		}
 	}
 
 	@Override
@@ -186,7 +198,7 @@ public abstract class QueueAdapter<T extends Comparable<T>> extends BaseAdapter
 	{
 		return position;
 	}
-	
+
 	public LayoutInflater getInflater()
 	{
 		return inflater;

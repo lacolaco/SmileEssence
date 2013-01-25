@@ -69,7 +69,6 @@ public class WarotterUserStreamListener implements UserStreamListener
 					mentionsListAdapter.remove(model);
 				}
 			});
-			StatusStore.remove(status.getId());
 		}
 	}
 
