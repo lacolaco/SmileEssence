@@ -3,36 +3,39 @@ package net.miz_hi.smileessence.menu;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
+
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 
 public class MenuItemBack extends MenuItemBase
 {
-	String text;
-	List<MenuItemBase> list = new ArrayList<MenuItemBase>();
+	private String _text;
+	private List<MenuItemBase> _list = new ArrayList<MenuItemBase>();
 
-	public MenuItemBack(EventHandlerActivity activity, DialogAdapter adapter, String text, List<MenuItemBase> listOld)
+	public MenuItemBack(Activity activity, DialogAdapter adapter, String text, List<MenuItemBase> listOld)
 	{
 		super(activity, adapter);
-		this.text = text;
-		this.list.addAll(listOld);
-	}
+		this._text = text;
+		this._list.addAll(listOld);
+	}	
 
 	@Override
 	public	String getText()
 	{
-		return text;
+		return _text;
 	}
 
 	@Override
 	public void work()
 	{
-		activity.runOnUiThread(new Runnable()
+		_activity.runOnUiThread(new Runnable()
 		{
+			@Override
 			public void run()
 			{
-				adapter.setMenuItems(list);
-				adapter.createMenuDialog(false).show();
+				_adapter.setMenuItems(_list);
+				_adapter.createMenuDialog(false).show();
 			}
 		});
 	}

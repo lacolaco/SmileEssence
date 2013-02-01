@@ -1,12 +1,12 @@
 package net.miz_hi.smileessence.menu;
 
-import net.miz_hi.smileessence.core.EventHandlerActivity;
+import android.app.Activity;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 
 public class MenuItemClose extends MenuItemBase
 {
 
-	public MenuItemClose(EventHandlerActivity activity, DialogAdapter adapter)
+	public MenuItemClose(Activity activity, DialogAdapter adapter)
 	{
 		super(activity, adapter);
 	}
@@ -20,7 +20,7 @@ public class MenuItemClose extends MenuItemBase
 	@Override
 	public void work()
 	{
-		adapter.dispose();
+		_adapter.dispose();
 	}
 
 }

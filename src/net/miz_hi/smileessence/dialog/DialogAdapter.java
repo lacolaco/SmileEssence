@@ -24,15 +24,15 @@ import android.widget.TextView;
 
 public abstract class DialogAdapter
 {
-	protected EventHandlerActivity activity;
+	protected Activity activity;
 	protected List<MenuItemBase> list;
 	protected static LayoutInflater layoutInflater;
 	protected Dialog dialog;
 
-	public DialogAdapter(EventHandlerActivity activity)
+	public DialogAdapter(Activity activity2)
 	{
-		this.activity = activity;
-		layoutInflater = LayoutInflater.from(activity);
+		this.activity = activity2;
+		layoutInflater = LayoutInflater.from(activity2);
 		list = new ArrayList<MenuItemBase>();
 	}
 
@@ -66,7 +66,7 @@ public abstract class DialogAdapter
 	{
 		dialog = new Dialog(activity);
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		View view = layoutInflater.inflate(R.layout.dialog_menu_layout, null);
+		View view = layoutInflater.inflate(R.layout.dialog_base_layout, null);
 		LinearLayout titleLinearLayout = (LinearLayout)view.findViewById(R.id.linearLayout_dialogTitle);
 		LinearLayout itemsLinearLayout = (LinearLayout)view.findViewById(R.id.linearLayout_dialogItems);
 		

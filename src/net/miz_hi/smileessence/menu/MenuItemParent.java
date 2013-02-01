@@ -3,38 +3,41 @@ package net.miz_hi.smileessence.menu;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
+
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 
 public class MenuItemParent extends MenuItemBase
 {
-	private String text;
-	private List<MenuItemBase> list = new ArrayList<MenuItemBase>();
+	private String _text;
+	private List<MenuItemBase> _list = new ArrayList<MenuItemBase>();
 
-	public MenuItemParent(EventHandlerActivity activity, DialogAdapter adapter, String text, List<MenuItemBase> list)
+	public MenuItemParent(Activity activity, DialogAdapter adapter, String text, List<MenuItemBase> list)
 	{
 		super(activity, adapter);
-		this.text = text;
-		this.list.addAll(list);
+		this._text = text;
+		this._list.addAll(list);
 	}
 
 	@Override
 	public String getText()
 	{
-		return text + " >";
+		return _text + " >";
 	}
 
 	@Override
 	public void work()
 	{
-		activity.runOnUiThread(new Runnable()
+		_activity.runOnUiThread(new Runnable()
 		{
+			@Override
 			public void run()
 			{
-				if (!(list.get(0) instanceof MenuItemBack))
-					list.add(0, new MenuItemBack(activity, adapter, "< –ß‚é", adapter.getList()));
-				adapter.setMenuItems(list);
-				adapter.createMenuDialog(false).show();
+				if (!(_list.get(0) instanceof MenuItemBack))
+					_list.add(0, new MenuItemBack(_activity, _adapter, "< –ß‚é", _adapter.getList()));
+				_adapter.setMenuItems(_list);
+				_adapter.createMenuDialog(false).show();
 			}
 		});
 	}

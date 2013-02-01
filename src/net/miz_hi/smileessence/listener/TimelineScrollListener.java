@@ -1,15 +1,15 @@
 package net.miz_hi.smileessence.listener;
 
-import net.miz_hi.smileessence.core.QueueAdapter;
+import net.miz_hi.smileessence.core.CustomListAdapter;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 
 public class TimelineScrollListener implements OnScrollListener
 {
 	
-	private QueueAdapter adapter;
+	private CustomListAdapter adapter;
 	
-	public TimelineScrollListener(QueueAdapter adapter)
+	public TimelineScrollListener(CustomListAdapter adapter)
 	{
 		this.adapter = adapter;
 	}

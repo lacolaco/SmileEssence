@@ -1,18 +1,17 @@
 package net.miz_hi.smileessence.async;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusStore;
-import net.miz_hi.smileessence.viewmodel.MainActivityViewModel;
+import net.miz_hi.smileessence.util.TwitterManager;
+import net.miz_hi.smileessence.view.MainActivity;
 import twitter4j.Paging;
-import twitter4j.ResponseList;
 import twitter4j.TwitterException;
-import android.os.AsyncTask;
 
-public class AsyncTimelineGetter extends ConcurrentAsyncTask<ResponseList<twitter4j.Status>>
+public class AsyncTimelineGetter extends ConcurrentAsyncTask<List<twitter4j.Status>>
 {
 
 	private Account account;
@@ -25,12 +24,8 @@ public class AsyncTimelineGetter extends ConcurrentAsyncTask<ResponseList<twitte
 	}
 
 	@Override
-	protected void onPostExecute(ResponseList<twitter4j.Status> result)
+	protected void onPostExecute(List<twitter4j.Status> result)
 	{
-		if (result == null)
-		{
-			return;
-		}
 		ArrayList<StatusModel> list = new ArrayList<StatusModel>();
 		for (twitter4j.Status st : result)
 		{
@@ -41,23 +36,16 @@ public class AsyncTimelineGetter extends ConcurrentAsyncTask<ResponseList<twitte
 			}
 			list.add(StatusModel.createInstance(st));
 		}
-		if(MainActivityViewModel.singleton().homeListAdapter != null)
+		if(MainActivity.getInstance().getHomeListAdapter() != null)
 		{
-			MainActivityViewModel.singleton().homeListAdapter.addAllLast(list);
+			MainActivity.getInstance().getHomeListAdapter().addAllLast(list);
 		}
 	}
 
 	@Override
-	protected ResponseList<twitter4j.Status> doInBackground(Object... params)
+	protected List<twitter4j.Status> doInBackground(Object... params)
 	{
-		try
-		{
-			return Client.getTwitter(account).getHomeTimeline(page);
-		}
-		catch (TwitterException e)
-		{
-		}
-		return null;
+		return TwitterManager.getOldTimeline(account);
 	}
 
 }

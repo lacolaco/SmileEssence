@@ -10,6 +10,8 @@ import net.miz_hi.smileessence.menu.MenuItemOpenFollowers;
 import net.miz_hi.smileessence.menu.MenuItemOpenFriends;
 import net.miz_hi.smileessence.menu.MenuItemReport;
 import net.miz_hi.smileessence.menu.MenuItemSetting;
+import net.miz_hi.smileessence.view.MainActivity;
+import android.app.Activity;
 import android.app.Dialog;
 import android.widget.TextView;
 
@@ -18,7 +20,7 @@ public class OptionMenuAdapter extends DialogAdapter
 	private String title;
 	private int textSize = 15;
 	
-	public OptionMenuAdapter(EventHandlerActivity activity, String title)
+	public OptionMenuAdapter(Activity activity, String title)
 	{
 		super(activity);
 		this.title = title;

@@ -7,6 +7,7 @@ import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.listener.EventOnClickListener;
 import net.miz_hi.smileessence.status.StatusViewFactory;
 import net.miz_hi.smileessence.util.ColorUtils;
+import android.app.Activity;
 import android.graphics.Color;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -19,9 +20,9 @@ public class EventViewFactory
 {
 	private static View viewToast;	
 
-	public static View getView(EventHandlerActivity activity, EventModel model)
+	public static View getView(Activity _activity, EventModel model)
 	{
-		LayoutInflater layoutInflater = LayoutInflater.from(activity);
+		LayoutInflater layoutInflater = LayoutInflater.from(_activity);
 		if(viewToast == null)
 		{
 			viewToast = layoutInflater.inflate(R.layout.eventtoast_layout, null);
@@ -51,10 +52,10 @@ public class EventViewFactory
 			bodyLayout.addView(viewStatus);
 		}
 		
-		DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
+		DisplayMetrics metrics = _activity.getResources().getDisplayMetrics();
 		viewText.setWidth((int) (metrics.widthPixels * 0.8));
 		
-		viewToast.setOnClickListener(new EventOnClickListener(activity, model));
+		viewToast.setOnClickListener(new EventOnClickListener(_activity, model));
 		
 		return viewToast;
 	}

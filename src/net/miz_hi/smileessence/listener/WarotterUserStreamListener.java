@@ -11,6 +11,7 @@ import net.miz_hi.smileessence.status.StatusListAdapter;
 import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusStore;
 import net.miz_hi.smileessence.status.StatusUtils;
+import net.miz_hi.smileessence.util.LogHelper;
 import twitter4j.DirectMessage;
 import twitter4j.StallWarning;
 import twitter4j.Status;
@@ -85,6 +86,7 @@ public class WarotterUserStreamListener implements UserStreamListener
 	@Override
 	public void onStatus(final Status arg0)
 	{
+		LogHelper.print("on status");
 		StatusStore.put(arg0);
 		final StatusModel model = StatusModel.createInstance(arg0);
 		boolean isRetweet = arg0.isRetweet();
@@ -125,8 +127,6 @@ public class WarotterUserStreamListener implements UserStreamListener
 	@Override
 	public void onTrackLimitationNotice(int arg0)
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

@@ -1,13 +1,13 @@
 package net.miz_hi.smileessence.menu;
 
+import android.app.Activity;
 import net.miz_hi.smileessence.auth.AuthentificationDB;
-import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 
 public class MenuItemAccountReset extends MenuItemBase
 {
 
-	public MenuItemAccountReset(EventHandlerActivity activity, DialogAdapter factory)
+	public MenuItemAccountReset(Activity activity, DialogAdapter factory)
 	{
 		super(activity, factory);
 	}
@@ -23,7 +23,7 @@ public class MenuItemAccountReset extends MenuItemBase
 	{
 		toast("全ての認証情報をリセットします。再起動してください");
 		AuthentificationDB.instance().deleteAll();
-		activity.finish();
+		_activity.finish();
 	}
 
 }

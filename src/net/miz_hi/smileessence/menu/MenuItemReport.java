@@ -1,13 +1,13 @@
 package net.miz_hi.smileessence.menu;
 
-import net.miz_hi.smileessence.core.EventHandlerActivity;
+import android.app.Activity;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
-import net.miz_hi.smileessence.message.TweetMessage;
+import net.miz_hi.smileessence.view.MainActivity;
 
 public class MenuItemReport extends MenuItemBase
 {
 
-	public MenuItemReport(EventHandlerActivity activity, DialogAdapter adapter)
+	public MenuItemReport(Activity activity, DialogAdapter adapter)
 	{
 		super(activity, adapter);
 	}
@@ -21,7 +21,7 @@ public class MenuItemReport extends MenuItemBase
 	@Override
 	public void work()
 	{
-		activity.messenger.raise("tweet", new TweetMessage("#SmileEssence @laco0416 "));
+		MainActivity.getInstance().openTweetViewToTweet("#SmileEssence @laco0416 ");
 	}
 
 }

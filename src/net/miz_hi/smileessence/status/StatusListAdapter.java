@@ -4,18 +4,20 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
-import net.miz_hi.smileessence.core.QueueAdapter;
+import net.miz_hi.smileessence.core.CustomListAdapter;
 import net.miz_hi.smileessence.listener.StatusOnClickListener;
 import net.miz_hi.smileessence.status.IconCaches.Icon;
+import net.miz_hi.smileessence.view.MainActivity;
+import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class StatusListAdapter extends QueueAdapter<StatusModel>
+public class StatusListAdapter extends CustomListAdapter<StatusModel>
 {
 	
-	public StatusListAdapter(EventHandlerActivity activity)
+	public StatusListAdapter(Activity activity)
 	{
 		super(activity, 5000);
 	}

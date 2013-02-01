@@ -1,38 +1,38 @@
 package net.miz_hi.smileessence.async;
 
+import android.widget.Toast;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.core.ViewModel;
-import net.miz_hi.smileessence.util.TwitterApi;
+import net.miz_hi.smileessence.util.TwitterManager;
+import net.miz_hi.smileessence.view.MainActivity;
 
 public class AsyncFavoriteTask extends ConcurrentAsyncTask<String>
 {	
 	private Account account;
 	private long statusId;
-	private ViewModel viewModel;
 
-	public AsyncFavoriteTask(long statusId, ViewModel viewModel)
+	public AsyncFavoriteTask(long statusId)
 	{
-		this(Client.getMainAccount(), statusId, viewModel);
+		this(Client.getMainAccount(), statusId);
 	}
 	
-	public AsyncFavoriteTask(Account account, long statusId, ViewModel viewModel)
+	public AsyncFavoriteTask(Account account, long statusId)
 	{
 		this.account = account;
 		this.statusId = statusId;
-		this.viewModel = viewModel;
 	}
 
 	@Override
 	protected String doInBackground(Object... arg0)
 	{
-		return TwitterApi.favorite(account, statusId);
+		return TwitterManager.favorite(account, statusId);
 	}
 
 	@Override
 	protected void onPostExecute(String result)
 	{
-		viewModel.toast(result);
+		Toast.makeText(MainActivity.getInstance(), result, Toast.LENGTH_SHORT).show();
 	}
 
 }

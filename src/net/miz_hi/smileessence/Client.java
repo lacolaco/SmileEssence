@@ -3,6 +3,7 @@ package net.miz_hi.smileessence;
 import java.io.File;
 
 import net.miz_hi.smileessence.auth.Account;
+import net.miz_hi.smileessence.auth.AuthentificationDB;
 import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.core.PreferenceHelper;
 import twitter4j.Twitter;
@@ -18,7 +19,6 @@ public class Client
 {
 	private static Application app;
 	private static Account mainAccount;
-	private static TwitterStream twitterStream;
 	private static PreferenceHelper prefHelper;
 	
 	private static int textSize;
@@ -36,35 +36,11 @@ public class Client
 	{
 		return prefHelper.getPreferenceValue(key);
 	}
-
-	private static ConfigurationBuilder generateConfig(Account account)
+	
+	public static boolean hasAuthedAccount()
 	{
-		ConfigurationBuilder cb = new ConfigurationBuilder();
-		cb.setOAuthConsumerKey(account.getConsumerKey());
-		cb.setOAuthConsumerSecret(account.getConsumerSecret());
-		cb.setOAuthAccessToken(account.getAccessToken());
-		cb.setOAuthAccessTokenSecret(account.getAccessTokenSecret());
-		return cb;
-	}
-
-	public static Twitter getTwitter(Account account)
-	{
-		return new TwitterFactory(generateConfig(account).build()).getInstance();
-	}
-
-	public static TwitterStream getTwitterStream(Account account, boolean reCreate)
-	{
-		if(!reCreate)
-		{
-			return twitterStream;
-		}
-		else
-		{
-			ConfigurationBuilder cb = generateConfig(account);
-			cb.setUserStreamRepliesAllEnabled(false);
-			twitterStream = new TwitterStreamFactory(cb.build()).getInstance();
-			return twitterStream;
-		}
+		Long lastUsedId = (Long) getPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID);
+		return lastUsedId > 0 && !AuthentificationDB.instance().findAll().isEmpty();
 	}
 
 	public static Application getApplication()
@@ -85,10 +61,6 @@ public class Client
 		}
 		else
 		{
-			if (twitterStream != null)
-			{
-				twitterStream.shutdown();
-			}
 			putPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID, -1L);
 		}
 		mainAccount = account;
@@ -103,6 +75,11 @@ public class Client
 	public static Resources getResource()
 	{
 		return app.getResources();
+	}
+	
+	public static int getColor(int resId)
+	{
+		return getResource().getColor(resId);
 	}
 	
 	public static int getTextSize()

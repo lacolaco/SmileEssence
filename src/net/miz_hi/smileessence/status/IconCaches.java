@@ -18,6 +18,7 @@ import twitter4j.User;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
+import android.os.Handler;
 import android.widget.ImageView;
 
 public class IconCaches
@@ -27,6 +28,7 @@ public class IconCaches
 	private static File cacheDir = Client.getApplication().getExternalCacheDir();
 	private static Bitmap emptyIcon;
 	private static CountUpInteger counter = new CountUpInteger(5);
+	private static Handler hander = new Handler();
 
 	public static Icon getIcon(long id)
 	{

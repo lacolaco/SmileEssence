@@ -2,15 +2,14 @@ package net.miz_hi.smileessence.dialog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncRetweetTask;
 import net.miz_hi.smileessence.async.ConcurrentAsyncTaskHelper;
-import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.menu.MenuItemBase;
-import net.miz_hi.smileessence.menu.MenuItemClose;
 import net.miz_hi.smileessence.menu.MenuItemParent;
 import net.miz_hi.smileessence.menu.StatusMenuCopyToClipboard;
 import net.miz_hi.smileessence.menu.StatusMenuFavAndRetweet;
@@ -19,8 +18,10 @@ import net.miz_hi.smileessence.menu.StatusMenuWarotaRT;
 import net.miz_hi.smileessence.message.ReplyMessage;
 import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusViewFactory;
+import net.miz_hi.smileessence.view.MainActivity;
 import twitter4j.MediaEntity;
 import twitter4j.URLEntity;
+import android.app.Activity;
 import android.app.Dialog;
 import android.os.Handler;
 import android.view.View;
@@ -32,7 +33,7 @@ public class StatusMenuAdapter extends DialogAdapter
 	private StatusModel model;
 	Handler handler;
 	
-	public StatusMenuAdapter(EventHandlerActivity activity, StatusModel model)
+	public StatusMenuAdapter(Activity activity, StatusModel model)
 	{
 		super(activity);
 		handler = new Handler();
@@ -105,7 +106,7 @@ public class StatusMenuAdapter extends DialogAdapter
 			{
 				public void run()
 				{
-					activity.messenger.raise("reply", new ReplyMessage(model.user, model.statusId));
+					MainActivity.getInstance().openTweetViewToReply(model.user, model.statusId);
 					dispose();
 				}
 			}, 20);
@@ -124,7 +125,7 @@ public class StatusMenuAdapter extends DialogAdapter
 			{
 				public void run()
 				{
-					ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncRetweetTask(model.statusId, activity.getMainViewModel()));	
+					ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncRetweetTask(model.statusId));	
 					dispose();
 				}
 			}, 20);
@@ -143,7 +144,7 @@ public class StatusMenuAdapter extends DialogAdapter
 			{
 				public void run()
 				{
-					ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncFavoriteTask(model.statusId, activity.getMainViewModel()));
+					ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncFavoriteTask(model.statusId));
 					dispose();
 				}
 			},20);

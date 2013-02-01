@@ -3,6 +3,7 @@ package net.miz_hi.smileessence.menu;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 import net.miz_hi.smileessence.status.StatusModel;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
@@ -11,7 +12,7 @@ public class StatusMenuOpenUrl extends StatusMenuItemBase
 
 	private String url;
 	
-	public StatusMenuOpenUrl(EventHandlerActivity activity, DialogAdapter adapter, StatusModel model, String url)
+	public StatusMenuOpenUrl(Activity activity, DialogAdapter adapter, StatusModel model, String url)
 	{
 		super(activity, adapter, model);
 		this.url = url;
@@ -33,6 +34,6 @@ public class StatusMenuOpenUrl extends StatusMenuItemBase
 	public void work()
 	{
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-		activity.startActivity(intent);
+		_activity.startActivity(intent);
 	}
 }

@@ -1,21 +1,21 @@
 package net.miz_hi.smileessence.menu;
 
-import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
-import net.miz_hi.smileessence.message.ToastMessage;
+import android.app.Activity;
 import android.os.Handler;
+import android.widget.Toast;
 
 public abstract class MenuItemBase
 {
-	protected EventHandlerActivity activity;
-	protected DialogAdapter adapter;
-	private Handler handler;
+	protected Activity _activity;
+	protected DialogAdapter _adapter;
+	private Handler _handler;
 
-	public MenuItemBase(EventHandlerActivity activity, DialogAdapter adapter)
+	public MenuItemBase(Activity activity, DialogAdapter adapter)
 	{
-		this.activity = activity;
-		this.adapter = adapter;
-		handler = new Handler();
+		this._activity = activity;
+		this._adapter = adapter;
+		_handler = new Handler();
 	}
 
 	public abstract String getText();
@@ -27,11 +27,12 @@ public abstract class MenuItemBase
 
 	public void run()
 	{
-		handler.postDelayed(new Runnable()
+		_handler.postDelayed(new Runnable()
 		{
+			@Override
 			public void run()
 			{
-				adapter.dispose();
+				_adapter.dispose();
 				work();
 			}
 		}, 20);
@@ -41,7 +42,7 @@ public abstract class MenuItemBase
 
 	public void toast(String str)
 	{
-		activity.messenger.raise("toast", new ToastMessage(str));
+		Toast.makeText(_activity, str, Toast.LENGTH_SHORT).show();
 	}
 
 }

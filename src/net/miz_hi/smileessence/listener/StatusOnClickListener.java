@@ -5,17 +5,18 @@ import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.dialog.StatusMenuAdapter;
 import net.miz_hi.smileessence.status.StatusModel;
+import android.app.Activity;
 import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 public class StatusOnClickListener implements OnClickListener
 {
-	private EventHandlerActivity activity;
+	private Activity activity;
 	private StatusModel model;
 	private static boolean wasTouched = false;
 	
-	public StatusOnClickListener(EventHandlerActivity activity, StatusModel model)
+	public StatusOnClickListener(Activity activity, StatusModel model)
 	{
 		this.activity = activity;
 		this.model = model;

@@ -1,5 +1,7 @@
 package net.miz_hi.smileessence.menu;
 
+import android.app.Activity;
+import android.content.Context;
 import android.text.ClipboardManager;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
@@ -8,7 +10,7 @@ import net.miz_hi.smileessence.status.StatusModel;
 public class StatusMenuCopyToClipboard extends StatusMenuItemBase
 {
 
-	public StatusMenuCopyToClipboard(EventHandlerActivity activity, DialogAdapter adapter, StatusModel model)
+	public StatusMenuCopyToClipboard(Activity activity, DialogAdapter adapter, StatusModel model)
 	{
 		super(activity, adapter, model);
 	}
@@ -30,7 +32,7 @@ public class StatusMenuCopyToClipboard extends StatusMenuItemBase
 	{
 		try
 		{
-			ClipboardManager manager = (ClipboardManager)activity.getSystemService(activity.CLIPBOARD_SERVICE);
+			ClipboardManager manager = (ClipboardManager)_activity.getSystemService(Context.CLIPBOARD_SERVICE);
 			manager.setText(model.text);
 			toast("ÉRÉsÅ[ÇµÇ‹ÇµÇΩ");
 		}
