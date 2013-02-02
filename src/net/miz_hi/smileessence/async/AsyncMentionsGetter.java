@@ -3,11 +3,11 @@ package net.miz_hi.smileessence.async;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusStore;
 import net.miz_hi.smileessence.util.TwitterManager;
-import net.miz_hi.smileessence.view.MainActivity;
 import twitter4j.Paging;
 import twitter4j.ResponseList;
 import twitter4j.TwitterException;

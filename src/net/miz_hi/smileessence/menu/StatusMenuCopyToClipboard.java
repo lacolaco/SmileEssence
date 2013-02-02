@@ -33,7 +33,7 @@ public class StatusMenuCopyToClipboard extends StatusMenuItemBase
 		try
 		{
 			ClipboardManager manager = (ClipboardManager)_activity.getSystemService(Context.CLIPBOARD_SERVICE);
-			manager.setText(model.text);
+			manager.setText(_model.text);
 			toast("ÉRÉsÅ[ÇµÇ‹ÇµÇΩ");
 		}
 		catch(Exception e)

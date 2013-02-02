@@ -1,13 +1,12 @@
-package net.miz_hi.smileessence.viewmodel;
+package net.miz_hi.smileessence.util;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
 import net.miz_hi.smileessence.async.ConcurrentAsyncTaskHelper;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.core.ViewModel;
-import net.miz_hi.smileessence.util.StringUtils;
-import net.miz_hi.smileessence.view.MainActivity;
 import twitter4j.StatusUpdate;
 import android.app.Activity;
 import android.content.Context;

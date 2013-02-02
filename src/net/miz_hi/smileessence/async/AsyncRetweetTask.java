@@ -2,10 +2,10 @@ package net.miz_hi.smileessence.async;
 
 import android.widget.Toast;
 import net.miz_hi.smileessence.Client;
+import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.core.ViewModel;
 import net.miz_hi.smileessence.util.TwitterManager;
-import net.miz_hi.smileessence.view.MainActivity;
 
 public class AsyncRetweetTask extends ConcurrentAsyncTask<String>
 {	

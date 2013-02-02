@@ -1,7 +1,7 @@
 package net.miz_hi.smileessence.event;
 
+import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.util.CountUpInteger;
-import net.miz_hi.smileessence.view.MainActivity;
 import android.app.Activity;
 import android.view.Gravity;
 import android.view.View;

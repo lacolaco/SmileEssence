@@ -31,8 +31,8 @@ public class StatusMenuFavAndRetweet extends StatusMenuItemBase
 	@Override
 	public void work()
 	{
-		ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncFavoriteTask(model.statusId));
-		ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncRetweetTask(model.statusId));
+		ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncFavoriteTask(_model.statusId));
+		ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncRetweetTask(_model.statusId));
 	}
 
 }

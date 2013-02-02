@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.view;
+package net.miz_hi.smileessence.activity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +25,8 @@ import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusStore;
 import net.miz_hi.smileessence.util.ExtendedBoolean;
 import net.miz_hi.smileessence.util.LogHelper;
+import net.miz_hi.smileessence.util.TweetViewManager;
 import net.miz_hi.smileessence.util.TwitterManager;
-import net.miz_hi.smileessence.viewmodel.TweetViewManager;
 import twitter4j.Status;
 import twitter4j.TwitterStream;
 import twitter4j.User;
@@ -112,10 +112,10 @@ public class MainActivity extends Activity implements Runnable
 				final ArrayList<StatusModel> oldMentions = new ArrayList<StatusModel>();
 				final List<Status> home = TwitterManager.getOldTimeline(account);
 				final List<Status> mentions = TwitterManager.getOldMentions(account);
-				
+
 				runOnUiThread(new Runnable()
 				{
-					
+
 					@Override
 					public void run()
 					{
@@ -330,11 +330,29 @@ public class MainActivity extends Activity implements Runnable
 		_tweetViewManager.open();
 	}
 
-	public void openTweetViewToReply(User user, long l)
+	public void openTweetViewToReply(String _userName, long l, boolean append)
 	{
-		Pattern hasReply = Pattern.compile("^@([a-zA-Z0-9_]+).*");
 		String text = _tweetViewManager.getText();
-		text = text + "@" + user.getScreenName() + " ";
+		Pattern hasReply = Pattern.compile("^@([a-zA-Z0-9_]+).*");
+		if(append || hasReply.matcher(text).find())
+		{
+			if(!text.contains("@"+ _userName))
+			{
+				text = text + "@" + _userName + " ";
+				if(!text.startsWith("."))
+				{
+					text = "." + text;
+				}
+			}
+			else
+			{
+				text = "@" + _userName + " ";
+			}
+		}
+		else
+		{
+			text = "@" + _userName + " ";
+		}
 		_tweetViewManager.setText(text);
 		_tweetViewManager.setInReplyToStatusId(l);
 		_tweetViewManager.open();

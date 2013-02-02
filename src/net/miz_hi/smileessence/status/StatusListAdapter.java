@@ -2,12 +2,12 @@ package net.miz_hi.smileessence.status;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.core.CustomListAdapter;
 import net.miz_hi.smileessence.listener.StatusOnClickListener;
 import net.miz_hi.smileessence.status.IconCaches.Icon;
-import net.miz_hi.smileessence.view.MainActivity;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;

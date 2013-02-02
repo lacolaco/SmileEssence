@@ -1,8 +1,8 @@
 package net.miz_hi.smileessence.auth;
 
+import net.miz_hi.smileessence.activity.WebViewActivity;
 import net.miz_hi.smileessence.auth.Consumers.Consumer;
 import net.miz_hi.smileessence.core.EnumRequestCode;
-import net.miz_hi.smileessence.view.WebViewActivity;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;

@@ -30,7 +30,7 @@
             android:layout_marginTop="5dp"
             android:gravity="top"
             android:inputType="textMultiLine"
-            android:textAppearance="@android:style/TextAppearance.Medium" >
+            android:textAppearance="?android:attr/textAppearanceMedium" >
 
             <requestFocus />
         </EditText>

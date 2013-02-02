@@ -3,6 +3,7 @@ package net.miz_hi.smileessence.listener;
 import java.util.Date;
 
 import net.miz_hi.smileessence.Client;
+import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.event.EnumEventType;
 import net.miz_hi.smileessence.event.EventListAdapter;
 import net.miz_hi.smileessence.event.EventModel;
@@ -48,28 +49,23 @@ public class WarotterUserStreamListener implements UserStreamListener
 	@Override
 	public void onDeletionNotice(final StatusDeletionNotice arg0)
 	{
-		Status status = StatusStore.get(arg0.getStatusId());
+		final Status status = StatusStore.get(arg0.getStatusId());
 		if(status == null)
 		{
 			return;
 		}
 		else
 		{
-			final StatusModel model = StatusModel.createInstance(status);
-			homeListAdapter.getActivity().runOnUiThread(new Runnable()
+			MainActivity.getInstance().runOnUiThread(new Runnable()
 			{
 				public void run()
 				{
+					StatusModel model = StatusModel.createInstance(status);
 					homeListAdapter.remove(model);
-				}
-			});
-			mentionsListAdapter.getActivity().runOnUiThread(new Runnable()
-			{
-				public void run()
-				{
 					mentionsListAdapter.remove(model);
 				}
 			});
+
 		}
 	}
 
@@ -88,40 +84,32 @@ public class WarotterUserStreamListener implements UserStreamListener
 	{
 		LogHelper.print("on status");
 		StatusStore.put(arg0);
-		final StatusModel model = StatusModel.createInstance(arg0);
-		boolean isRetweet = arg0.isRetweet();
-		boolean isReply = StatusUtils.isReply(isRetweet ? arg0.getRetweetedStatus() : arg0);
+		final boolean isRetweet = arg0.isRetweet();
+		final boolean isReply = StatusUtils.isReply(isRetweet ? arg0.getRetweetedStatus() : arg0);
 		if (isRetweet)
 		{
 			StatusStore.put(arg0.getRetweetedStatus());
 		}
-		if(isReply)
+		MainActivity.getInstance().runOnUiThread(new Runnable()
 		{
-			mentionsListAdapter.getActivity().runOnUiThread(new Runnable()
-			{
-				public void run()
+			public void run()
+			{		
+				StatusModel model = StatusModel.createInstance(arg0);
+				if(isReply)
 				{
 					mentionsListAdapter.addFirst(model);
 				}
-			});
-		}
-		homeListAdapter.getActivity().runOnUiThread(new Runnable()
-		{
-			public void run()
-			{
 				homeListAdapter.addFirst(model);
+				if(isRetweet && StatusUtils.isMine(arg0.getRetweetedStatus()))
+				{
+					EventNoticer.receive(EventModel.createInstance(arg0.getUser(), EnumEventType.RETWEET, arg0.getRetweetedStatus()));
+				}
+				else if(isReply)
+				{
+					EventNoticer.receive(EventModel.createInstance(arg0.getUser(), EnumEventType.REPLY, arg0));
+				}
 			}
 		});
-		
-		//noticing
-		if(isRetweet && StatusUtils.isMine(arg0.getRetweetedStatus()))
-		{
-			EventNoticer.receive(EventModel.createInstance(arg0.getUser(), EnumEventType.RETWEET, arg0.getRetweetedStatus()));
-		}
-		else if(isReply)
-		{
-			EventNoticer.receive(EventModel.createInstance(arg0.getUser(), EnumEventType.REPLY, arg0));
-		}
 	}
 
 	@Override

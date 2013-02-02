@@ -12,6 +12,7 @@ import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.URLEntity;
 import twitter4j.User;
+import twitter4j.UserMentionEntity;
 import android.text.Html;
 
 public class StatusModel implements Comparable<StatusModel>
@@ -26,6 +27,7 @@ public class StatusModel implements Comparable<StatusModel>
 	public URLEntity[] urls;
 	public MediaEntity[] medias;
 	public HashtagEntity[] hashtags;
+	public UserMentionEntity[] userMentions;
 	public int backgroundColor;
 	public int nameColor;
 	public int textColor;
@@ -86,6 +88,7 @@ public class StatusModel implements Comparable<StatusModel>
 		urls = shownStatus.getURLEntities();
 		medias = shownStatus.getMediaEntities();
 		hashtags = shownStatus.getHashtagEntities();
+		userMentions = shownStatus.getUserMentionEntities();
 		
 		IconCaches.setIconBitmapToView(user, null);
 		

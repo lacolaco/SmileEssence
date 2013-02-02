@@ -2,13 +2,13 @@ package net.miz_hi.smileessence.dialog;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.auth.AuthorizeHelper;
 import net.miz_hi.smileessence.auth.Consumers;
 import net.miz_hi.smileessence.auth.Consumers.Consumer;
 import net.miz_hi.smileessence.core.EnumRequestCode;
 import net.miz_hi.smileessence.core.EventHandlerActivity;
-import net.miz_hi.smileessence.view.MainActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;

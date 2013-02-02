@@ -11,7 +11,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/relativeLayout1"
-        android:background="@color/White" />
+        android:background="@color/White"
+        android:scrollingCache="false" />
 
     <ListView
         android:id="@+id/listView_mentions"
@@ -21,7 +22,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/relativeLayout1"
-        android:background="@color/White" />
+        android:background="@color/White"
+        android:scrollingCache="false" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"

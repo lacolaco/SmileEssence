@@ -13,10 +13,10 @@ import android.widget.BaseAdapter;
 public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAdapter
 {
 
-	private volatile ArrayList<T> _array;
-	private volatile int _count;
-	private volatile Object _lock = new Object();
-	private volatile boolean _notifyOnChange = true;
+	private final ArrayList<T> _array;
+	private int _count;
+	private final Object _lock = new Object();
+	private boolean _notifyOnChange = true;
 	private Activity _activity;
 	private LayoutInflater _inflater;
 	private int _capacity;
@@ -35,6 +35,7 @@ public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAda
 		{
 			this._array.clear();
 			this._array.addAll(list);
+			_notifyOnChange = true;
 		}
 		notifyDataSetChanged();
 	}
@@ -43,32 +44,37 @@ public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAda
 	{
 		synchronized (_lock)
 		{
-			_array.add(0, status);
+			if(_array.contains(status))
+			{
+				_array.remove(status);
+			}
+			_array.add(0, status);		
+
 			if(_array.size() >= _capacity)
 			{
 				_array.remove(_array.size() - 1);
 			}
-		}
-		if (_notifyOnChange)
-		{
+		}		
+//		if (_notifyOnChange)
+//		{
 			notifyDataSetChanged();
-		}
+//		}
 	}
 
 	public void addLast(T status)
 	{
 		synchronized (_lock)
 		{
-			_array.add(status);
-			if(_array.size() >= _capacity)
+			if(_array.contains(status))
 			{
-				_array.remove(_array.size() - 1);
+				_array.remove(status);
 			}
+			_array.add(status);
 		}
-		if (_notifyOnChange)
-		{
-			notifyDataSetChanged();
-		}
+//		if (_notifyOnChange)
+//		{
+//			notifyDataSetChanged();
+//		}
 	}
 
 	public void addAllFirst(List<T> statuses)
@@ -77,10 +83,10 @@ public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAda
 		{
 			_array.addAll(0, statuses);
 		}
-		if (_notifyOnChange)
-		{
-			notifyDataSetChanged();
-		}
+//		if (_notifyOnChange)
+//		{
+//			notifyDataSetChanged();
+//		}
 	}
 
 	public void addAllLast(List<T> statuses)
@@ -89,10 +95,10 @@ public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAda
 		{			
 			_array.addAll(statuses);
 		}
-		if (_notifyOnChange)
-		{
-			notifyDataSetChanged();
-		}
+//		if (_notifyOnChange)
+//		{
+//			notifyDataSetChanged();
+//		}
 	}
 
 	public void insert(T status, int index)
@@ -101,10 +107,10 @@ public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAda
 		{
 			_array.add(index, status);
 		}
-		if (_notifyOnChange)
-		{
-			notifyDataSetChanged();
-		}
+//		if (_notifyOnChange)
+//		{
+//			notifyDataSetChanged();
+//		}
 	}
 
 	public void removeLast()
@@ -113,10 +119,10 @@ public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAda
 		{
 			_array.remove(_array.size() - 1);
 		}
-		if (_notifyOnChange)
-		{
-			notifyDataSetChanged();
-		}
+//		if (_notifyOnChange)
+//		{
+//			notifyDataSetChanged();
+//		}
 	}
 
 	public void remove(T status)
@@ -125,10 +131,10 @@ public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAda
 		{
 			_array.remove(status);
 		}
-		if (_notifyOnChange)
-		{
-			notifyDataSetChanged();
-		}
+//		if (_notifyOnChange)
+//		{
+//			notifyDataSetChanged();
+//		}
 	}
 
 	public void clear()
@@ -137,10 +143,10 @@ public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAda
 		{
 			_array.clear();
 		}
-		if (_notifyOnChange)
-		{
-			notifyDataSetChanged();
-		}
+//		if (_notifyOnChange)
+//		{
+//			notifyDataSetChanged();
+//		}
 	}
 
 	public void sort()
@@ -149,29 +155,25 @@ public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAda
 		{
 			Collections.sort(_array);
 		}
-		if (_notifyOnChange)
-		{
-			notifyDataSetChanged();
-		}
+//		if (_notifyOnChange)
+//		{
+//			notifyDataSetChanged();
+//		}
 	}
 
 	@Override
 	public void notifyDataSetChanged()
 	{
-		super.notifyDataSetChanged();
-		synchronized (_lock)
+		if(_notifyOnChange)
 		{
+			super.notifyDataSetChanged();
 			_count = _array.size();
-			_notifyOnChange = true;
 		}
 	}    
 
 	public void setNotifyOnChange(boolean notifyOnChange)
 	{
-		synchronized (_lock)
-		{
-			this._notifyOnChange = notifyOnChange;
-		}
+		this._notifyOnChange = notifyOnChange;
 	}
 
 	public Activity getActivity() 

@@ -2,28 +2,32 @@ package net.miz_hi.smileessence.dialog;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.activity.MainActivity;
-import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.menu.MenuItemAccountReset;
-import net.miz_hi.smileessence.menu.MenuItemClose;
 import net.miz_hi.smileessence.menu.MenuItemOpenFavstar;
 import net.miz_hi.smileessence.menu.MenuItemOpenFollowers;
 import net.miz_hi.smileessence.menu.MenuItemOpenFriends;
 import net.miz_hi.smileessence.menu.MenuItemReport;
 import net.miz_hi.smileessence.menu.MenuItemSetting;
+import net.miz_hi.smileessence.menu.UserMenuFollow;
+import net.miz_hi.smileessence.menu.UserMenuOpenFavstar;
+import net.miz_hi.smileessence.menu.UserMenuOpenPage;
+import net.miz_hi.smileessence.menu.UserMenuOpenProfiel;
+import net.miz_hi.smileessence.menu.UserMenuRemove;
+import net.miz_hi.smileessence.menu.UserMenuReply;
+import twitter4j.User;
 import android.app.Activity;
 import android.app.Dialog;
 import android.widget.TextView;
 
-public class OptionMenuAdapter extends DialogAdapter
+public class UserMenuAdapter extends DialogAdapter
 {
-	private String title;
+	private String userName;
 	private int textSize = 15;
 	
-	public OptionMenuAdapter(Activity activity, String title)
+	public UserMenuAdapter(Activity activity, String userName)
 	{
 		super(activity);
-		this.title = title;
+		this.userName = userName;
 	}
 
 	@Override
@@ -33,18 +37,17 @@ public class OptionMenuAdapter extends DialogAdapter
 		TextView viewTitle = new TextView(activity);
 		viewTitle.setTextSize(textSize);
 		viewTitle.setTextColor(Client.getResource().getColor(R.color.White));
-		viewTitle.setText(title);
+		viewTitle.setText(userName);
 		viewTitle.setPadding(10, 10, 0, 10);
 		
 		if(init)
 		{
 			list.clear();
-			list.add(new MenuItemSetting(activity, this));
-			list.add(new MenuItemOpenFavstar(activity, this));
-			list.add(new MenuItemOpenFollowers(activity, this));
-			list.add(new MenuItemOpenFriends(activity, this));
-			list.add(new MenuItemReport(activity, this));			
-			list.add(new MenuItemAccountReset(activity, this));
+			list.add(new UserMenuReply(activity, this, userName));
+			list.add(new UserMenuOpenPage(activity, this, userName));
+			list.add(new UserMenuOpenFavstar(activity, this, userName));
+			list.add(new UserMenuFollow(activity, this, userName));		
+			list.add(new UserMenuRemove(activity, this, userName));
 		}
 		
 		return super.createMenuDialog(viewTitle);

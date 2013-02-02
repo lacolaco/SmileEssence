@@ -22,12 +22,12 @@ public class TimelineScrollListener implements OnScrollListener
 
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState)
-	{
-		if (view.getFirstVisiblePosition() == 0 && view.getChildAt(0).getTop() == 0)
+	{		
+		if (view.getFirstVisiblePosition() == 0 && view.getChildAt(0) != null && view.getChildAt(0).getTop() == 0)
 		{
-			adapter.notifyDataSetChanged();
+			adapter.setNotifyOnChange(true);
 		}
-		if(scrollState != SCROLL_STATE_IDLE)
+		else
 		{
 			adapter.setNotifyOnChange(false);
 		}

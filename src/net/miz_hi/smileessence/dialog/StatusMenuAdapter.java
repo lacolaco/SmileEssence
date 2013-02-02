@@ -1,26 +1,35 @@
 package net.miz_hi.smileessence.dialog;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Pattern;
+import java.util.Map;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncRetweetTask;
 import net.miz_hi.smileessence.async.ConcurrentAsyncTaskHelper;
 import net.miz_hi.smileessence.menu.MenuItemBase;
 import net.miz_hi.smileessence.menu.MenuItemParent;
+import net.miz_hi.smileessence.menu.StatusMenuAddReply;
 import net.miz_hi.smileessence.menu.StatusMenuCopyToClipboard;
 import net.miz_hi.smileessence.menu.StatusMenuFavAndRetweet;
 import net.miz_hi.smileessence.menu.StatusMenuOpenUrl;
+import net.miz_hi.smileessence.menu.StatusMenuReview;
 import net.miz_hi.smileessence.menu.StatusMenuWarotaRT;
-import net.miz_hi.smileessence.message.ReplyMessage;
+import net.miz_hi.smileessence.menu.UserMenuFollow;
+import net.miz_hi.smileessence.menu.UserMenuOpenFavstar;
+import net.miz_hi.smileessence.menu.UserMenuOpenPage;
+import net.miz_hi.smileessence.menu.UserMenuOpenProfiel;
+import net.miz_hi.smileessence.menu.UserMenuRemove;
+import net.miz_hi.smileessence.menu.UserMenuReply;
 import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusViewFactory;
-import net.miz_hi.smileessence.view.MainActivity;
 import twitter4j.MediaEntity;
 import twitter4j.URLEntity;
+import twitter4j.UserMentionEntity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Handler;
@@ -57,13 +66,20 @@ public class StatusMenuAdapter extends DialogAdapter
 		if(init)
 		{
 			list.clear();
-			list.add(new StatusMenuWarotaRT(activity, this, model));
-
 			list.add(new StatusMenuFavAndRetweet(activity, this, model));
+			list.add(new StatusMenuAddReply(activity, this, model));
+
+			list.add(new StatusMenuWarotaRT(activity, this, model));
+			list.add(new StatusMenuReview(activity, this, model));
 			list.add(new StatusMenuCopyToClipboard(activity, this, model));
+			
 			if (!getURLMenu().isEmpty())
 			{
 				list.add(new MenuItemParent(activity, this, "URL‚ðŠJ‚­", getURLMenu()));
+			}
+			for (String name : getUsersList())
+			{
+				list.add(new MenuItemParent(activity, this, "@" + name, getUserMenu(getUsersList()).get(name)));
 			}
 		}
 
@@ -94,6 +110,40 @@ public class StatusMenuAdapter extends DialogAdapter
 		return list;
 	}
 	
+	private List<String> getUsersList()
+	{
+		List<String> list = new ArrayList<String>();
+		list.add(model.screenName);
+		if (model.userMentions != null)
+		{
+			for (UserMentionEntity e : model.userMentions)
+			{
+				if (!list.contains(e.getScreenName()))
+				{
+					list.add(e.getScreenName());
+				}
+			}
+		}
+		return list;
+	}
+	
+	private Map<String, List<MenuItemBase>> getUserMenu(List<String> nameList)
+	{
+		Map<String, List<MenuItemBase>> map = new HashMap<String, List<MenuItemBase>>();
+		for (String name : nameList)
+		{
+			ArrayList<MenuItemBase> list = new ArrayList<MenuItemBase>();
+			list.add(new UserMenuReply(activity, this, name));
+			list.add(new UserMenuOpenProfiel(activity, this, name));
+			list.add(new UserMenuOpenPage(activity, this, name));
+			list.add(new UserMenuOpenFavstar(activity, this, name));
+			list.add(new UserMenuFollow(activity, this, name));
+			list.add(new UserMenuRemove(activity, this, name));
+			map.put(name, list);
+		}
+		return map;
+	}
+	
 	private OnClickListener onClickReply = new OnClickListener()
 	{
 		
@@ -106,7 +156,7 @@ public class StatusMenuAdapter extends DialogAdapter
 			{
 				public void run()
 				{
-					MainActivity.getInstance().openTweetViewToReply(model.user, model.statusId);
+					MainActivity.getInstance().openTweetViewToReply(model.screenName, model.statusId, false);
 					dispose();
 				}
 			}, 20);

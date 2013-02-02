@@ -6,12 +6,12 @@ import net.miz_hi.smileessence.status.StatusModel;
 
 public abstract class StatusMenuItemBase extends MenuItemBase
 {
-	protected StatusModel model;
+	protected StatusModel _model;
 	
 	public StatusMenuItemBase(Activity activity, DialogAdapter adapter, StatusModel model)
 	{
 		super(activity, adapter);
-		this.model = model;
+		this._model = model;
 	}
 	
 	@Override

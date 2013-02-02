@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import net.miz_hi.smileessence.Client;
+import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.auth.Account;
-import net.miz_hi.smileessence.view.MainActivity;
 import twitter4j.Paging;
 import twitter4j.Relationship;
 import twitter4j.ResponseList;
@@ -67,6 +67,56 @@ public class TwitterManager
 		return _isStatusUpdateLimit;
 	}
 
+	public static String tweet(Account account, String str)
+	{
+		try
+		{
+			getTwitter(account).updateStatus(str);
+			_isStatusUpdateLimit = false;
+		}
+		catch (TwitterException e)
+		{
+			int code = e.getStatusCode();
+			String message = e.getErrorMessage();
+			if (code == 403)
+			{
+				if (message.equals(ERROR_STATUS_LIMIT))
+				{
+					_isStatusUpdateLimit = true;
+					return MESSAGE_TWEET_LIMIT;
+				}
+			}
+			return MESSAGE_TWEET_DEPLICATE;
+		}
+		return MESSAGE_TWEET_SUCCESS;
+	}
+	
+	public static String tweet(Account account, String str, long l)
+	{
+		try
+		{
+			StatusUpdate update = new StatusUpdate(str);
+			update.setInReplyToStatusId(l);
+			getTwitter(account).updateStatus(update);
+			_isStatusUpdateLimit = false;
+		}
+		catch (TwitterException e)
+		{
+			int code = e.getStatusCode();
+			String message = e.getErrorMessage();
+			if (code == 403)
+			{
+				if (message.equals(ERROR_STATUS_LIMIT))
+				{
+					_isStatusUpdateLimit = true;
+					return MESSAGE_TWEET_LIMIT;
+				}
+			}
+			return MESSAGE_TWEET_DEPLICATE;
+		}
+		return MESSAGE_TWEET_SUCCESS;
+	}
+	
 	public static String tweet(Account account, StatusUpdate st)
 	{
 		try

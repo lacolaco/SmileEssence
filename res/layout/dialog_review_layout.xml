@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView_seekDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:text="星いくつ？"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/White" />
+
+            <TextView
+                android:id="@+id/textView_seekLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:text="1"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/White" />
+
+            <SeekBar
+                android:id="@+id/seekBar_seekDialog"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp" />
+
+            <TextView
+                android:id="@+id/TextView01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:text="コメント"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/White" />
+
+            <EditText
+                android:id="@+id/editText_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:ems="10"
+                android:inputType="textShortMessage"
+                android:maxLength="100"
+                android:maxLines="1" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

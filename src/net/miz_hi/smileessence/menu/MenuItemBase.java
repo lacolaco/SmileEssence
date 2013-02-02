@@ -27,7 +27,7 @@ public abstract class MenuItemBase
 
 	public void run()
 	{
-		_handler.postDelayed(new Runnable()
+		_handler.post(new Runnable()
 		{
 			@Override
 			public void run()
@@ -35,7 +35,7 @@ public abstract class MenuItemBase
 				_adapter.dispose();
 				work();
 			}
-		}, 20);
+		});
 	}
 
 	public abstract void work();
