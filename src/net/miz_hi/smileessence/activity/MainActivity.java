@@ -29,7 +29,6 @@ import net.miz_hi.smileessence.util.TweetViewManager;
 import net.miz_hi.smileessence.util.TwitterManager;
 import twitter4j.Status;
 import twitter4j.TwitterStream;
-import twitter4j.User;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -41,6 +40,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -167,6 +167,7 @@ public class MainActivity extends Activity implements Runnable
 	{
 		super.onCreate(bundle);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
 		this.setContentView(R.layout.mainactivity_layout);
 		LogHelper.print("main create");
 		if (_instance == null)

@@ -62,7 +62,7 @@ public class AsyncIconGetter extends ConcurrentAsyncTask<Bitmap>
 	{
 		Icon icon = new Icon(result, IconCaches.genIconName(user));
 		IconCaches.putIconToMap(user, icon);
-		if(viewIcon != null && viewIcon.getTag().equals(tag))
+		if(viewIcon != null && viewIcon.getTag() != null && viewIcon.getTag().equals(tag))
 		{
 			viewIcon.setImageBitmap(icon.use());
 		}
