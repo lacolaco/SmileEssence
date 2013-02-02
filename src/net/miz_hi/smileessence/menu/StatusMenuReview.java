@@ -64,11 +64,11 @@ public class StatusMenuReview extends StatusMenuItemBase
 				builder.append("ƒRƒƒ“ƒg: ");
 				builder.append(helper.getText());
 				builder.append("\r\n");
-				builder.append("(http://twitter.com/");
+				builder.append("( http://twitter.com/");
 				builder.append(_model.screenName);
 				builder.append("/status/");
 				builder.append(_model.statusId);
-				builder.append(")");
+				builder.append(" )");
 				ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncTweetTask(new StatusUpdate(builder.toString())));
 				ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncFavoriteTask(_model.statusId));
 			}
