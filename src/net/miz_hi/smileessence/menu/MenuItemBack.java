@@ -3,10 +3,8 @@ package net.miz_hi.smileessence.menu;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
-
-import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
+import android.app.Activity;
 
 public class MenuItemBack extends MenuItemBase
 {
@@ -18,10 +16,10 @@ public class MenuItemBack extends MenuItemBase
 		super(activity, adapter);
 		this._text = text;
 		this._list.addAll(listOld);
-	}	
+	}
 
 	@Override
-	public	String getText()
+	public String getText()
 	{
 		return _text;
 	}
@@ -29,13 +27,13 @@ public class MenuItemBack extends MenuItemBase
 	@Override
 	public void work()
 	{
-		_activity.runOnUiThread(new Runnable()
+		activity.runOnUiThread(new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				_adapter.setMenuItems(_list);
-				_adapter.createMenuDialog(false).show();
+				adapter.setMenuItems(_list);
+				adapter.createMenuDialog(false).show();
 			}
 		});
 	}

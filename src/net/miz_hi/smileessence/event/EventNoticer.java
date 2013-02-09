@@ -9,36 +9,37 @@ import android.widget.Toast;
 
 public class EventNoticer
 {
-	
+
 	private Activity _activity;
 	private Toast _toast;
 	private long _lastUserId = -1;
 	private long _lastStatusId = -1;
 	private CountUpInteger _counterSourceUser = new CountUpInteger(5);
 	private CountUpInteger _counterTargetStatus = new CountUpInteger(5);
-	
+
 	public EventNoticer(Activity activity)
 	{
 		_activity = activity;
 	}
-	
+
 	public static void receive(EventModel event)
 	{
 		MainActivity.getInstance().eventNotify(event);
 	}
-	
+
 	public void noticeEvent(final EventModel model)
 	{
-		if(_lastUserId == model.source.getId())
+		if (_lastUserId == model.source.getId())
 		{
-			if(_counterSourceUser.isOver())
+			if (_counterSourceUser.isOver())
 			{
 				return;
 			}
-			else if(_counterSourceUser.countUp())
+			else if (_counterSourceUser.countUp())
 			{
 				_activity.runOnUiThread(new Runnable()
 				{
+					@Override
 					public void run()
 					{
 						_toast.cancel();
@@ -53,17 +54,18 @@ public class EventNoticer
 			_lastUserId = model.source.getId();
 			_counterSourceUser.reset();
 		}
-		
-		if(_lastStatusId == model.targetModel.statusId)
+
+		if (_lastStatusId == model.targetModel.statusId)
 		{
-			if(_counterTargetStatus.isOver())
+			if (_counterTargetStatus.isOver())
 			{
 				return;
 			}
-			else if(_counterTargetStatus.countUp())
+			else if (_counterTargetStatus.countUp())
 			{
 				_activity.runOnUiThread(new Runnable()
 				{
+					@Override
 					public void run()
 					{
 						_toast.cancel();
@@ -78,12 +80,13 @@ public class EventNoticer
 			_lastStatusId = model.targetModel.statusId;
 			_counterTargetStatus.reset();
 		}
-		
+
 		_activity.runOnUiThread(new Runnable()
 		{
+			@Override
 			public void run()
 			{
-				if(_toast == null)
+				if (_toast == null)
 				{
 					_toast = new Toast(_activity);
 				}

@@ -48,21 +48,30 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/icon_clean" />
+                android:background="@android:drawable/btn_default_small"
+                android:padding="0dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_clean" />
 
             <ImageButton
                 android:id="@+id/imageButton_warota"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/icon_warota" />
+                android:background="@android:drawable/btn_default_small"
+                android:padding="0dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_warota" />
 
             <ImageButton
                 android:id="@+id/imageButton_submit"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/icon_submit" />
+                android:background="@android:drawable/btn_default_small"
+                android:padding="0dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_submit" />
         </LinearLayout>
 
         <LinearLayout
@@ -74,15 +83,17 @@
             android:clickable="true"
             android:focusable="true" >
 
-            <ImageButton
+            <Button
                 android:id="@+id/imageButton_menu"
-                android:layout_width="50dp"
+                android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/icon_menu" />
+                android:background="@android:drawable/btn_default_small"
+                android:text="Menu"
+                android:textColor="@color/Red"
+                android:textSize="20sp" />
 
         </LinearLayout>
-
     </LinearLayout>
 
 </ScrollView>

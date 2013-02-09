@@ -2,11 +2,9 @@ package net.miz_hi.smileessence.dialog;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import net.miz_hi.smileessence.Client;
+import java.util.concurrent.ExecutorService;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.core.EnumPreferenceKey;
-import net.miz_hi.smileessence.core.EventHandlerActivity;
+import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.menu.MenuItemBase;
 import net.miz_hi.smileessence.menu.MenuItemClose;
 import android.app.Activity;
@@ -28,6 +26,7 @@ public abstract class DialogAdapter
 	protected List<MenuItemBase> list;
 	protected static LayoutInflater layoutInflater;
 	protected Dialog dialog;
+	protected ExecutorService executer = MyExecutor.getExecutor();
 
 	public DialogAdapter(Activity activity2)
 	{
@@ -42,19 +41,24 @@ public abstract class DialogAdapter
 		this.list.addAll(list);
 		return this;
 	}
-	
+
 	public List<MenuItemBase> getList()
 	{
 		return list;
 	}
-	
+
+	public ExecutorService getExecutor()
+	{
+		return executer;
+	}
+
 	public boolean isShowing()
 	{
-		if(dialog == null)
+		if (dialog == null)
 		{
 			return false;
 		}
-		else 
+		else
 		{
 			return dialog.isShowing();
 		}
@@ -67,16 +71,16 @@ public abstract class DialogAdapter
 		dialog = new Dialog(activity);
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		View view = layoutInflater.inflate(R.layout.dialog_base_layout, null);
-		LinearLayout titleLinearLayout = (LinearLayout)view.findViewById(R.id.linearLayout_dialogTitle);
-		LinearLayout itemsLinearLayout = (LinearLayout)view.findViewById(R.id.linearLayout_dialogItems);
-		
+		LinearLayout titleLinearLayout = (LinearLayout) view.findViewById(R.id.linearLayout_dialogTitle);
+		LinearLayout itemsLinearLayout = (LinearLayout) view.findViewById(R.id.linearLayout_dialogItems);
+
 		for (View v : viewTitle)
 		{
 			titleLinearLayout.addView(v);
 		}
 		for (MenuItemBase item : list)
 		{
-			if(item.isVisible())
+			if (item.isVisible())
 			{
 				itemsLinearLayout.addView(new MenuItemView(activity, item).getView());
 			}
@@ -88,16 +92,16 @@ public abstract class DialogAdapter
 		DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
 		lp.width = (int) (metrics.widthPixels * 0.95);
 		lp.gravity = Gravity.CENTER;
-		//lp.height = (int) (metrics.heightPixels * 0.9);
+		// lp.height = (int) (metrics.heightPixels * 0.9);
 		return dialog;
 	}
-	
+
 	public void dispose()
 	{
 		if (dialog != null)
 			dialog.dismiss();
 	}
-	
+
 	public static class MenuItemView
 	{
 		private MenuItemBase item;
@@ -116,6 +120,7 @@ public abstract class DialogAdapter
 			textView.setText(item.getText());
 			view.setOnClickListener(new OnClickListener()
 			{
+				@Override
 				public void onClick(View view)
 				{
 					view.setBackgroundColor(Color.rgb(30, 30, 120));

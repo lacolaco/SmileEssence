@@ -4,7 +4,7 @@ public enum EnumPreferenceKey
 {
 	LAST_USED_USER_ID(EnumValueType.LONG, "user_id"),
 	TEXT_SIZE(EnumValueType.INTEGER, "text_size"),
-	
+
 	;
 
 	private final EnumValueType type;

@@ -1,17 +1,16 @@
 package net.miz_hi.smileessence.listener;
 
-import java.util.Date;
-
+import android.widget.ListView;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.activity.MainActivity;
+import net.miz_hi.smileessence.core.UiHandler;
+import net.miz_hi.smileessence.data.StatusModel;
+import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.event.EnumEventType;
 import net.miz_hi.smileessence.event.EventListAdapter;
 import net.miz_hi.smileessence.event.EventModel;
 import net.miz_hi.smileessence.event.EventNoticer;
 import net.miz_hi.smileessence.status.StatusListAdapter;
-import net.miz_hi.smileessence.status.StatusModel;
-import net.miz_hi.smileessence.status.StatusStore;
-import net.miz_hi.smileessence.status.StatusUtils;
 import net.miz_hi.smileessence.util.LogHelper;
 import twitter4j.DirectMessage;
 import twitter4j.StallWarning;
@@ -30,17 +29,17 @@ public class WarotterUserStreamListener implements UserStreamListener
 	public WarotterUserStreamListener()
 	{
 	}
-	
+
 	public void setHomeListAdapter(StatusListAdapter adapter)
 	{
 		this.homeListAdapter = adapter;
 	}
-	
+
 	public void setMentionsListAdapter(StatusListAdapter adapter)
 	{
 		this.mentionsListAdapter = adapter;
 	}
-	
+
 	public void setEventListAdapter(EventListAdapter adapter)
 	{
 		this.eventListAdapter = adapter;
@@ -49,23 +48,26 @@ public class WarotterUserStreamListener implements UserStreamListener
 	@Override
 	public void onDeletionNotice(final StatusDeletionNotice arg0)
 	{
-		final Status status = StatusStore.get(arg0.getStatusId());
-		if(status == null)
+		LogHelper.print("on status detete");
+		final StatusModel model = StatusStore.get(arg0.getStatusId());
+		if (model == null)
 		{
 			return;
 		}
 		else
 		{
-			MainActivity.getInstance().runOnUiThread(new Runnable()
+			new UiHandler()
 			{
+
+				@Override
 				public void run()
 				{
-					StatusModel model = StatusModel.createInstance(status);
-					homeListAdapter.remove(model);
-					mentionsListAdapter.remove(model);
+					homeListAdapter.removeElement(model);
+					homeListAdapter.notifyAdapter();
+					mentionsListAdapter.removeElement(model);
+					mentionsListAdapter.notifyAdapter();
 				}
-			});
-
+			}.post();
 		}
 	}
 
@@ -80,36 +82,54 @@ public class WarotterUserStreamListener implements UserStreamListener
 	}
 
 	@Override
-	public void onStatus(final Status arg0)
+	public void onStatus(final Status status)
 	{
 		LogHelper.print("on status");
-		StatusStore.put(arg0);
-		final boolean isRetweet = arg0.isRetweet();
-		final boolean isReply = StatusUtils.isReply(isRetweet ? arg0.getRetweetedStatus() : arg0);
-		if (isRetweet)
+		final StatusModel model = StatusStore.put(status);
+		new UiHandler()
 		{
-			StatusStore.put(arg0.getRetweetedStatus());
-		}
-		MainActivity.getInstance().runOnUiThread(new Runnable()
-		{
+			@Override
 			public void run()
-			{		
-				StatusModel model = StatusModel.createInstance(arg0);
-				if(isReply)
+			{
+				if (model.isRetweet && model.isMine())
+				{
+					EventNoticer.receive(EventModel.createInstance(status.getUser(), EnumEventType.RETWEET, status.getRetweetedStatus()));
+				}
+				else if (model.isReply())
+				{
+					EventNoticer.receive(EventModel.createInstance(status.getUser(), EnumEventType.REPLY, status));
+				}
+
+				ListView homeListView = MainActivity.getInstance().getHomeListView();
+				ListView mentionsListView = MainActivity.getInstance().getMentionsListView();
+
+				if (model.isReply())
 				{
 					mentionsListAdapter.addFirst(model);
+					if (mentionsListView.getFirstVisiblePosition() == 0 && mentionsListView.getChildAt(0) != null && mentionsListView.getChildAt(0).getTop() == 0)
+					{
+						mentionsListAdapter.setCanNotifyOnChange(true);
+					}
+					else
+					{
+						mentionsListAdapter.setCanNotifyOnChange(false);
+					}
+					mentionsListAdapter.notifyAdapter();
 				}
+
 				homeListAdapter.addFirst(model);
-				if(isRetweet && StatusUtils.isMine(arg0.getRetweetedStatus()))
+
+				if (homeListView.getFirstVisiblePosition() == 0 && homeListView.getChildAt(0) != null && homeListView.getChildAt(0).getTop() == 0)
 				{
-					EventNoticer.receive(EventModel.createInstance(arg0.getUser(), EnumEventType.RETWEET, arg0.getRetweetedStatus()));
+					homeListAdapter.setCanNotifyOnChange(true);
 				}
-				else if(isReply)
+				else
 				{
-					EventNoticer.receive(EventModel.createInstance(arg0.getUser(), EnumEventType.REPLY, arg0));
+					homeListAdapter.setCanNotifyOnChange(false);
 				}
+				homeListAdapter.notifyAdapter();
 			}
-		});
+		}.post();
 	}
 
 	@Override
@@ -127,7 +147,7 @@ public class WarotterUserStreamListener implements UserStreamListener
 	@Override
 	public void onBlock(User arg0, User arg1)
 	{
-		if(arg1.getId() == Client.getMainAccount().getUserId())
+		if (arg1.getId() == Client.getMainAccount().getUserId())
 		{
 			EventNoticer.receive(EventModel.createInstance(arg0, EnumEventType.BLOCK, null));
 		}
@@ -141,7 +161,7 @@ public class WarotterUserStreamListener implements UserStreamListener
 	@Override
 	public void onDirectMessage(DirectMessage arg0)
 	{
-		if(arg0.getRecipientId() == Client.getMainAccount().getUserId())
+		if (arg0.getRecipientId() == Client.getMainAccount().getUserId())
 		{
 			EventNoticer.receive(EventModel.createInstance(arg0.getSender(), EnumEventType.DIRECT_MESSAGE, null));
 		}
@@ -150,7 +170,7 @@ public class WarotterUserStreamListener implements UserStreamListener
 	@Override
 	public void onFavorite(User arg0, User arg1, Status arg2)
 	{
-		if(arg1.getId() == Client.getMainAccount().getUserId())
+		if (arg1.getId() == Client.getMainAccount().getUserId())
 		{
 			EventNoticer.receive(EventModel.createInstance(arg0, EnumEventType.FAVORITE, arg2));
 		}
@@ -170,7 +190,7 @@ public class WarotterUserStreamListener implements UserStreamListener
 	@Override
 	public void onUnblock(User arg0, User arg1)
 	{
-		if(arg1.getId() == Client.getMainAccount().getUserId())
+		if (arg1.getId() == Client.getMainAccount().getUserId())
 		{
 			EventNoticer.receive(EventModel.createInstance(arg0, EnumEventType.UNBLOCK, null));
 		}
@@ -179,7 +199,7 @@ public class WarotterUserStreamListener implements UserStreamListener
 	@Override
 	public void onUnfavorite(User arg0, User arg1, Status arg2)
 	{
-		if(arg1.getId() == Client.getMainAccount().getUserId())
+		if (arg1.getId() == Client.getMainAccount().getUserId())
 		{
 			EventNoticer.receive(EventModel.createInstance(arg0, EnumEventType.UNFAVORITE, arg2));
 		}

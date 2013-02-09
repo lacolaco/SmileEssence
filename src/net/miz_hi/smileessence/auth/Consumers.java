@@ -8,7 +8,7 @@ public class Consumers
 
 	public static Consumer smileEssence = new Consumer("uWzFVW7gaRIxWybOsAEWzg", "CMkSxT4YfgE5Yrf77qyh8msy13UYqRTECjrQCePM11Q");
 	public static Consumer smileEssenceLite = new Consumer("SIt6h4O6qmBB2URSKsF1Q", "Uil1dyrqiodLLqXIB6B0rVwVxFfFCxTf8ggAcszWc");
-	
+
 	static
 	{
 		consumersMap.put("SmileEssence", smileEssence);

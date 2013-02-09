@@ -63,52 +63,65 @@
                 android:layout_marginTop="5dp"
                 android:background="@color/LightGray" />
 
-            <TextView
-                android:id="@+id/user_homepage"
-                android:layout_width="fill_parent"
+            <LinearLayout
+                android:id="@+id/linearlayout2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/frame1"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:autoLink="web"
-                android:gravity="left"
-                android:text="url" />
+                android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/user_locate"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/user_homepage"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:gravity="left"
-                android:text="locate" />
+                <TextView
+                    android:id="@+id/user_homepage"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:autoLink="web"
+                    android:gravity="left"
+                    android:text="url" />
 
-            <TextView
-                android:id="@+id/user_isfollowing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/user_locate"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:gravity="left"
-                android:text="following" />
+                <TextView
+                    android:id="@+id/user_locate"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="left"
+                    android:text="locate" />
 
-            <TextView
-                android:id="@+id/user_isfollowed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/user_isfollowing"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:gravity="right"
-                android:text="followed" />
+                <TextView
+                    android:id="@+id/user_isfollowing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="left"
+                    android:text="following" />
+
+                <TextView
+                    android:id="@+id/user_isfollowed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="right"
+                    android:text="followed" />
+
+                <TextView
+                    android:id="@+id/user_isprotected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="right"
+                    android:text="protected" />
+            </LinearLayout>
 
             <FrameLayout
                 android:id="@+id/frame2"
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:layout_below="@+id/user_isfollowed"
+                android:layout_below="@+id/linearlayout2"
                 android:layout_marginTop="5dp"
                 android:background="@color/LightGray" />
 
@@ -120,7 +133,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="5dp"
-                android:autoLink="all"
+                android:autoLink="web"
                 android:text="bio" />
 
             <FrameLayout
@@ -132,7 +145,7 @@
                 android:background="@color/LightGray" />
 
             <LinearLayout
-                android:id="@+id/linearlayout2"
+                android:id="@+id/linearlayout3"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/frame3"
@@ -223,7 +236,7 @@
                 android:id="@+id/frame4"
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:layout_below="@+id/linearlayout2"
+                android:layout_below="@+id/linearlayout3"
                 android:layout_marginTop="5dp"
                 android:background="@color/LightGray" />
 
@@ -236,6 +249,7 @@
                 android:orientation="vertical" >
             </LinearLayout>
         </RelativeLayout>
+
     </ScrollView>
 
 </LinearLayout>

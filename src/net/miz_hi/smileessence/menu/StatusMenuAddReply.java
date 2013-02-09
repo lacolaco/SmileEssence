@@ -1,8 +1,8 @@
 package net.miz_hi.smileessence.menu;
 
 import net.miz_hi.smileessence.activity.MainActivity;
+import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
-import net.miz_hi.smileessence.status.StatusModel;
 import android.app.Activity;
 
 public class StatusMenuAddReply extends StatusMenuItemBase
@@ -28,7 +28,7 @@ public class StatusMenuAddReply extends StatusMenuItemBase
 	@Override
 	public void work()
 	{
-		MainActivity.getInstance().openTweetViewToReply(_model.screenName, -1, true);
+		MainActivity.getInstance().openTweetViewToReply(model.screenName, -1, true);
 	}
 
 }

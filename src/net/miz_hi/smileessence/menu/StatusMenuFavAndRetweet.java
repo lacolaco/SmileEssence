@@ -1,12 +1,14 @@
 package net.miz_hi.smileessence.menu;
 
-import android.app.Activity;
+import java.util.concurrent.Future;
+
 import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncRetweetTask;
-import net.miz_hi.smileessence.async.ConcurrentAsyncTaskHelper;
-import net.miz_hi.smileessence.core.EventHandlerActivity;
+import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
-import net.miz_hi.smileessence.status.StatusModel;
+import net.miz_hi.smileessence.util.TwitterManager;
+import android.app.Activity;
+import android.widget.Toast;
 
 public class StatusMenuFavAndRetweet extends StatusMenuItemBase
 {
@@ -31,8 +33,23 @@ public class StatusMenuFavAndRetweet extends StatusMenuItemBase
 	@Override
 	public void work()
 	{
-		ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncFavoriteTask(_model.statusId));
-		ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncRetweetTask(_model.statusId));
+		Future<Boolean> f1 = adapter.getExecutor().submit(new AsyncFavoriteTask(model.statusId));
+		Future<Boolean> f2 = adapter.getExecutor().submit(new AsyncRetweetTask(model.statusId));
+		try
+		{
+			if (f1.get() && f2.get())
+			{
+				Toast.makeText(activity, TwitterManager.MESSAGE_RETWEET_SUCCESS, Toast.LENGTH_SHORT).show();
+			}
+			else
+			{
+				Toast.makeText(activity, TwitterManager.MESSAGE_SOMETHING_ERROR, Toast.LENGTH_SHORT).show();
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -1,13 +1,14 @@
 package net.miz_hi.smileessence.menu;
 
+import java.util.concurrent.Future;
+
+import net.miz_hi.smileessence.async.AsyncTweetTask;
+import net.miz_hi.smileessence.data.StatusModel;
+import net.miz_hi.smileessence.dialog.DialogAdapter;
+import net.miz_hi.smileessence.util.TwitterManager;
 import twitter4j.StatusUpdate;
 import android.app.Activity;
-import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.async.AsyncTweetTask;
-import net.miz_hi.smileessence.async.ConcurrentAsyncTaskHelper;
-import net.miz_hi.smileessence.dialog.DialogAdapter;
-import net.miz_hi.smileessence.status.StatusModel;
-import net.miz_hi.smileessence.util.TwitterManager;
+import android.widget.Toast;
 
 public class StatusMenuWarotaRT extends StatusMenuItemBase
 {
@@ -28,12 +29,28 @@ public class StatusMenuWarotaRT extends StatusMenuItemBase
 	{
 		StringBuilder builder = new StringBuilder();
 		builder.append("ÉèÉçÉ^Çó RT @");
-		builder.append(_model.screenName);
+		builder.append(model.screenName);
 		builder.append(": ");
-		builder.append(_model.text);
+		builder.append(model.text);
 		StatusUpdate update = new StatusUpdate(builder.toString());
-		update.setInReplyToStatusId(_model.statusId);
-		ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncTweetTask(update));
+		update.setInReplyToStatusId(model.statusId);
+
+		Future<Boolean> f = adapter.getExecutor().submit(new AsyncTweetTask(update));
+		try
+		{
+			if (f.get())
+			{
+				Toast.makeText(activity, TwitterManager.MESSAGE_TWEET_SUCCESS, Toast.LENGTH_SHORT).show();
+			}
+			else
+			{
+				Toast.makeText(activity, TwitterManager.MESSAGE_SOMETHING_ERROR, Toast.LENGTH_SHORT).show();
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	@Override

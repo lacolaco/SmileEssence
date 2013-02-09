@@ -1,15 +1,18 @@
 package net.miz_hi.smileessence.async;
 
-import android.widget.Toast;
+import java.util.concurrent.Callable;
+
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.auth.Account;
-import net.miz_hi.smileessence.core.ViewModel;
+import net.miz_hi.smileessence.core.SimpleAsyncTask;
+import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.util.TwitterManager;
 import twitter4j.StatusUpdate;
+import android.widget.Toast;
 
-public class AsyncTweetTask extends ConcurrentAsyncTask<String>
-{	
+public class AsyncTweetTask extends SimpleAsyncTask<Boolean> implements Callable<Boolean>
+{
 	private Account account;
 	private StatusUpdate status;
 
@@ -17,7 +20,7 @@ public class AsyncTweetTask extends ConcurrentAsyncTask<String>
 	{
 		this(Client.getMainAccount(), status);
 	}
-	
+
 	public AsyncTweetTask(Account account, StatusUpdate status)
 	{
 		this.account = account;
@@ -25,15 +28,43 @@ public class AsyncTweetTask extends ConcurrentAsyncTask<String>
 	}
 
 	@Override
-	protected String doInBackground(Object... arg0)
+	protected Boolean doInBackground(Object... arg0)
 	{
 		return TwitterManager.tweet(account, status);
 	}
 
 	@Override
-	protected void onPostExecute(String result)
+	protected void onPostExecute(Boolean result)
 	{
-		Toast.makeText(MainActivity.getInstance(), result, Toast.LENGTH_SHORT).show();
+		super.onPostExecute(result);
+		if (result)
+		{
+			new UiHandler()
+			{
+				@Override
+				public void run()
+				{
+					Toast.makeText(MainActivity.getInstance(), TwitterManager.MESSAGE_TWEET_SUCCESS, Toast.LENGTH_SHORT).show();
+				}
+			}.post();
+		}
+		else
+		{
+			new UiHandler()
+			{
+
+				@Override
+				public void run()
+				{
+					Toast.makeText(MainActivity.getInstance(), TwitterManager.MESSAGE_TWEET_DEPLICATE, Toast.LENGTH_SHORT).show();
+				}
+			}.post();
+		}
 	}
 
+	@Override
+	public Boolean call()
+	{
+		return TwitterManager.tweet(account, status);
+	}
 }

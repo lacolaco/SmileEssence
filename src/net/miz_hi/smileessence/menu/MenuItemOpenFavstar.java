@@ -25,7 +25,7 @@ public class MenuItemOpenFavstar extends MenuItemBase
 	{
 		String url = "http://favstar.fm/users/" + Client.getMainAccount().getScreenName() + "/recent";
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-		_activity.startActivity(intent);
+		activity.startActivity(intent);
 	}
 
 }

@@ -55,7 +55,7 @@ public class SeekBarDialogHelper
 	{
 		this.seekBarStart = i;
 	}
-	
+
 	public void setLevelCorrect(int addition)
 	{
 		this.levelCorrect = addition;
@@ -76,14 +76,17 @@ public class SeekBarDialogHelper
 		levelView.setTextColor(Client.getResource().getColor(R.color.White));
 		seekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
 		{
+			@Override
 			public void onStopTrackingTouch(SeekBar seekbar)
 			{
 			}
 
+			@Override
 			public void onStartTrackingTouch(SeekBar seekbar)
 			{
 			}
 
+			@Override
 			public void onProgressChanged(SeekBar seekbar, int i, boolean flag)
 			{
 				levelView.setText(String.valueOf(i + levelCorrect));

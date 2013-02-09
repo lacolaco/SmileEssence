@@ -1,51 +1,56 @@
 package net.miz_hi.smileessence.async;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
-import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.auth.Account;
-import net.miz_hi.smileessence.status.StatusModel;
-import net.miz_hi.smileessence.status.StatusStore;
+import net.miz_hi.smileessence.data.StatusModel;
+import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.util.TwitterManager;
 import twitter4j.Paging;
-import twitter4j.TwitterException;
+import twitter4j.Status;
 
-public class AsyncTimelineGetter extends ConcurrentAsyncTask<List<twitter4j.Status>>
+public class AsyncTimelineGetter implements Callable<List<StatusModel>>
 {
 
 	private Account account;
 	private Paging page;
-	
+	private long userId;
+
 	public AsyncTimelineGetter(Account account, Paging page)
+	{
+		this(account, -1, page);
+	}
+
+	public AsyncTimelineGetter(Account account, long userId, Paging page)
 	{
 		this.account = account;
 		this.page = page;
+		this.userId = userId;
 	}
 
 	@Override
-	protected void onPostExecute(List<twitter4j.Status> result)
+	public List<StatusModel> call()
 	{
-		ArrayList<StatusModel> list = new ArrayList<StatusModel>();
-		for (twitter4j.Status st : result)
+		List<Status> resp = new LinkedList<Status>();
+		if (userId >= 0)
 		{
-			StatusStore.put(st);
-			if (st.isRetweet())
-			{
-				StatusStore.put(st.getRetweetedStatus());
-			}
-			list.add(StatusModel.createInstance(st));
+			resp.addAll(TwitterManager.getUserTimeline(account, userId, page));
 		}
-		if(MainActivity.getInstance().getHomeListAdapter() != null)
+		else
 		{
-			MainActivity.getInstance().getHomeListAdapter().addAllLast(list);
+			resp.addAll(TwitterManager.getOldTimeline(account, page));
 		}
-	}
 
-	@Override
-	protected List<twitter4j.Status> doInBackground(Object... params)
-	{
-		return TwitterManager.getOldTimeline(account);
+		LinkedList<StatusModel> list = new LinkedList<StatusModel>();
+
+		for (Status st : resp)
+		{
+			list.offer(StatusStore.put(st));
+		}
+
+		return list;
 	}
 
 }

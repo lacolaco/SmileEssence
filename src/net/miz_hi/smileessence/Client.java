@@ -6,11 +6,6 @@ import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.auth.AuthentificationDB;
 import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.core.PreferenceHelper;
-import twitter4j.Twitter;
-import twitter4j.TwitterFactory;
-import twitter4j.TwitterStream;
-import twitter4j.TwitterStreamFactory;
-import twitter4j.conf.ConfigurationBuilder;
 import android.app.Application;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
@@ -20,7 +15,7 @@ public class Client
 	private static Application app;
 	private static Account mainAccount;
 	private static PreferenceHelper prefHelper;
-	
+
 	private static int textSize;
 
 	private Client()
@@ -36,7 +31,7 @@ public class Client
 	{
 		return prefHelper.getPreferenceValue(key);
 	}
-	
+
 	public static boolean hasAuthedAccount()
 	{
 		Long lastUsedId = (Long) getPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID);
@@ -65,7 +60,7 @@ public class Client
 		}
 		mainAccount = account;
 	}
-	
+
 	public static File getApplicationFile(String fileName)
 	{
 		File file = new File(app.getExternalCacheDir(), fileName);
@@ -76,20 +71,20 @@ public class Client
 	{
 		return app.getResources();
 	}
-	
+
 	public static int getColor(int resId)
 	{
 		return getResource().getColor(resId);
 	}
-	
+
 	public static int getTextSize()
 	{
 		return textSize;
 	}
-	
+
 	public static void loadPreferences()
 	{
-		if((Integer)getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) < 0)
+		if ((Integer) getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) < 0)
 		{
 			putPreferenceValue(EnumPreferenceKey.TEXT_SIZE, 10);
 		}

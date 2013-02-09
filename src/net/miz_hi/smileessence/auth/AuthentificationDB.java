@@ -58,16 +58,16 @@ public class AuthentificationDB
 			helper.close();
 		}
 	}
-	
+
 	public void deleteAll()
 	{
 		DataBaseHelper helper = new DataBaseHelper(context);
 		try
 		{
-			for(Account account : findAll())
+			for (Account account : findAll())
 			{
 				Dao<Account, Integer> dao = helper.getDao(Account.class);
-				dao.delete(account);			
+				dao.delete(account);
 			}
 		}
 		catch (Exception e)

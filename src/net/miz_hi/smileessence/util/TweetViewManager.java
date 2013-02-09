@@ -4,9 +4,6 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
-import net.miz_hi.smileessence.async.ConcurrentAsyncTaskHelper;
-import net.miz_hi.smileessence.core.EventHandlerActivity;
-import net.miz_hi.smileessence.core.ViewModel;
 import twitter4j.StatusUpdate;
 import android.app.Activity;
 import android.content.Context;
@@ -27,138 +24,141 @@ import com.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 public class TweetViewManager
 {
-	
-	private SlidingMenu _menu;
-	private String _text;
-	private long _inReplyTo;
-	private Activity _activity;
-	private TextView _countView;
-	private EditText _editView;
-	private ImageButton _submitImage;
-	private ImageButton _clearImage;
-	private ImageButton _warotaImage;
-	
+
+	private SlidingMenu menu;
+	private String text;
+	private long inReplyTo;
+	private Activity activity;
+	private TextView countView;
+	private EditText editView;
+	private ImageButton submitImage;
+	private ImageButton clearImage;
+	private ImageButton warotaImage;
+
 	public TweetViewManager(Activity activity)
 	{
-		_activity = activity;
-		_menu = createSlidingMenu();
-		_text = "";
-		_inReplyTo = -1;
-		
+		this.activity = activity;
+		menu = createSlidingMenu();
+		text = "";
+		inReplyTo = -1;
 	}
-	
+
 	public void setText(String str)
 	{
-		_text = str;
+		text = str;
 	}
-	
+
 	public void setInReplyToStatusId(long l)
 	{
-		_inReplyTo = l;
+		inReplyTo = l;
 	}
-	
+
 	public void init()
 	{
-		_countView = (TextView)_menu.findViewById(R.id.textView_count);
-		_editView = (EditText)_menu.findViewById(R.id.editText_tweet);
-		_submitImage = (ImageButton)_menu.findViewById(R.id.imageButton_submit);
-		_warotaImage = (ImageButton)_menu.findViewById(R.id.imageButton_warota);
-		_clearImage = (ImageButton)_menu.findViewById(R.id.imageButton_clean);
-		
-		_countView.setText("140");
-		_editView.addTextChangedListener(new TextWatcher()
+		countView = (TextView) menu.findViewById(R.id.textView_count);
+		editView = (EditText) menu.findViewById(R.id.editText_tweet);
+		submitImage = (ImageButton) menu.findViewById(R.id.imageButton_submit);
+		warotaImage = (ImageButton) menu.findViewById(R.id.imageButton_warota);
+		clearImage = (ImageButton) menu.findViewById(R.id.imageButton_clean);
+
+		countView.setText("140");
+		editView.addTextChangedListener(new TextWatcher()
 		{
-			
+
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count)
 			{
-				_countView.setText(String.valueOf(140 - s.length()));
+				countView.setText(String.valueOf(140 - s.length()));
 			}
-			
+
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after){}
-			
+			public void beforeTextChanged(CharSequence s, int start, int count, int after)
+			{
+			}
+
 			@Override
-			public void afterTextChanged(Editable s){}
+			public void afterTextChanged(Editable s)
+			{
+			}
 		});
-		
-		_submitImage.setOnClickListener(new OnClickListener()
+
+		submitImage.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
 			public void onClick(View v)
 			{
-				submit(_editView.getText().toString());
-				_editView.setText("");	
+				submit(editView.getText().toString());
+				editView.setText("");
 				MainActivity.getInstance().toggleTweetView();
 			}
 		});
-		
-		_clearImage.setOnClickListener(new OnClickListener()
+
+		clearImage.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
 			public void onClick(View v)
 			{
-				_editView.setText("");				
+				editView.setText("");
 			}
 		});
-		
-		_warotaImage.setOnClickListener(new OnClickListener()
+
+		warotaImage.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
 			public void onClick(View v)
 			{
-				int cursor = _editView.getSelectionEnd();
-				StringBuilder sb = new StringBuilder(_editView.getText().toString());
+				int cursor = editView.getSelectionEnd();
+				StringBuilder sb = new StringBuilder(editView.getText().toString());
 				sb.insert(cursor, "ƒƒƒ^‚—");
-				_editView.setText(sb.toString());
+				editView.setText(sb.toString());
 				cursor = cursor + sb.length();
-				if(cursor > _editView.getText().length())
+				if (cursor > editView.getText().length())
 				{
-					cursor = _editView.getText().length();
+					cursor = editView.getText().length();
 				}
-				_editView.setSelection(cursor);
+				editView.setSelection(cursor);
 			}
 		});
 	}
-	
+
 	public void toggle()
 	{
-		_menu.toggle();
+		menu.toggle();
 	}
-	
+
 	public void open()
 	{
-		_menu.showMenu();
+		menu.showMenu();
 	}
-	
+
 	public void close()
 	{
-		_menu.showContent();
+		menu.showContent();
 	}
-	
+
 	public boolean isOpening()
 	{
-		return _menu.isMenuShowing();
+		return menu.isMenuShowing();
 	}
-	
+
 	private SlidingMenu createSlidingMenu()
 	{
-		SlidingMenu menu = new SlidingMenu(_activity);
+		SlidingMenu menu = new SlidingMenu(activity);
 		menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		menu.setShadowWidthRes(R.dimen.shadow_width);
 		menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
 		menu.setFadeDegree(0.35f);
 		menu.setShadowDrawable(R.drawable.shadow);
-		menu.attachToActivity(_activity, SlidingMenu.SLIDING_WINDOW);
-		View rootView = LayoutInflater.from(_activity).inflate(R.layout.tweet_layout, null);
+		menu.attachToActivity(activity, SlidingMenu.SLIDING_WINDOW);
+		View rootView = LayoutInflater.from(activity).inflate(R.layout.tweet_layout, null);
 		menu.setMenu(rootView);
-		
+
 		menu.setOnCloseListener(new OnCloseListener()
 		{
-			
+
 			@Override
 			public void onClose()
 			{
@@ -167,7 +167,7 @@ public class TweetViewManager
 		});
 		menu.setOnOpenListener(new OnOpenListener()
 		{
-			
+
 			@Override
 			public void onOpen()
 			{
@@ -176,25 +176,25 @@ public class TweetViewManager
 		});
 		return menu;
 	}
-	
+
 	private void onOpenSlidingMenu()
 	{
-		if(!StringUtils.isNullOrEmpty(_text))
-		{				
-			_editView.setText(_text);
-			_text = "";
+		if (!StringUtils.isNullOrEmpty(text))
+		{
+			editView.setText(text);
+			text = "";
 		}
-		_editView.setTextSize(Client.getTextSize());
-		_editView.invalidate();
+		editView.setTextSize(Client.getTextSize());
+		editView.invalidate();
 	}
 
 	private void onCloseSlidingMenu()
 	{
 		InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(_editView.getWindowToken(), 0);
-		if(!StringUtils.isNullOrEmpty(_editView.getText().toString()))
+		imm.hideSoftInputFromWindow(editView.getWindowToken(), 0);
+		if (!StringUtils.isNullOrEmpty(editView.getText().toString()))
 		{
-			_text = _editView.getText().toString();
+			text = editView.getText().toString();
 		}
 	}
 
@@ -202,22 +202,22 @@ public class TweetViewManager
 	{
 		if (StringUtils.isNullOrEmpty(text))
 		{
-			Toast.makeText(_activity, "‰½‚©“ü—Í‚µ‚Ä‚­‚¾‚³‚¢", Toast.LENGTH_SHORT).show();
+			Toast.makeText(activity, "‰½‚©“ü—Í‚µ‚Ä‚­‚¾‚³‚¢", Toast.LENGTH_SHORT).show();
 		}
 		else
 		{
-			StatusUpdate status = new StatusUpdate(text);
-			if(_inReplyTo >= 0)
+			StatusUpdate update = new StatusUpdate(text);
+			if (inReplyTo >= 0)
 			{
-				status.setInReplyToStatusId(_inReplyTo);
-				_inReplyTo = -1;
+				update.setInReplyToStatusId(inReplyTo);
+				inReplyTo = -1;
 			}
-			ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncTweetTask(status));
+			new AsyncTweetTask(update).addToQueue();
 		}
 	}
 
 	public String getText()
 	{
-		return _text;
+		return text;
 	}
 }

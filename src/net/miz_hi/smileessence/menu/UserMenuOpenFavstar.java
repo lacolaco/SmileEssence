@@ -1,7 +1,6 @@
 package net.miz_hi.smileessence.menu;
 
 import net.miz_hi.smileessence.dialog.DialogAdapter;
-import twitter4j.User;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -31,7 +30,7 @@ public class UserMenuOpenFavstar extends UserMenuItemBase
 	{
 		String url = "http://favstar.fm/users/" + _userName + "/recent";
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-		_activity.startActivity(intent);
+		activity.startActivity(intent);
 	}
 
 }

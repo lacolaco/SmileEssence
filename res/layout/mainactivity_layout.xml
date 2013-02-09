@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:splitMotionEvents="true" >
 
     <ListView
         android:id="@+id/listView_home"
@@ -11,8 +12,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/relativeLayout1"
-        android:background="@color/White"
-        android:scrollingCache="false" />
+        android:background="@color/White"/>
 
     <ListView
         android:id="@+id/listView_mentions"
@@ -22,8 +22,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/relativeLayout1"
-        android:background="@color/White"
-        android:scrollingCache="false" />
+        android:background="@color/White"/>
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"

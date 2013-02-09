@@ -1,14 +1,14 @@
 package net.miz_hi.smileessence.event;
 
-import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.core.CustomListAdapter;
+import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 
 public class EventListAdapter extends CustomListAdapter<EventModel>
 {
 
-	public EventListAdapter(EventHandlerActivity activity)
+	public EventListAdapter(Activity activity)
 	{
 		super(activity, 1000);
 	}

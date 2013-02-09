@@ -22,7 +22,7 @@ public class MenuItemSetting extends MenuItemBase
 	@Override
 	public void work()
 	{
-		_activity.startActivity(new Intent(_activity, SettingActivity.class));
+		activity.startActivity(new Intent(activity, SettingActivity.class));
 	}
 
 }

@@ -1,6 +1,5 @@
 package net.miz_hi.smileessence.dialog;
 
-import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -35,7 +34,7 @@ public class ReviewDialogHelper
 		dialogView = layoutInflater.inflate(R.layout.dialog_review_layout, null);
 		levelView = (TextView) dialogView.findViewById(R.id.textView_seekLevel);
 		seekbar = (SeekBar) dialogView.findViewById(R.id.seekBar_seekDialog);
-		editView = (EditText)dialogView.findViewById(R.id.editText_comment);
+		editView = (EditText) dialogView.findViewById(R.id.editText_comment);
 	}
 
 	public void setOnClickListener(OnClickListener listener)
@@ -52,7 +51,7 @@ public class ReviewDialogHelper
 	{
 		this.seekBarStart = i;
 	}
-	
+
 	public void setLevelCorrect(int addition)
 	{
 		this.levelCorrect = addition;
@@ -62,7 +61,7 @@ public class ReviewDialogHelper
 	{
 		return this.seekbar.getProgress();
 	}
-	
+
 	public String getText()
 	{
 		return this.editView.getText().toString();
@@ -75,14 +74,17 @@ public class ReviewDialogHelper
 		levelView.setText(Integer.toString(seekBarStart + levelCorrect));
 		seekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
 		{
+			@Override
 			public void onStopTrackingTouch(SeekBar seekbar)
 			{
 			}
 
+			@Override
 			public void onStartTrackingTouch(SeekBar seekbar)
 			{
 			}
 
+			@Override
 			public void onProgressChanged(SeekBar seekbar, int i, boolean flag)
 			{
 				levelView.setText(String.valueOf(i + levelCorrect));

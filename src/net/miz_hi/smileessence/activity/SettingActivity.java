@@ -19,10 +19,11 @@ public class SettingActivity extends PreferenceActivity
 	{
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preference);
-		
+
 		Preference textSize = findPreference(getResources().getString(R.string.key_setting_textSize));
 		textSize.setOnPreferenceClickListener(new OnPreferenceClickListener()
 		{
+			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
 				final SeekBarDialogHelper helper = new SeekBarDialogHelper(SettingActivity.this, "テキストサイズ");
@@ -32,6 +33,7 @@ public class SettingActivity extends PreferenceActivity
 				helper.setText("デフォルト = 10");
 				helper.setOnClickListener(new OnClickListener()
 				{
+					@Override
 					public void onClick(DialogInterface dialog, int which)
 					{
 						Client.putPreferenceValue(EnumPreferenceKey.TEXT_SIZE, helper.getProgress() + 8);
@@ -49,6 +51,5 @@ public class SettingActivity extends PreferenceActivity
 	{
 		super.onDestroy();
 	}
-
 
 }

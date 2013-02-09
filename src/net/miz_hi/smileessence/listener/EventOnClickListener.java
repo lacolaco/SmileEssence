@@ -2,9 +2,7 @@ package net.miz_hi.smileessence.listener;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.core.EventHandlerActivity;
 import net.miz_hi.smileessence.dialog.EventMenuAdapter;
-import net.miz_hi.smileessence.dialog.StatusMenuAdapter;
 import net.miz_hi.smileessence.event.EventModel;
 import net.miz_hi.smileessence.util.ColorUtils;
 import android.app.Activity;
@@ -16,14 +14,13 @@ public class EventOnClickListener implements OnClickListener
 {
 	private Activity activity;
 	private EventModel model;
-	
+
 	public EventOnClickListener(Activity _activity, EventModel model)
 	{
 		this.activity = _activity;
 		this.model = model;
 	}
-	
-	
+
 	@Override
 	public void onClick(final View v)
 	{
@@ -33,6 +30,7 @@ public class EventOnClickListener implements OnClickListener
 		Handler hanlder = new Handler();
 		hanlder.postDelayed(new Runnable()
 		{
+			@Override
 			public void run()
 			{
 				v.setBackgroundColor(ColorUtils.setAlpha(Client.getResource().getColor(R.color.LightGray), 200));

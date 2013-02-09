@@ -1,9 +1,7 @@
 package net.miz_hi.smileessence.core;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import java.util.Collection;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,189 +11,128 @@ import android.widget.BaseAdapter;
 public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAdapter
 {
 
-	private final ArrayList<T> _array;
-	private int _count;
-	private final Object _lock = new Object();
-	private boolean _notifyOnChange = true;
-	private Activity _activity;
-	private LayoutInflater _inflater;
-	private int _capacity;
+	private final ArrayList<T> list;
+	private int count;
+	private final Object lock = new Object();
+	private boolean canMotifyOnChange = true;
+	private Activity activity;
+	private LayoutInflater inflater;
+	private int capacity;
 
 	public CustomListAdapter(Activity activity, int capacity)
 	{
-		this._capacity = capacity;
-		this._array = new ArrayList<T>(capacity);
-		this._activity = activity;
-		this._inflater = LayoutInflater.from(activity);
+		this.capacity = capacity;
+		this.list = new ArrayList<T>(capacity);
+		this.activity = activity;
+		this.inflater = LayoutInflater.from(activity);
 	}
 
-	public void setList(List<T> list)
+	public void addAll(Collection<T> collection)
 	{
-		synchronized (_lock)
+		synchronized (lock)
 		{
-			this._array.clear();
-			this._array.addAll(list);
-			_notifyOnChange = true;
-		}
-		notifyDataSetChanged();
-	}
-
-	public void addFirst(T status)
-	{
-		synchronized (_lock)
-		{
-			if(_array.contains(status))
+			for (T element : collection)
 			{
-				_array.remove(status);
+				if (list.contains(element))
+				{
+					list.remove(element);
+				}
+				list.add(element);
+				if (list.size() >= capacity)
+				{
+					break;
+				}
 			}
-			_array.add(0, status);		
+		}
+	}
 
-			if(_array.size() >= _capacity)
+	public void addFirst(T element)
+	{
+		synchronized (lock)
+		{
+			if (list.contains(element))
 			{
-				_array.remove(_array.size() - 1);
+				list.remove(element);
 			}
-		}		
-//		if (_notifyOnChange)
-//		{
-			notifyDataSetChanged();
-//		}
-	}
+			list.add(0, element);
 
-	public void addLast(T status)
-	{
-		synchronized (_lock)
-		{
-			if(_array.contains(status))
+			if (list.size() >= capacity)
 			{
-				_array.remove(status);
+				list.remove(list.size() - 1);
 			}
-			_array.add(status);
 		}
-//		if (_notifyOnChange)
-//		{
-//			notifyDataSetChanged();
-//		}
 	}
 
-	public void addAllFirst(List<T> statuses)
+	public void removeElement(T element)
 	{
-		synchronized (_lock)
+		synchronized (lock)
 		{
-			_array.addAll(0, statuses);
+			list.remove(element);
 		}
-//		if (_notifyOnChange)
-//		{
-//			notifyDataSetChanged();
-//		}
 	}
 
-	public void addAllLast(List<T> statuses)
+	public void notifyAdapter()
 	{
-		synchronized (_lock)
-		{			
-			_array.addAll(statuses);
-		}
-//		if (_notifyOnChange)
-//		{
-//			notifyDataSetChanged();
-//		}
-	}
-
-	public void insert(T status, int index)
-	{
-		synchronized (_lock)
+		synchronized (lock)
 		{
-			_array.add(index, status);
+			if (canMotifyOnChange)
+			{
+				new UiHandler()
+				{
+					@Override
+					public void run()
+					{
+						setCanNotifyOnChange(false);
+						notifyDataSetChanged();
+					}
+				}.post();
+			}
 		}
-//		if (_notifyOnChange)
-//		{
-//			notifyDataSetChanged();
-//		}
 	}
 
-	public void removeLast()
+	public void forceNotifyAdapter()
 	{
-		synchronized (_lock)
+		synchronized (lock)
 		{
-			_array.remove(_array.size() - 1);
+			new UiHandler()
+			{
+				@Override
+				public void run()
+				{
+					notifyDataSetChanged();
+				}
+			}.post();
 		}
-//		if (_notifyOnChange)
-//		{
-//			notifyDataSetChanged();
-//		}
 	}
 
-	public void remove(T status)
+	public void setCanNotifyOnChange(boolean notifyOnChange)
 	{
-		synchronized (_lock)
+		synchronized (lock)
 		{
-			_array.remove(status);
+			this.canMotifyOnChange = notifyOnChange;
 		}
-//		if (_notifyOnChange)
-//		{
-//			notifyDataSetChanged();
-//		}
 	}
 
-	public void clear()
+	public Activity getActivity()
 	{
-		synchronized (_lock)
-		{
-			_array.clear();
-		}
-//		if (_notifyOnChange)
-//		{
-//			notifyDataSetChanged();
-//		}
-	}
-
-	public void sort()
-	{
-		synchronized (_lock)
-		{
-			Collections.sort(_array);
-		}
-//		if (_notifyOnChange)
-//		{
-//			notifyDataSetChanged();
-//		}
-	}
-
-	@Override
-	public void notifyDataSetChanged()
-	{
-		if(_notifyOnChange)
-		{
-			super.notifyDataSetChanged();
-			_count = _array.size();
-		}
-	}    
-
-	public void setNotifyOnChange(boolean notifyOnChange)
-	{
-		this._notifyOnChange = notifyOnChange;
-	}
-
-	public Activity getActivity() 
-	{
-		return _activity;
+		return activity;
 	}
 
 	@Override
 	public int getCount()
-	{		
-		synchronized (_lock)
+	{
+		synchronized (lock)
 		{
-			return _count;
+			return list.size();
 		}
 	}
 
 	@Override
 	public Object getItem(int position)
 	{
-		synchronized (_lock)
+		synchronized (lock)
 		{
-			return _array.get(position);
+			return list.get(position);
 		}
 	}
 
@@ -207,11 +144,10 @@ public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAda
 
 	public LayoutInflater getInflater()
 	{
-		return _inflater;
+		return inflater;
 	}
 
 	@Override
 	public abstract View getView(int position, View convertedView, ViewGroup parent);
-
 
 }

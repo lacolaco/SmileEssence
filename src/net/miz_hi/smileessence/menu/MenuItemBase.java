@@ -7,19 +7,19 @@ import android.widget.Toast;
 
 public abstract class MenuItemBase
 {
-	protected Activity _activity;
-	protected DialogAdapter _adapter;
+	protected Activity activity;
+	protected DialogAdapter adapter;
 	private Handler _handler;
 
 	public MenuItemBase(Activity activity, DialogAdapter adapter)
 	{
-		this._activity = activity;
-		this._adapter = adapter;
+		this.activity = activity;
+		this.adapter = adapter;
 		_handler = new Handler();
 	}
 
 	public abstract String getText();
-	
+
 	public boolean isVisible()
 	{
 		return true;
@@ -32,7 +32,7 @@ public abstract class MenuItemBase
 			@Override
 			public void run()
 			{
-				_adapter.dispose();
+				adapter.dispose();
 				work();
 			}
 		});
@@ -42,7 +42,7 @@ public abstract class MenuItemBase
 
 	public void toast(String str)
 	{
-		Toast.makeText(_activity, str, Toast.LENGTH_SHORT).show();
+		Toast.makeText(activity, str, Toast.LENGTH_SHORT).show();
 	}
 
 }

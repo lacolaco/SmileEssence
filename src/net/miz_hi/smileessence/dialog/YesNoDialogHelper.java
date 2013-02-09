@@ -30,8 +30,8 @@ public class YesNoDialogHelper
 	public void setOnClickListener(OnClickListener listener)
 	{
 		this.listener = listener;
-	}	
-	
+	}
+
 	public void setContentView(View view)
 	{
 		this.contentView = view;

@@ -1,14 +1,13 @@
 package net.miz_hi.smileessence.async;
 
-import android.widget.Toast;
+import java.util.concurrent.Callable;
+
 import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.auth.Account;
-import net.miz_hi.smileessence.core.ViewModel;
 import net.miz_hi.smileessence.util.TwitterManager;
 
-public class AsyncRetweetTask extends ConcurrentAsyncTask<String>
-{	
+public class AsyncRetweetTask implements Callable<Boolean>
+{
 	private Account account;
 	private long statusId;
 
@@ -16,7 +15,7 @@ public class AsyncRetweetTask extends ConcurrentAsyncTask<String>
 	{
 		this(Client.getMainAccount(), statusId);
 	}
-	
+
 	public AsyncRetweetTask(Account account, long statusId)
 	{
 		this.account = account;
@@ -24,15 +23,9 @@ public class AsyncRetweetTask extends ConcurrentAsyncTask<String>
 	}
 
 	@Override
-	protected String doInBackground(Object... arg0)
+	public Boolean call()
 	{
 		return TwitterManager.retweet(account, statusId);
-	}
-
-	@Override
-	protected void onPostExecute(String result)
-	{
-		Toast.makeText(MainActivity.getInstance(), result, Toast.LENGTH_SHORT).show();
 	}
 
 }

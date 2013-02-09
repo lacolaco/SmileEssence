@@ -9,16 +9,15 @@ public enum EnumEventType
 	DIRECT_MESSAGE("からDMを受け取った"),
 	FAVORITE("にふぁぼられた"),
 	UNFAVORITE("にあんふぁぼされた"),
-	FOLLOW("にフォローされた"),
-	;
-	
+	FOLLOW("にフォローされた"), ;
+
 	private final String text;
-	
+
 	private EnumEventType(String text)
 	{
 		this.text = text;
 	}
-	
+
 	public String getText()
 	{
 		return text;

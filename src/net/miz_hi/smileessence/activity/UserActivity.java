@@ -1,30 +1,27 @@
 package net.miz_hi.smileessence.activity;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.Future;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.async.AsyncTimelineGetter;
+import net.miz_hi.smileessence.async.MyExecutor;
+import net.miz_hi.smileessence.core.UiHandler;
+import net.miz_hi.smileessence.data.IconCaches;
+import net.miz_hi.smileessence.data.StatusModel;
+import net.miz_hi.smileessence.data.UserModel;
+import net.miz_hi.smileessence.data.UserStore;
 import net.miz_hi.smileessence.dialog.UserMenuAdapter;
-import net.miz_hi.smileessence.listener.StatusOnClickListener;
-import net.miz_hi.smileessence.status.IconCaches;
-import net.miz_hi.smileessence.status.StatusModel;
-import net.miz_hi.smileessence.status.StatusStore;
 import net.miz_hi.smileessence.status.StatusViewFactory;
-import net.miz_hi.smileessence.util.TwitterManager;
-import twitter4j.Status;
-import twitter4j.TwitterException;
+import net.miz_hi.smileessence.util.StringUtils;
+import twitter4j.Paging;
 import twitter4j.User;
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,16 +37,17 @@ public class UserActivity extends Activity
 	private TextView locateView;
 	private TextView isFollowingView;
 	private TextView isFollowedView;
-	private TextView bioView;
+	private TextView isProtectedView;
+	private TextView descriptionView;
 	private TextView tweetView;
 	private TextView followingView;
 	private TextView followedView;
 	private TextView favoriteView;
 	private ImageView iconView;
-	private LinearLayout statusList;
-	
+	private LinearLayout statusesView;
+
 	private UserMenuAdapter userMenu;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -57,80 +55,95 @@ public class UserActivity extends Activity
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.user_layout);
 
-		user = TwitterManager.getUser(Client.getMainAccount(), getIntent().getStringExtra("name"));
-		if (user == null)
-			finish();		
+		UserModel model = UserStore.get(getIntent().getLongExtra("user_id", -1));
+		if (model == null)
+		{
+			finish();
+		}
+
+		user = model.getUser();
+		model.updateData(user);
 
 		userMenu = new UserMenuAdapter(this, user.getScreenName());
-		
+
 		screennameView = (TextView) findViewById(R.id.user_screenname);
 		nameView = (TextView) findViewById(R.id.user_name);
 		homepageView = (TextView) findViewById(R.id.user_homepage);
 		locateView = (TextView) findViewById(R.id.user_locate);
 		isFollowingView = (TextView) findViewById(R.id.user_isfollowing);
 		isFollowedView = (TextView) findViewById(R.id.user_isfollowed);
-		bioView = (TextView) findViewById(R.id.user_bio);
+		isProtectedView = (TextView) findViewById(R.id.user_isprotected);
+		descriptionView = (TextView) findViewById(R.id.user_bio);
 		tweetView = (TextView) findViewById(R.id.user_count_tweet);
 		followingView = (TextView) findViewById(R.id.user_count_following);
 		followedView = (TextView) findViewById(R.id.user_count_followed);
 		favoriteView = (TextView) findViewById(R.id.user_count_favorite);
 		iconView = (ImageView) findViewById(R.id.user_icon);
-		statusList = (LinearLayout) findViewById(R.id.user_status);
+		statusesView = (LinearLayout) findViewById(R.id.user_status);
 
-		screennameView.setText(user.getScreenName());
-		nameView.setText(user.getName() != null ? user.getName() : "No Name");
-		homepageView.setText(user.getURL() != null ? user.getURL().toString() : "No Homepage");
-		locateView.setText(user.getLocation() != null ? user.getLocation() : "No Location");
-		isFollowingView.setText(TwitterManager.isFollowing(Client.getMainAccount(), user.getId()) ? "フォローしています" : (user.getScreenName().equals(Client.getMainAccount().getScreenName()) ? "あなたです" : "フォローしていません"));
-		isFollowedView.setText(TwitterManager.isFollowed(Client.getMainAccount(), user.getId()) ? "フォローされています" : (user.getScreenName().equals(Client.getMainAccount().getScreenName()) ? "あなたです" : "フォローされていません"));
-		bioView.setText(user.getDescription() != null ? user.getDescription() : "No Description");
-		tweetView.setText(Integer.toString(user.getStatusesCount()));
-		followingView.setText(Integer.toString(user.getFriendsCount()));
-		followedView.setText(Integer.toString(user.getFollowersCount()));
-		favoriteView.setText(Integer.toString(user.getFavouritesCount()));
-		IconCaches.setIconBitmapToView(user, iconView);
-
-		final Handler handler = new Handler();
-		final LinkedList<View> stack = new LinkedList<View>();
-
-		new Thread(new Runnable()
+		screennameView.setText(model.screenName);
+		nameView.setText(model.name);
+		if (StringUtils.isNullOrEmpty(model.homePageUrl))
 		{
+			homepageView.setVisibility(View.GONE);
+		}
+		else
+		{
+			homepageView.setText(model.homePageUrl);
+		}
+		if(StringUtils.isNullOrEmpty(model.location))
+		{
+			locateView.setVisibility(View.GONE);
+		}
+		else
+		{
+			locateView.setText(model.location);
+		}
+		isFollowingView.setText(model.isFriend() ? "フォローしています" : model.isMe() ? "あなたです" : "フォローしていません");
+		isFollowedView.setText(model.isFollower() ? "フォローされています" : model.isMe() ? "あなたです" : "フォローされていません");
+		isProtectedView.setText(model.isProtected ? "非公開" : "公開");
+		descriptionView.setText(model.description);
+		tweetView.setText(Integer.toString(model.statusCount));
+		followingView.setText(Integer.toString(model.friendCount));
+		followedView.setText(Integer.toString(model.followerCount));
+		favoriteView.setText(Integer.toString(model.favoriteCount));
+		IconCaches.setIconBitmapToView(model, iconView);
+
+		TextView emptyText = new TextView(this);
+		emptyText.setText("Now Loading...");
+		statusesView.addView(emptyText);
+
+		final Future<List<StatusModel>> resp = MyExecutor.getExecutor().submit(new AsyncTimelineGetter(Client.getMainAccount(), user.getId(), new Paging(1)));
+		MyExecutor.getExecutor().execute(new Runnable()
+		{
+			@Override
 			public void run()
 			{
-				ArrayList<Status> list = new ArrayList<Status>();
 				try
 				{
-					list.addAll(TwitterManager.getTwitter(Client.getMainAccount()).getUserTimeline(user.getId()));
-					for (Status status : list)
+					final LinkedList<StatusModel> list = new LinkedList<StatusModel>(resp.get());
+
+					new UiHandler()
 					{
-						StatusStore.put(status);
-						if(status.isRetweet())
-						{
-							StatusStore.put(status.getRetweetedStatus());
-						}
-						StatusModel model = StatusModel.createInstance(status);
-						View view = StatusViewFactory.getView(getLayoutInflater(), model);
-						view.setOnClickListener(new StatusOnClickListener(UserActivity.this, model));
-						stack.offer(view);
-					}
-					handler.post(new Runnable()
-					{
+
+						@Override
 						public void run()
 						{
-							statusList.removeAllViews();
-							while (!stack.isEmpty())
+							statusesView.removeAllViews();
+							while (!list.isEmpty())
 							{
-								statusList.addView(stack.poll());
+								statusesView.addView(StatusViewFactory.getView(getLayoutInflater(), list.poll()));
 							}
-							statusList.postInvalidate();
+							statusesView.postInvalidate();
 						}
-					});
+					}.post();
 				}
-				catch (TwitterException e)
+				catch (Exception e)
 				{
+					e.printStackTrace();
 				}
 			}
-		}).start();
+		});
 	}
 
 	public User getUser()
@@ -138,19 +151,12 @@ public class UserActivity extends Activity
 		return user;
 	}
 
-	public Object fetch(String address) throws MalformedURLException, IOException
-	{
-		URL url = new URL(address);
-		Object content = url.getContent();
-		return content;
-	}
-
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event)
 	{
 		if (keyCode == KeyEvent.KEYCODE_MENU)
 		{
-			if(userMenu.isShowing())
+			if (userMenu.isShowing())
 			{
 				userMenu.dispose();
 			}
@@ -162,7 +168,5 @@ public class UserActivity extends Activity
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	
-	
 
 }

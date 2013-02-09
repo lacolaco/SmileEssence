@@ -1,24 +1,21 @@
-package net.miz_hi.smileessence.status;
+package net.miz_hi.smileessence.data;
 
 import java.io.File;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncIconGetter;
-import net.miz_hi.smileessence.async.ConcurrentAsyncTaskHelper;
+import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.util.CountUpInteger;
 import net.miz_hi.smileessence.util.StringUtils;
-import twitter4j.User;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
-import android.os.Handler;
 import android.widget.ImageView;
 
 public class IconCaches
@@ -28,25 +25,24 @@ public class IconCaches
 	private static File cacheDir = Client.getApplication().getExternalCacheDir();
 	private static Bitmap emptyIcon;
 	private static CountUpInteger counter = new CountUpInteger(5);
-	private static Handler hander = new Handler();
 
 	public static Icon getIcon(long id)
 	{
 		return iconCache.get(id);
 	}
-	
-	public static void setIconBitmapToView(User user, ImageView viewIcon)
+
+	public static void setIconBitmapToView(final UserModel user, final ImageView viewIcon)
 	{
 		String fileName = genIconName(user);
-		File latestIconFile = Client.getApplicationFile(fileName);		
+		File latestIconFile = Client.getApplicationFile(fileName);
 		File[] caches = cacheDir.listFiles();
 		/*
 		 * URLからアイコンが更新されているかどうかの確認
 		 */
 		boolean needsCacheUpdate = true;
-		if (iconCache.containsKey(user.getId()))
+		if (iconCache.containsKey(user.userId))
 		{
-			needsCacheUpdate = !iconCache.get(user.getId()).fileName.equals(fileName);
+			needsCacheUpdate = !iconCache.get(user.userId).fileName.equals(fileName);
 		}
 		else
 		{
@@ -60,12 +56,20 @@ public class IconCaches
 			/*
 			 * from メモリキャッシュ
 			 */
-			if (iconCache.containsKey(user.getId()))
+			if (iconCache.containsKey(user.userId))
 			{
-				Icon icon = iconCache.get(user.getId());
-				if(viewIcon != null)
+				final Icon icon = iconCache.get(user.userId);
+				if (viewIcon != null)
 				{
-					viewIcon.setImageBitmap(icon.use());
+					new UiHandler()
+					{
+
+						@Override
+						public void run()
+						{
+							viewIcon.setImageBitmap(icon.use());
+						}
+					}.post();
 				}
 			}
 			/*
@@ -76,31 +80,47 @@ public class IconCaches
 				Options opt = new Options();
 				opt.inPurgeable = true; // GC可能にする
 				Bitmap bm = BitmapFactory.decodeFile(latestIconFile.getPath(), opt);
-				Icon icon = new Icon(bm, fileName);
-				putIconToMap(user, icon);
-				if(viewIcon != null)
+				final Icon icon = new Icon(bm, fileName);
+				putIconToMap(user.userId, icon);
+				if (viewIcon != null)
 				{
-					viewIcon.setImageBitmap(icon.use());
+					new UiHandler()
+					{
+
+						@Override
+						public void run()
+						{
+							viewIcon.setImageBitmap(icon.use());
+						}
+					}.post();
 				}
 			}
 		}
 		else
 		{
-			ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncIconGetter(user, viewIcon));
+			new UiHandler()
+			{
+
+				@Override
+				public void run()
+				{
+					new AsyncIconGetter(user, viewIcon).addToQueue();
+				}
+			}.post();
 		}
 	}
 
-	public static String genIconName(User user)
+	public static String genIconName(UserModel user)
 	{
-		return String.format("%1$s_%2$s", user.getId(), StringUtils.parseUrlToFileName(user.getProfileImageURL()));
+		return String.format("%1$s_%2$s", user.userId, StringUtils.parseUrlToFileName(user.iconUrl));
 	}
-	
+
 	public static void clearCache()
 	{
 		iconCache.clear();
 	}
 
-	public static void putIconToMap(User user, Icon icon)
+	public static void putIconToMap(long id, Icon icon)
 	{
 
 		if (iconCache.size() > 99 && counter.isOver())
@@ -113,19 +133,19 @@ public class IconCaches
 				@Override
 				public int compare(Object o1, Object o2)
 				{
-					Map.Entry e1 =(Map.Entry)o1;
-					Map.Entry e2 =(Map.Entry)o2;
-					return ((Icon)e1.getValue()).compareTo((Icon)e2.getValue());
+					Map.Entry e1 = (Map.Entry) o1;
+					Map.Entry e2 = (Map.Entry) o2;
+					return ((Icon) e1.getValue()).compareTo((Icon) e2.getValue());
 				}
 			});
-			while(iconCache.size() > 98)
+			while (iconCache.size() > 98)
 			{
 				iconCache.remove(entries.pollFirst().getKey());
 			}
 			counter.reset();
 		}
 
-		iconCache.put(user.getId(), icon);
+		iconCache.put(id, icon);
 		counter.countUp();
 	}
 
@@ -134,7 +154,7 @@ public class IconCaches
 		Options opt = new Options();
 		opt.inPurgeable = true; // GC可能にする
 		Bitmap bm = BitmapFactory.decodeResource(Client.getResource(), R.drawable.icon_reflesh, opt);
-		return bm;		
+		return bm;
 	}
 
 	public static class Icon implements Comparable<Icon>

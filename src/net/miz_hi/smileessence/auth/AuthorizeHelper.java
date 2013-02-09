@@ -1,5 +1,10 @@
 package net.miz_hi.smileessence.auth;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import net.miz_hi.smileessence.activity.WebViewActivity;
 import net.miz_hi.smileessence.auth.Consumers.Consumer;
 import net.miz_hi.smileessence.core.EnumRequestCode;
@@ -17,6 +22,7 @@ public class AuthorizeHelper
 	private Consumer consumer;
 	private Twitter twitter;
 	private RequestToken req;
+	private ExecutorService executor;
 
 	public static final String CALLBACK_OAUTH = "oauth://smileessence";
 	public static final String OAUTH_VERIFIER = "oauth_verifier";
@@ -25,6 +31,7 @@ public class AuthorizeHelper
 	{
 		this.activity = activity;
 		this.consumer = consumer;
+		executor = Executors.newSingleThreadExecutor();
 	}
 
 	public void oauthSend()
@@ -33,7 +40,16 @@ public class AuthorizeHelper
 		{
 			twitter = new TwitterFactory().getInstance();
 			twitter.setOAuthConsumer(consumer.key, consumer.secret);
-			req = twitter.getOAuthRequestToken(CALLBACK_OAUTH);
+			Future<RequestToken> f = executor.submit(new Callable<RequestToken>()
+			{
+
+				@Override
+				public RequestToken call() throws Exception
+				{
+					return twitter.getOAuthRequestToken(CALLBACK_OAUTH);
+				}
+			});
+			req = f.get();
 			Intent intent = new Intent(activity, WebViewActivity.class);
 			intent.setData(Uri.parse(req.getAuthorizationURL()));
 			activity.startActivityForResult(intent, EnumRequestCode.AUTHORIZE.ordinal());
@@ -49,9 +65,18 @@ public class AuthorizeHelper
 		Account account = null;
 		try
 		{
-			String verifier = uri.getQueryParameter(OAUTH_VERIFIER);
+			final String verifier = uri.getQueryParameter(OAUTH_VERIFIER);
 			AccessToken accessToken = null;
-			accessToken = twitter.getOAuthAccessToken(req, verifier);
+			Future<AccessToken> f = executor.submit(new Callable<AccessToken>()
+			{
+
+				@Override
+				public AccessToken call() throws Exception
+				{
+					return twitter.getOAuthAccessToken(req, verifier);
+				}
+			});
+			accessToken = f.get();
 			if (accessToken != null)
 			{
 				account = new Account(accessToken, consumer);

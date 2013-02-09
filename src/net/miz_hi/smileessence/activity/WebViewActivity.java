@@ -41,8 +41,7 @@ public class WebViewActivity extends Activity
 			}
 
 		});
-		
-		
+
 		webView.loadUrl(uri.toString());
 	}
 }

@@ -25,7 +25,7 @@ public class MenuItemOpenFriends extends MenuItemBase
 	{
 		String url = "http://twitter.com/" + Client.getMainAccount().getScreenName() + "/following";
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-		_activity.startActivity(intent);
+		activity.startActivity(intent);
 	}
 
 }

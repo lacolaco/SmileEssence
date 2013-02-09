@@ -1,20 +1,18 @@
 package net.miz_hi.smileessence.menu;
 
-import twitter4j.StatusUpdate;
-import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.activity.MainActivity;
-import net.miz_hi.smileessence.activity.SettingActivity;
+import java.util.concurrent.Future;
+
 import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
-import net.miz_hi.smileessence.async.ConcurrentAsyncTaskHelper;
-import net.miz_hi.smileessence.core.EnumPreferenceKey;
+import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 import net.miz_hi.smileessence.dialog.ReviewDialogHelper;
-import net.miz_hi.smileessence.dialog.SeekBarDialogHelper;
-import net.miz_hi.smileessence.status.StatusModel;
+import net.miz_hi.smileessence.util.TwitterManager;
+import twitter4j.StatusUpdate;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.widget.Toast;
 
 public class StatusMenuReview extends StatusMenuItemBase
 {
@@ -27,7 +25,7 @@ public class StatusMenuReview extends StatusMenuItemBase
 	@Override
 	public boolean isVisible()
 	{
-		return true;
+		return false;
 	}
 
 	@Override
@@ -39,19 +37,20 @@ public class StatusMenuReview extends StatusMenuItemBase
 	@Override
 	public void work()
 	{
-		final ReviewDialogHelper helper = new ReviewDialogHelper(_activity, "ツイートを評価しよう");
+		final ReviewDialogHelper helper = new ReviewDialogHelper(activity, "ツイートを評価しよう");
 		helper.setSeekBarMax(4);
 		helper.setSeekBarStart(0);
 		helper.setLevelCorrect(1);
 		helper.setOnClickListener(new OnClickListener()
 		{
+			@Override
 			public void onClick(DialogInterface dialog, int which)
 			{
 				int star = helper.getProgress() + 1;
 				StringBuilder builder = new StringBuilder();
-				for(int i = 0; i < 5; i++)
+				for (int i = 0; i < 5; i++)
 				{
-					if(i < star)
+					if (i < star)
 					{
 						builder.append("★");
 					}
@@ -65,12 +64,28 @@ public class StatusMenuReview extends StatusMenuItemBase
 				builder.append(helper.getText());
 				builder.append("\r\n");
 				builder.append("( http://twitter.com/");
-				builder.append(_model.screenName);
+				builder.append(model.screenName);
 				builder.append("/status/");
-				builder.append(_model.statusId);
+				builder.append(model.statusId);
 				builder.append(" )");
-				ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncTweetTask(new StatusUpdate(builder.toString())));
-				ConcurrentAsyncTaskHelper.addAsyncTask(new AsyncFavoriteTask(_model.statusId));
+
+				Future<Boolean> f1 = adapter.getExecutor().submit(new AsyncFavoriteTask(model.statusId));
+				Future<Boolean> f2 = adapter.getExecutor().submit(new AsyncTweetTask(new StatusUpdate(builder.toString())));
+				try
+				{
+					if (f1.get() && f2.get())
+					{
+						Toast.makeText(activity, TwitterManager.MESSAGE_TWEET_SUCCESS, Toast.LENGTH_SHORT).show();
+					}
+					else
+					{
+						Toast.makeText(activity, TwitterManager.MESSAGE_SOMETHING_ERROR, Toast.LENGTH_SHORT).show();
+					}
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
 			}
 		});
 		helper.createSeekBarDialog().show();

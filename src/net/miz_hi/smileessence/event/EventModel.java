@@ -2,7 +2,8 @@ package net.miz_hi.smileessence.event;
 
 import java.util.Date;
 
-import net.miz_hi.smileessence.status.StatusModel;
+import net.miz_hi.smileessence.data.StatusModel;
+import net.miz_hi.smileessence.data.StatusStore;
 import twitter4j.Status;
 import twitter4j.User;
 
@@ -15,7 +16,7 @@ public class EventModel implements Comparable<EventModel>
 
 	public static EventModel createInstance(User source, EnumEventType type, Status target)
 	{
-		if(source == null)
+		if (source == null)
 		{
 			return null;
 		}
@@ -24,13 +25,13 @@ public class EventModel implements Comparable<EventModel>
 			return new EventModel(source, type, target);
 		}
 	}
-	
+
 	private EventModel(User source, EnumEventType type, Status target)
 	{
 		this.date = new Date();
 		this.type = type;
 		this.source = source;
-		this.targetModel = StatusModel.createInstance(target);
+		this.targetModel = StatusStore.get(target.getId());
 	}
 
 	@Override

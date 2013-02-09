@@ -12,30 +12,21 @@
         android:layout_alignParentTop="true"/>
 
     <TextView
-        android:id="@+id/textView_screenName"
+        android:id="@+id/textView_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/imageView_icon"
-        android:gravity="top"/>
-
-    <TextView
-        android:id="@+id/textView_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@+id/textView_screenName"
-        android:gravity="top"/>
+        android:gravity="top" />
 
     <TextView
         android:id="@+id/textView_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView_screenName"
+        android:layout_below="@+id/textView_header"
+        android:layout_alignLeft="@+id/textView_header"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView_name"
         android:layout_marginBottom="3dp"
         android:layout_marginTop="1dp" />
 

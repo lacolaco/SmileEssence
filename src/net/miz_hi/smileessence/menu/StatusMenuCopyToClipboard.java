@@ -1,11 +1,10 @@
 package net.miz_hi.smileessence.menu;
 
+import net.miz_hi.smileessence.data.StatusModel;
+import net.miz_hi.smileessence.dialog.DialogAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.text.ClipboardManager;
-import net.miz_hi.smileessence.core.EventHandlerActivity;
-import net.miz_hi.smileessence.dialog.DialogAdapter;
-import net.miz_hi.smileessence.status.StatusModel;
 
 public class StatusMenuCopyToClipboard extends StatusMenuItemBase
 {
@@ -32,11 +31,11 @@ public class StatusMenuCopyToClipboard extends StatusMenuItemBase
 	{
 		try
 		{
-			ClipboardManager manager = (ClipboardManager)_activity.getSystemService(Context.CLIPBOARD_SERVICE);
-			manager.setText(_model.text);
+			ClipboardManager manager = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+			manager.setText(model.text);
 			toast("コピーしました");
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			toast("コピー失敗しました");
 		}

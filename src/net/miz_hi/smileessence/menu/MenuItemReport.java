@@ -1,8 +1,8 @@
 package net.miz_hi.smileessence.menu;
 
-import android.app.Activity;
 import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
+import android.app.Activity;
 
 public class MenuItemReport extends MenuItemBase
 {

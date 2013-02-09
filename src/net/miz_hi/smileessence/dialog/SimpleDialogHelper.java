@@ -1,9 +1,6 @@
 package net.miz_hi.smileessence.dialog;
 
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.dialog.DialogAdapter.MenuItemView;
-import net.miz_hi.smileessence.menu.MenuItemBase;
-import net.miz_hi.smileessence.menu.MenuItemClose;
 import android.app.Activity;
 import android.app.Dialog;
 import android.util.DisplayMetrics;
@@ -16,14 +13,14 @@ import android.widget.LinearLayout;
 
 public class SimpleDialogHelper
 {
-	
+
 	public static Dialog createDialog(Activity activity, View titleView, View contentView)
 	{
 		Dialog dialog = new Dialog(activity);
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		View view = LayoutInflater.from(activity).inflate(R.layout.dialog_base_layout, null);
-		LinearLayout titleLinearLayout = (LinearLayout)view.findViewById(R.id.linearLayout_dialogTitle);
-		LinearLayout itemsLinearLayout = (LinearLayout)view.findViewById(R.id.linearLayout_dialogItems);
+		LinearLayout titleLinearLayout = (LinearLayout) view.findViewById(R.id.linearLayout_dialogTitle);
+		LinearLayout itemsLinearLayout = (LinearLayout) view.findViewById(R.id.linearLayout_dialogItems);
 		titleLinearLayout.addView(titleView);
 		itemsLinearLayout.addView(contentView);
 		dialog.setContentView(view);
