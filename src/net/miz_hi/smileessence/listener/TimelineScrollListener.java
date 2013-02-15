@@ -26,6 +26,10 @@ public class TimelineScrollListener implements OnScrollListener
 		if (view.getFirstVisiblePosition() == 0 && view.getChildAt(0) != null && view.getChildAt(0).getTop() == 0)
 		{
 			adapter.setCanNotifyOnChange(true);
+			if(scrollState == SCROLL_STATE_IDLE)
+			{
+				adapter.notifyAdapter();
+			}
 		}
 		else
 		{

@@ -8,10 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAdapter
+public abstract class CustomListAdapter<T> extends BaseAdapter
 {
 
-	private final ArrayList<T> list;
+	private T[] array;
+	private ArrayList<T> list;
 	private int count;
 	private final Object lock = new Object();
 	private boolean canMotifyOnChange = true;
@@ -117,14 +118,20 @@ public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAda
 	{
 		return activity;
 	}
+	
+
+	@Override
+	public void notifyDataSetChanged()
+	{
+		array = (T[]) list.toArray();
+		count = array.length;
+		super.notifyDataSetChanged();
+	}
 
 	@Override
 	public int getCount()
 	{
-		synchronized (lock)
-		{
-			return list.size();
-		}
+		return count;
 	}
 
 	@Override
@@ -132,7 +139,14 @@ public abstract class CustomListAdapter<T extends Comparable<T>> extends BaseAda
 	{
 		synchronized (lock)
 		{
-			return list.get(position);
+			if(array != null && array.length >= position)
+			{
+				return array[position];
+			}
+			else
+			{
+				return null;
+			}
 		}
 	}
 

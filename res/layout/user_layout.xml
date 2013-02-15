@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/White"
     android:orientation="vertical" >
 
     <ScrollView
@@ -65,7 +66,7 @@
 
             <LinearLayout
                 android:id="@+id/linearlayout2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/frame1"
                 android:orientation="vertical" >
