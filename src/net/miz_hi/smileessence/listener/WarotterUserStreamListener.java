@@ -140,8 +140,7 @@ public class WarotterUserStreamListener implements UserStreamListener
 	@Override
 	public void onException(Exception arg0)
 	{
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -170,7 +169,28 @@ public class WarotterUserStreamListener implements UserStreamListener
 	@Override
 	public void onFavorite(User arg0, User arg1, Status arg2)
 	{
-		if (arg1.getId() == Client.getMainAccount().getUserId())
+		if(arg0.getId() == Client.getMainAccount().getUserId())
+		{
+			if(arg2.isRetweet())
+			{
+				StatusStore.putFavoritedStatus(arg2.getRetweetedStatus().getId());				
+			}
+			else
+			{
+				StatusStore.putFavoritedStatus(arg2.getId());
+			}			
+			new UiHandler()
+			{
+				
+				@Override
+				public void run()
+				{
+					MainActivity.getInstance().getHomeListView().invalidateViews();
+					MainActivity.getInstance().getMentionsListView().invalidateViews();
+				}
+			}.post();
+		}
+		else if (arg1.getId() == Client.getMainAccount().getUserId())
 		{
 			EventNoticer.receive(EventModel.createInstance(arg0, EnumEventType.FAVORITE, arg2));
 		}

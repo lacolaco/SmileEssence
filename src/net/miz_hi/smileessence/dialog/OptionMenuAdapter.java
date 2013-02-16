@@ -2,7 +2,7 @@ package net.miz_hi.smileessence.dialog;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.menu.MenuItemAccountReset;
+import net.miz_hi.smileessence.menu.MenuItemResetAccount;
 import net.miz_hi.smileessence.menu.MenuItemOpenFavstar;
 import net.miz_hi.smileessence.menu.MenuItemOpenFollowers;
 import net.miz_hi.smileessence.menu.MenuItemOpenFriends;
@@ -41,7 +41,7 @@ public class OptionMenuAdapter extends DialogAdapter
 			list.add(new MenuItemOpenFollowers(activity, this));
 			list.add(new MenuItemOpenFriends(activity, this));
 			list.add(new MenuItemReport(activity, this));
-			list.add(new MenuItemAccountReset(activity, this));
+			list.add(new MenuItemResetAccount(activity, this));
 		}
 
 		return super.createMenuDialog(viewTitle);

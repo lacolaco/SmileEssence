@@ -48,15 +48,15 @@ public class StatusModel implements Comparable<StatusModel>
 		if (isRetweet)
 		{
 			shownStatus = status.getRetweetedStatus();
-			statusId = shownStatus.getId();
 			backgroundColor = Client.getColor(R.color.LightBlue);
 		}
 		else
 		{
 			shownStatus = status;
-			statusId = shownStatus.getId();
 			backgroundColor = -1;
 		}
+		
+		statusId = shownStatus.getId();
 
 		if (UserStore.get(shownStatus.getUser().getId()) != null)
 		{

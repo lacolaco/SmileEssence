@@ -224,7 +224,6 @@ public class MainActivity extends Activity implements Runnable
 			titleView.invalidate();
 			homeListView.invalidateViews();
 			mentionsListView.invalidateViews();
-
 		}
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}

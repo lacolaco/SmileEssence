@@ -65,6 +65,7 @@ public class AsyncIconGetter extends SimpleAsyncTask<Bitmap>
 		if (viewIcon != null && viewIcon.getTag() != null && viewIcon.getTag().equals(tag))
 		{
 			viewIcon.setImageBitmap(icon.use());
+			viewIcon.invalidate();
 		}
 	}
 }

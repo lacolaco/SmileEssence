@@ -24,7 +24,7 @@ public class StatusListAdapter extends CustomListAdapter<StatusModel>
 			convertedView = getInflater().inflate(R.layout.status_layout, null);
 		}
 		StatusModel model = (StatusModel) getItem(position);
-		convertedView = StatusViewFactory.getView(getInflater(), model);
+		convertedView = StatusViewFactory.getView(getInflater(), model, convertedView);
 		convertedView.setOnClickListener(new StatusOnClickListener(getActivity(), model));
 		return convertedView;
 	}
