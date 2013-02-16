@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -29,11 +30,11 @@ public class TweetViewManager
 	private String text;
 	private long inReplyTo;
 	private Activity activity;
-	private TextView countView;
-	private EditText editView;
-	private ImageButton submitImage;
-	private ImageButton clearImage;
-	private ImageButton warotaImage;
+	private TextView textViewCount;
+	private EditText editTextTweet;
+	private ImageButton imageButtonSubmit;
+	private ImageButton imageButtonClear;
+	private Button buttonMenu;
 
 	public TweetViewManager(Activity activity)
 	{
@@ -55,20 +56,20 @@ public class TweetViewManager
 
 	public void init()
 	{
-		countView = (TextView) menu.findViewById(R.id.textView_count);
-		editView = (EditText) menu.findViewById(R.id.editText_tweet);
-		submitImage = (ImageButton) menu.findViewById(R.id.imageButton_submit);
-		warotaImage = (ImageButton) menu.findViewById(R.id.imageButton_warota);
-		clearImage = (ImageButton) menu.findViewById(R.id.imageButton_clean);
+		textViewCount = (TextView) menu.findViewById(R.id.textView_count);
+		editTextTweet = (EditText) menu.findViewById(R.id.editText_tweet);
+		imageButtonSubmit = (ImageButton) menu.findViewById(R.id.imageButton_submit);
+		imageButtonClear = (ImageButton) menu.findViewById(R.id.imageButton_clean);
+		buttonMenu = (Button)menu.findViewById(R.id.button_tweetmenu);
 
-		countView.setText("140");
-		editView.addTextChangedListener(new TextWatcher()
+		textViewCount.setText("140");
+		editTextTweet.addTextChangedListener(new TextWatcher()
 		{
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count)
 			{
-				countView.setText(String.valueOf(140 - s.length()));
+				textViewCount.setText(String.valueOf(140 - s.length()));
 			}
 
 			@Override
@@ -82,44 +83,44 @@ public class TweetViewManager
 			}
 		});
 
-		submitImage.setOnClickListener(new OnClickListener()
+		imageButtonSubmit.setOnClickListener(new OnClickListener()
 		{
 
 			@Override
 			public void onClick(View v)
 			{
-				submit(editView.getText().toString());
-				editView.setText("");
+				submit(editTextTweet.getText().toString());
+				editTextTweet.setText("");
 				MainActivity.getInstance().toggleTweetView();
 			}
 		});
 
-		clearImage.setOnClickListener(new OnClickListener()
+		imageButtonClear.setOnClickListener(new OnClickListener()
 		{
 
 			@Override
 			public void onClick(View v)
 			{
-				editView.setText("");
+				editTextTweet.setText("");
 			}
 		});
 
-		warotaImage.setOnClickListener(new OnClickListener()
+		buttonMenu.setOnClickListener(new OnClickListener()
 		{
 
 			@Override
 			public void onClick(View v)
 			{
-				int cursor = editView.getSelectionEnd();
-				StringBuilder sb = new StringBuilder(editView.getText().toString());
+				int cursor = editTextTweet.getSelectionEnd();
+				StringBuilder sb = new StringBuilder(editTextTweet.getText().toString());
 				sb.insert(cursor, "ƒƒƒ^‚—");
-				editView.setText(sb.toString());
+				editTextTweet.setText(sb.toString());
 				cursor = cursor + sb.length();
-				if (cursor > editView.getText().length())
+				if (cursor > editTextTweet.getText().length())
 				{
-					cursor = editView.getText().length();
+					cursor = editTextTweet.getText().length();
 				}
-				editView.setSelection(cursor);
+				editTextTweet.setSelection(cursor);
 			}
 		});
 	}
@@ -181,20 +182,20 @@ public class TweetViewManager
 	{
 		if (!StringUtils.isNullOrEmpty(text))
 		{
-			editView.setText(text);
+			editTextTweet.setText(text);
 			text = "";
 		}
-		editView.setTextSize(Client.getTextSize());
-		editView.invalidate();
+		editTextTweet.setTextSize(Client.getTextSize());
+		editTextTweet.invalidate();
 	}
 
 	private void onCloseSlidingMenu()
 	{
 		InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(editView.getWindowToken(), 0);
-		if (!StringUtils.isNullOrEmpty(editView.getText().toString()))
+		imm.hideSoftInputFromWindow(editTextTweet.getWindowToken(), 0);
+		if (!StringUtils.isNullOrEmpty(editTextTweet.getText().toString()))
 		{
-			text = editView.getText().toString();
+			text = editTextTweet.getText().toString();
 		}
 	}
 

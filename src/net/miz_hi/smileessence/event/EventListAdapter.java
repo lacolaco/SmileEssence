@@ -17,7 +17,7 @@ public class EventListAdapter extends CustomListAdapter<EventModel>
 	public View getView(int position, View convertedView, ViewGroup parent)
 	{
 		// TODO Auto-generated method stub
-		return null;
+		return convertedView;
 	}
 
 }

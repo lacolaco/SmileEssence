@@ -23,6 +23,16 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/relativeLayout1"
         android:background="@color/White"/>
+    
+    <ListView
+        android:id="@+id/listView_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/relativeLayout2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/relativeLayout1"
+        android:background="@color/White"/>    
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"
@@ -72,14 +82,14 @@
             android:src="@drawable/icon_home_w" />
 
         <ImageView
-            android:id="@+id/imageView_menu"
+            android:id="@+id/imageView_history"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="40dp"
             android:padding="10dp"
-            android:src="@drawable/icon_menu_w" />
+            android:src="@drawable/icon_history" />
     </RelativeLayout>
 
 </RelativeLayout>

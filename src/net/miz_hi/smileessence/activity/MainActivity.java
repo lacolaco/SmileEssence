@@ -22,6 +22,7 @@ import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.dialog.AuthDialogHelper;
 import net.miz_hi.smileessence.dialog.OptionMenuAdapter;
 import net.miz_hi.smileessence.dialog.ProgressDialogHelper;
+import net.miz_hi.smileessence.event.EventListAdapter;
 import net.miz_hi.smileessence.event.EventModel;
 import net.miz_hi.smileessence.event.EventNoticer;
 import net.miz_hi.smileessence.listener.TimelineScrollListener;
@@ -61,23 +62,28 @@ public class MainActivity extends Activity implements Runnable
 	private static final int HANDLER_NOT_AUTHED = 0;
 	private static final int HANDLER_SETUPED = 1;
 	private static final int HANDLER_OAUTH_SUCCESS = 2;
+	private static final int LIST_HOME = 0;
+	private static final int LIST_MENTIONS = 1;
+	private static final int LIST_HISTORY = 2;
+	private static int currentList;
 
-	private ExtendedBoolean isHomeMode;
 	private TweetViewManager tweetViewManager;
 	private StatusListAdapter homeListAdapter;
 	private StatusListAdapter mentionsListAdapter;
+	private EventListAdapter historyListAdapter;
 	private OptionMenuAdapter optionMenuAdapter;
 	private EventNoticer eventNoticer;
 	private AuthorizeHelper authHelper;
 	private AuthDialogHelper authDialog;
 	private TwitterStream twitterStream;
 	private boolean isFirstLoad = false;
-	private TextView titleView;
-	private ImageView tweetImage;
-	private ImageView timelineImage;
-	private ImageView menuImage;
+	private TextView textViewTitle;
+	private ImageView imageViewTweet;
+	private ImageView imageViewMentions;
+	private ImageView imageViewHistory;
 	private ListView homeListView;
 	private ListView mentionsListView;
+	private ListView historyListView;
 	private ProgressDialog progressDialog;
 	private Handler handler = new Handler()
 	{
@@ -170,6 +176,7 @@ public class MainActivity extends Activity implements Runnable
 
 		homeListAdapter = new StatusListAdapter(instance);
 		mentionsListAdapter = new StatusListAdapter(instance);
+		historyListAdapter = new EventListAdapter(instance);
 		optionMenuAdapter = new OptionMenuAdapter(instance, "ÉÅÉjÉÖÅ[");
 		eventNoticer = new EventNoticer(instance);
 		authHelper = new AuthorizeHelper(instance, Consumers.getDedault());
@@ -221,9 +228,10 @@ public class MainActivity extends Activity implements Runnable
 		}
 		else
 		{
-			titleView.invalidate();
+			textViewTitle.invalidate();
 			homeListView.invalidateViews();
 			mentionsListView.invalidateViews();
+			historyListView.invalidateViews();
 		}
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
@@ -282,17 +290,103 @@ public class MainActivity extends Activity implements Runnable
 			new Thread(instance).start();
 		}
 	}
-
-	public void toggleTimeline()
+	
+	public int getCurrentList()
 	{
-		boolean isHome = isHomeMode.toggle();
-		homeListView.setVisibility(isHome ? View.VISIBLE : View.INVISIBLE);
-		mentionsListView.setVisibility(isHome ? View.INVISIBLE : View.VISIBLE);
-		String title = isHome ? "Home" : "Mentions";
-		titleView.setText(title);
-		titleView.refreshDrawableState();
-		int res = isHomeMode.get() ? R.drawable.icon_mentions_w : R.drawable.icon_home_w;
-		timelineImage.setImageResource(res);
+		return currentList;
+	}
+
+	public void changeVisibleList(int i)
+	{
+		if(i == currentList)
+		{
+			return;
+		}
+		switch (currentList)
+		{
+			case LIST_HOME:
+			{
+				switch (i)
+				{
+					case LIST_MENTIONS:
+					{
+						homeListView.setVisibility(View.INVISIBLE);
+						mentionsListView.setVisibility(View.VISIBLE);
+						historyListView.setVisibility(View.INVISIBLE);
+						textViewTitle.setText("Mentions");
+						imageViewMentions.setImageResource(R.drawable.icon_home_w);
+						imageViewHistory.setImageResource(R.drawable.icon_history);
+						break;
+					}
+					case LIST_HISTORY:
+					{
+						homeListView.setVisibility(View.INVISIBLE);
+						mentionsListView.setVisibility(View.INVISIBLE);
+						historyListView.setVisibility(View.VISIBLE);
+						textViewTitle.setText("History");
+						imageViewMentions.setImageResource(R.drawable.icon_mentions_w);
+						imageViewHistory.setImageResource(R.drawable.icon_home_w);
+						break;
+					}
+				}
+				break;
+			}
+			case LIST_MENTIONS:
+			{
+				switch (i)
+				{
+					case LIST_HOME:
+					{
+						homeListView.setVisibility(View.VISIBLE);
+						mentionsListView.setVisibility(View.INVISIBLE);
+						historyListView.setVisibility(View.INVISIBLE);
+						textViewTitle.setText("Home");
+						imageViewMentions.setImageResource(R.drawable.icon_mentions_w);
+						imageViewHistory.setImageResource(R.drawable.icon_history);
+						break;
+					}
+					case LIST_HISTORY:
+					{
+						homeListView.setVisibility(View.INVISIBLE);
+						mentionsListView.setVisibility(View.INVISIBLE);
+						historyListView.setVisibility(View.VISIBLE);
+						textViewTitle.setText("History");
+						imageViewMentions.setImageResource(R.drawable.icon_mentions_w);
+						imageViewHistory.setImageResource(R.drawable.icon_home_w);
+						break;
+					}
+				}
+				break;				
+			}
+			case LIST_HISTORY:
+			{
+				switch (i)
+				{
+					case LIST_HOME:
+					{
+						homeListView.setVisibility(View.VISIBLE);
+						mentionsListView.setVisibility(View.INVISIBLE);
+						historyListView.setVisibility(View.INVISIBLE);
+						textViewTitle.setText("Home");
+						imageViewMentions.setImageResource(R.drawable.icon_mentions_w);
+						imageViewHistory.setImageResource(R.drawable.icon_history);
+						break;
+					}
+					case LIST_MENTIONS:
+					{
+						homeListView.setVisibility(View.INVISIBLE);
+						mentionsListView.setVisibility(View.VISIBLE);
+						historyListView.setVisibility(View.INVISIBLE);
+						textViewTitle.setText("Mentions");
+						imageViewMentions.setImageResource(R.drawable.icon_home_w);
+						imageViewHistory.setImageResource(R.drawable.icon_history);
+						break;
+					}
+				}
+				break;
+			}
+		}
+		currentList = i;
 	}
 
 	public void toggleMenu()
@@ -371,9 +465,9 @@ public class MainActivity extends Activity implements Runnable
 				tweetViewManager.toggle();
 				return false;
 			}
-			else if (!isHomeMode.get())
+			else if (currentList != LIST_HOME)
 			{
-				toggleTimeline();
+				changeVisibleList(LIST_HOME);
 				return false;
 			}
 			else
@@ -395,13 +489,13 @@ public class MainActivity extends Activity implements Runnable
 
 	private void viewSetUp()
 	{
-		isHomeMode = new ExtendedBoolean(true);
-		titleView = ((TextView) findViewById(R.id.textView_title));
-		titleView.setText("Home");
-		titleView.setTextSize(Client.getTextSize() + 3);
+		currentList = LIST_HOME;
+		textViewTitle = ((TextView) findViewById(R.id.textView_title));
+		textViewTitle.setText("Home");
+		textViewTitle.setTextSize(Client.getTextSize() + 3);
 
-		tweetImage = (ImageView) findViewById(R.id.imageView_tweet);
-		tweetImage.setOnClickListener(new OnClickListener()
+		imageViewTweet = (ImageView) findViewById(R.id.imageView_tweet);
+		imageViewTweet.setOnClickListener(new OnClickListener()
 		{
 
 			@Override
@@ -410,39 +504,46 @@ public class MainActivity extends Activity implements Runnable
 				toggleTweetView();
 			}
 		});
-		timelineImage = (ImageView) findViewById(R.id.imageView_timeline);
-		timelineImage.setOnClickListener(new OnClickListener()
+		
+		imageViewMentions = (ImageView) findViewById(R.id.imageView_timeline);
+		imageViewMentions.setOnClickListener(new OnClickListener()
 		{
 
 			@Override
 			public void onClick(View v)
 			{
-				toggleTimeline();
+				changeVisibleList(currentList != LIST_MENTIONS ? LIST_MENTIONS: LIST_HOME);
 			}
 		});
-		timelineImage.setImageResource(R.drawable.icon_mentions_w);
-		menuImage = (ImageView) findViewById(R.id.imageView_menu);
-		menuImage.setOnClickListener(new OnClickListener()
+		imageViewMentions.setImageResource(R.drawable.icon_mentions_w);
+		
+		imageViewHistory = (ImageView) findViewById(R.id.imageView_history);
+		imageViewHistory.setOnClickListener(new OnClickListener()
 		{
 
 			@Override
 			public void onClick(View v)
 			{
-				toggleMenu();
+				changeVisibleList(currentList != LIST_HISTORY ? LIST_HISTORY : LIST_HOME);
 			}
 		});
-
+		imageViewHistory.setImageResource(R.drawable.icon_history);
+		
 		homeListView = (ListView) findViewById(R.id.listView_home);
 		homeListView.setAdapter(homeListAdapter);
 		homeListView.setVisibility(View.VISIBLE);
 		homeListView.setFastScrollEnabled(true);
-		homeListView.setAlwaysDrawnWithCacheEnabled(true);
 		homeListView.setOnScrollListener(new TimelineScrollListener(homeListAdapter));
 		mentionsListView = (ListView) findViewById(R.id.listView_mentions);
 		mentionsListView.setAdapter(mentionsListAdapter);
 		mentionsListView.setVisibility(View.INVISIBLE);
 		mentionsListView.setFastScrollEnabled(true);
 		mentionsListView.setOnScrollListener(new TimelineScrollListener(mentionsListAdapter));
+		historyListView = (ListView) findViewById(R.id.listView_history);
+		historyListView.setAdapter(historyListAdapter);
+		historyListView.setVisibility(View.INVISIBLE);
+		historyListView.setFastScrollEnabled(true);
+		historyListView.setOnScrollListener(new TimelineScrollListener(historyListAdapter));
 	}
 
 	public ListView getHomeListView()
@@ -469,5 +570,6 @@ public class MainActivity extends Activity implements Runnable
 	{
 		return optionMenuAdapter;
 	}
+
 
 }
