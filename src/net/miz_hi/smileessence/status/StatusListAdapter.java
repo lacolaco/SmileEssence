@@ -13,7 +13,7 @@ public class StatusListAdapter extends CustomListAdapter<StatusModel>
 
 	public StatusListAdapter(Activity activity)
 	{
-		super(activity, 1000);
+		super(activity, 5000);
 	}
 
 	@Override

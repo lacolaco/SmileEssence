@@ -1,15 +1,15 @@
 package net.miz_hi.smileessence.listener;
 
-import android.widget.ListView;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
-import net.miz_hi.smileessence.event.EnumEventType;
 import net.miz_hi.smileessence.event.EventListAdapter;
-import net.miz_hi.smileessence.event.EventModel;
-import net.miz_hi.smileessence.event.EventNoticer;
+import net.miz_hi.smileessence.event.StatusEventModel;
+import net.miz_hi.smileessence.event.StatusEventModel.EnumStatusEventType;
+import net.miz_hi.smileessence.event.UserEventModel.EnumUserEventType;
+import net.miz_hi.smileessence.event.UserEventModel;
 import net.miz_hi.smileessence.status.StatusListAdapter;
 import net.miz_hi.smileessence.util.LogHelper;
 import twitter4j.DirectMessage;
@@ -19,6 +19,7 @@ import twitter4j.StatusDeletionNotice;
 import twitter4j.User;
 import twitter4j.UserList;
 import twitter4j.UserStreamListener;
+import android.widget.ListView;
 
 public class WarotterUserStreamListener implements UserStreamListener
 {
@@ -93,11 +94,11 @@ public class WarotterUserStreamListener implements UserStreamListener
 			{
 				if (model.isRetweet && model.isMine())
 				{
-					EventNoticer.receive(EventModel.createInstance(status.getUser(), EnumEventType.RETWEET, status.getRetweetedStatus()));
+					eventListAdapter.addFirst(new StatusEventModel(status.getUser(), EnumStatusEventType.RETWEET, status));
 				}
 				else if (model.isReply())
 				{
-					EventNoticer.receive(EventModel.createInstance(status.getUser(), EnumEventType.REPLY, status));
+					eventListAdapter.addFirst(new StatusEventModel(status.getUser(), EnumStatusEventType.REPLY, status));
 				}
 
 				ListView homeListView = MainActivity.getInstance().getHomeListView();
@@ -144,11 +145,20 @@ public class WarotterUserStreamListener implements UserStreamListener
 	}
 
 	@Override
-	public void onBlock(User arg0, User arg1)
+	public void onBlock(final User sourceUser, User targetUser)
 	{
-		if (arg1.getId() == Client.getMainAccount().getUserId())
+		if (targetUser.getId() == Client.getMainAccount().getUserId())
 		{
-			EventNoticer.receive(EventModel.createInstance(arg0, EnumEventType.BLOCK, null));
+			new UiHandler()
+			{
+				
+				@Override
+				public void run()
+				{
+					eventListAdapter.addFirst(new UserEventModel(sourceUser, EnumUserEventType.BLOCK));
+					eventListAdapter.notifyAdapter();
+				}
+			}.post();			
 		}
 	}
 
@@ -158,26 +168,34 @@ public class WarotterUserStreamListener implements UserStreamListener
 	}
 
 	@Override
-	public void onDirectMessage(DirectMessage arg0)
+	public void onDirectMessage(final DirectMessage message)
 	{
-		if (arg0.getRecipientId() == Client.getMainAccount().getUserId())
+		if (message.getRecipientId() == Client.getMainAccount().getUserId())
 		{
-			EventNoticer.receive(EventModel.createInstance(arg0.getSender(), EnumEventType.DIRECT_MESSAGE, null));
+			new UiHandler()
+			{
+				
+				@Override
+				public void run()
+				{
+					eventListAdapter.addFirst(new UserEventModel(message.getSender(), EnumUserEventType.DIRECT_MESSAGE));					
+				}
+			}.post();
 		}
 	}
 
 	@Override
-	public void onFavorite(User arg0, User arg1, Status arg2)
+	public void onFavorite(final User sourceUser, User targetUser, final Status targetStatus)
 	{
-		if(arg0.getId() == Client.getMainAccount().getUserId())
+		if(sourceUser.getId() == Client.getMainAccount().getUserId())
 		{
-			if(arg2.isRetweet())
+			if(targetStatus.isRetweet())
 			{
-				StatusStore.putFavoritedStatus(arg2.getRetweetedStatus().getId());				
+				StatusStore.putFavoritedStatus(targetStatus.getRetweetedStatus().getId());				
 			}
 			else
 			{
-				StatusStore.putFavoritedStatus(arg2.getId());
+				StatusStore.putFavoritedStatus(targetStatus.getId());
 			}			
 			new UiHandler()
 			{
@@ -190,16 +208,32 @@ public class WarotterUserStreamListener implements UserStreamListener
 				}
 			}.post();
 		}
-		else if (arg1.getId() == Client.getMainAccount().getUserId())
+		if (targetUser.getId() == Client.getMainAccount().getUserId())
 		{
-			EventNoticer.receive(EventModel.createInstance(arg0, EnumEventType.FAVORITE, arg2));
+			new UiHandler()
+			{
+				
+				@Override
+				public void run()
+				{
+					eventListAdapter.addFirst(new StatusEventModel(sourceUser, EnumStatusEventType.FAVORITE, targetStatus));
+				}
+			}.post();
 		}
 	}
 
 	@Override
-	public void onFollow(User arg0, User arg1)
+	public void onFollow(final User sourceUser, User targetUser)
 	{
-		EventNoticer.receive(EventModel.createInstance(arg0, EnumEventType.FOLLOW, null));
+		new UiHandler()
+		{
+			
+			@Override
+			public void run()
+			{
+				eventListAdapter.addFirst(new UserEventModel(sourceUser, EnumUserEventType.FOLLOW));	
+			}
+		}.post();
 	}
 
 	@Override
@@ -208,20 +242,36 @@ public class WarotterUserStreamListener implements UserStreamListener
 	}
 
 	@Override
-	public void onUnblock(User arg0, User arg1)
+	public void onUnblock(final User sourceUser, User targetUser)
 	{
-		if (arg1.getId() == Client.getMainAccount().getUserId())
+		if (targetUser.getId() == Client.getMainAccount().getUserId())
 		{
-			EventNoticer.receive(EventModel.createInstance(arg0, EnumEventType.UNBLOCK, null));
+			new UiHandler()
+			{
+				
+				@Override
+				public void run()
+				{
+					eventListAdapter.addFirst(new UserEventModel(sourceUser, EnumUserEventType.UNBLOCK));					
+				}
+			}.post();
 		}
 	}
 
 	@Override
-	public void onUnfavorite(User arg0, User arg1, Status arg2)
+	public void onUnfavorite(final User sourceUser, User targetUser, final Status targetStatus)
 	{
-		if (arg1.getId() == Client.getMainAccount().getUserId())
+		if (targetUser.getId() == Client.getMainAccount().getUserId())
 		{
-			EventNoticer.receive(EventModel.createInstance(arg0, EnumEventType.UNFAVORITE, arg2));
+			new UiHandler()
+			{
+				
+				@Override
+				public void run()
+				{
+					eventListAdapter.addFirst(new StatusEventModel(sourceUser, EnumStatusEventType.UNFAVORITE, targetStatus));
+				}
+			}.post();
 		}
 	}
 

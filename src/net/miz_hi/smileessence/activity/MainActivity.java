@@ -23,8 +23,8 @@ import net.miz_hi.smileessence.dialog.AuthDialogHelper;
 import net.miz_hi.smileessence.dialog.OptionMenuAdapter;
 import net.miz_hi.smileessence.dialog.ProgressDialogHelper;
 import net.miz_hi.smileessence.event.EventListAdapter;
-import net.miz_hi.smileessence.event.EventModel;
-import net.miz_hi.smileessence.event.EventNoticer;
+import net.miz_hi.smileessence.event.StatusEventModel;
+import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.listener.TimelineScrollListener;
 import net.miz_hi.smileessence.listener.WarotterUserStreamListener;
 import net.miz_hi.smileessence.status.StatusListAdapter;
@@ -32,6 +32,7 @@ import net.miz_hi.smileessence.util.ExtendedBoolean;
 import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.util.TweetViewManager;
 import net.miz_hi.smileessence.util.TwitterManager;
+import twitter4j.ConnectionLifeCycleListener;
 import twitter4j.Paging;
 import twitter4j.TwitterStream;
 import android.app.Activity;
@@ -72,7 +73,7 @@ public class MainActivity extends Activity implements Runnable
 	private StatusListAdapter mentionsListAdapter;
 	private EventListAdapter historyListAdapter;
 	private OptionMenuAdapter optionMenuAdapter;
-	private EventNoticer eventNoticer;
+	private ToastManager eventNoticer;
 	private AuthorizeHelper authHelper;
 	private AuthDialogHelper authDialog;
 	private TwitterStream twitterStream;
@@ -121,6 +122,7 @@ public class MainActivity extends Activity implements Runnable
 				WarotterUserStreamListener usListener = new WarotterUserStreamListener();
 				usListener.setHomeListAdapter(homeListAdapter);
 				usListener.setMentionsListAdapter(mentionsListAdapter);
+				usListener.setEventListAdapter(historyListAdapter);
 				twitterStream = TwitterManager.getTwitterStream(Client.getMainAccount());
 				twitterStream.addListener(usListener);
 				twitterStream.user();
@@ -141,6 +143,7 @@ public class MainActivity extends Activity implements Runnable
 							homeListAdapter.forceNotifyAdapter();
 							mentionsListAdapter.addAll(oldMentions);
 							mentionsListAdapter.forceNotifyAdapter();
+							historyListAdapter.forceNotifyAdapter();
 						}
 					}.post();
 				}
@@ -178,7 +181,7 @@ public class MainActivity extends Activity implements Runnable
 		mentionsListAdapter = new StatusListAdapter(instance);
 		historyListAdapter = new EventListAdapter(instance);
 		optionMenuAdapter = new OptionMenuAdapter(instance, "ÉÅÉjÉÖÅ[");
-		eventNoticer = new EventNoticer(instance);
+		eventNoticer = new ToastManager(instance);
 		authHelper = new AuthorizeHelper(instance, Consumers.getDedault());
 		tweetViewManager = new TweetViewManager(instance);
 		tweetViewManager.init();
@@ -268,6 +271,7 @@ public class MainActivity extends Activity implements Runnable
 		if (twitterStream != null)
 		{
 			twitterStream.shutdown();
+			twitterStream = null;
 		}
 		IconCaches.clearCache();
 		StatusStore.clearCache();
@@ -450,7 +454,7 @@ public class MainActivity extends Activity implements Runnable
 		tweetViewManager.close();
 	}
 
-	public void eventNotify(EventModel event)
+	public void eventNotify(StatusEventModel event)
 	{
 		eventNoticer.noticeEvent(event);
 	}
@@ -554,6 +558,11 @@ public class MainActivity extends Activity implements Runnable
 	public ListView getMentionsListView()
 	{
 		return mentionsListView;
+	}
+
+	public ListView getHistoryListView()
+	{
+		return historyListView;
 	}
 
 	public StatusListAdapter getHomeListAdapter()

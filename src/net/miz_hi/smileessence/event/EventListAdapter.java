@@ -1,22 +1,67 @@
 package net.miz_hi.smileessence.event;
 
+import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.core.CustomListAdapter;
+import net.miz_hi.smileessence.core.UiHandler;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 public class EventListAdapter extends CustomListAdapter<EventModel>
 {
+	
+	private ToastManager manager;
 
 	public EventListAdapter(Activity activity)
 	{
 		super(activity, 1000);
+		manager = new ToastManager(activity);
+	}	
+
+	@Override
+	public void addFirst(final EventModel model)
+	{
+		new UiHandler()
+		{
+			
+			@Override
+			public void run()
+			{
+				manager.noticeEvent(model);		
+
+				ListView historyListView = MainActivity.getInstance().getHistoryListView();
+
+				EventListAdapter.super.addFirst(model);
+
+				if (historyListView.getFirstVisiblePosition() == 0 && historyListView.getChildAt(0) != null && historyListView.getChildAt(0).getTop() == 0)
+				{
+					setCanNotifyOnChange(true);
+				}
+				else if(historyListView.getChildCount() == 0)
+				{
+					setCanNotifyOnChange(true);
+				}					
+				else
+				{
+					setCanNotifyOnChange(false);
+				}
+				notifyAdapter();
+			}
+		}.post();
 	}
 
 	@Override
 	public View getView(int position, View convertedView, ViewGroup parent)
 	{
-		// TODO Auto-generated method stub
+		if(convertedView == null)
+		{
+			convertedView = getInflater().inflate(R.layout.eventtoast_layout, null);
+		}
+		
+		convertedView = EventViewFactory.getToastView(getActivity(), (EventModel) getItem(position), convertedView);
+		
 		return convertedView;
 	}
 

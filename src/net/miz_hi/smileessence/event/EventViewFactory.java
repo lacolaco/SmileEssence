@@ -15,45 +15,119 @@ import android.widget.TextView;
 
 public class EventViewFactory
 {
-	private static View viewToast;
 
-	public static View getView(Activity _activity, EventModel model)
+	public static View getToastView(Activity activity, EventModel model, View viewBase)
+	{
+		if(model instanceof StatusEventModel)
+		{
+			return getToastView(activity, (StatusEventModel)model, viewBase);
+		}
+		else if(model instanceof UserEventModel)
+		{
+			return getToastView(activity, (UserEventModel)model, viewBase);
+		}
+		else
+		{
+			return viewBase;
+		}
+	}
+	
+	private static View getToastView(Activity _activity, StatusEventModel model, View viewBase)
 	{
 		LayoutInflater layoutInflater = LayoutInflater.from(_activity);
-		if (viewToast == null)
+		if (viewBase == null)
 		{
-			viewToast = layoutInflater.inflate(R.layout.eventtoast_layout, null);
+			viewBase = layoutInflater.inflate(R.layout.eventtoast_layout, null);
 		}
 
 		int black = ColorUtils.setAlpha(Client.getResource().getColor(R.color.Black), 180);
 		int gray = ColorUtils.setAlpha(Client.getResource().getColor(R.color.LightGray), 200);
 
-		TextView viewText = (TextView) viewToast.findViewById(R.id.textView_toastText);
-		RelativeLayout baseLayout = (RelativeLayout) viewToast.findViewById(R.id.relativeLayout_toastBase);
-		LinearLayout bodyLayout = (LinearLayout) viewToast.findViewById(R.id.linearLayout_toastBody);
-
-		viewToast.setBackgroundColor(gray);
-		baseLayout.setBackgroundColor(black);
-		bodyLayout.removeAllViews();
+		TextView viewText = (TextView) viewBase.findViewById(R.id.textView_toastText);
+		RelativeLayout baseLayout = (RelativeLayout) viewBase.findViewById(R.id.relativeLayout_toastBase);
+		LinearLayout bodyLayout = (LinearLayout) viewBase.findViewById(R.id.linearLayout_toastBody);
 		viewText.setText(model.source.getScreenName() + model.type.getText());
 		viewText.setTextColor(Client.getResource().getColor(R.color.White));
 
-		if (model.targetModel == null)
-		{
-			baseLayout.setVisibility(View.GONE);
-		}
-		else
-		{
-			baseLayout.setVisibility(View.VISIBLE);
-			View viewStatus = StatusViewFactory.getView(layoutInflater, model.targetModel);
-			bodyLayout.addView(viewStatus);
-		}
+		viewBase.setBackgroundColor(gray);
+		baseLayout.setBackgroundColor(black);
+		bodyLayout.removeAllViews();
+
+		baseLayout.setVisibility(View.VISIBLE);
+		View viewStatus = StatusViewFactory.getView(layoutInflater, model.targetModel);
+		bodyLayout.addView(viewStatus);
 
 		DisplayMetrics metrics = _activity.getResources().getDisplayMetrics();
 		viewText.setWidth((int) (metrics.widthPixels * 0.8));
 
-		viewToast.setOnClickListener(new EventOnClickListener(_activity, model));
+		return viewBase;
+	}
+	
+	private static View getToastView(Activity _activity, UserEventModel model, View viewBase)
+	{
+		LayoutInflater layoutInflater = LayoutInflater.from(_activity);
+		if (viewBase == null)
+		{
+			viewBase = layoutInflater.inflate(R.layout.eventtoast_layout, null);
+		}
 
-		return viewToast;
+		int black = ColorUtils.setAlpha(Client.getResource().getColor(R.color.Black), 180);
+		int gray = ColorUtils.setAlpha(Client.getResource().getColor(R.color.LightGray), 200);
+
+		TextView viewText = (TextView) viewBase.findViewById(R.id.textView_toastText);
+		RelativeLayout baseLayout = (RelativeLayout) viewBase.findViewById(R.id.relativeLayout_toastBase);
+		LinearLayout bodyLayout = (LinearLayout) viewBase.findViewById(R.id.linearLayout_toastBody);
+		viewText.setText(model.source.getScreenName() + model.type.getText());
+		viewText.setTextColor(Client.getResource().getColor(R.color.White));
+
+		viewBase.setBackgroundColor(gray);
+		baseLayout.setBackgroundColor(black);
+		bodyLayout.removeAllViews();
+		baseLayout.setVisibility(View.GONE);
+
+		DisplayMetrics metrics = _activity.getResources().getDisplayMetrics();
+		viewText.setWidth((int) (metrics.widthPixels * 0.8));
+
+		return viewBase;
+	}
+	
+	public static View getView(Activity _activity, EventModel model, View viewBase)
+	{
+		LayoutInflater layoutInflater = LayoutInflater.from(_activity);
+		if (viewBase == null)
+		{
+			viewBase = layoutInflater.inflate(R.layout.eventtoast_layout, null);
+		}
+
+		int black = ColorUtils.setAlpha(Client.getResource().getColor(R.color.Black), 180);
+		int gray = ColorUtils.setAlpha(Client.getResource().getColor(R.color.LightGray), 200);
+
+		TextView viewText = (TextView) viewBase.findViewById(R.id.textView_toastText);
+		RelativeLayout baseLayout = (RelativeLayout) viewBase.findViewById(R.id.relativeLayout_toastBase);
+		LinearLayout bodyLayout = (LinearLayout) viewBase.findViewById(R.id.linearLayout_toastBody);
+
+		viewBase.setBackgroundColor(gray);
+		baseLayout.setBackgroundColor(black);
+		bodyLayout.removeAllViews();
+//		viewText.setText(model.source.getScreenName() + model.type.getText());
+//		viewText.setTextColor(Client.getResource().getColor(R.color.White));
+//
+//		if (model.targetModel == null)
+//		{
+//			baseLayout.setVisibility(View.GONE);
+//		}
+//		else
+//		{
+//			baseLayout.setVisibility(View.VISIBLE);
+//			View viewStatus = StatusViewFactory.getView(layoutInflater, model.targetModel);
+//			bodyLayout.addView(viewStatus);
+//		}
+
+		DisplayMetrics metrics = _activity.getResources().getDisplayMetrics();
+		viewText.setWidth((int) (metrics.widthPixels * 0.8));
+
+		viewBase.setOnClickListener(new EventOnClickListener(_activity, model));
+
+		return viewBase;
 	}
 }
