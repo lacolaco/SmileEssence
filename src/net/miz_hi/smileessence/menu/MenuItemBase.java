@@ -9,13 +9,13 @@ public abstract class MenuItemBase
 {
 	protected Activity activity;
 	protected DialogAdapter adapter;
-	private Handler _handler;
+	private Handler handler;
 
 	public MenuItemBase(Activity activity, DialogAdapter adapter)
 	{
 		this.activity = activity;
 		this.adapter = adapter;
-		_handler = new Handler();
+		handler = new Handler();
 	}
 
 	public abstract String getText();
@@ -27,7 +27,7 @@ public abstract class MenuItemBase
 
 	public void run()
 	{
-		_handler.post(new Runnable()
+		handler.post(new Runnable()
 		{
 			@Override
 			public void run()

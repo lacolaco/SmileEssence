@@ -111,6 +111,8 @@ public class TweetViewManager
 			@Override
 			public void onClick(View v)
 			{
+				//TODO TweetMenu
+				
 				int cursor = editTextTweet.getSelectionEnd();
 				StringBuilder sb = new StringBuilder(editTextTweet.getText().toString());
 				sb.insert(cursor, "ÉèÉçÉ^Çó");

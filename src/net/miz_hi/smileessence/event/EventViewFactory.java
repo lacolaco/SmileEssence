@@ -91,6 +91,7 @@ public class EventViewFactory
 		return viewBase;
 	}
 	
+	//TODO History—pView
 	public static View getView(Activity _activity, EventModel model, View viewBase)
 	{
 		LayoutInflater layoutInflater = LayoutInflater.from(_activity);
