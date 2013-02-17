@@ -43,6 +43,7 @@ public class UserModel
 		statusCount = user.getStatusesCount();
 		friendCount = user.getFriendsCount();
 		followerCount = user.getFollowersCount();
+		favoriteCount = user.getFavouritesCount();
 		createdAt = user.getCreatedAt();
 		isProtected = user.isProtected();
 		return this;

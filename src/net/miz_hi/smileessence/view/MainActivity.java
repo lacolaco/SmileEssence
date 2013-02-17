@@ -20,6 +20,7 @@ import net.miz_hi.smileessence.data.IconCaches;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.dialog.AuthDialogHelper;
+import net.miz_hi.smileessence.dialog.DialogAdapter;
 import net.miz_hi.smileessence.dialog.OptionMenuAdapter;
 import net.miz_hi.smileessence.dialog.ProgressDialogHelper;
 import net.miz_hi.smileessence.event.EventListAdapter;
@@ -267,6 +268,7 @@ public class MainActivity extends Activity implements Runnable
 		super.onConfigurationChanged(newConfig);
 		tweetViewManager.open();
 		tweetViewManager.close();
+		DialogAdapter.dispose();
 	}
 
 	@Override

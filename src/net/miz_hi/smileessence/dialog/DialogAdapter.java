@@ -28,7 +28,7 @@ public abstract class DialogAdapter
 	protected Activity activity;
 	protected List<MenuItemBase> list;
 	protected static LayoutInflater layoutInflater;
-	protected Dialog dialog;
+	protected static Dialog dialog;
 	protected ExecutorService executer = MyExecutor.getExecutor();
 
 	public DialogAdapter(Activity activity2)
@@ -111,10 +111,12 @@ public abstract class DialogAdapter
 		return dialog;
 	}
 
-	public void dispose()
+	public static void dispose()
 	{
 		if (dialog != null)
+		{
 			dialog.dismiss();
+		}
 	}
 
 	public static class MenuItemView
