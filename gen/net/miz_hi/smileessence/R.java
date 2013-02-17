@@ -162,7 +162,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     public static final class id {
         public static final int TextView01=0x7f05000c;
         public static final int button_Auth=0x7f050006;
-        public static final int button_tweetmenu=0x7f05002b;
         public static final int editText_comment=0x7f05000d;
         public static final int editText_tweet=0x7f050028;
         public static final int frame1=0x7f050030;
@@ -171,7 +170,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int frame4=0x7f05003f;
         public static final int fullscreen=0x7f050003;
         public static final int imageButton_clean=0x7f050029;
-        public static final int imageButton_submit=0x7f05002a;
+        public static final int imageButton_menu=0x7f05002a;
+        public static final int imageButton_submit=0x7f05002b;
         public static final int imageView_favorited=0x7f050026;
         public static final int imageView_history=0x7f05001c;
         public static final int imageView_icon=0x7f050022;

@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
+import net.miz_hi.smileessence.dialog.TweetMenuAdapter;
 import net.miz_hi.smileessence.util.StringUtils;
 import twitter4j.StatusUpdate;
 import android.app.Activity;
@@ -36,7 +37,8 @@ public class TweetViewManager
 	private EditText editTextTweet;
 	private ImageButton imageButtonSubmit;
 	private ImageButton imageButtonClear;
-	private Button buttonMenu;
+	private ImageButton imageButtonMenu;
+	private TweetMenuAdapter menuAdapter;
 
 	public TweetViewManager(Activity activity)
 	{
@@ -44,6 +46,7 @@ public class TweetViewManager
 		menu = createSlidingMenu();
 		text = "";
 		inReplyTo = -1;
+		menuAdapter = new TweetMenuAdapter(activity, this);
 	}
 
 	public void setText(String str)
@@ -62,7 +65,7 @@ public class TweetViewManager
 		editTextTweet = (EditText) menu.findViewById(R.id.editText_tweet);
 		imageButtonSubmit = (ImageButton) menu.findViewById(R.id.imageButton_submit);
 		imageButtonClear = (ImageButton) menu.findViewById(R.id.imageButton_clean);
-		buttonMenu = (Button)menu.findViewById(R.id.button_tweetmenu);
+		imageButtonMenu = (ImageButton)menu.findViewById(R.id.imageButton_menu);
 
 		textViewCount.setText("140");
 		editTextTweet.addTextChangedListener(new TextWatcher()
@@ -107,24 +110,13 @@ public class TweetViewManager
 			}
 		});
 
-		buttonMenu.setOnClickListener(new OnClickListener()
+		imageButtonMenu.setOnClickListener(new OnClickListener()
 		{
 
 			@Override
 			public void onClick(View v)
 			{
-				//TODO TweetMenu
-				
-				int cursor = editTextTweet.getSelectionEnd();
-				StringBuilder sb = new StringBuilder(editTextTweet.getText().toString());
-				sb.insert(cursor, "ƒƒƒ^‚—");
-				editTextTweet.setText(sb.toString());
-				cursor = cursor + sb.length();
-				if (cursor > editTextTweet.getText().length())
-				{
-					cursor = editTextTweet.getText().length();
-				}
-				editTextTweet.setSelection(cursor);
+				menuAdapter.createMenuDialog(true).show();
 			}
 		});
 	}
@@ -246,5 +238,10 @@ public class TweetViewManager
 	public String getText()
 	{
 		return text;
+	}
+
+	public EditText getEditTextTweet()
+	{
+		return editTextTweet;
 	}
 }

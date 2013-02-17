@@ -2,24 +2,26 @@ package net.miz_hi.smileessence.dialog;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.menu.TweetMenuMorse;
+import net.miz_hi.smileessence.menu.TweetMenuWarota;
 import net.miz_hi.smileessence.menu.UserMenuFollow;
 import net.miz_hi.smileessence.menu.UserMenuOpenFavstar;
 import net.miz_hi.smileessence.menu.UserMenuOpenPage;
 import net.miz_hi.smileessence.menu.UserMenuRemove;
 import net.miz_hi.smileessence.menu.UserMenuReply;
+import net.miz_hi.smileessence.view.TweetViewManager;
 import android.app.Activity;
 import android.app.Dialog;
 import android.widget.TextView;
 
-public class UserMenuAdapter extends DialogAdapter
+public class TweetMenuAdapter extends DialogAdapter
 {
-	private String userName;
-	private int textSize = 15;
+	private TweetViewManager manager;
 
-	public UserMenuAdapter(Activity activity, String userName)
+	public TweetMenuAdapter(Activity activity, TweetViewManager manager)
 	{
 		super(activity);
-		this.userName = userName;
+		this.manager = manager;
 	}
 
 	@Override
@@ -28,14 +30,11 @@ public class UserMenuAdapter extends DialogAdapter
 		if (init)
 		{
 			list.clear();
-			list.add(new UserMenuReply(activity, this, userName));
-			list.add(new UserMenuOpenPage(activity, this, userName));
-			list.add(new UserMenuOpenFavstar(activity, this, userName));
-			list.add(new UserMenuFollow(activity, this, userName));
-			list.add(new UserMenuRemove(activity, this, userName));
+			list.add(new TweetMenuWarota(activity, this, manager));
+			list.add(new TweetMenuMorse(activity, this, manager));
 		}
 
-		return super.createMenuDialog("@" + userName);
+		return super.createMenuDialog("ÉÅÉjÉÖÅ[");
 	}
 
 }

@@ -6,6 +6,7 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.status.StatusUtils;
 import net.miz_hi.smileessence.util.ExtendedBoolean;
+import net.miz_hi.smileessence.util.Morse;
 import net.miz_hi.smileessence.util.StringUtils;
 import twitter4j.HashtagEntity;
 import twitter4j.MediaEntity;
@@ -68,8 +69,13 @@ public class StatusModel implements Comparable<StatusModel>
 		}
 		screenName = user.screenName;
 		name = user.name;
+		
 		text = shownStatus.getText();
-
+		if(Morse.isMorse(text))
+		{
+			text = text + "\n(" + Morse.mcToJa(text) + ")";
+		}
+		
 		urls = shownStatus.getURLEntities();
 		medias = shownStatus.getMediaEntities();
 		hashtags = shownStatus.getHashtagEntities();
