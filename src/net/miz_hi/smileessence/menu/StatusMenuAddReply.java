@@ -1,9 +1,9 @@
 package net.miz_hi.smileessence.menu;
 
-import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
+import net.miz_hi.smileessence.view.MainActivity;
 import android.app.Activity;
 
 public class StatusMenuAddReply extends StatusMenuItemBase

@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.activity;
+package net.miz_hi.smileessence.view;
 
 import java.util.LinkedList;
 import java.util.List;

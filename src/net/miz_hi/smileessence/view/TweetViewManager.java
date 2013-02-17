@@ -1,9 +1,11 @@
-package net.miz_hi.smileessence.util;
+package net.miz_hi.smileessence.view;
+
+import java.util.regex.Pattern;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
+import net.miz_hi.smileessence.util.StringUtils;
 import twitter4j.StatusUpdate;
 import android.app.Activity;
 import android.content.Context;
@@ -217,6 +219,28 @@ public class TweetViewManager
 			}
 			new AsyncTweetTask(update).addToQueue();
 		}
+	}
+	
+	public void openToReply(String userName, long l, boolean append)
+	{
+		Pattern hasReply = Pattern.compile("^@([a-zA-Z0-9_]+).*");
+		if (append || hasReply.matcher(text).find())
+		{
+			if (!text.contains("@" + userName))
+			{
+				text = text + "@" + userName + " ";
+				if (!text.startsWith("."))
+				{
+					text = "." + text;
+				}
+			}
+		}
+		else
+		{
+			text = "@" + userName + " ";
+		}
+		inReplyTo = l;
+		open();
 	}
 
 	public String getText()

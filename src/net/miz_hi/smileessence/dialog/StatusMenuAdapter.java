@@ -8,7 +8,6 @@ import java.util.concurrent.Future;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncRetweetTask;
 import net.miz_hi.smileessence.core.UiHandler;
@@ -29,6 +28,7 @@ import net.miz_hi.smileessence.menu.UserMenuRemove;
 import net.miz_hi.smileessence.menu.UserMenuReply;
 import net.miz_hi.smileessence.status.StatusViewFactory;
 import net.miz_hi.smileessence.util.TwitterManager;
+import net.miz_hi.smileessence.view.MainActivity;
 import twitter4j.MediaEntity;
 import twitter4j.URLEntity;
 import twitter4j.UserMentionEntity;

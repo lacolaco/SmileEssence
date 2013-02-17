@@ -9,11 +9,11 @@ package com.slidingmenu.lib;
 public final class R {
 	public static final class id {
 		public static final int fullscreen = 0x7f050003;
-		public static final int slidingmenumain = 0x7f050023;
-		public static final int slidingmenulayout = 0x7f050024;
-		public static final int slidingmenurowicon = 0x7f050025;
+		public static final int slidingmenumain = 0x7f05001e;
+		public static final int slidingmenulayout = 0x7f05001f;
+		public static final int slidingmenurowicon = 0x7f050020;
 		public static final int selected_view = 0x7f050004;
-		public static final int slidingmenurowtitle = 0x7f050026;
+		public static final int slidingmenurowtitle = 0x7f050021;
 		public static final int margin = 0x7f050002;
 		public static final int left = 0x7f050000;
 		public static final int right = 0x7f050001;

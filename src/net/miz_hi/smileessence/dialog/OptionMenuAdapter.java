@@ -2,6 +2,7 @@ package net.miz_hi.smileessence.dialog;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.menu.MenuItemReConnect;
 import net.miz_hi.smileessence.menu.MenuItemResetAccount;
 import net.miz_hi.smileessence.menu.MenuItemOpenFavstar;
 import net.miz_hi.smileessence.menu.MenuItemOpenFollowers;
@@ -27,16 +28,11 @@ public class OptionMenuAdapter extends DialogAdapter
 	public Dialog createMenuDialog(boolean init)
 	{
 
-		TextView viewTitle = new TextView(activity);
-		viewTitle.setTextSize(textSize);
-		viewTitle.setTextColor(Client.getResource().getColor(R.color.White));
-		viewTitle.setText(title);
-		viewTitle.setPadding(10, 10, 0, 10);
-
 		if (init)
 		{
 			list.clear();
 			list.add(new MenuItemSetting(activity, this));
+			list.add(new MenuItemReConnect(activity, this));
 			list.add(new MenuItemOpenFavstar(activity, this));
 			list.add(new MenuItemOpenFollowers(activity, this));
 			list.add(new MenuItemOpenFriends(activity, this));
@@ -44,7 +40,7 @@ public class OptionMenuAdapter extends DialogAdapter
 			list.add(new MenuItemResetAccount(activity, this));
 		}
 
-		return super.createMenuDialog(viewTitle);
+		return super.createMenuDialog("ÉÅÉjÉÖÅ[");
 	}
 
 }

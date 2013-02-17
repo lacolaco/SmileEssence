@@ -3,10 +3,13 @@ package net.miz_hi.smileessence.dialog;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+
+import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.menu.MenuItemBase;
 import net.miz_hi.smileessence.menu.MenuItemClose;
+import net.miz_hi.smileessence.util.StringUtils;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
@@ -66,6 +69,17 @@ public abstract class DialogAdapter
 
 	public abstract Dialog createMenuDialog(boolean init);
 
+
+	protected Dialog createMenuDialog(String title)
+	{
+		TextView viewTitle = new TextView(activity);
+		viewTitle.setTextSize(15);
+		viewTitle.setTextColor(Client.getResource().getColor(R.color.White));
+		viewTitle.setText(title);
+		viewTitle.setPadding(10, 15, 0, 15);
+		return createMenuDialog(viewTitle);
+	}
+	
 	protected Dialog createMenuDialog(View... viewTitle)
 	{
 		dialog = new Dialog(activity);
@@ -78,6 +92,7 @@ public abstract class DialogAdapter
 		{
 			titleLinearLayout.addView(v);
 		}
+
 		for (MenuItemBase item : list)
 		{
 			if (item.isVisible())

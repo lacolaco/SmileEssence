@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.activity;
+package net.miz_hi.smileessence.view;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;

@@ -1,8 +1,8 @@
 package net.miz_hi.smileessence.menu;
 
-import net.miz_hi.smileessence.activity.UserActivity;
 import net.miz_hi.smileessence.data.UserModel;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
+import net.miz_hi.smileessence.view.UserActivity;
 import android.app.Activity;
 import android.content.Intent;
 

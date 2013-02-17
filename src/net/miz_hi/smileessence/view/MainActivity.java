@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.activity;
+package net.miz_hi.smileessence.view;
 
 import java.util.List;
 import java.util.concurrent.Future;
@@ -30,7 +30,6 @@ import net.miz_hi.smileessence.listener.WarotterUserStreamListener;
 import net.miz_hi.smileessence.status.StatusListAdapter;
 import net.miz_hi.smileessence.util.ExtendedBoolean;
 import net.miz_hi.smileessence.util.LogHelper;
-import net.miz_hi.smileessence.util.TweetViewManager;
 import net.miz_hi.smileessence.util.TwitterManager;
 import twitter4j.ConnectionLifeCycleListener;
 import twitter4j.Paging;
@@ -63,6 +62,7 @@ public class MainActivity extends Activity implements Runnable
 	private static final int HANDLER_NOT_AUTHED = 0;
 	private static final int HANDLER_SETUPED = 1;
 	private static final int HANDLER_OAUTH_SUCCESS = 2;
+	private static final int HANDLER_NOT_CONNECTION = 3;
 	private static final int LIST_HOME = 0;
 	private static final int LIST_MENTIONS = 1;
 	private static final int LIST_HISTORY = 2;
@@ -73,9 +73,9 @@ public class MainActivity extends Activity implements Runnable
 	private StatusListAdapter mentionsListAdapter;
 	private EventListAdapter historyListAdapter;
 	private OptionMenuAdapter optionMenuAdapter;
-	private ToastManager eventNoticer;
 	private AuthorizeHelper authHelper;
 	private AuthDialogHelper authDialog;
+	private WarotterUserStreamListener usListener;
 	private TwitterStream twitterStream;
 	private boolean isFirstLoad = false;
 	private TextView textViewTitle;
@@ -96,12 +96,16 @@ public class MainActivity extends Activity implements Runnable
 			{
 				case HANDLER_SETUPED:
 				{
-					Toast.makeText(instance, "ê⁄ë±ÇµÇ‹ÇµÇΩ", Toast.LENGTH_SHORT).show();
 					break;
 				}
 				case HANDLER_OAUTH_SUCCESS:
 				{
 					new Thread(instance).start();
+					break;
+				}
+				case HANDLER_NOT_CONNECTION:
+				{
+					Toast.makeText(instance, "ê⁄ë±èoóàÇ‹ÇπÇÒ", Toast.LENGTH_LONG).show();
 					break;
 				}
 			}
@@ -119,37 +123,48 @@ public class MainActivity extends Activity implements Runnable
 			{
 				Client.setMainAccount(account);
 
-				WarotterUserStreamListener usListener = new WarotterUserStreamListener();
+				usListener = new WarotterUserStreamListener();
 				usListener.setHomeListAdapter(homeListAdapter);
 				usListener.setMentionsListAdapter(mentionsListAdapter);
 				usListener.setEventListAdapter(historyListAdapter);
 				twitterStream = TwitterManager.getTwitterStream(Client.getMainAccount());
 				twitterStream.addListener(usListener);
-				twitterStream.user();
-
-				Future<List<StatusModel>> f1 = MyExecutor.getExecutor().submit(new AsyncTimelineGetter(account, new Paging(1)));
-				Future<List<StatusModel>> f2 = MyExecutor.getExecutor().submit(new AsyncMentionsGetter(account, new Paging(1)));
-				try
+				twitterStream.addConnectionLifeCycleListener(usListener);
+				boolean canConnect = TwitterManager.canConnect();
+				
+				if(canConnect)
 				{
-					final List<StatusModel> oldTimeline = f1.get();
-					final List<StatusModel> oldMentions = f2.get();
-					new UiHandler()
+					connectUserStream();
+
+					Future<List<StatusModel>> f1 = MyExecutor.getExecutor().submit(new AsyncTimelineGetter(account, new Paging(1)));
+					Future<List<StatusModel>> f2 = MyExecutor.getExecutor().submit(new AsyncMentionsGetter(account, new Paging(1)));
+					try
 					{
-
-						@Override
-						public void run()
+						final List<StatusModel> oldTimeline = f1.get();
+						final List<StatusModel> oldMentions = f2.get();
+						new UiHandler()
 						{
-							homeListAdapter.addAll(oldTimeline);
-							homeListAdapter.forceNotifyAdapter();
-							mentionsListAdapter.addAll(oldMentions);
-							mentionsListAdapter.forceNotifyAdapter();
-							historyListAdapter.forceNotifyAdapter();
-						}
-					}.post();
+
+							@Override
+							public void run()
+							{
+								homeListAdapter.addAll(oldTimeline);
+								homeListAdapter.forceNotifyAdapter();
+								mentionsListAdapter.addAll(oldMentions);
+								mentionsListAdapter.forceNotifyAdapter();
+								historyListAdapter.forceNotifyAdapter();
+							}
+						}.post();
+					}
+					catch (Exception e)
+					{
+						e.printStackTrace();
+					}
 				}
-				catch (Exception e)
+				else
 				{
-					e.printStackTrace();
+					handler.sendEmptyMessage(HANDLER_NOT_CONNECTION);
+					return;
 				}
 
 				break;
@@ -181,7 +196,6 @@ public class MainActivity extends Activity implements Runnable
 		mentionsListAdapter = new StatusListAdapter(instance);
 		historyListAdapter = new EventListAdapter(instance);
 		optionMenuAdapter = new OptionMenuAdapter(instance, "ÉÅÉjÉÖÅ[");
-		eventNoticer = new ToastManager(instance);
 		authHelper = new AuthorizeHelper(instance, Consumers.getDedault());
 		tweetViewManager = new TweetViewManager(instance);
 		tweetViewManager.init();
@@ -292,6 +306,20 @@ public class MainActivity extends Activity implements Runnable
 			progressDialog = new ProgressDialog(instance);
 			ProgressDialogHelper.makeProgressDialog(instance, progressDialog).show();
 			new Thread(instance).start();
+		}
+	}
+	
+	public void connectUserStream()
+	{
+		if(!TwitterManager.canConnect())
+		{
+			handler.sendEmptyMessage(HANDLER_NOT_CONNECTION);
+			return;
+		}
+		if(twitterStream != null)
+		{
+			twitterStream.shutdown();
+			twitterStream.user();
 		}
 	}
 	
@@ -421,42 +449,14 @@ public class MainActivity extends Activity implements Runnable
 		tweetViewManager.open();
 	}
 
-	public void openTweetViewToReply(String _userName, long l, boolean append)
+	public void openTweetViewToReply(String userName, long l, boolean append)
 	{
-		String text = tweetViewManager.getText();
-		Pattern hasReply = Pattern.compile("^@([a-zA-Z0-9_]+).*");
-		if (append || hasReply.matcher(text).find())
-		{
-			if (!text.contains("@" + _userName))
-			{
-				text = text + "@" + _userName + " ";
-				if (!text.startsWith("."))
-				{
-					text = "." + text;
-				}
-			}
-			else
-			{
-				text = "@" + _userName + " ";
-			}
-		}
-		else
-		{
-			text = "@" + _userName + " ";
-		}
-		tweetViewManager.setText(text);
-		tweetViewManager.setInReplyToStatusId(l);
-		tweetViewManager.open();
+		tweetViewManager.openToReply(userName, l, append);
 	}
 
 	public void closeTweetView()
 	{
 		tweetViewManager.close();
-	}
-
-	public void eventNotify(StatusEventModel event)
-	{
-		eventNoticer.noticeEvent(event);
 	}
 
 	@Override

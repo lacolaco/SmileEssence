@@ -1,7 +1,6 @@
 package net.miz_hi.smileessence.listener;
 
 import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
@@ -12,6 +11,8 @@ import net.miz_hi.smileessence.event.UserEventModel.EnumUserEventType;
 import net.miz_hi.smileessence.event.UserEventModel;
 import net.miz_hi.smileessence.status.StatusListAdapter;
 import net.miz_hi.smileessence.util.LogHelper;
+import net.miz_hi.smileessence.view.MainActivity;
+import twitter4j.ConnectionLifeCycleListener;
 import twitter4j.DirectMessage;
 import twitter4j.StallWarning;
 import twitter4j.Status;
@@ -20,12 +21,15 @@ import twitter4j.User;
 import twitter4j.UserList;
 import twitter4j.UserStreamListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
-public class WarotterUserStreamListener implements UserStreamListener
+public class WarotterUserStreamListener implements UserStreamListener, ConnectionLifeCycleListener
 {
 	private StatusListAdapter homeListAdapter;
 	private StatusListAdapter mentionsListAdapter;
 	private EventListAdapter eventListAdapter;
+	
+	private int exceptionCount;
 
 	public WarotterUserStreamListener()
 	{
@@ -141,7 +145,20 @@ public class WarotterUserStreamListener implements UserStreamListener
 	@Override
 	public void onException(Exception arg0)
 	{
-		
+		if(exceptionCount++ > 3)
+		{
+			return;
+		}
+		new UiHandler()
+		{
+			
+			@Override
+			public void run()
+			{
+				Toast.makeText(MainActivity.getInstance(), "ê⁄ë±Ç™êÿÇÍÇ‹ÇµÇΩ", Toast.LENGTH_SHORT).show();				
+			}
+		}.post();
+		MainActivity.getInstance().connectUserStream();
 	}
 
 	@Override
@@ -312,6 +329,31 @@ public class WarotterUserStreamListener implements UserStreamListener
 
 	@Override
 	public void onUserProfileUpdate(User arg0)
+	{
+	}
+
+	@Override
+	public void onCleanUp()
+	{
+	}
+
+	@Override
+	public void onConnect()
+	{
+		new UiHandler()
+		{
+			
+			@Override
+			public void run()
+			{
+				Toast.makeText(MainActivity.getInstance(), "ê⁄ë±ÇµÇ‹ÇµÇΩ", Toast.LENGTH_SHORT).show();				
+			}
+		}.post();
+
+	}
+
+	@Override
+	public void onDisconnect()
 	{
 	}
 

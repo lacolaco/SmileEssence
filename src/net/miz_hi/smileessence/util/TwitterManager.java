@@ -3,7 +3,9 @@ package net.miz_hi.smileessence.util;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.auth.Account;
+import net.miz_hi.smileessence.view.MainActivity;
 import twitter4j.Paging;
 import twitter4j.Relationship;
 import twitter4j.ResponseList;
@@ -58,6 +60,19 @@ public class TwitterManager
 		ConfigurationBuilder cb = generateConfig(account);
 		cb.setUserStreamRepliesAllEnabled(false);
 		return new TwitterStreamFactory(cb.build()).getInstance();
+	}
+	
+	public static boolean canConnect()
+	{
+		try
+		{
+			String screenName = getTwitter(Client.getMainAccount()).getScreenName();
+			return true;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
 	}
 
 	public static boolean isStatusUpdateLimit()

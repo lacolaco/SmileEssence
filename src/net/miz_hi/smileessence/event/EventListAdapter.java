@@ -1,9 +1,10 @@
 package net.miz_hi.smileessence.event;
 
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.activity.MainActivity;
 import net.miz_hi.smileessence.core.CustomListAdapter;
 import net.miz_hi.smileessence.core.UiHandler;
+import net.miz_hi.smileessence.listener.EventOnClickListener;
+import net.miz_hi.smileessence.view.MainActivity;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,8 +60,9 @@ public class EventListAdapter extends CustomListAdapter<EventModel>
 		{
 			convertedView = getInflater().inflate(R.layout.eventtoast_layout, null);
 		}
-		
-		convertedView = EventViewFactory.getToastView(getActivity(), (EventModel) getItem(position), convertedView);
+		EventModel model = (EventModel) getItem(position);
+		convertedView = EventViewFactory.getView(getActivity(), model, convertedView);
+		convertedView.setOnClickListener(new EventOnClickListener(getActivity(), model));
 		
 		return convertedView;
 	}

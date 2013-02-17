@@ -4,10 +4,10 @@ import net.miz_hi.smileessence.dialog.DialogAdapter;
 import net.miz_hi.smileessence.view.MainActivity;
 import android.app.Activity;
 
-public class MenuItemReport extends MenuItemBase
+public class MenuItemReConnect extends MenuItemBase
 {
 
-	public MenuItemReport(Activity activity, DialogAdapter adapter)
+	public MenuItemReConnect(Activity activity, DialogAdapter adapter)
 	{
 		super(activity, adapter);
 	}
@@ -15,13 +15,13 @@ public class MenuItemReport extends MenuItemBase
 	@Override
 	public String getText()
 	{
-		return "ìÒ‚ÖƒŒƒ|[ƒg‚ğ‘—‚é";
+		return "ÄÚ‘±";
 	}
 
 	@Override
 	public void work()
 	{
-		MainActivity.getInstance().openTweetViewToTweet("#SmileEssence @laco0416 ");
+		MainActivity.getInstance().connectUserStream();
 	}
 
 }
