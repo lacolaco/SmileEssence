@@ -12,7 +12,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/relativeLayout1"
-        android:background="@color/White"/>
+        android:background="@color/White" />
 
     <ListView
         android:id="@+id/listView_mentions"

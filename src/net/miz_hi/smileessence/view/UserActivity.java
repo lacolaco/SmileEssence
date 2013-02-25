@@ -53,7 +53,7 @@ public class UserActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.user_layout);
+		setContentView(R.layout.useractivity_layout);
 
 		UserModel model = UserStore.get(getIntent().getLongExtra("user_id", -1));
 		if (model == null)

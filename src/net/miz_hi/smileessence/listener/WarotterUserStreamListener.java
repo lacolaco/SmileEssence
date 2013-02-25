@@ -89,7 +89,10 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 	@Override
 	public void onStatus(final Status status)
 	{
-		LogHelper.print("on status");
+		if(MainActivity.getInstance() == null || MainActivity.getInstance().isFinishing())
+		{
+			return;
+		}
 		final StatusModel model = StatusStore.put(status);
 		new UiHandler()
 		{
@@ -121,18 +124,9 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 					}
 					mentionsListAdapter.notifyAdapter();
 				}
-
-				homeListAdapter.addFirst(model);
-
-				if (homeListView.getFirstVisiblePosition() == 0 && homeListView.getChildAt(0) != null && homeListView.getChildAt(0).getTop() == 0)
-				{
-					homeListAdapter.setCanNotifyOnChange(true);
-				}
-				else
-				{
-					homeListAdapter.setCanNotifyOnChange(false);
-				}
+				homeListAdapter.addFirst(model);				
 				homeListAdapter.notifyAdapter();
+				
 			}
 		}.post();
 	}

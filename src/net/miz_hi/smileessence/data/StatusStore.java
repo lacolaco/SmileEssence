@@ -1,14 +1,18 @@
 package net.miz_hi.smileessence.data;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import twitter4j.Status;
 
 public class StatusStore
 {
 	private static ConcurrentHashMap<Long, StatusModel> statusesMap = new ConcurrentHashMap<Long, StatusModel>();
-	private static ConcurrentLinkedQueue<Long> favoriteList = new ConcurrentLinkedQueue<Long>();
+	private static CopyOnWriteArrayList<Long> favoriteList = new CopyOnWriteArrayList<Long>();
+	private static CopyOnWriteArrayList<String> hashtagList = new CopyOnWriteArrayList<String>();
 
 	public static StatusModel put(Status status)
 	{
@@ -38,14 +42,28 @@ public class StatusStore
 		return statusesMap.remove(id);
 	}
 	
-	public static boolean putFavoritedStatus(long id)
+	public static void putFavoritedStatus(long id)
 	{
-		return favoriteList.offer(id);
+		favoriteList.add(id);
 	}
 	
 	public static boolean isFavorited(long id)
 	{
 		return favoriteList.contains(id);
+	}
+	
+	public static void putHashtag(String tag)
+	{
+		if(hashtagList.contains(tag))
+		{
+			return;
+		}
+		hashtagList.add(tag);
+	}
+	
+	public static List<String> getHashtagList()
+	{
+		return hashtagList;
 	}
 
 	public static void clearCache()

@@ -46,12 +46,16 @@ public class TweetViewManager
 		menu = createSlidingMenu();
 		text = "";
 		inReplyTo = -1;
-		menuAdapter = new TweetMenuAdapter(activity, this);
 	}
 
 	public void setText(String str)
 	{
 		text = str;
+	}
+	
+	public void appendText(String str)
+	{
+		text = text + " " + str;
 	}
 
 	public void setInReplyToStatusId(long l)
@@ -67,6 +71,8 @@ public class TweetViewManager
 		imageButtonClear = (ImageButton) menu.findViewById(R.id.imageButton_clean);
 		imageButtonMenu = (ImageButton)menu.findViewById(R.id.imageButton_menu);
 
+		menuAdapter = new TweetMenuAdapter(activity, this);
+		
 		textViewCount.setText("140");
 		editTextTweet.setFocusable(true);
 		editTextTweet.addTextChangedListener(new TextWatcher()
@@ -184,6 +190,9 @@ public class TweetViewManager
 		}
 		editTextTweet.setTextSize(Client.getTextSize());
 		editTextTweet.invalidate();
+		InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(editTextTweet, InputMethodManager.SHOW_IMPLICIT);
+		editTextTweet.requestFocus();
 	}
 
 	private void onCloseSlidingMenu()

@@ -5,6 +5,7 @@ import net.miz_hi.smileessence.dialog.DialogAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.text.ClipboardManager;
+import android.widget.Toast;
 
 public class StatusMenuCopyToClipboard extends StatusMenuItemBase
 {
@@ -33,11 +34,11 @@ public class StatusMenuCopyToClipboard extends StatusMenuItemBase
 		{
 			ClipboardManager manager = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
 			manager.setText(model.text);
-			toast("コピーしました");
+			Toast.makeText(activity, "コピーしました", Toast.LENGTH_SHORT).show();
 		}
 		catch (Exception e)
 		{
-			toast("コピー失敗しました");
+			Toast.makeText(activity, "コピー失敗しました", Toast.LENGTH_SHORT).show();
 		}
 	}
 }

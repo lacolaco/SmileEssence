@@ -6,6 +6,7 @@ import net.miz_hi.smileessence.dialog.YesNoDialogHelper;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.widget.Toast;
 
 public class MenuItemResetAccount extends MenuItemBase
 {
@@ -35,7 +36,7 @@ public class MenuItemResetAccount extends MenuItemBase
 				{
 					case DialogInterface.BUTTON_POSITIVE:
 					{
-						toast("全ての認証情報をリセットします。再起動してください");
+						Toast.makeText(activity, "全ての認証情報をリセットします。再起動してください", Toast.LENGTH_SHORT).show();
 						AuthentificationDB.instance().deleteAll();
 						activity.finish();
 						break;

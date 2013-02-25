@@ -5,7 +5,7 @@ import net.miz_hi.smileessence.util.Morse;
 import net.miz_hi.smileessence.view.TweetViewManager;
 import android.app.Activity;
 
-public class TweetMenuMorse extends TweetMenuBase
+public class TweetMenuMorse extends TweetMenuItemBase
 {
 
 	public TweetMenuMorse(Activity activity, DialogAdapter adapter, TweetViewManager manager)

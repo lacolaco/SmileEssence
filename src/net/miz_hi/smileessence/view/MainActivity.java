@@ -187,12 +187,10 @@ public class MainActivity extends Activity implements Runnable
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.setContentView(R.layout.mainactivity_layout);
 		LogHelper.print("main create");
-		if (instance == null)
-		{
-			instance = this;
-			isFirstLoad = true;
-		}
 
+		instance = this;
+		isFirstLoad = true;
+		
 		homeListAdapter = new StatusListAdapter(instance);
 		mentionsListAdapter = new StatusListAdapter(instance);
 		historyListAdapter = new HistoryListAdapter(instance);
@@ -291,6 +289,7 @@ public class MainActivity extends Activity implements Runnable
 		IconCaches.clearCache();
 		StatusStore.clearCache();
 		UserStore.clearCache();
+		
 		instance = null;
 	}
 

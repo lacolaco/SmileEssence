@@ -2,6 +2,9 @@ package net.miz_hi.smileessence.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import net.miz_hi.smileessence.util.LogHelper;
+import net.miz_hi.smileessence.view.MainActivity;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,20 +77,18 @@ public abstract class CustomListAdapter<T> extends BaseAdapter
 
 	public void notifyAdapter()
 	{
-		synchronized (lock)
+		if (canMotifyOnChange)
 		{
-			if (canMotifyOnChange)
+			new UiHandler()
 			{
-				new UiHandler()
+				
+				@Override
+				public void run()
 				{
-					@Override
-					public void run()
-					{
-						setCanNotifyOnChange(false);
-						notifyDataSetChanged();
-					}
-				}.post();
-			}
+					//setCanNotifyOnChange(false);
+					notifyDataSetChanged();
+				}
+			}.postAtFrontOfQueue();
 		}
 	}
 
@@ -113,6 +114,14 @@ public abstract class CustomListAdapter<T> extends BaseAdapter
 			this.canMotifyOnChange = notifyOnChange;
 		}
 	}
+	
+	public boolean getCanNotifyOnChange()
+	{
+		synchronized (lock)
+		{
+			return canMotifyOnChange;
+		}
+	}
 
 	public Activity getActivity()
 	{
@@ -123,9 +132,13 @@ public abstract class CustomListAdapter<T> extends BaseAdapter
 	@Override
 	public void notifyDataSetChanged()
 	{
-		array = (T[]) list.toArray();
-		count = array.length;
-		super.notifyDataSetChanged();
+		synchronized (lock)
+		{
+			LogHelper.print(Thread.currentThread().getName());
+			CustomListAdapter.super.notifyDataSetChanged();
+			array = (T[]) list.toArray();
+			count = array.length;	
+		}
 	}
 
 	@Override

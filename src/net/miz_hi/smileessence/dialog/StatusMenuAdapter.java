@@ -21,8 +21,10 @@ import net.miz_hi.smileessence.menu.StatusMenuAddReply;
 import net.miz_hi.smileessence.menu.StatusMenuCopyToClipboard;
 import net.miz_hi.smileessence.menu.StatusMenuCopyTweet;
 import net.miz_hi.smileessence.menu.StatusMenuFavAndRetweet;
+import net.miz_hi.smileessence.menu.StatusMenuHashtag;
 import net.miz_hi.smileessence.menu.StatusMenuOpenUrl;
 import net.miz_hi.smileessence.menu.StatusMenuReview;
+import net.miz_hi.smileessence.menu.StatusMenuTemplate;
 import net.miz_hi.smileessence.menu.StatusMenuUnOffRetweet;
 import net.miz_hi.smileessence.menu.StatusMenuWarotaRT;
 import net.miz_hi.smileessence.menu.UserMenuFollow;
@@ -34,6 +36,7 @@ import net.miz_hi.smileessence.menu.UserMenuReply;
 import net.miz_hi.smileessence.status.StatusViewFactory;
 import net.miz_hi.smileessence.util.TwitterManager;
 import net.miz_hi.smileessence.view.MainActivity;
+import twitter4j.HashtagEntity;
 import twitter4j.MediaEntity;
 import twitter4j.URLEntity;
 import twitter4j.UserMentionEntity;
@@ -76,12 +79,17 @@ public class StatusMenuAdapter extends DialogAdapter
 			list.add(new StatusMenuCopyTweet(activity, this, model));
 			list.add(new StatusMenuUnOffRetweet(activity, this, model));
 			list.add(new StatusMenuWarotaRT(activity, this, model));
+			list.add(new StatusMenuTemplate(activity, this, model));
 			list.add(new StatusMenuReview(activity, this, model));
 			list.add(new StatusMenuCopyToClipboard(activity, this, model));
 
 			if (!getURLMenu().isEmpty())
 			{
 				list.add(new MenuItemParent(activity, this, "URL‚ðŠJ‚­", getURLMenu()));
+			}
+			for(MenuItemBase item : getHashtagMenu())
+			{
+				list.add(item);
 			}
 			for (String name : getUsersList())
 			{
@@ -112,6 +120,19 @@ public class StatusMenuAdapter extends DialogAdapter
 				String url = mediaEntity.getExpandedURL();
 				if (url != null)
 					list.add(new StatusMenuOpenUrl(activity, this, model, url));
+			}
+		}
+		return list;
+	}
+	
+	private List<MenuItemBase> getHashtagMenu()
+	{
+		List<MenuItemBase> list = new ArrayList<MenuItemBase>();
+		if (model.hashtags != null)
+		{
+			for (HashtagEntity hashtag : model.hashtags)
+			{
+				list.add(new StatusMenuHashtag(activity, this, model, hashtag.getText()));
 			}
 		}
 		return list;

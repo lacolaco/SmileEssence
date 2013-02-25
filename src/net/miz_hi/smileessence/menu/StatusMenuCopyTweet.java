@@ -3,6 +3,7 @@ package net.miz_hi.smileessence.menu;
 import java.util.concurrent.Future;
 
 import net.miz_hi.smileessence.Client;
+import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.core.UiHandler;
@@ -39,6 +40,7 @@ public class StatusMenuCopyTweet extends StatusMenuItemBase
 		StatusUpdate update = new StatusUpdate(model.text);
 		update.setInReplyToStatusId(model.inReplyToStatusId);
 		final Future<Boolean> resp = MyExecutor.submit(new AsyncTweetTask(update));
+		MyExecutor.submit(new AsyncFavoriteTask(model.statusId));
 		MyExecutor.execute(new Runnable()
 		{
 

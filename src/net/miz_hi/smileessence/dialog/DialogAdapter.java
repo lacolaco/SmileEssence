@@ -32,10 +32,10 @@ public abstract class DialogAdapter
 	protected static Dialog dialog;
 	protected View[] titleViews;
 
-	public DialogAdapter(Activity activity2)
+	public DialogAdapter(Activity activity)
 	{
-		this.activity = activity2;
-		layoutInflater = LayoutInflater.from(activity2);
+		this.activity = activity;
+		layoutInflater = LayoutInflater.from(activity);
 		list = new ArrayList<MenuItemBase>();
 	}
 
@@ -92,11 +92,9 @@ public abstract class DialogAdapter
 	
 	protected Dialog createMenuDialog()
 	{
-		if(dialog == null)
-		{
-			dialog = new Dialog(activity);
-			dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		}
+
+		dialog = new Dialog(activity);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		View view = layoutInflater.inflate(R.layout.dialog_base_layout, null);
 		LinearLayout titleLinearLayout = (LinearLayout) view.findViewById(R.id.linearLayout_dialogTitle);

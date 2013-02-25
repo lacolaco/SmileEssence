@@ -4,12 +4,15 @@ import java.io.File;
 
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.auth.AuthentificationDB;
+import net.miz_hi.smileessence.core.DataBaseHelper;
 import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.core.PreferenceHelper;
+import net.miz_hi.smileessence.data.TemplateDB;
 import net.miz_hi.smileessence.permission.IPermission;
 import net.miz_hi.smileessence.permission.PermissonChecker;
 import android.app.Application;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 
 public class Client
@@ -37,6 +40,10 @@ public class Client
 	public static boolean hasAuthedAccount()
 	{
 		Long lastUsedId = (Long) getPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID);
+		if(AuthentificationDB.instance().findAll() == null)
+		{
+			return false;
+		}
 		return lastUsedId > 0 && !AuthentificationDB.instance().findAll().isEmpty();
 	}
 
@@ -109,6 +116,9 @@ public class Client
 		Client.prefHelper = new PreferenceHelper(PreferenceManager.getDefaultSharedPreferences(app));
 		Client.app = app;
 		loadPreferences();
+		
+		DataBaseHelper helper = new DataBaseHelper(app);
+		helper.onCreate(SQLiteDatabase.openOrCreateDatabase(DataBaseHelper.dbName, null));
 	}
 
 	public static final String HOMEPAGE_URL = "http://warotter.web.fc2.com/";

@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadFactory;
 public class MyExecutor
 {
 
-	private static ExecutorService executor = Executors.newFixedThreadPool(10);
+	private static ExecutorService executor = Executors.newFixedThreadPool(5);
 
 	public static ExecutorService getExecutor()
 	{

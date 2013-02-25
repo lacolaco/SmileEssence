@@ -21,7 +21,7 @@ import android.widget.ImageView;
 public class IconCaches
 {
 
-	private static ConcurrentHashMap<Long, Icon> iconCache = new ConcurrentHashMap<Long, Icon>(100);
+	private static ConcurrentHashMap<Long, Icon> iconCache = new ConcurrentHashMap<Long, Icon>();
 	private static File cacheDir = Client.getApplication().getExternalCacheDir();
 	private static Bitmap emptyIcon;
 	private static CountUpInteger counter = new CountUpInteger(5);
@@ -123,7 +123,7 @@ public class IconCaches
 	public static void putIconToMap(long id, Icon icon)
 	{
 
-		if (iconCache.size() > 99 && counter.isOver())
+		if (iconCache.size() > 500 && counter.isOver())
 		{
 
 			LinkedList<Map.Entry> entries = new LinkedList<Map.Entry>(iconCache.entrySet());
@@ -138,10 +138,9 @@ public class IconCaches
 					return ((Icon) e1.getValue()).compareTo((Icon) e2.getValue());
 				}
 			});
-			while (iconCache.size() > 98)
-			{
-				iconCache.remove(entries.pollFirst().getKey());
-			}
+
+			Icon removed = iconCache.remove(entries.poll().getKey());
+			removed.bitmap.recycle();
 			counter.reset();
 		}
 

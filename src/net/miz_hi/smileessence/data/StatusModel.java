@@ -83,6 +83,13 @@ public class StatusModel implements Comparable<StatusModel>
 		urls = shownStatus.getURLEntities();
 		medias = shownStatus.getMediaEntities();
 		hashtags = shownStatus.getHashtagEntities();
+		if(hashtags != null)
+		{
+			for(HashtagEntity hashtag : hashtags)
+			{
+				StatusStore.putHashtag(hashtag.getText());
+			}
+		}
 		userMentions = shownStatus.getUserMentionEntities();
 
 		IconCaches.setIconBitmapToView(user, null);

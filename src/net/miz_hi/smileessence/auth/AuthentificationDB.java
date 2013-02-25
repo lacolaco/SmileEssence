@@ -12,15 +12,16 @@ import com.j256.ormlite.dao.Dao;
 public class AuthentificationDB
 {
 	private Context context;
+	private static AuthentificationDB instance = new AuthentificationDB(Client.getApplication());
 
-	public AuthentificationDB(Context context)
+	private AuthentificationDB(Context context)
 	{
 		this.context = context;
 	}
 
 	public static AuthentificationDB instance()
 	{
-		return new AuthentificationDB(Client.getApplication());
+		return instance;
 	}
 
 	public void save(Account account)

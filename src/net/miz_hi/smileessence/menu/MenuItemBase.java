@@ -40,9 +40,4 @@ public abstract class MenuItemBase
 
 	public abstract void work();
 
-	public void toast(String str)
-	{
-		Toast.makeText(activity, str, Toast.LENGTH_SHORT).show();
-	}
-
 }
