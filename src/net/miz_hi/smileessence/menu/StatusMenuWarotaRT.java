@@ -2,7 +2,10 @@ package net.miz_hi.smileessence.menu;
 
 import java.util.concurrent.Future;
 
+import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
+import net.miz_hi.smileessence.async.MyExecutor;
+import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 import net.miz_hi.smileessence.util.TwitterManager;
@@ -35,28 +38,46 @@ public class StatusMenuWarotaRT extends StatusMenuItemBase
 		StatusUpdate update = new StatusUpdate(builder.toString());
 		update.setInReplyToStatusId(model.statusId);
 
-		Future<Boolean> f = adapter.getExecutor().submit(new AsyncTweetTask(update));
-		try
+		final Future<Boolean> resp = MyExecutor.submit(new AsyncTweetTask(update));
+		MyExecutor.execute(new Runnable()
 		{
-			if (f.get())
+			
+			@Override
+			public void run()
 			{
-				Toast.makeText(activity, TwitterManager.MESSAGE_TWEET_SUCCESS, Toast.LENGTH_SHORT).show();
+				try
+				{
+					final boolean result = resp.get();
+					new UiHandler()
+					{
+						
+						@Override
+						public void run()
+						{
+							if (result)
+							{
+								Toast.makeText(activity, TwitterManager.MESSAGE_TWEET_SUCCESS, Toast.LENGTH_SHORT).show();
+							}
+							else
+							{
+								Toast.makeText(activity, TwitterManager.MESSAGE_SOMETHING_ERROR, Toast.LENGTH_SHORT).show();
+							}
+						}
+					}.post();
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+				
 			}
-			else
-			{
-				Toast.makeText(activity, TwitterManager.MESSAGE_SOMETHING_ERROR, Toast.LENGTH_SHORT).show();
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		});
 	}
 
 	@Override
 	public boolean isVisible()
 	{
-		return false;
+		return Client.getPermission().canWarotaRT();
 	}
 
 }

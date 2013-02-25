@@ -28,7 +28,7 @@ public class UserMenuOpenFavstar extends UserMenuItemBase
 	@Override
 	public void work()
 	{
-		String url = "http://favstar.fm/users/" + _userName + "/recent";
+		String url = "http://favstar.fm/users/" + userName + "/recent";
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 		activity.startActivity(intent);
 	}

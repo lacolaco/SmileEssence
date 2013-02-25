@@ -1,6 +1,7 @@
 package net.miz_hi.smileessence.menu;
 
 import net.miz_hi.smileessence.Client;
+import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 import net.miz_hi.smileessence.util.TwitterManager;
 import android.app.Activity;
@@ -29,10 +30,18 @@ public class UserMenuRemove extends UserMenuItemBase
 	@Override
 	public void work()
 	{
-		if (TwitterManager.remove(Client.getMainAccount(), _userName))
+		MyExecutor.execute(new Runnable()
 		{
-			Toast.makeText(activity, "ƒŠƒ€[ƒ”‚µ‚Ü‚µ‚½", Toast.LENGTH_SHORT).show();
-		}
+			
+			@Override
+			public void run()
+			{
+				if (TwitterManager.remove(Client.getMainAccount(), userName))
+				{
+					Toast.makeText(activity, "ƒŠƒ€[ƒ”‚µ‚Ü‚µ‚½", Toast.LENGTH_SHORT).show();
+				}				
+			}
+		});
 	}
 
 }

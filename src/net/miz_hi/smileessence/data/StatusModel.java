@@ -21,17 +21,19 @@ import android.text.Html;
 public class StatusModel implements Comparable<StatusModel>
 {
 	public long statusId;
+	public long inReplyToStatusId;
 	public UserModel user;
 	public String screenName;
 	public String name;
 	public String text;
+	public String retweeterScreenName;
+	public String headerText;
+	public String footerText;
 	public Date createdAt;
 	public URLEntity[] urls;
 	public MediaEntity[] medias;
 	public HashtagEntity[] hashtags;
 	public UserMentionEntity[] userMentions;
-	public String headerText;
-	public String footerText;
 	public int backgroundColor;
 	public int nameColor;
 	public int textColor;
@@ -48,6 +50,7 @@ public class StatusModel implements Comparable<StatusModel>
 		Status shownStatus;
 		if (isRetweet)
 		{
+			retweeterScreenName = status.getUser().getScreenName();
 			shownStatus = status.getRetweetedStatus();
 			backgroundColor = Client.getColor(R.color.LightBlue);
 		}
@@ -58,6 +61,7 @@ public class StatusModel implements Comparable<StatusModel>
 		}
 		
 		statusId = shownStatus.getId();
+		inReplyToStatusId = shownStatus.getInReplyToStatusId();
 
 		if (UserStore.get(shownStatus.getUser().getId()) != null)
 		{

@@ -4,7 +4,7 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
-import net.miz_hi.smileessence.event.EventListAdapter;
+import net.miz_hi.smileessence.event.HistoryListAdapter;
 import net.miz_hi.smileessence.event.StatusEventModel;
 import net.miz_hi.smileessence.event.StatusEventModel.EnumStatusEventType;
 import net.miz_hi.smileessence.event.UserEventModel.EnumUserEventType;
@@ -27,7 +27,7 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 {
 	private StatusListAdapter homeListAdapter;
 	private StatusListAdapter mentionsListAdapter;
-	private EventListAdapter eventListAdapter;
+	private HistoryListAdapter eventListAdapter;
 	
 	private int exceptionCount;
 
@@ -45,7 +45,7 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 		this.mentionsListAdapter = adapter;
 	}
 
-	public void setEventListAdapter(EventListAdapter adapter)
+	public void setEventListAdapter(HistoryListAdapter adapter)
 	{
 		this.eventListAdapter = adapter;
 	}

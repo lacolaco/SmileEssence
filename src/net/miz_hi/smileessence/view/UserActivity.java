@@ -113,8 +113,8 @@ public class UserActivity extends Activity
 		emptyText.setText("Now Loading...");
 		statusesView.addView(emptyText);
 
-		final Future<List<StatusModel>> resp = MyExecutor.getExecutor().submit(new AsyncTimelineGetter(Client.getMainAccount(), user.getId(), new Paging(1)));
-		MyExecutor.getExecutor().execute(new Runnable()
+		final Future<List<StatusModel>> resp = MyExecutor.submit(new AsyncTimelineGetter(Client.getMainAccount(), user.getId(), new Paging(1)));
+		MyExecutor.execute(new Runnable()
 		{
 			@Override
 			public void run()

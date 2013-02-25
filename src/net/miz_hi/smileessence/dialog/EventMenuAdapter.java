@@ -35,22 +35,23 @@ public class EventMenuAdapter extends DialogAdapter
 
 	@Override
 	public Dialog createMenuDialog(boolean init)
-	{
-		
+	{		
 		UserModel user = UserStore.put(model.source);
 		if(init)
 		{
 			list.clear();
 
 			list.add(new UserMenuReply(activity, this, user.screenName));
-			list.add(new UserMenuOpenProfiel(activity, this, user));
+			list.add(new UserMenuOpenProfiel(activity, this, user.screenName));
 			list.add(new UserMenuOpenPage(activity, this, user.screenName));
 			list.add(new UserMenuOpenFavstar(activity, this, user.screenName));
 			list.add(new UserMenuFollow(activity, this, user.screenName));
 			list.add(new UserMenuRemove(activity, this, user.screenName));
+			
+			setTitle("@"+ user.screenName);
 		}
 
-		return super.createMenuDialog("@"+ user.screenName);
+		return super.createMenuDialog();
 	}
 	
 

@@ -10,12 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-public class EventListAdapter extends CustomListAdapter<EventModel>
+public class HistoryListAdapter extends CustomListAdapter<EventModel>
 {
 	
 	private ToastManager manager;
 
-	public EventListAdapter(Activity activity)
+	public HistoryListAdapter(Activity activity)
 	{
 		super(activity, 1000);
 		manager = new ToastManager(activity);
@@ -34,7 +34,7 @@ public class EventListAdapter extends CustomListAdapter<EventModel>
 
 				ListView historyListView = MainActivity.getInstance().getHistoryListView();
 
-				EventListAdapter.super.addFirst(model);
+				HistoryListAdapter.super.addFirst(model);
 
 				if (historyListView.getFirstVisiblePosition() == 0 && historyListView.getChildAt(0) != null && historyListView.getChildAt(0).getTop() == 0)
 				{

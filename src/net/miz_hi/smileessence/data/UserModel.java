@@ -51,7 +51,7 @@ public class UserModel
 
 	public User getUser()
 	{
-		Future<User> resp = MyExecutor.getExecutor().submit(new Callable<User>()
+		Future<User> resp = MyExecutor.submit(new Callable<User>()
 		{
 
 			@Override
@@ -78,7 +78,7 @@ public class UserModel
 
 	public boolean isFriend()
 	{
-		Future<Boolean> resp = MyExecutor.getExecutor().submit(new Callable<Boolean>()
+		Future<Boolean> resp = MyExecutor.submit(new Callable<Boolean>()
 		{
 
 			@Override
@@ -100,7 +100,7 @@ public class UserModel
 
 	public boolean isFollower()
 	{
-		Future<Boolean> resp = MyExecutor.getExecutor().submit(new Callable<Boolean>()
+		Future<Boolean> resp = MyExecutor.submit(new Callable<Boolean>()
 		{
 
 			@Override

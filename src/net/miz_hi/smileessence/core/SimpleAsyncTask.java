@@ -25,7 +25,7 @@ public abstract class SimpleAsyncTask<T> extends AsyncTask<Object, Object, T>
 	public void addToQueue()
 	{
 		taskQueue.offer(this);
-		MyExecutor.getExecutor().execute(runnable);
+		MyExecutor.execute(runnable);
 	}
 
 }

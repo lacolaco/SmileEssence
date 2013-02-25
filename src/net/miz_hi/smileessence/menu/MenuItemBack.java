@@ -5,23 +5,26 @@ import java.util.List;
 
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 import android.app.Activity;
+import android.view.View;
 
 public class MenuItemBack extends MenuItemBase
 {
-	private String _text;
-	private List<MenuItemBase> _list = new ArrayList<MenuItemBase>();
+	private String text;
+	private List<MenuItemBase> list = new ArrayList<MenuItemBase>();
+	private View[] titleView;
 
-	public MenuItemBack(Activity activity, DialogAdapter adapter, String text, List<MenuItemBase> listOld)
+	public MenuItemBack(Activity activity, DialogAdapter adapter, String text, List<MenuItemBase> oldList)
 	{
 		super(activity, adapter);
-		this._text = text;
-		this._list.addAll(listOld);
+		this.text = text;
+		this.list.addAll(oldList);
+		this.titleView = adapter.getTitleViews();
 	}
 
 	@Override
 	public String getText()
 	{
-		return _text;
+		return text;
 	}
 
 	@Override
@@ -32,7 +35,8 @@ public class MenuItemBack extends MenuItemBase
 			@Override
 			public void run()
 			{
-				adapter.setMenuItems(_list);
+				adapter.setMenuItems(list);
+				adapter.setTitleViews(titleView);
 				adapter.createMenuDialog(false).show();
 			}
 		});

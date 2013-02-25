@@ -19,11 +19,12 @@ import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.data.IconCaches;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
+import net.miz_hi.smileessence.data.UserStore;
 import net.miz_hi.smileessence.dialog.AuthDialogHelper;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 import net.miz_hi.smileessence.dialog.OptionMenuAdapter;
 import net.miz_hi.smileessence.dialog.ProgressDialogHelper;
-import net.miz_hi.smileessence.event.EventListAdapter;
+import net.miz_hi.smileessence.event.HistoryListAdapter;
 import net.miz_hi.smileessence.event.StatusEventModel;
 import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.listener.TimelineScrollListener;
@@ -72,7 +73,7 @@ public class MainActivity extends Activity implements Runnable
 	private TweetViewManager tweetViewManager;
 	private StatusListAdapter homeListAdapter;
 	private StatusListAdapter mentionsListAdapter;
-	private EventListAdapter historyListAdapter;
+	private HistoryListAdapter historyListAdapter;
 	private OptionMenuAdapter optionMenuAdapter;
 	private AuthorizeHelper authHelper;
 	private AuthDialogHelper authDialog;
@@ -123,7 +124,6 @@ public class MainActivity extends Activity implements Runnable
 			if (account.getUserId() == lastUsedId)
 			{
 				Client.setMainAccount(account);
-
 				usListener = new WarotterUserStreamListener();
 				usListener.setHomeListAdapter(homeListAdapter);
 				usListener.setMentionsListAdapter(mentionsListAdapter);
@@ -137,8 +137,8 @@ public class MainActivity extends Activity implements Runnable
 				{
 					connectUserStream();
 
-					Future<List<StatusModel>> f1 = MyExecutor.getExecutor().submit(new AsyncTimelineGetter(account, new Paging(1)));
-					Future<List<StatusModel>> f2 = MyExecutor.getExecutor().submit(new AsyncMentionsGetter(account, new Paging(1)));
+					Future<List<StatusModel>> f1 = MyExecutor.submit(new AsyncTimelineGetter(account, new Paging(1)));
+					Future<List<StatusModel>> f2 = MyExecutor.submit(new AsyncMentionsGetter(account, new Paging(1)));
 					try
 					{
 						final List<StatusModel> oldTimeline = f1.get();
@@ -195,7 +195,7 @@ public class MainActivity extends Activity implements Runnable
 
 		homeListAdapter = new StatusListAdapter(instance);
 		mentionsListAdapter = new StatusListAdapter(instance);
-		historyListAdapter = new EventListAdapter(instance);
+		historyListAdapter = new HistoryListAdapter(instance);
 		optionMenuAdapter = new OptionMenuAdapter(instance, "ÉÅÉjÉÖÅ[");
 		authHelper = new AuthorizeHelper(instance, Consumers.getDedault());
 		tweetViewManager = new TweetViewManager(instance);
@@ -283,7 +283,6 @@ public class MainActivity extends Activity implements Runnable
 	{
 		super.onDestroy();
 		LogHelper.print("main destroy");
-		instance = null;
 		if (twitterStream != null)
 		{
 			twitterStream.shutdown();
@@ -291,6 +290,8 @@ public class MainActivity extends Activity implements Runnable
 		}
 		IconCaches.clearCache();
 		StatusStore.clearCache();
+		UserStore.clearCache();
+		instance = null;
 	}
 
 	@Override
@@ -550,6 +551,11 @@ public class MainActivity extends Activity implements Runnable
 		historyListView.setVisibility(View.INVISIBLE);
 		historyListView.setFastScrollEnabled(true);
 		historyListView.setOnScrollListener(new TimelineScrollListener(historyListAdapter));
+	}
+
+	public TweetViewManager getTweetViewManager()
+	{
+		return tweetViewManager;
 	}
 
 	public ListView getHomeListView()

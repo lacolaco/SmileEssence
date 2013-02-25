@@ -32,9 +32,11 @@ public class TweetMenuAdapter extends DialogAdapter
 			list.clear();
 			list.add(new TweetMenuWarota(activity, this, manager));
 			list.add(new TweetMenuMorse(activity, this, manager));
+			
+			setTitle("メニュー");
 		}
 
-		return super.createMenuDialog("メニュー");
+		return super.createMenuDialog();
 	}
 
 }

@@ -6,6 +6,8 @@ import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.auth.AuthentificationDB;
 import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.core.PreferenceHelper;
+import net.miz_hi.smileessence.permission.IPermission;
+import net.miz_hi.smileessence.permission.PermissonChecker;
 import android.app.Application;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
@@ -15,7 +17,7 @@ public class Client
 	private static Application app;
 	private static Account mainAccount;
 	private static PreferenceHelper prefHelper;
-
+	private static IPermission permission;
 	private static int textSize;
 
 	private Client()
@@ -59,6 +61,17 @@ public class Client
 			putPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID, -1L);
 		}
 		mainAccount = account;
+		setPermission(PermissonChecker.checkPermission(mainAccount));
+	}
+
+	public static IPermission getPermission()
+	{
+		return permission;
+	}
+
+	public static void setPermission(IPermission permission)
+	{
+		Client.permission = permission;
 	}
 
 	public static File getApplicationFile(String fileName)

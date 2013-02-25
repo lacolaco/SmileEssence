@@ -68,6 +68,7 @@ public class TweetViewManager
 		imageButtonMenu = (ImageButton)menu.findViewById(R.id.imageButton_menu);
 
 		textViewCount.setText("140");
+		editTextTweet.setFocusable(true);
 		editTextTweet.addTextChangedListener(new TextWatcher()
 		{
 
@@ -213,7 +214,7 @@ public class TweetViewManager
 		}
 	}
 	
-	public void openToReply(String userName, long l, boolean append)
+	public void addReply(String userName, long l, boolean append)
 	{
 		Pattern hasReply = Pattern.compile("^@([a-zA-Z0-9_]+).*");
 		if (append || hasReply.matcher(text).find())
@@ -232,6 +233,11 @@ public class TweetViewManager
 			text = "@" + userName + " ";
 		}
 		inReplyTo = l;
+	}
+	
+	public void openToReply(String userName, long l, boolean append)
+	{
+		addReply(userName, l, append);
 		open();
 	}
 

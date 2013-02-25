@@ -27,7 +27,7 @@ public class UserMenuReply extends UserMenuItemBase
 	@Override
 	public void work()
 	{
-		MainActivity.getInstance().openTweetViewToReply(_userName, -1, false);
+		MainActivity.getInstance().openTweetViewToReply(userName, -1, false);
 	}
 
 }

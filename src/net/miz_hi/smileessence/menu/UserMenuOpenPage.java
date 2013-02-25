@@ -28,7 +28,7 @@ public class UserMenuOpenPage extends UserMenuItemBase
 	@Override
 	public void work()
 	{
-		String userPage = "http://twitter.com/" + _userName;
+		String userPage = "http://twitter.com/" + userName;
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userPage));
 		activity.startActivity(intent);
 	}

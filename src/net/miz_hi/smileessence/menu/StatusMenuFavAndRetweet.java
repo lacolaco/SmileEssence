@@ -4,6 +4,7 @@ import java.util.concurrent.Future;
 
 import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncRetweetTask;
+import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
@@ -34,9 +35,9 @@ public class StatusMenuFavAndRetweet extends StatusMenuItemBase
 	@Override
 	public void work()
 	{
-		final Future<Boolean> f1 = adapter.getExecutor().submit(new AsyncFavoriteTask(model.statusId));
-		final Future<Boolean> f2 = adapter.getExecutor().submit(new AsyncRetweetTask(model.statusId));
-		adapter.getExecutor().execute(new Runnable()
+		final Future<Boolean> f1 = MyExecutor.submit(new AsyncFavoriteTask(model.statusId));
+		final Future<Boolean> f2 = MyExecutor.submit(new AsyncRetweetTask(model.statusId));
+		MyExecutor.execute(new Runnable()
 		{
 			
 			@Override

@@ -38,9 +38,11 @@ public class OptionMenuAdapter extends DialogAdapter
 			list.add(new MenuItemOpenFriends(activity, this));
 			list.add(new MenuItemReport(activity, this));
 			list.add(new MenuItemResetAccount(activity, this));
+			
+			setTitle("メニュー");
 		}
-
-		return super.createMenuDialog("メニュー");
+		
+		return super.createMenuDialog();
 	}
 
 }

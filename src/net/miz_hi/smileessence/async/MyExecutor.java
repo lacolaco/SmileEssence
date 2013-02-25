@@ -1,30 +1,29 @@
 package net.miz_hi.smileessence.async;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
 public class MyExecutor
 {
-	private static int count = 1;
 
-	private static ExecutorService executor;
+	private static ExecutorService executor = Executors.newFixedThreadPool(10);
 
 	public static ExecutorService getExecutor()
 	{
-		if (executor == null)
-		{
-			executor = Executors.newFixedThreadPool(5, new ThreadFactory()
-			{
-
-				@Override
-				public Thread newThread(Runnable r)
-				{
-					return new Thread(r, "AsyncTaskThread " + count++);
-				}
-			});
-		}
 		return executor;
+	}
+	
+	public static void execute(Runnable runnable)
+	{
+		executor.execute(runnable);
+	}
+	
+	public static <T> Future<T> submit(Callable<T> callable)
+	{
+		return executor.submit(callable);
 	}
 
 	public static void shutdown()

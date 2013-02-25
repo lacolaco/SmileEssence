@@ -5,12 +5,12 @@ import android.app.Activity;
 
 public abstract class UserMenuItemBase extends MenuItemBase
 {
-	protected String _userName;
+	protected String userName;
 
 	public UserMenuItemBase(Activity activity, DialogAdapter adapter, String userName)
 	{
 		super(activity, adapter);
-		this._userName = userName;
+		this.userName = userName;
 	}
 
 	@Override

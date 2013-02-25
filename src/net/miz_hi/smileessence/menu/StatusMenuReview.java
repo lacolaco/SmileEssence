@@ -4,6 +4,7 @@ import java.util.concurrent.Future;
 
 import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
+import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 import net.miz_hi.smileessence.dialog.ReviewDialogHelper;
@@ -69,8 +70,8 @@ public class StatusMenuReview extends StatusMenuItemBase
 				builder.append(model.statusId);
 				builder.append(" )");
 
-				Future<Boolean> f1 = adapter.getExecutor().submit(new AsyncFavoriteTask(model.statusId));
-				Future<Boolean> f2 = adapter.getExecutor().submit(new AsyncTweetTask(new StatusUpdate(builder.toString())));
+				Future<Boolean> f1 = MyExecutor.submit(new AsyncFavoriteTask(model.statusId));
+				Future<Boolean> f2 = MyExecutor.submit(new AsyncTweetTask(new StatusUpdate(builder.toString())));
 				try
 				{
 					if (f1.get() && f2.get())

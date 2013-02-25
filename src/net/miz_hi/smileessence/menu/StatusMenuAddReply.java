@@ -5,6 +5,7 @@ import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 import net.miz_hi.smileessence.view.MainActivity;
 import android.app.Activity;
+import android.widget.Toast;
 
 public class StatusMenuAddReply extends StatusMenuItemBase
 {
@@ -29,16 +30,16 @@ public class StatusMenuAddReply extends StatusMenuItemBase
 	@Override
 	public void work()
 	{
-		MainActivity.getInstance().openTweetViewToReply(model.screenName, -1, true);
+		MainActivity.getInstance().getTweetViewManager().addReply(model.screenName, -1, true);
 		new UiHandler()
 		{
 			
 			@Override
 			public void run()
 			{
-				MainActivity.getInstance().closeTweetView();
+				Toast.makeText(activity, model.screenName + "ÇÉäÉvÉâÉCêÊÇ…í«â¡ÇµÇ‹ÇµÇΩ", Toast.LENGTH_SHORT).show();
 			}
-		}.postDelayed(800);
+		}.post();
 	}
 
 }

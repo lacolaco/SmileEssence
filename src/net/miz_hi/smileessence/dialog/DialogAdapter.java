@@ -18,6 +18,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.LinearLayout;
@@ -29,7 +30,7 @@ public abstract class DialogAdapter
 	protected List<MenuItemBase> list;
 	protected static LayoutInflater layoutInflater;
 	protected static Dialog dialog;
-	protected ExecutorService executer = MyExecutor.getExecutor();
+	protected View[] titleViews;
 
 	public DialogAdapter(Activity activity2)
 	{
@@ -50,9 +51,9 @@ public abstract class DialogAdapter
 		return list;
 	}
 
-	public ExecutorService getExecutor()
+	public static Dialog getDialog()
 	{
-		return executer;
+		return dialog;
 	}
 
 	public boolean isShowing()
@@ -66,30 +67,50 @@ public abstract class DialogAdapter
 			return dialog.isShowing();
 		}
 	}
-
-	public abstract Dialog createMenuDialog(boolean init);
-
-
-	protected Dialog createMenuDialog(String title)
+	
+	public void setTitleViews(View... views)
 	{
-		TextView viewTitle = new TextView(activity);
-		viewTitle.setTextSize(15);
-		viewTitle.setTextColor(Client.getResource().getColor(R.color.White));
-		viewTitle.setText(title);
-		viewTitle.setPadding(10, 15, 0, 15);
-		return createMenuDialog(viewTitle);
+		titleViews = views;
 	}
 	
-	protected Dialog createMenuDialog(View... viewTitle)
+	public View[] getTitleViews()
 	{
-		dialog = new Dialog(activity);
-		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		return titleViews; 
+	}
+	
+	public void setTitle(String string)
+	{
+		TextView title = new TextView(activity);
+		title.setTextSize(15);
+		title.setTextColor(Client.getResource().getColor(R.color.White));
+		title.setText(string);
+		title.setPadding(10, 15, 0, 15);
+		setTitleViews(title);
+	}
+
+	public abstract Dialog createMenuDialog(boolean init);
+	
+	protected Dialog createMenuDialog()
+	{
+		if(dialog == null)
+		{
+			dialog = new Dialog(activity);
+			dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		}
+
 		View view = layoutInflater.inflate(R.layout.dialog_base_layout, null);
 		LinearLayout titleLinearLayout = (LinearLayout) view.findViewById(R.id.linearLayout_dialogTitle);
 		LinearLayout itemsLinearLayout = (LinearLayout) view.findViewById(R.id.linearLayout_dialogItems);
-
-		for (View v : viewTitle)
-		{
+		
+		titleLinearLayout.removeAllViews();
+		itemsLinearLayout.removeAllViews();
+		
+		for (View v : titleViews)
+		{			
+			if(v.getParent() != null)
+			{
+				((ViewGroup)v.getParent()).removeView(v);
+			}
 			titleLinearLayout.addView(v);
 		}
 
