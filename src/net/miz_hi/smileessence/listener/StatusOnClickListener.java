@@ -25,27 +25,18 @@ public class StatusOnClickListener implements OnClickListener
 	public void onClick(final View v)
 	{
 		final StatusMenuAdapter adapter = new StatusMenuAdapter(activity, model);
+		v.setBackgroundColor(Client.getColor(R.color.MetroBlue));
+		v.invalidate();
 		new UiHandler()
 		{
 
 			@Override
 			public void run()
 			{
-				v.setBackgroundColor(Client.getResource().getColor(R.color.MetroBlue));
-				v.invalidate();
-				new UiHandler()
-				{
-
-					@Override
-					public void run()
-					{
-						v.setBackgroundColor(model.backgroundColor);
-						adapter.createMenuDialog(true).show();
-					}
-				}.postDelayed(50);
-
+				v.setBackgroundColor(model.backgroundColor);
+				adapter.createMenuDialog(true).show();
 			}
-		}.post();
+		}.postDelayed(50);
 	}
 
 }

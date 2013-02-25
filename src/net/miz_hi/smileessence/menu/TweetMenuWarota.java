@@ -21,16 +21,7 @@ public class TweetMenuWarota extends TweetMenuItemBase
 	@Override
 	public void work()
 	{
-		int cursor = manager.getEditTextTweet().getSelectionEnd();
-		StringBuilder sb = new StringBuilder(manager.getEditTextTweet().getText().toString());
-		sb.insert(cursor, "ƒƒƒ^‚—");
-		manager.getEditTextTweet().setText(sb.toString());
-		cursor = cursor + sb.length();
-		if (cursor > manager.getEditTextTweet().getText().length())
-		{
-			cursor = manager.getEditTextTweet().getText().length();
-		}
-		manager.getEditTextTweet().setSelection(cursor);
+		insertText("ƒƒƒ^‚—");
 	}
 
 }

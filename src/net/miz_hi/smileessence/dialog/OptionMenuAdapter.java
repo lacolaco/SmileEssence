@@ -9,6 +9,7 @@ import net.miz_hi.smileessence.menu.MenuItemOpenFollowers;
 import net.miz_hi.smileessence.menu.MenuItemOpenFriends;
 import net.miz_hi.smileessence.menu.MenuItemReport;
 import net.miz_hi.smileessence.menu.MenuItemSetting;
+import net.miz_hi.smileessence.menu.MenuItemEditTemplate;
 import android.app.Activity;
 import android.app.Dialog;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ public class OptionMenuAdapter extends DialogAdapter
 			list.clear();
 			list.add(new MenuItemSetting(activity, this));
 			list.add(new MenuItemReConnect(activity, this));
+			list.add(new MenuItemEditTemplate(activity, this));
 			list.add(new MenuItemOpenFavstar(activity, this));
 			list.add(new MenuItemOpenFollowers(activity, this));
 			list.add(new MenuItemOpenFriends(activity, this));

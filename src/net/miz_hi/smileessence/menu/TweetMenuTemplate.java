@@ -24,7 +24,7 @@ public class TweetMenuTemplate extends TweetMenuItemBase
 	@Override
 	public void work()
 	{
-		manager.getEditTextTweet().append(text);
+		insertText(text);
 	}
 
 }

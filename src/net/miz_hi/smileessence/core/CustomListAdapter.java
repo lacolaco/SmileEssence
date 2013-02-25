@@ -26,7 +26,7 @@ public abstract class CustomListAdapter<T> extends BaseAdapter
 	public CustomListAdapter(Activity activity, int capacity)
 	{
 		this.capacity = capacity;
-		this.list = new ArrayList<T>(capacity);
+		this.list = new ArrayList<T>();
 		this.activity = activity;
 		this.inflater = LayoutInflater.from(activity);
 	}
@@ -64,6 +64,18 @@ public abstract class CustomListAdapter<T> extends BaseAdapter
 			{
 				list.remove(list.size() - 1);
 			}
+		}
+	}
+	
+	public void addLast(T element)
+	{
+		synchronized (lock)
+		{
+			if (list.contains(element))
+			{
+				list.remove(element);
+			}
+			list.add(element);
 		}
 	}
 

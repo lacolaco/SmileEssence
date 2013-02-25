@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 public class SimpleDialogHelper
 {
 
-	public static Dialog createDialog(Activity activity, View titleView, View contentView)
+	public static Dialog createDialog(Activity activity, View titleView, View... contentView)
 	{
 		Dialog dialog = new Dialog(activity);
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -22,7 +22,10 @@ public class SimpleDialogHelper
 		LinearLayout titleLinearLayout = (LinearLayout) view.findViewById(R.id.linearLayout_dialogTitle);
 		LinearLayout itemsLinearLayout = (LinearLayout) view.findViewById(R.id.linearLayout_dialogItems);
 		titleLinearLayout.addView(titleView);
-		itemsLinearLayout.addView(contentView);
+		for(View v : contentView)
+		{
+			itemsLinearLayout.addView(v);
+		}
 		dialog.setContentView(view);
 		LayoutParams lp = dialog.getWindow().getAttributes();
 		DisplayMetrics metrics = activity.getResources().getDisplayMetrics();

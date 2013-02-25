@@ -14,29 +14,29 @@ import android.widget.TextView;
 
 public class AuthDialogHelper
 {
-	private Activity _activity;
-	private Consumer _consumer;
-	private Runnable _onClick;
+	private Activity activity;
+	private Consumer consumer;
+	private Runnable onClick;
 
 	public AuthDialogHelper(Activity activity)
 	{
-		_activity = activity;
-		_consumer = Consumers.getDedault();
+		this.activity = activity;
+		this.consumer = Consumers.getDedault();
 	}
 
 	public void setConsumer(Consumer consumer)
 	{
-		_consumer = consumer;
+		this.consumer = consumer;
 	}
 
 	public Dialog getAuthDialog()
 	{
 
-		TextView titleView = new TextView(_activity);
+		TextView titleView = new TextView(activity);
 		titleView.setText("認証してください");
 		titleView.setTextColor(Client.getColor(R.color.White));
 		titleView.setPadding(10, 20, 0, 20);
-		Button authButton = new Button(_activity);
+		Button authButton = new Button(activity);
 		authButton.setText("認証ページへ");
 		authButton.setGravity(Gravity.CENTER);
 		authButton.setOnClickListener(new OnClickListener()
@@ -45,18 +45,18 @@ public class AuthDialogHelper
 			@Override
 			public void onClick(View v)
 			{
-				if (_onClick != null)
+				if (onClick != null)
 				{
-					_onClick.run();
+					onClick.run();
 				}
 			}
 		});
-		return SimpleDialogHelper.createDialog(_activity, titleView, authButton);
+		return SimpleDialogHelper.createDialog(activity, titleView, authButton);
 	}
 
 	public void setOnComplete(Runnable runnable)
 	{
-		_onClick = runnable;
+		onClick = runnable;
 	}
 
 }

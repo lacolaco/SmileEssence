@@ -10,7 +10,9 @@ public class YesNoDialogHelper
 {
 
 	private Activity activity;
-	private String title;
+	private String textTitle;
+	private String textPositive = "‚Í‚¢";
+	private String textNegative = "‚¢‚¢‚¦";
 	private OnClickListener listener;
 	private LayoutInflater layoutInflater;
 	private View dialogView;
@@ -19,12 +21,22 @@ public class YesNoDialogHelper
 	public YesNoDialogHelper(Activity activity, String title)
 	{
 		this.activity = activity;
-		this.title = title;
+		this.textTitle = title;
 	}
 
 	public void setTitle(String title)
 	{
-		this.title = title;
+		this.textTitle = title;
+	}
+
+	public void setTextPositive(String textPositive)
+	{
+		this.textPositive = textPositive;
+	}
+
+	public void setTextNegative(String textNegative)
+	{
+		this.textNegative = textNegative;
 	}
 
 	public void setOnClickListener(OnClickListener listener)
@@ -40,10 +52,10 @@ public class YesNoDialogHelper
 	public AlertDialog createYesNoAlert()
 	{
 		AlertDialog.Builder ad = new AlertDialog.Builder(activity);
-		ad.setTitle(title);
+		ad.setTitle(textTitle);
 		ad.setView(contentView);
-		ad.setPositiveButton("‚Í‚¢", listener);
-		ad.setNegativeButton("‚¢‚¢‚¦", listener);
+		ad.setPositiveButton(textPositive, listener);
+		ad.setNegativeButton(textNegative, listener);
 		return ad.create();
 	}
 

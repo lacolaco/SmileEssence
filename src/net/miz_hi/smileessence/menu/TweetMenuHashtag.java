@@ -24,7 +24,7 @@ public class TweetMenuHashtag extends TweetMenuItemBase
 	@Override
 	public void work()
 	{
-		manager.getEditTextTweet().append("#" + hashtag);
+		manager.getEditTextTweet().append(" #" + hashtag);
 	}
 
 }

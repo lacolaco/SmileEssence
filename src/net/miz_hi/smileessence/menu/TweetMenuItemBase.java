@@ -13,4 +13,18 @@ public abstract class TweetMenuItemBase extends MenuItemBase
 		super(activity, adapter);
 		this.manager = manager;
 	}
+	
+	protected void insertText(String str)
+	{
+		int cursor = manager.getEditTextTweet().getSelectionEnd();
+		StringBuilder sb = new StringBuilder(manager.getEditTextTweet().getText().toString());
+		sb.insert(cursor, str);
+		manager.getEditTextTweet().setText(sb.toString());
+		cursor = cursor + sb.length();
+		if (cursor > manager.getEditTextTweet().getText().length())
+		{
+			cursor = manager.getEditTextTweet().getText().length();
+		}
+		manager.getEditTextTweet().setSelection(cursor);
+	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.miz_hi.smileessence.data.StatusStore;
+import net.miz_hi.smileessence.data.Template;
 import net.miz_hi.smileessence.data.Templates;
 import net.miz_hi.smileessence.menu.MenuItemBase;
 import net.miz_hi.smileessence.menu.MenuItemParent;
@@ -57,9 +58,9 @@ public class TweetMenuAdapter extends DialogAdapter
 	private List<MenuItemBase> getTemplateMenu()
 	{
 		List<MenuItemBase> list = new ArrayList<MenuItemBase>();
-		for(String template : Templates.getTemplates())
+		for(Template template : Templates.getTemplates())
 		{
-			list.add(new TweetMenuTemplate(activity, this, manager, template));
+			list.add(new TweetMenuTemplate(activity, this, manager, template.getText()));
 		}
 		return list;
 	}
