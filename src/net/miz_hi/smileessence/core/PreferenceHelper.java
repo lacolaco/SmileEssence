@@ -43,27 +43,27 @@ public class PreferenceHelper
 	{
 		if (key.getType() == EnumValueType.BOOLEAN)
 		{
-			return (T) (Boolean) preference.getBoolean(key.getKey(), false);
+			return (T) (Boolean) preference.getBoolean(key.getKey(), (Boolean)key.getDefaultValue());
 		}
 		else if (key.getType() == EnumValueType.STRING)
 		{
-			return (T) preference.getString(key.getKey(), "");
+			return (T) preference.getString(key.getKey(), (String)key.getDefaultValue());
 		}
 		else if (key.getType() == EnumValueType.INTEGER)
 		{
-			return (T) (Integer) preference.getInt(key.getKey(), -1);
+			return (T) (Integer) preference.getInt(key.getKey(), (Integer)key.getDefaultValue());
 		}
 		else if (key.getType() == EnumValueType.FLOAT)
 		{
-			return (T) (Float) preference.getFloat(key.getKey(), -1F);
+			return (T) (Float) preference.getFloat(key.getKey(), (Float)key.getDefaultValue());
 		}
 		else if (key.getType() == EnumValueType.LONG)
 		{
-			return (T) (Long) preference.getLong(key.getKey(), -1L);
+			return (T) (Long) preference.getLong(key.getKey(), (Long)key.getDefaultValue());
 		}
 		else
 		{
-			return null;
+			return (T)key.getDefaultValue();
 		}
 	}
 }

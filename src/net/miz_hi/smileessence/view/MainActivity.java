@@ -139,7 +139,7 @@ public class MainActivity extends Activity implements Runnable
 				{
 					connectUserStream();
 
-					final Future<List<StatusModel>> resp_home = MyExecutor.submit(new AsyncTimelineGetter(account, new Paging(1)));					
+					final Future<List<StatusModel>> resp_home = MyExecutor.submit(new AsyncTimelineGetter(account, null));					
 					final Future<List<StatusModel>> resp_mentions = MyExecutor.submit(new AsyncMentionsGetter(account, new Paging(1)));
 					try
 					{

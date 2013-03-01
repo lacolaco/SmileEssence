@@ -48,7 +48,7 @@ public class AsyncTimelineGetter implements Callable<List<StatusModel>>
 
 		for (Status st : resp)
 		{
-			list.add(0, StatusStore.put(st));
+			list.add(StatusStore.put(st));
 		}
 
 		return list;

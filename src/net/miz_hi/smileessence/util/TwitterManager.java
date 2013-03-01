@@ -225,7 +225,15 @@ public class TwitterManager
 		LinkedList<Status> statuses = new LinkedList<Status>();
 		try
 		{
-			ResponseList<Status> resp = getTwitter(account).getHomeTimeline(page);
+			ResponseList<Status> resp;
+			if(page == null)
+			{
+				resp = getTwitter(account).getHomeTimeline();
+			}
+			else
+			{
+				resp = getTwitter(account).getHomeTimeline(page);
+			}
 
 			for (Status st : resp)
 			{
