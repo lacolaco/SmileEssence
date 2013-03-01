@@ -50,7 +50,7 @@ public class AsyncIconGetter extends SimpleAsyncTask<Bitmap>
 			fos.close();
 			return bm;
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 			return IconCaches.getEmptyIcon();
