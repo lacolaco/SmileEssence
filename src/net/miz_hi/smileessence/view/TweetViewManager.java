@@ -207,18 +207,25 @@ public class TweetViewManager
 	private void onOpenSlidingMenu()
 	{
 
-				if (!StringUtils.isNullOrEmpty(text))
-				{
-					editTextTweet.setText(text);
-					text = "";
-				}
-				editTextTweet.setTextSize(Client.getTextSize());
-				editTextTweet.setSelection(editTextTweet.getText().length());
-				editTextTweet.requestFocus();
-				InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.showSoftInput(editTextTweet, InputMethodManager.SHOW_IMPLICIT);
+		if (!StringUtils.isNullOrEmpty(text))
+		{
+			editTextTweet.setText(text);
+			text = "";
+		}
+		editTextTweet.setTextSize(Client.getTextSize());
+		if(editTextTweet.getText().toString().contains(" RT @"))
+		{
+			editTextTweet.setSelection(0);
+		}
+		else
+		{
+			editTextTweet.setSelection(editTextTweet.getText().length());
+		}
+		editTextTweet.requestFocus();
+		InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(editTextTweet, InputMethodManager.SHOW_IMPLICIT);
 
-	
+
 	}
 
 	private void onCloseSlidingMenu()

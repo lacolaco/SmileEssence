@@ -2,14 +2,20 @@ package net.miz_hi.smileessence.view;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.core.UiHandler;
+import net.miz_hi.smileessence.data.Template;
 import net.miz_hi.smileessence.data.TemplateListAdapter;
 import net.miz_hi.smileessence.data.Templates;
-import net.miz_hi.smileessence.listener.TemplateOnClickListener;
+import net.miz_hi.smileessence.dialog.YesNoDialogHelper;
+import net.miz_hi.smileessence.util.ColorUtils;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class TemplateActivity extends Activity
 {
@@ -21,21 +27,50 @@ public class TemplateActivity extends Activity
 		setContentView(R.layout.templateactivity_layout);
 		
 		ListView listView = (ListView)findViewById(R.id.listView_template);
-		TemplateListAdapter adapter = new TemplateListAdapter(this);
-		listView.addFooterView(getFooterView(adapter));
+		ImageButton buttonAdd = (ImageButton)findViewById(R.id.imageButton_template_add);
+		final TemplateListAdapter adapter = new TemplateListAdapter(this);
 		listView.setAdapter(adapter);
 		adapter.addAll(Templates.getTemplates());
 		adapter.forceNotifyAdapter();
-	}
-	
-	private View getFooterView(TemplateListAdapter adapter)
-	{
-		View view = getLayoutInflater().inflate(R.layout.menuitem_layout, null);
-		TextView viewText = (TextView)view.findViewById(R.id.textView_menuItem);
-		viewText.setText("新しい定型文を追加");
-		viewText.setTextColor(Client.getColor(R.color.Black));
-		view.setOnClickListener(new TemplateOnClickListener(adapter, this, null));
-		return view;		
-	}
+		buttonAdd.setOnClickListener(new OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View v)
+			{
+				final EditText editText = new EditText(TemplateActivity.this);
+				YesNoDialogHelper helper = new YesNoDialogHelper(TemplateActivity.this, "編集");
+				helper.setContentView(editText);
+				helper.setOnClickListener(new DialogInterface.OnClickListener()
+				{
 
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						switch(which)
+						{
+							case DialogInterface.BUTTON_NEGATIVE:
+							{
+								break;
+							}
+							case DialogInterface.BUTTON_POSITIVE:
+							{
+								String newText = editText.getText().toString();
+
+								Template template = new Template(newText);
+								Templates.addTemplate(template);
+								Templates.update();
+								adapter.addLast(template);
+								adapter.forceNotifyAdapter();
+								break;
+							}
+						}					
+					}
+				});
+				helper.setTextPositive("決定");
+				helper.setTextNegative("キャンセル");
+				helper.createYesNoAlert().show();
+			}
+		});
+	}
 }

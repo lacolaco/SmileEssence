@@ -87,6 +87,14 @@ public abstract class CustomListAdapter<T> extends BaseAdapter
 			list.remove(element);
 		}
 	}
+	
+	public void clear()
+	{
+		synchronized (lock)
+		{
+			list.clear();
+		}
+	}
 
 	public void notifyAdapter()
 	{

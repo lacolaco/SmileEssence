@@ -10,10 +10,11 @@ import net.miz_hi.smileessence.dialog.YesNoDialogHelper;
 import net.miz_hi.smileessence.util.ColorUtils;
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -43,10 +44,7 @@ public class TemplateOnClickListener implements OnClickListener, OnLongClickList
 				v.setBackgroundColor(ColorUtils.setAlpha(Client.getColor(R.color.LightGray), 200));
 
 				final EditText editText = new EditText(activity);
-				if(template != null)
-				{
-					editText.setText(template.getText());
-				}
+				editText.setText(template.getText());
 
 				YesNoDialogHelper helper = new YesNoDialogHelper(activity, "ï“èW");
 				helper.setContentView(editText);
@@ -65,18 +63,12 @@ public class TemplateOnClickListener implements OnClickListener, OnLongClickList
 							case DialogInterface.BUTTON_POSITIVE:
 							{
 								String newText = editText.getText().toString();
-								if(template != null)
-								{
-									template.setText(newText);
-								}
-								else
-								{
-									template = new Template(newText);
-									Templates.addTemplate(template);
-									adapter.addLast(template);
-								}
+								template.setText(newText);
 								Templates.update();
+								adapter.clear();
+								adapter.addAll(Templates.getTemplates());
 								adapter.forceNotifyAdapter();
+								v.getParent().requestLayout();
 								break;
 							}
 						}					
@@ -121,8 +113,11 @@ public class TemplateOnClickListener implements OnClickListener, OnLongClickList
 							case DialogInterface.BUTTON_POSITIVE:
 							{
 								Templates.deleteTemplate(template);
-								adapter.removeElement(template);
-								adapter.forceNotifyAdapter();
+								adapter.clear();
+								adapter.notifyDataSetChanged();
+								adapter.addAll(Templates.getTemplates());
+								adapter.notifyDataSetChanged();
+								
 								break;
 							}
 						}					

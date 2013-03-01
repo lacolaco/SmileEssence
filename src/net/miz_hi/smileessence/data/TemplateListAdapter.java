@@ -1,5 +1,7 @@
 package net.miz_hi.smileessence.data;
 
+import java.util.Collection;
+
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +18,7 @@ public class TemplateListAdapter extends CustomListAdapter<Template>
 	{
 		super(activity, Integer.MAX_VALUE);
 	}
-
+	
 	@Override
 	public View getView(int position, View convertedView, ViewGroup parent)
 	{

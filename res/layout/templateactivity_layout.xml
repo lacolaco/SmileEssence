@@ -4,21 +4,39 @@
     android:layout_height="fill_parent"
     android:background="@color/White"
     android:orientation="vertical" >
-    
-    <TextView
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/LightBlue"
-        android:text="定型文の管理"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/Gray" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/LightBlue"
-        android:text="クリックで編集(長押しで削除)"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/Gray" />
+        android:background="@color/LightBlue" >
+
+        <TextView
+            android:id="@+id/TextView01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="定型文の管理"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/Gray" />
+
+        <TextView
+            android:id="@+id/TextView02"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/TextView01"
+            android:text="クリックで編集(長押しで削除)"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/Gray" />
+
+        <ImageButton
+            android:id="@+id/imageButton_template_add"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_add_b" />
+
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/listView_template"
