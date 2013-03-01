@@ -3,5 +3,7 @@
 
     <string name="app_name">SmileEssence Lite</string>
 
-    <string name="key_setting_textSize">keyTextSize</string>
+    <string name="key_setting_textSize">text_size</string>
+
+    <string name="key_setting_t4j">t4j_info</string>
 </resources>

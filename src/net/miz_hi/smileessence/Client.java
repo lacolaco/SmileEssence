@@ -104,10 +104,6 @@ public class Client
 
 	public static void loadPreferences()
 	{
-		if ((Integer) getPreferenceValue(EnumPreferenceKey.TEXT_SIZE) < 0)
-		{
-			putPreferenceValue(EnumPreferenceKey.TEXT_SIZE, 10);
-		}
 		textSize = getPreferenceValue(EnumPreferenceKey.TEXT_SIZE);
 	}
 

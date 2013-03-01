@@ -111,29 +111,29 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int viewBehind=0x7f010002;
     }
     public static final class color {
-        public static final int Black=0x7f070001;
-        public static final int BrownYellow=0x7f070009;
-        public static final int DarkBlue=0x7f07000a;
-        public static final int Gray=0x7f070005;
-        public static final int LightBlue=0x7f070002;
-        public static final int LightGray=0x7f07000c;
-        public static final int LightGreen=0x7f070006;
-        public static final int LightRed=0x7f070007;
-        public static final int MetroBlue=0x7f070003;
-        public static final int Red=0x7f070008;
-        public static final int ThickGreen=0x7f07000b;
-        public static final int White=0x7f070004;
-        public static final int holo_blue_bright=0x7f070000;
-        public static final int list_footer_layout=0x7f07000d;
+        public static final int Black=0x7f060001;
+        public static final int BrownYellow=0x7f060009;
+        public static final int DarkBlue=0x7f06000a;
+        public static final int Gray=0x7f060005;
+        public static final int LightBlue=0x7f060002;
+        public static final int LightGray=0x7f06000c;
+        public static final int LightGreen=0x7f060006;
+        public static final int LightRed=0x7f060007;
+        public static final int MetroBlue=0x7f060003;
+        public static final int Red=0x7f060008;
+        public static final int ThickGreen=0x7f06000b;
+        public static final int White=0x7f060004;
+        public static final int holo_blue_bright=0x7f060000;
+        public static final int list_footer_layout=0x7f06000d;
     }
     public static final class dimen {
-        public static final int list_padding=0x7f080005;
-        public static final int menu_header_line=0x7f080002;
-        public static final int menu_header_padding_top=0x7f080001;
-        public static final int menu_icon_side=0x7f080003;
-        public static final int menu_item_padding=0x7f080000;
-        public static final int shadow_width=0x7f080006;
-        public static final int slidingmenu_offset=0x7f080004;
+        public static final int list_padding=0x7f070005;
+        public static final int menu_header_line=0x7f070002;
+        public static final int menu_header_padding_top=0x7f070001;
+        public static final int menu_icon_side=0x7f070003;
+        public static final int menu_item_padding=0x7f070000;
+        public static final int shadow_width=0x7f070006;
+        public static final int slidingmenu_offset=0x7f070004;
     }
     public static final class drawable {
         public static final int defaultshadow=0x7f020000;
@@ -160,76 +160,76 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int shadow=0x7f020015;
     }
     public static final class id {
-        public static final int TextView01=0x7f06000c;
-        public static final int button_Auth=0x7f060006;
-        public static final int editText_comment=0x7f06000d;
-        public static final int editText_tweet=0x7f060029;
-        public static final int frame1=0x7f060031;
-        public static final int frame2=0x7f060038;
-        public static final int frame3=0x7f06003a;
-        public static final int frame4=0x7f060040;
-        public static final int fullscreen=0x7f060003;
-        public static final int imageButton_clean=0x7f06002a;
-        public static final int imageButton_menu=0x7f06002b;
-        public static final int imageButton_submit=0x7f06002c;
-        public static final int imageView_favorited=0x7f060026;
-        public static final int imageView_history=0x7f06001c;
-        public static final int imageView_icon=0x7f060022;
-        public static final int imageView_status_favorite=0x7f060010;
-        public static final int imageView_status_reply=0x7f06000e;
-        public static final int imageView_status_retweet=0x7f06000f;
-        public static final int imageView_timeline=0x7f06001b;
-        public static final int imageView_tweet=0x7f06001a;
-        public static final int left=0x7f060000;
-        public static final int linearLayout_dialogItems=0x7f060008;
-        public static final int linearLayout_dialogTitle=0x7f060007;
-        public static final int linearLayout_toastBody=0x7f060013;
-        public static final int linearlayout1=0x7f06002d;
-        public static final int linearlayout2=0x7f060032;
-        public static final int linearlayout3=0x7f06003b;
-        public static final int listView_history=0x7f060018;
-        public static final int listView_home=0x7f060014;
-        public static final int listView_mentions=0x7f060017;
-        public static final int listView_template=0x7f060027;
-        public static final int margin=0x7f060002;
-        public static final int relativeLayout1=0x7f060016;
-        public static final int relativeLayout2=0x7f060015;
-        public static final int relativeLayout_toastBase=0x7f060011;
-        public static final int right=0x7f060001;
-        public static final int seekBar_seekDialog=0x7f06000b;
-        public static final int selected_view=0x7f060004;
-        public static final int slidingmenulayout=0x7f06001f;
-        public static final int slidingmenumain=0x7f06001e;
-        public static final int slidingmenurowicon=0x7f060020;
-        public static final int slidingmenurowtitle=0x7f060021;
-        public static final int textView1=0x7f060042;
-        public static final int textView_count=0x7f060028;
-        public static final int textView_footer=0x7f060025;
-        public static final int textView_header=0x7f060023;
-        public static final int textView_menuItem=0x7f06001d;
-        public static final int textView_seekDialog=0x7f060009;
-        public static final int textView_seekLevel=0x7f06000a;
-        public static final int textView_text=0x7f060024;
-        public static final int textView_title=0x7f060019;
-        public static final int textView_toastText=0x7f060012;
-        public static final int text_navigate=0x7f060005;
-        public static final int user_bio=0x7f060039;
-        public static final int user_count_favorite=0x7f06003f;
-        public static final int user_count_followed=0x7f06003e;
-        public static final int user_count_following=0x7f06003d;
-        public static final int user_count_tweet=0x7f06003c;
-        public static final int user_homepage=0x7f060033;
-        public static final int user_icon=0x7f06002e;
-        public static final int user_isfollowed=0x7f060036;
-        public static final int user_isfollowing=0x7f060035;
-        public static final int user_isprotected=0x7f060037;
-        public static final int user_locate=0x7f060034;
-        public static final int user_name=0x7f060030;
-        public static final int user_screenname=0x7f06002f;
-        public static final int user_status=0x7f060041;
+        public static final int TextView01=0x7f05000c;
+        public static final int button_Auth=0x7f050006;
+        public static final int editText_comment=0x7f05000d;
+        public static final int editText_tweet=0x7f050029;
+        public static final int frame1=0x7f050031;
+        public static final int frame2=0x7f050038;
+        public static final int frame3=0x7f05003a;
+        public static final int frame4=0x7f050040;
+        public static final int fullscreen=0x7f050003;
+        public static final int imageButton_clean=0x7f05002a;
+        public static final int imageButton_menu=0x7f05002b;
+        public static final int imageButton_submit=0x7f05002c;
+        public static final int imageView_favorited=0x7f050026;
+        public static final int imageView_history=0x7f05001c;
+        public static final int imageView_icon=0x7f050022;
+        public static final int imageView_status_favorite=0x7f050010;
+        public static final int imageView_status_reply=0x7f05000e;
+        public static final int imageView_status_retweet=0x7f05000f;
+        public static final int imageView_timeline=0x7f05001b;
+        public static final int imageView_tweet=0x7f05001a;
+        public static final int left=0x7f050000;
+        public static final int linearLayout_dialogItems=0x7f050008;
+        public static final int linearLayout_dialogTitle=0x7f050007;
+        public static final int linearLayout_toastBody=0x7f050013;
+        public static final int linearlayout1=0x7f05002d;
+        public static final int linearlayout2=0x7f050032;
+        public static final int linearlayout3=0x7f05003b;
+        public static final int listView_history=0x7f050018;
+        public static final int listView_home=0x7f050014;
+        public static final int listView_mentions=0x7f050017;
+        public static final int listView_template=0x7f050027;
+        public static final int margin=0x7f050002;
+        public static final int relativeLayout1=0x7f050016;
+        public static final int relativeLayout2=0x7f050015;
+        public static final int relativeLayout_toastBase=0x7f050011;
+        public static final int right=0x7f050001;
+        public static final int seekBar_seekDialog=0x7f05000b;
+        public static final int selected_view=0x7f050004;
+        public static final int slidingmenulayout=0x7f05001f;
+        public static final int slidingmenumain=0x7f05001e;
+        public static final int slidingmenurowicon=0x7f050020;
+        public static final int slidingmenurowtitle=0x7f050021;
+        public static final int textView1=0x7f050042;
+        public static final int textView_count=0x7f050028;
+        public static final int textView_footer=0x7f050025;
+        public static final int textView_header=0x7f050023;
+        public static final int textView_menuItem=0x7f05001d;
+        public static final int textView_seekDialog=0x7f050009;
+        public static final int textView_seekLevel=0x7f05000a;
+        public static final int textView_text=0x7f050024;
+        public static final int textView_title=0x7f050019;
+        public static final int textView_toastText=0x7f050012;
+        public static final int text_navigate=0x7f050005;
+        public static final int user_bio=0x7f050039;
+        public static final int user_count_favorite=0x7f05003f;
+        public static final int user_count_followed=0x7f05003e;
+        public static final int user_count_following=0x7f05003d;
+        public static final int user_count_tweet=0x7f05003c;
+        public static final int user_homepage=0x7f050033;
+        public static final int user_icon=0x7f05002e;
+        public static final int user_isfollowed=0x7f050036;
+        public static final int user_isfollowing=0x7f050035;
+        public static final int user_isprotected=0x7f050037;
+        public static final int user_locate=0x7f050034;
+        public static final int user_name=0x7f050030;
+        public static final int user_screenname=0x7f05002f;
+        public static final int user_status=0x7f050041;
     }
     public static final class integer {
-        public static final int num_cols=0x7f090000;
+        public static final int num_cols=0x7f080000;
     }
     public static final class layout {
         public static final int dialog_auth_layout=0x7f030000;
@@ -251,12 +251,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int tweet_layout=0x7f030010;
         public static final int useractivity_layout=0x7f030011;
     }
-    public static final class raw {
-        public static final int templates=0x7f050000;
-    }
     public static final class string {
-        public static final int app_name=0x7f0a0000;
-        public static final int key_setting_textSize=0x7f0a0001;
+        public static final int app_name=0x7f090000;
+        public static final int key_setting_t4j=0x7f090002;
+        public static final int key_setting_textSize=0x7f090001;
     }
     public static final class style {
         /** 
@@ -269,11 +267,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
             backward-compatibility can go here.
         
          */
-        public static final int AppBaseTheme=0x7f0b0000;
+        public static final int AppBaseTheme=0x7f0a0000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f0b0001;
+        public static final int AppTheme=0x7f0a0001;
     }
     public static final class xml {
         public static final int preference=0x7f040000;

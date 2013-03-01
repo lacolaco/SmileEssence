@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <PreferenceCategory android:title="基本設定"><Preference android:title="文字サイズ" android:key="@string/key_setting_textSize" android:summary="文字のサイズだよ" android:defaultValue="10" /></PreferenceCategory>
-    
+    <PreferenceCategory android:title="基本設定" android:shouldDisableView="false"><Preference android:title="文字サイズ" android:key="@string/key_setting_textSize" android:summary="文字のサイズだよ" android:defaultValue="10" />
+</PreferenceCategory>
+
+<PreferenceCategory android:title="その他" android:shouldDisableView="false"><Preference android:title="Powered by twitter4j" android:summary="Apache License 2.0" android:key="@string/key_setting_t4j" /></PreferenceCategory>
 
 </PreferenceScreen>

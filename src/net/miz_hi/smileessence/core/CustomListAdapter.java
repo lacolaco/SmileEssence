@@ -3,6 +3,7 @@ package net.miz_hi.smileessence.core;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.view.MainActivity;
 import android.app.Activity;
@@ -146,10 +147,9 @@ public abstract class CustomListAdapter<T> extends BaseAdapter
 	{
 		synchronized (lock)
 		{
-			LogHelper.printD(Thread.currentThread().getName());
-			CustomListAdapter.super.notifyDataSetChanged();
+			CustomListAdapter.super.notifyDataSetChanged();			
 			array = (T[]) list.toArray();
-			count = array.length;	
+			count = array.length;
 		}
 	}
 

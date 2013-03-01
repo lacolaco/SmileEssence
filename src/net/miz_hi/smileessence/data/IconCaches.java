@@ -107,13 +107,11 @@ public class IconCaches
 					}					
 				}
 			});
-			LogHelper.printD("task wait");
 		}
 		else if (iconCache.containsKey(user.userId))
 		{
 			Icon icon = iconCache.get(user.userId);
 			viewIcon.setImageBitmap(icon.use());
-			LogHelper.printD("memory cache");
 		}
 		else
 		{
@@ -125,7 +123,6 @@ public class IconCaches
 				public void run()
 				{
 					checkIconCache(user);
-					LogHelper.printD("get");
 				}
 			});
 		}
