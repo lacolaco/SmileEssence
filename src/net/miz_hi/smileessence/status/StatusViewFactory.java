@@ -24,11 +24,33 @@ public class StatusViewFactory
 		TextView viewText = (TextView) baseView.findViewById(R.id.textView_text);
 		TextView viewFooter = (TextView) baseView.findViewById(R.id.textView_footer);
 		ImageView viewFavorited = (ImageView)baseView.findViewById(R.id.imageView_favorited);
-		if (!model.isRetweet && !model.isReply())
+
+		if (model.isRetweet)
 		{
-			model.backgroundColor = Client.getResource().getColor(R.color.White);
+			model.backgroundColor = Client.getColor(R.color.LightBlue);
 		}
+		else if (model.isReply)
+		{
+			model.backgroundColor = Client.getColor(R.color.LightRed);
+		}
+		else
+		{
+			model.backgroundColor = Client.getColor(R.color.White);
+		}
+		
 		baseView.setBackgroundColor(model.backgroundColor);
+		
+		if (model.isMine)
+		{
+			model.nameColor = Client.getColor(R.color.DarkBlue);
+		}
+		else
+		{
+			model.nameColor = Client.getColor(R.color.ThickGreen);
+		}
+		
+		model.textColor = Client.getColor(R.color.Gray);
+
 		viewIcon.setImageBitmap(IconCaches.getEmptyIcon());
 		if (IconCaches.getIcon(model.user.userId) != null)
 		{

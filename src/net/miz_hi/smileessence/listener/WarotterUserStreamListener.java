@@ -99,11 +99,11 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 			@Override
 			public void run()
 			{
-				if (model.isRetweet && model.isMine())
+				if (model.isRetweet && model.isMine)
 				{
 					eventListAdapter.addFirst(new StatusEventModel(status.getUser(), EnumStatusEventType.RETWEET, status));
 				}
-				else if (model.isReply())
+				else if (model.isReply)
 				{
 					eventListAdapter.addFirst(new StatusEventModel(status.getUser(), EnumStatusEventType.REPLY, status));
 				}
@@ -111,7 +111,7 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 				ListView homeListView = MainActivity.getInstance().getHomeListView();
 				ListView mentionsListView = MainActivity.getInstance().getMentionsListView();
 
-				if (model.isReply())
+				if (model.isReply)
 				{
 					mentionsListAdapter.addFirst(model);
 					if (mentionsListView.getFirstVisiblePosition() == 0 && mentionsListView.getChildAt(0) != null && mentionsListView.getChildAt(0).getTop() == 0)

@@ -1,5 +1,6 @@
 package net.miz_hi.smileessence.status;
 
+import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.core.CustomListAdapter;
 import net.miz_hi.smileessence.core.UiHandler;
@@ -27,6 +28,21 @@ public class StatusListAdapter extends CustomListAdapter<StatusModel>
 		}
 		StatusModel model = (StatusModel) getItem(position);
 		convertedView = StatusViewFactory.getView(getInflater(), model, convertedView);
+		if(model.isRetweet || model.isReply)
+		{
+			convertedView.setBackgroundColor(model.backgroundColor);
+		}
+		else
+		{
+			if(position % 2 == 0)
+			{
+				convertedView.setBackgroundColor(Client.getColor(R.color.White));
+			}
+			else
+			{
+				convertedView.setBackgroundColor(Client.getColor(R.color.LightGray));
+			}
+		}
 		convertedView.setOnClickListener(new StatusOnClickListener(getActivity(), model));
 		return convertedView;
 	}

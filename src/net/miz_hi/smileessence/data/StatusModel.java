@@ -38,9 +38,8 @@ public class StatusModel implements Comparable<StatusModel>
 	public int nameColor;
 	public int textColor;
 	public boolean isRetweet;
-
-	private ExtendedBoolean isReply = new ExtendedBoolean();
-	private ExtendedBoolean isMine = new ExtendedBoolean();
+	public boolean isReply;
+	public boolean isMine;
 
 	public StatusModel(Status status)
 	{
@@ -52,12 +51,10 @@ public class StatusModel implements Comparable<StatusModel>
 		{
 			retweeterScreenName = status.getUser().getScreenName();
 			shownStatus = status.getRetweetedStatus();
-			backgroundColor = Client.getColor(R.color.LightBlue);
 		}
 		else
 		{
 			shownStatus = status;
-			backgroundColor = -1;
 		}
 		
 		statusId = shownStatus.getId();
@@ -97,35 +94,9 @@ public class StatusModel implements Comparable<StatusModel>
 		headerText = getHeaderText(user);
 		footerText = getFooterText(status);
 
-		if (isMine())
-		{
-			nameColor = Client.getColor(R.color.DarkBlue);
-		}
-		else
-		{
-			nameColor = Client.getColor(R.color.ThickGreen);
-		}
+		isMine = user.isMe();
 
-		isReply.set(StatusUtils.isReply(shownStatus));
-		if (!isRetweet && isReply.get())
-		{
-			backgroundColor = Client.getColor(R.color.LightRed);
-		}
-		textColor = Client.getColor(R.color.Gray);
-	}
-
-	public boolean isMine()
-	{
-		if (!isMine.isInitialized())
-		{
-			isMine.set(user.isMe());
-		}
-		return isMine.get();
-	}
-
-	public boolean isReply()
-	{
-		return isReply.get();
+		isReply = StatusUtils.isReply(shownStatus);
 	}
 
 	public String getHeaderText(UserModel user)
