@@ -53,7 +53,7 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 	@Override
 	public void onDeletionNotice(final StatusDeletionNotice arg0)
 	{
-		LogHelper.print("on status detete");
+		LogHelper.printD("on status detete");
 		final StatusModel model = StatusStore.get(arg0.getStatusId());
 		if (model == null)
 		{

@@ -1,5 +1,6 @@
 package net.miz_hi.smileessence.async;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -43,11 +44,11 @@ public class AsyncTimelineGetter implements Callable<List<StatusModel>>
 			resp.addAll(TwitterManager.getOldTimeline(account, page));
 		}
 
-		LinkedList<StatusModel> list = new LinkedList<StatusModel>();
+		List<StatusModel> list = new ArrayList<StatusModel>();
 
 		for (Status st : resp)
 		{
-			list.offer(StatusStore.put(st));
+			list.add(0, StatusStore.put(st));
 		}
 
 		return list;

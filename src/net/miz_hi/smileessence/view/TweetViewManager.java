@@ -186,7 +186,7 @@ public class TweetViewManager
 	private void onOpenSlidingMenu()
 	{
 
-		LogHelper.print("open");
+		LogHelper.printD("open");
 		if (!StringUtils.isNullOrEmpty(text))
 		{
 			editTextTweet.setText(text);

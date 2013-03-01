@@ -146,7 +146,7 @@ public abstract class CustomListAdapter<T> extends BaseAdapter
 	{
 		synchronized (lock)
 		{
-			LogHelper.print(Thread.currentThread().getName());
+			LogHelper.printD(Thread.currentThread().getName());
 			CustomListAdapter.super.notifyDataSetChanged();
 			array = (T[]) list.toArray();
 			count = array.length;	

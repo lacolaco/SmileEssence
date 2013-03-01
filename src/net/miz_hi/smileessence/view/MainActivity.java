@@ -1,6 +1,7 @@
 package net.miz_hi.smileessence.view;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.regex.Pattern;
 
@@ -13,6 +14,7 @@ import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.auth.AuthentificationDB;
 import net.miz_hi.smileessence.auth.AuthorizeHelper;
 import net.miz_hi.smileessence.auth.Consumers;
+import net.miz_hi.smileessence.core.CustomListAdapter;
 import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.core.EnumRequestCode;
 import net.miz_hi.smileessence.core.UiHandler;
@@ -137,25 +139,31 @@ public class MainActivity extends Activity implements Runnable
 				{
 					connectUserStream();
 
-					Future<List<StatusModel>> f1 = MyExecutor.submit(new AsyncTimelineGetter(account, new Paging(1)));
-					Future<List<StatusModel>> f2 = MyExecutor.submit(new AsyncMentionsGetter(account, new Paging(1)));
+					final Future<List<StatusModel>> resp_home = MyExecutor.submit(new AsyncTimelineGetter(account, new Paging(1)));					
+					final Future<List<StatusModel>> resp_mentions = MyExecutor.submit(new AsyncMentionsGetter(account, new Paging(1)));
 					try
 					{
-						final List<StatusModel> oldTimeline = f1.get();
-						final List<StatusModel> oldMentions = f2.get();
-						new UiHandler()
+						List<StatusModel> oldTimeline = resp_home.get();
+						homeListAdapter.addAll(oldTimeline);
+						
+						MyExecutor.execute(new Runnable()
 						{
-
+							
 							@Override
 							public void run()
-							{
-								homeListAdapter.addAll(oldTimeline);
-								homeListAdapter.forceNotifyAdapter();
-								mentionsListAdapter.addAll(oldMentions);
-								mentionsListAdapter.forceNotifyAdapter();
-								historyListAdapter.forceNotifyAdapter();
+							{								
+								try
+								{
+									List<StatusModel> oldMentions = resp_mentions.get();
+									mentionsListAdapter.addAll(oldMentions);
+								}
+								catch (Exception e)
+								{
+									e.printStackTrace();
+								}								
 							}
-						}.post();
+						});
+						
 					}
 					catch (Exception e)
 					{
@@ -165,13 +173,14 @@ public class MainActivity extends Activity implements Runnable
 				else
 				{
 					handler.sendEmptyMessage(HANDLER_NOT_CONNECTION);
-					return;
 				}
-
-				break;
+				homeListAdapter.forceNotifyAdapter();
+				mentionsListAdapter.forceNotifyAdapter();
+				historyListAdapter.forceNotifyAdapter();
+				handler.sendEmptyMessage(HANDLER_SETUPED);
+				return;
 			}
 		}
-		handler.sendEmptyMessage(HANDLER_SETUPED);
 
 	}
 
@@ -186,7 +195,7 @@ public class MainActivity extends Activity implements Runnable
 		super.onCreate(bundle);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.setContentView(R.layout.mainactivity_layout);
-		LogHelper.print("main create");
+		LogHelper.printD("main create");
 
 		instance = this;
 		isFirstLoad = true;
@@ -206,7 +215,7 @@ public class MainActivity extends Activity implements Runnable
 	protected void onResume()
 	{
 		super.onResume();
-		LogHelper.print("main resume");
+		LogHelper.printD("main resume");
 		if (isFirstLoad)
 		{
 			isFirstLoad = false;
@@ -244,10 +253,7 @@ public class MainActivity extends Activity implements Runnable
 		}
 		else
 		{
-			textViewTitle.invalidate();
-			homeListView.invalidateViews();
-			mentionsListView.invalidateViews();
-			historyListView.invalidateViews();
+			refreshViews();
 		}
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
@@ -256,7 +262,7 @@ public class MainActivity extends Activity implements Runnable
 	protected void onPause()
 	{
 		super.onPause();
-		LogHelper.print("main pause");
+		LogHelper.printD("main pause");
 		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 
@@ -273,14 +279,14 @@ public class MainActivity extends Activity implements Runnable
 	protected void onRestart()
 	{
 		super.onRestart();
-		LogHelper.print("main restart");
+		LogHelper.printD("main restart");
 	}
 
 	@Override
 	protected void onDestroy()
 	{
 		super.onDestroy();
-		LogHelper.print("main destroy");
+		LogHelper.printD("main destroy");
 		if (twitterStream != null)
 		{
 			twitterStream.shutdown();
@@ -311,6 +317,14 @@ public class MainActivity extends Activity implements Runnable
 		}
 	}
 	
+	public void refreshViews()
+	{
+		textViewTitle.invalidate();
+		homeListView.invalidateViews();
+		mentionsListView.invalidateViews();
+		historyListView.invalidateViews();
+	}
+	
 	public void connectUserStream()
 	{
 		if(!TwitterManager.canConnect())
@@ -325,9 +339,20 @@ public class MainActivity extends Activity implements Runnable
 		}
 	}
 	
-	public int getCurrentList()
+	public int getCurrentListId()
 	{
 		return currentList;
+	}
+	
+	
+	public ListView getCurrentList()
+	{
+		return currentList == LIST_HOME ? homeListView : (currentList == LIST_MENTIONS ? mentionsListView : historyListView);
+	}
+
+	public CustomListAdapter getCurrentListAdapter()
+	{
+		return currentList == LIST_HOME ? homeListAdapter : (currentList == LIST_MENTIONS ? mentionsListAdapter : historyListAdapter);
 	}
 
 	public void changeVisibleList(int i)
@@ -350,6 +375,7 @@ public class MainActivity extends Activity implements Runnable
 						textViewTitle.setText("Mentions");
 						imageViewMentions.setImageResource(R.drawable.icon_home_w);
 						imageViewHistory.setImageResource(R.drawable.icon_history);
+						mentionsListAdapter.forceNotifyAdapter();
 						break;
 					}
 					case LIST_HISTORY:
@@ -360,6 +386,7 @@ public class MainActivity extends Activity implements Runnable
 						textViewTitle.setText("History");
 						imageViewMentions.setImageResource(R.drawable.icon_mentions_w);
 						imageViewHistory.setImageResource(R.drawable.icon_home_w);
+						historyListAdapter.forceNotifyAdapter();
 						break;
 					}
 				}
@@ -377,6 +404,7 @@ public class MainActivity extends Activity implements Runnable
 						textViewTitle.setText("Home");
 						imageViewMentions.setImageResource(R.drawable.icon_mentions_w);
 						imageViewHistory.setImageResource(R.drawable.icon_history);
+						homeListAdapter.forceNotifyAdapter();
 						break;
 					}
 					case LIST_HISTORY:
@@ -387,6 +415,7 @@ public class MainActivity extends Activity implements Runnable
 						textViewTitle.setText("History");
 						imageViewMentions.setImageResource(R.drawable.icon_mentions_w);
 						imageViewHistory.setImageResource(R.drawable.icon_home_w);
+						historyListAdapter.forceNotifyAdapter();
 						break;
 					}
 				}
@@ -404,6 +433,7 @@ public class MainActivity extends Activity implements Runnable
 						textViewTitle.setText("Home");
 						imageViewMentions.setImageResource(R.drawable.icon_mentions_w);
 						imageViewHistory.setImageResource(R.drawable.icon_history);
+						homeListAdapter.forceNotifyAdapter();
 						break;
 					}
 					case LIST_MENTIONS:
@@ -414,6 +444,7 @@ public class MainActivity extends Activity implements Runnable
 						textViewTitle.setText("Mentions");
 						imageViewMentions.setImageResource(R.drawable.icon_home_w);
 						imageViewHistory.setImageResource(R.drawable.icon_history);
+						mentionsListAdapter.forceNotifyAdapter();
 						break;
 					}
 				}

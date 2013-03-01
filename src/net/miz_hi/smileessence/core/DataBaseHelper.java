@@ -28,14 +28,14 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper
 		try
 		{
 			TableUtils.createTableIfNotExists(arg1, Account.class);
-			LogHelper.print("account table created");
+			LogHelper.printD("account table created");
 			TableUtils.createTableIfNotExists(arg1, Template.class);
-			LogHelper.print("template table created");
+			LogHelper.printD("template table created");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			LogHelper.print("error ontable created");
+			LogHelper.printD("error ontable created");
 		}
 	}
 
@@ -45,14 +45,14 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper
 		try
 		{
 			TableUtils.createTableIfNotExists(arg1, Account.class);
-			LogHelper.print("account table created");
+			LogHelper.printD("account table created");
 			TableUtils.createTableIfNotExists(arg1, Template.class);
-			LogHelper.print("template table created");
+			LogHelper.printD("template table created");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			LogHelper.print("error ontable created");
+			LogHelper.printD("error ontable created");
 		}
 	}
 }

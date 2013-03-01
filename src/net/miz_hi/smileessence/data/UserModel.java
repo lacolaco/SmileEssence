@@ -6,6 +6,7 @@ import java.util.concurrent.Future;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.MyExecutor;
+import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.util.TwitterManager;
 import twitter4j.User;
 
@@ -45,7 +46,8 @@ public class UserModel
 		followerCount = user.getFollowersCount();
 		favoriteCount = user.getFavouritesCount();
 		createdAt = user.getCreatedAt();
-		isProtected = user.isProtected();
+		isProtected = user.isProtected();		
+		IconCaches.checkIconCache(UserModel.this);
 		return this;
 	}
 

@@ -6,33 +6,32 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.Callable;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.core.SimpleAsyncTask;
 import net.miz_hi.smileessence.data.IconCaches;
 import net.miz_hi.smileessence.data.IconCaches.Icon;
 import net.miz_hi.smileessence.data.UserModel;
+import net.miz_hi.smileessence.util.LogHelper;
+import net.miz_hi.smileessence.view.MainActivity;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.widget.ImageView;
 
-public class AsyncIconGetter extends SimpleAsyncTask<Bitmap>
+public class AsyncIconGetter implements Callable<Bitmap>
 {
 	private UserModel user;
-	private ImageView viewIcon;
-	private long tag;
 
-	public AsyncIconGetter(UserModel user, ImageView viewIcon)
+	public AsyncIconGetter(UserModel user)
 	{
 		this.user = user;
-		this.viewIcon = viewIcon;
-		this.tag = user.userId;
 	}
 
 	@Override
-	protected Bitmap doInBackground(Object... params)
+	public Bitmap call() 
 	{
 		try
 		{
@@ -48,24 +47,15 @@ public class AsyncIconGetter extends SimpleAsyncTask<Bitmap>
 			FileOutputStream fos = new FileOutputStream(file);
 			bm.compress(CompressFormat.PNG, 90, fos);
 			fos.close();
-			return bm;
+			Icon icon = new Icon(bm, IconCaches.genIconName(user));
+			IconCaches.putIconToMap(user.userId, icon);
+			LogHelper.printD("icon get from web");
+			return icon.use();
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 			return IconCaches.getEmptyIcon();
-		}
-	}
-
-	@Override
-	protected void onPostExecute(Bitmap result)
-	{
-		Icon icon = new Icon(result, IconCaches.genIconName(user));
-		IconCaches.putIconToMap(user.userId, icon);
-		if (viewIcon != null && viewIcon.getTag() != null && viewIcon.getTag().equals(tag))
-		{
-			viewIcon.setImageBitmap(icon.use());
-			viewIcon.invalidate();
 		}
 	}
 }

@@ -13,11 +13,14 @@ public class UserStore
 	{
 		if (usersMap.containsKey(user.getId()))
 		{
-			usersMap.remove(user.getId());
+			return usersMap.get(user.getId()).updateData(user);
 		}
-		UserModel model = new UserModel(user);
-		usersMap.put(user.getId(), model);
-		return model;
+		else
+		{
+			UserModel model = new UserModel(user);
+			usersMap.put(user.getId(), model);
+			return model;
+		}
 	}
 
 	public static UserModel get(long id)

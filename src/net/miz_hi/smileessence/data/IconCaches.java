@@ -6,12 +6,15 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Future;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncIconGetter;
+import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.util.CountUpInteger;
+import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.util.StringUtils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,6 +25,7 @@ public class IconCaches
 {
 
 	private static ConcurrentHashMap<Long, Icon> iconCache = new ConcurrentHashMap<Long, Icon>();
+	private static ConcurrentHashMap<Long, Future<Bitmap>> futureMap = new ConcurrentHashMap<Long, Future<Bitmap>>();
 	private static File cacheDir = Client.getApplication().getExternalCacheDir();
 	private static Bitmap emptyIcon;
 	private static CountUpInteger counter = new CountUpInteger(5);
@@ -30,12 +34,11 @@ public class IconCaches
 	{
 		return iconCache.get(id);
 	}
-
-	public static void setIconBitmapToView(final UserModel user, final ImageView viewIcon)
+	
+	public static void checkIconCache(final UserModel user)
 	{
-		String fileName = genIconName(user);
-		File latestIconFile = Client.getApplicationFile(fileName);
-		File[] caches = cacheDir.listFiles();
+		final String fileName = genIconName(user);
+		final File latestIconFile = Client.getApplicationFile(fileName);
 		/*
 		 * URLからアイコンが更新されているかどうかの確認
 		 */
@@ -48,65 +51,83 @@ public class IconCaches
 		{
 			needsCacheUpdate = !latestIconFile.exists();
 		}
+
 		/*
 		 * 更新が不要
 		 */
 		if (!needsCacheUpdate)
 		{
-			/*
-			 * from メモリキャッシュ
-			 */
-			if (iconCache.containsKey(user.userId))
-			{
-				final Icon icon = iconCache.get(user.userId);
-				if (viewIcon != null)
-				{
-					new UiHandler()
-					{
-
-						@Override
-						public void run()
-						{
-							viewIcon.setImageBitmap(icon.use());
-						}
-					}.post();
-				}
-			}
-			/*
-			 * from ファイルキャッシュ
-			 */
-			else
+			if (!iconCache.containsKey(user.userId) && !futureMap.containsKey(user.userId))
 			{
 				Options opt = new Options();
 				opt.inPurgeable = true; // GC可能にする
 				Bitmap bm = BitmapFactory.decodeFile(latestIconFile.getPath(), opt);
-				final Icon icon = new Icon(bm, fileName);
-				putIconToMap(user.userId, icon);
-				if (viewIcon != null)
-				{
-					new UiHandler()
-					{
-
-						@Override
-						public void run()
-						{
-							viewIcon.setImageBitmap(icon.use());
-						}
-					}.post();
-				}
+				Icon icon = new Icon(bm, fileName);
+				IconCaches.putIconToMap(user.userId, icon);	
 			}
 		}
 		else
 		{
-			new UiHandler()
-			{
+			futureMap.put(user.userId, MyExecutor.submit(new AsyncIconGetter(user)));
+		}
+	}
 
+	public synchronized static void setIconBitmapToView(final UserModel user, final ImageView viewIcon)
+	{
+		if(futureMap.containsKey(user.userId))
+		{
+			viewIcon.setImageBitmap(getEmptyIcon());
+			final Future<Bitmap> f = futureMap.remove(user.userId);
+			MyExecutor.execute(new Runnable()
+			{
+				
 				@Override
 				public void run()
 				{
-					new AsyncIconGetter(user, viewIcon).addToQueue();
+					try
+					{
+						final Bitmap bm = f.get();
+						new UiHandler()
+						{
+							
+							@Override
+							public void run()
+							{			
+								if(viewIcon.getTag() == (Long)user.userId)
+								{
+									viewIcon.setImageBitmap(bm);
+									viewIcon.invalidate();
+								}
+							}
+						}.post();
+					}
+					catch (Exception e)
+					{
+						e.printStackTrace();
+					}					
 				}
-			}.post();
+			});
+			LogHelper.printD("task wait");
+		}
+		else if (iconCache.containsKey(user.userId))
+		{
+			Icon icon = iconCache.get(user.userId);
+			viewIcon.setImageBitmap(icon.use());
+			LogHelper.printD("memory cache");
+		}
+		else
+		{
+			viewIcon.setImageBitmap(getEmptyIcon());
+			MyExecutor.execute(new Runnable()
+			{
+				
+				@Override
+				public void run()
+				{
+					checkIconCache(user);
+					LogHelper.printD("get");
+				}
+			});
 		}
 	}
 

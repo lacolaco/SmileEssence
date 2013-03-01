@@ -1,17 +1,18 @@
 package net.miz_hi.smileessence.data;
 
+import java.util.Calendar;
 import java.util.Date;
 
-import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.status.StatusUtils;
-import net.miz_hi.smileessence.util.ExtendedBoolean;
+import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.util.Morse;
 import net.miz_hi.smileessence.util.StringUtils;
 import twitter4j.HashtagEntity;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.URLEntity;
+import twitter4j.User;
 import twitter4j.UserMentionEntity;
 import android.text.Html;
 
@@ -59,15 +60,9 @@ public class StatusModel implements Comparable<StatusModel>
 		
 		statusId = shownStatus.getId();
 		inReplyToStatusId = shownStatus.getInReplyToStatusId();
+		
+		user = UserStore.put(shownStatus.getUser());
 
-		if (UserStore.get(shownStatus.getUser().getId()) != null)
-		{
-			user = UserStore.get(shownStatus.getUser().getId());
-		}
-		else
-		{
-			user = UserStore.put(shownStatus.getUser());
-		}
 		screenName = user.screenName;
 		name = user.name;
 		
@@ -88,9 +83,7 @@ public class StatusModel implements Comparable<StatusModel>
 			}
 		}
 		userMentions = shownStatus.getUserMentionEntities();
-
-		IconCaches.setIconBitmapToView(user, null);
-
+		
 		headerText = getHeaderText(user);
 		footerText = getFooterText(status);
 

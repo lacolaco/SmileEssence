@@ -2,7 +2,9 @@ package net.miz_hi.smileessence.status;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.data.IconCaches;
+import net.miz_hi.smileessence.data.IconCaches.Icon;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
 import android.view.LayoutInflater;
@@ -51,15 +53,8 @@ public class StatusViewFactory
 		
 		model.textColor = Client.getColor(R.color.Gray);
 
-		viewIcon.setImageBitmap(IconCaches.getEmptyIcon());
-		if (IconCaches.getIcon(model.user.userId) != null)
-		{
-			viewIcon.setImageBitmap(IconCaches.getIcon(model.user.userId).use());
-		}
-		else
-		{
-			IconCaches.setIconBitmapToView(model.user, viewIcon);
-		}
+		viewIcon.setTag(model.user.userId);
+		IconCaches.setIconBitmapToView(model.user, viewIcon);
 		
 		viewFavorited.setVisibility(StatusStore.isFavorited(model.statusId) ? View.VISIBLE : View.GONE);
 		
