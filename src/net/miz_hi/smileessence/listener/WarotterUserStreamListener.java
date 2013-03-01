@@ -105,7 +105,7 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 				}
 				else if (model.isReply)
 				{
-					eventListAdapter.addFirst(new StatusEventModel(status.getUser(), EnumStatusEventType.REPLY, status));
+					eventListAdapter.notice(new StatusEventModel(status.getUser(), EnumStatusEventType.REPLY, status));
 				}
 
 				ListView homeListView = MainActivity.getInstance().getHomeListView();

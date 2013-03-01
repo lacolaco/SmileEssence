@@ -20,6 +20,11 @@ public class HistoryListAdapter extends CustomListAdapter<EventModel>
 		super(activity, 1000);
 		manager = new ToastManager(activity);
 	}	
+	
+	public void notice(EventModel model)
+	{
+		manager.noticeEvent(model);
+	}
 
 	@Override
 	public void addFirst(final EventModel model)
