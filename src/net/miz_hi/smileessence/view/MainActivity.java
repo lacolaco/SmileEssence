@@ -163,6 +163,9 @@ public class MainActivity extends Activity implements Runnable
 								}								
 							}
 						});
+						homeListAdapter.forceNotifyAdapter();
+						mentionsListAdapter.forceNotifyAdapter();
+						historyListAdapter.forceNotifyAdapter();
 						
 					}
 					catch (Exception e)
@@ -174,9 +177,7 @@ public class MainActivity extends Activity implements Runnable
 				{
 					handler.sendEmptyMessage(HANDLER_NOT_CONNECTION);
 				}
-				homeListAdapter.forceNotifyAdapter();
-				mentionsListAdapter.forceNotifyAdapter();
-				historyListAdapter.forceNotifyAdapter();
+
 				handler.sendEmptyMessage(HANDLER_SETUPED);
 				return;
 			}
@@ -255,6 +256,7 @@ public class MainActivity extends Activity implements Runnable
 		{
 			refreshViews();
 		}
+
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 

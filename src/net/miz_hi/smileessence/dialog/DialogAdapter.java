@@ -92,7 +92,11 @@ public abstract class DialogAdapter
 	
 	protected Dialog createMenuDialog()
 	{
-
+		if(dialog != null)
+		{
+			dialog.dismiss();
+		}
+		
 		dialog = new Dialog(activity);
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 

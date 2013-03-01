@@ -220,7 +220,7 @@ public class TweetViewManager
 				InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.showSoftInput(editTextTweet, InputMethodManager.SHOW_IMPLICIT);
 			}
-		}.postDelayed(50);
+		}.postDelayed(20);
 	
 	}
 
@@ -239,7 +239,7 @@ public class TweetViewManager
 				InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(editTextTweet.getWindowToken(), 0);
 			}
-		}.postDelayed(50);
+		}.postDelayed(10);
 	}
 
 	private void submit(final String text)
@@ -264,7 +264,7 @@ public class TweetViewManager
 					}
 					new AsyncTweetTask(update).addToQueue();
 				}
-			}.postDelayed(100);
+			}.postDelayed(10);
 		}
 	}
 	

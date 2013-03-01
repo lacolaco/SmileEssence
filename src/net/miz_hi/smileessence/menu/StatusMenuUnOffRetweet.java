@@ -18,7 +18,7 @@ public class StatusMenuUnOffRetweet extends StatusMenuItemBase
 	@Override
 	public boolean isVisible()
 	{
-		return Client.getPermission().canUnOffRetweet();
+		return Client.getPermission().canUnOffRetweet() && !model.user.isProtected;
 	}
 
 	@Override

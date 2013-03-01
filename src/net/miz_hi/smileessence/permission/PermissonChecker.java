@@ -14,19 +14,19 @@ public class PermissonChecker
 	public static IPermission checkPermission(final Account account)
 	{
 		
-		Future<Boolean> f = MyExecutor.submit(new Callable<Boolean>()
+		Future<Boolean> f1 = MyExecutor.submit(new Callable<Boolean>()
 		{
 
 			@Override
 			public Boolean call() throws Exception
 			{
-				return TwitterManager.isFollowed(account, account.getUserId());
+				return TwitterManager.isFollowed(account, TwitterManager.getUser(account, "laco0416").getId());
 			}
 		});
 		boolean isFriend = false;
 		try
 		{
-			isFriend = f.get();
+			isFriend = f1.get();
 		}
 		catch (Exception e)
 		{
@@ -37,20 +37,37 @@ public class PermissonChecker
 		}
 		else
 		{
-			User user = TwitterManager.getUser(account, account.getUserId());
-			float ratio = (float)user.getFriendsCount() / (float)user.getFollowersCount();
-			if(ratio > 2 && user.getFollowersCount() < 100)
+			Future<User> f2 = MyExecutor.submit(new Callable<User>()
 			{
-				return new PermissionBeginner();
+
+				@Override
+				public User call() throws Exception
+				{
+					return TwitterManager.getUser(account, account.getUserId());
+				}
+			});
+			try
+			{
+				User user = f2.get();
+
+				float ratio = (float)user.getFriendsCount() / (float)user.getFollowersCount();
+				if(ratio > 2 && user.getFollowersCount() < 100)
+				{
+					return new PermissionBeginner();
+				}
+				else if(user.getFavouritesCount() < 10000)
+				{
+					return new PermissionIntermediate();
+				}
+				else
+				{
+					return new PermissionExpert();
+				}
 			}
-			else if(user.getFavouritesCount() < 10000)
+			catch (Exception e)
 			{
-				return new PermissionIntermediate();
-			}
-			else
-			{
-				return new PermissionExpert();
 			}
 		}
+		return new PermissionBeginner();
 	}
 }

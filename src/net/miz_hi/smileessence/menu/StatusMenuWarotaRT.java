@@ -79,7 +79,7 @@ public class StatusMenuWarotaRT extends StatusMenuItemBase
 	@Override
 	public boolean isVisible()
 	{
-		return Client.getPermission().canWarotaRT();
+		return Client.getPermission().canWarotaRT() && !model.user.isProtected;
 	}
 
 }
