@@ -2,13 +2,11 @@ package net.miz_hi.smileessence;
 
 import java.io.File;
 
-import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.auth.AuthentificationDB;
 import net.miz_hi.smileessence.core.DataBaseHelper;
 import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.core.PreferenceHelper;
-import net.miz_hi.smileessence.data.TemplateDB;
 import net.miz_hi.smileessence.permission.IPermission;
 import net.miz_hi.smileessence.permission.PermissonChecker;
 import android.app.Application;
@@ -106,11 +104,12 @@ public class Client
 
 	public static void loadPreferences()
 	{
-		textSize = getPreferenceValue(EnumPreferenceKey.TEXT_SIZE);
-		if(textSize < 0)
+		int tSize = getPreferenceValue(EnumPreferenceKey.TEXT_SIZE);
+		if(tSize < 0)
 		{
-			textSize = 10;
+			putPreferenceValue(EnumPreferenceKey.TEXT_SIZE, 10);
 		}
+		textSize = getPreferenceValue(EnumPreferenceKey.TEXT_SIZE);
 	}
 
 	public static void initialize(Application app)

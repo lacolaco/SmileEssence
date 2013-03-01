@@ -3,6 +3,7 @@ package net.miz_hi.smileessence.view;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
+import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.dialog.TweetMenuAdapter;
 import net.miz_hi.smileessence.util.LogHelper;
@@ -103,7 +104,10 @@ public class TweetViewManager
 			{
 				submit(editTextTweet.getText().toString());
 				editTextTweet.setText("");
-				MainActivity.getInstance().toggleTweetView();
+				if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.AFTER_SUBMIT))
+				{
+					MainActivity.getInstance().toggleTweetView();
+				}
 			}
 		});
 
@@ -202,13 +206,7 @@ public class TweetViewManager
 
 	private void onOpenSlidingMenu()
 	{
-		LogHelper.printD("open");
-		new UiHandler()
-		{
-			
-			@Override
-			public void run()
-			{
+
 				if (!StringUtils.isNullOrEmpty(text))
 				{
 					editTextTweet.setText(text);
@@ -219,8 +217,7 @@ public class TweetViewManager
 				editTextTweet.requestFocus();
 				InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.showSoftInput(editTextTweet, InputMethodManager.SHOW_IMPLICIT);
-			}
-		}.postDelayed(20);
+
 	
 	}
 
@@ -239,7 +236,7 @@ public class TweetViewManager
 				InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(editTextTweet.getWindowToken(), 0);
 			}
-		}.postDelayed(10);
+		}.post();
 	}
 
 	private void submit(final String text)

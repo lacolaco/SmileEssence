@@ -6,4 +6,6 @@
     <string name="key_setting_textSize">text_size</string>
 
     <string name="key_setting_t4j">t4j_info</string>
+
+    <string name="key_setting_aftersubmit">after_submit</string>
 </resources>
