@@ -67,10 +67,6 @@ public class StatusModel implements Comparable<StatusModel>
 		name = user.name;
 		
 		text = shownStatus.getText();
-		if(Morse.isMorse(text))
-		{
-			text = text + "\n(" + Morse.mcToJa(text) + ")";
-		}
 		
 		urls = shownStatus.getURLEntities();
 		medias = shownStatus.getMediaEntities();

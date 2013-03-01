@@ -7,6 +7,7 @@ import net.miz_hi.smileessence.data.IconCaches;
 import net.miz_hi.smileessence.data.IconCaches.Icon;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
+import net.miz_hi.smileessence.util.Morse;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -62,7 +63,16 @@ public class StatusViewFactory
 		viewHeader.setText(model.headerText);
 		viewHeader.setTextColor(model.nameColor);
 		viewHeader.setTextSize(textSize);
-		viewText.setText(model.text);
+		String text;
+		if(Morse.isMorse(model.text))
+		{
+			text = model.text + "\n(" + Morse.mcToJa(model.text) + ")";
+		}
+		else
+		{
+			text = model.text;
+		}
+		viewText.setText(text);
 		viewText.setTextColor(model.textColor);
 		viewText.setTextSize(textSize);
 		viewFooter.setText(model.footerText);
