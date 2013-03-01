@@ -50,7 +50,7 @@ public class UserMenuSpam extends UserMenuItemBase
 	@Override
 	public boolean isVisible()
 	{
-		return true;
+		return !Client.getMainAccount().getScreenName().equals(userName);
 	}
 
 }

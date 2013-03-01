@@ -1,10 +1,9 @@
 package net.miz_hi.smileessence.view;
 
-import java.util.regex.Pattern;
-
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
+import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.dialog.TweetMenuAdapter;
 import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.util.StringUtils;
@@ -16,7 +15,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -25,7 +23,9 @@ import android.widget.Toast;
 
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.SlidingMenu.OnCloseListener;
+import com.slidingmenu.lib.SlidingMenu.OnClosedListener;
 import com.slidingmenu.lib.SlidingMenu.OnOpenListener;
+import com.slidingmenu.lib.SlidingMenu.OnOpenedListener;
 
 public class TweetViewManager
 {
@@ -44,7 +44,7 @@ public class TweetViewManager
 	public TweetViewManager(Activity activity)
 	{
 		this.activity = activity;
-		menu = createSlidingMenu();
+		createSlidingMenu();
 		text = "";
 		inReplyTo = -1;
 	}
@@ -150,9 +150,9 @@ public class TweetViewManager
 		return menu.isMenuShowing();
 	}
 
-	private SlidingMenu createSlidingMenu()
+	public void createSlidingMenu()
 	{
-		SlidingMenu menu = new SlidingMenu(activity);
+		menu = new SlidingMenu(activity);
 		menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		menu.setShadowWidthRes(R.dimen.shadow_width);
 		menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
@@ -168,6 +168,15 @@ public class TweetViewManager
 			@Override
 			public void onClose()
 			{
+				
+			}
+		});
+		menu.setOnClosedListener(new OnClosedListener()
+		{
+			
+			@Override
+			public void onClosed()
+			{
 				onCloseSlidingMenu();
 			}
 		});
@@ -177,40 +186,63 @@ public class TweetViewManager
 			@Override
 			public void onOpen()
 			{
+				
+			}
+		});
+		menu.setOnOpenedListener(new OnOpenedListener()
+		{
+			
+			@Override
+			public void onOpened()
+			{
 				onOpenSlidingMenu();
 			}
 		});
-		return menu;
 	}
 
 	private void onOpenSlidingMenu()
 	{
-
 		LogHelper.printD("open");
-		if (!StringUtils.isNullOrEmpty(text))
+		new UiHandler()
 		{
-			editTextTweet.setText(text);
-			text = "";
-		}
-		editTextTweet.setTextSize(Client.getTextSize());
-		editTextTweet.invalidate();
-		editTextTweet.setSelection(editTextTweet.getText().length());
-		editTextTweet.requestFocus();
-		InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.showSoftInput(editTextTweet, InputMethodManager.SHOW_FORCED);
+			
+			@Override
+			public void run()
+			{
+				if (!StringUtils.isNullOrEmpty(text))
+				{
+					editTextTweet.setText(text);
+					text = "";
+				}
+				editTextTweet.setTextSize(Client.getTextSize());
+				editTextTweet.setSelection(editTextTweet.getText().length());
+				editTextTweet.requestFocus();
+				InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.showSoftInput(editTextTweet, InputMethodManager.SHOW_IMPLICIT);
+			}
+		}.postDelayed(50);
+	
 	}
 
 	private void onCloseSlidingMenu()
 	{
-		InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(editTextTweet.getWindowToken(), 0);
 		if (!StringUtils.isNullOrEmpty(editTextTweet.getText().toString()))
 		{
 			text = editTextTweet.getText().toString();
 		}
+		new UiHandler()
+		{
+			
+			@Override
+			public void run()
+			{
+				InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(editTextTweet.getWindowToken(), 0);
+			}
+		}.postDelayed(50);
 	}
 
-	private void submit(String text)
+	private void submit(final String text)
 	{
 		if (StringUtils.isNullOrEmpty(text))
 		{
@@ -218,13 +250,21 @@ public class TweetViewManager
 		}
 		else
 		{
-			StatusUpdate update = new StatusUpdate(text);
-			if (inReplyTo >= 0)
+			new UiHandler()
 			{
-				update.setInReplyToStatusId(inReplyTo);
-				inReplyTo = -1;
-			}
-			new AsyncTweetTask(update).addToQueue();
+				
+				@Override
+				public void run()
+				{
+					StatusUpdate update = new StatusUpdate(text);
+					if (inReplyTo >= 0)
+					{
+						update.setInReplyToStatusId(inReplyTo);
+						inReplyTo = -1;
+					}
+					new AsyncTweetTask(update).addToQueue();
+				}
+			}.postDelayed(100);
 		}
 	}
 	
@@ -262,5 +302,10 @@ public class TweetViewManager
 	public EditText getEditTextTweet()
 	{
 		return editTextTweet;
+	}
+
+	public SlidingMenu getMenu()
+	{
+		return menu;
 	}
 }

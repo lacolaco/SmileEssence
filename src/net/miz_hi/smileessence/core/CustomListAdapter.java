@@ -147,9 +147,17 @@ public abstract class CustomListAdapter<T> extends BaseAdapter
 	{
 		synchronized (lock)
 		{
-			CustomListAdapter.super.notifyDataSetChanged();			
-			array = (T[]) list.toArray();
-			count = array.length;
+			new UiHandler()
+			{
+				
+				@Override
+				public void run()
+				{
+					array = (T[]) list.toArray();
+					count = array.length;
+					CustomListAdapter.super.notifyDataSetChanged();			
+				}
+			}.post();
 		}
 	}
 

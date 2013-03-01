@@ -19,7 +19,7 @@ public class UserMenuFollow extends UserMenuItemBase
 	@Override
 	public boolean isVisible()
 	{
-		return true;
+		return !Client.getMainAccount().getScreenName().equals(userName);
 	}
 
 	@Override

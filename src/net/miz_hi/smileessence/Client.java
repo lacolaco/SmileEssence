@@ -2,6 +2,7 @@ package net.miz_hi.smileessence;
 
 import java.io.File;
 
+import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.auth.AuthentificationDB;
 import net.miz_hi.smileessence.core.DataBaseHelper;
@@ -68,6 +69,7 @@ public class Client
 			putPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID, -1L);
 		}
 		mainAccount = account;
+
 		setPermission(PermissonChecker.checkPermission(mainAccount));
 	}
 
@@ -105,6 +107,10 @@ public class Client
 	public static void loadPreferences()
 	{
 		textSize = getPreferenceValue(EnumPreferenceKey.TEXT_SIZE);
+		if(textSize < 0)
+		{
+			textSize = 10;
+		}
 	}
 
 	public static void initialize(Application app)
@@ -114,7 +120,9 @@ public class Client
 		loadPreferences();
 		
 		DataBaseHelper helper = new DataBaseHelper(app);
-		helper.onCreate(SQLiteDatabase.openOrCreateDatabase(DataBaseHelper.dbName, null));
+		SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(DataBaseHelper.dbName, null);
+		helper.onCreate(db);
+		db.close();
 	}
 
 	public static final String HOMEPAGE_URL = "http://warotter.web.fc2.com/";

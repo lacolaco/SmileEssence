@@ -64,7 +64,7 @@ public class UserActivity extends Activity
 		user = model.getUser();
 		model.updateData(user);
 
-		userMenu = new UserMenuAdapter(this, user.getScreenName());
+		userMenu = new UserMenuAdapter(this, model);
 
 		screennameView = (TextView) findViewById(R.id.user_screenname);
 		nameView = (TextView) findViewById(R.id.user_name);

@@ -36,7 +36,6 @@ public class AsyncTweetTask extends SimpleAsyncTask<Boolean> implements Callable
 	@Override
 	protected void onPostExecute(Boolean result)
 	{
-		super.onPostExecute(result);
 		if (result)
 		{
 			new UiHandler()

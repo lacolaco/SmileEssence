@@ -38,7 +38,10 @@ public class TweetMenuAdapter extends DialogAdapter
 			{
 				list.add(new MenuItemParent(activity, this, "定型文", getTemplateMenu()));
 			}
-			list.add(new MenuItemParent(activity, this, "最近見たハッシュタグ", getHashtagMenu()));
+			if(!getHashtagMenu().isEmpty())
+			{
+				list.add(new MenuItemParent(activity, this, "最近見たハッシュタグ", getHashtagMenu()));
+			}
 			setTitle("メニュー");
 		}
 

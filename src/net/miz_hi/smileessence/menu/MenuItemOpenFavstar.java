@@ -17,7 +17,7 @@ public class MenuItemOpenFavstar extends MenuItemBase
 	@Override
 	public String getText()
 	{
-		return "Favstar‚ğŠJ‚­";
+		return "Favstar‚ğŠJ‚­(web)";
 	}
 
 	@Override
