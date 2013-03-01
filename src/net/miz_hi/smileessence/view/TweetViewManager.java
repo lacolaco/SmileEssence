@@ -6,6 +6,7 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
 import net.miz_hi.smileessence.dialog.TweetMenuAdapter;
+import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.util.StringUtils;
 import twitter4j.StatusUpdate;
 import android.app.Activity;
@@ -15,8 +16,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -72,9 +73,8 @@ public class TweetViewManager
 		imageButtonMenu = (ImageButton)menu.findViewById(R.id.imageButton_menu);
 
 		menuAdapter = new TweetMenuAdapter(activity, this);
-		
-		textViewCount.setText("140");
 		editTextTweet.setFocusable(true);
+		textViewCount.setText("140");
 		editTextTweet.addTextChangedListener(new TextWatcher()
 		{
 
@@ -123,6 +123,8 @@ public class TweetViewManager
 			@Override
 			public void onClick(View v)
 			{
+				InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(editTextTweet.getWindowToken(), 0);
 				menuAdapter.createMenuDialog(true).show();
 			}
 		});
@@ -183,6 +185,8 @@ public class TweetViewManager
 
 	private void onOpenSlidingMenu()
 	{
+
+		LogHelper.print("open");
 		if (!StringUtils.isNullOrEmpty(text))
 		{
 			editTextTweet.setText(text);
@@ -190,9 +194,10 @@ public class TweetViewManager
 		}
 		editTextTweet.setTextSize(Client.getTextSize());
 		editTextTweet.invalidate();
-		InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.showSoftInput(editTextTweet, InputMethodManager.SHOW_IMPLICIT);
+		editTextTweet.setSelection(editTextTweet.getText().length());
 		editTextTweet.requestFocus();
+		InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(editTextTweet, InputMethodManager.SHOW_FORCED);
 	}
 
 	private void onCloseSlidingMenu()
@@ -225,8 +230,11 @@ public class TweetViewManager
 	
 	public void addReply(String userName, long l, boolean append)
 	{
-		Pattern hasReply = Pattern.compile("^@([a-zA-Z0-9_]+).*");
-		if (append || hasReply.matcher(text).find())
+		if(!append)
+		{
+			text = "@" + userName + " ";
+		}
+		else
 		{
 			if (!text.contains("@" + userName))
 			{
@@ -236,10 +244,6 @@ public class TweetViewManager
 					text = "." + text;
 				}
 			}
-		}
-		else
-		{
-			text = "@" + userName + " ";
 		}
 		inReplyTo = l;
 	}
