@@ -1,18 +1,14 @@
 package net.miz_hi.smileessence.dialog;
 
-import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.menu.MenuItemReConnect;
-import net.miz_hi.smileessence.menu.MenuItemResetAccount;
+import net.miz_hi.smileessence.menu.MenuItemEditTemplate;
 import net.miz_hi.smileessence.menu.MenuItemOpenFavstar;
 import net.miz_hi.smileessence.menu.MenuItemOpenFollowers;
 import net.miz_hi.smileessence.menu.MenuItemOpenFriends;
+import net.miz_hi.smileessence.menu.MenuItemReConnect;
 import net.miz_hi.smileessence.menu.MenuItemReport;
 import net.miz_hi.smileessence.menu.MenuItemSetting;
-import net.miz_hi.smileessence.menu.MenuItemEditTemplate;
 import android.app.Activity;
 import android.app.Dialog;
-import android.widget.TextView;
 
 public class OptionMenuAdapter extends DialogAdapter
 {
@@ -39,7 +35,6 @@ public class OptionMenuAdapter extends DialogAdapter
 			list.add(new MenuItemOpenFollowers(activity, this));
 			list.add(new MenuItemOpenFriends(activity, this));
 			list.add(new MenuItemReport(activity, this));
-			list.add(new MenuItemResetAccount(activity, this));
 			
 			setTitle("ÉÅÉjÉÖÅ[");
 		}

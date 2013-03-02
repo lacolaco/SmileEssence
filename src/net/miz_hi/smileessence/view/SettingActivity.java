@@ -2,8 +2,10 @@ package net.miz_hi.smileessence.view;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.auth.AuthentificationDB;
 import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.dialog.SeekBarDialogHelper;
+import net.miz_hi.smileessence.dialog.YesNoDialogHelper;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.widget.Toast;
 
 public class SettingActivity extends PreferenceActivity
 {
@@ -55,6 +58,41 @@ public class SettingActivity extends PreferenceActivity
 			public boolean onPreferenceClick(Preference preference)
 			{
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(T4J_URL)));
+				return true;
+			}
+		});
+		
+		Preference deleteAccounts = findPreference(getResources().getString(R.string.key_setting_delete_accounts));
+		deleteAccounts.setOnPreferenceClickListener(new OnPreferenceClickListener()
+		{
+			public boolean onPreferenceClick(Preference preference)
+			{
+				YesNoDialogHelper helper = new YesNoDialogHelper(SettingActivity.this, "本当にリセットしますか？");
+				helper.setOnClickListener(new OnClickListener()
+				{
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						switch(which)
+						{
+							case DialogInterface.BUTTON_POSITIVE:
+							{
+								Toast.makeText(SettingActivity.this, "全ての認証情報をリセットします。再起動してください", Toast.LENGTH_SHORT).show();
+								AuthentificationDB.instance().deleteAll();
+								finish();
+								MainActivity.getInstance().finish();
+								break;
+							}
+							default:
+							{
+								dialog.dismiss();
+							}
+						}
+
+					}
+				});
+				helper.createYesNoAlert().show();
 				return true;
 			}
 		});

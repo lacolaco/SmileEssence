@@ -224,8 +224,6 @@ public class TweetViewManager
 		editTextTweet.requestFocus();
 		InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.showSoftInput(editTextTweet, InputMethodManager.SHOW_IMPLICIT);
-
-
 	}
 
 	private void onCloseSlidingMenu()

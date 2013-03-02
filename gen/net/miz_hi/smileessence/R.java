@@ -257,6 +257,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     public static final class string {
         public static final int app_name=0x7f090000;
         public static final int key_setting_aftersubmit=0x7f090003;
+        public static final int key_setting_delete_accounts=0x7f090004;
         public static final int key_setting_t4j=0x7f090002;
         public static final int key_setting_textSize=0x7f090001;
     }
