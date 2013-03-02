@@ -23,7 +23,7 @@ public class StatusMenuFavAndRetweet extends StatusMenuItemBase
 	@Override
 	public boolean isVisible()
 	{
-		return true;
+		return !model.user.isProtected;
 	}
 
 	@Override

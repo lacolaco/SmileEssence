@@ -73,6 +73,15 @@ public class StatusMenuAdapter extends DialogAdapter
 			viewRetweet.setOnClickListener(onClickRetweet);
 			viewFavorite.setOnClickListener(onClickFavorite);
 			
+			if(model.user.isProtected)
+			{
+				viewRetweet.setVisibility(View.INVISIBLE);
+			}
+			else
+			{
+				viewRetweet.setVisibility(View.VISIBLE);
+			}
+			
 			list.clear();
 			list.add(new StatusMenuFavAndRetweet(activity, this, model));
 			list.add(new StatusMenuAddReply(activity, this, model));
@@ -152,7 +161,7 @@ public class StatusMenuAdapter extends DialogAdapter
 				}
 			}
 		}
-		if(model.isRetweet)
+		if(model.isRetweet && !list.contains(model.retweeterScreenName))
 		{
 			list.add(model.retweeterScreenName);
 		}

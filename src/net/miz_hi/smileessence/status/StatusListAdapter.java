@@ -28,21 +28,20 @@ public class StatusListAdapter extends CustomListAdapter<StatusModel>
 		}
 		StatusModel model = (StatusModel) getItem(position);
 		convertedView = StatusViewFactory.getView(getInflater(), model, convertedView);
-		if(model.isRetweet || model.isReply)
-		{
-			convertedView.setBackgroundColor(model.backgroundColor);
-		}
-		else
+		if(!model.isRetweet && !model.isReply)
 		{
 			if(position % 2 == 0)
-			{
-				convertedView.setBackgroundColor(Client.getColor(R.color.White));
+			{				
+				model.backgroundColor = Client.getColor(R.color.White);
 			}
 			else
 			{
-				convertedView.setBackgroundColor(Client.getColor(R.color.LightGray));
+				model.backgroundColor = Client.getColor(R.color.LightGray);
 			}
 		}
+
+		convertedView.setBackgroundColor(model.backgroundColor);
+		
 		convertedView.setOnClickListener(new StatusOnClickListener(getActivity(), model));
 		return convertedView;
 	}
