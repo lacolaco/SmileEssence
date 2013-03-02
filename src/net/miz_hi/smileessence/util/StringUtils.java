@@ -9,7 +9,7 @@ public class StringUtils
 {
 	public static boolean isNullOrEmpty(String string)
 	{
-		return string == null || string.isEmpty();
+		return string == null || string.length() == 0;
 	}
 
 	public static String parseUrlToFileName(String string)
