@@ -12,6 +12,7 @@ import android.widget.Toast;
 public class ToastManager
 {
 
+	private static ToastManager instance;
 	private Activity activity;
 	private Toast toast;
 	private View viewToastBase;
@@ -21,9 +22,31 @@ public class ToastManager
 	private CountUpInteger counterSourceUser = new CountUpInteger(5);
 	private CountUpInteger counterTargetStatus = new CountUpInteger(5);
 
-	public ToastManager(Activity activity)
+	private ToastManager(Activity activity)
 	{
 		this.activity = activity;
+	}
+	
+	public static ToastManager getInstance()
+	{
+		if(instance == null)
+		{
+			instance = new ToastManager(MainActivity.getInstance());
+		}
+		return instance;
+	}
+	
+	public void toast(final String text)
+	{
+		new UiHandler()
+		{
+			
+			@Override
+			public void run()
+			{
+				Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+			}
+		}.post();
 	}
 
 	public void noticeEvent(final EventModel model)

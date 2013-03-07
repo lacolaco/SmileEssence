@@ -2,14 +2,12 @@ package net.miz_hi.smileessence.dialog;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.async.MyExecutor;
-import net.miz_hi.smileessence.menu.MenuItemBase;
-import net.miz_hi.smileessence.menu.MenuItemClose;
-import net.miz_hi.smileessence.util.StringUtils;
+import net.miz_hi.smileessence.command.CommandMenuClose;
+import net.miz_hi.smileessence.command.ICommand;
+import net.miz_hi.smileessence.command.IHideable;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
@@ -26,8 +24,9 @@ import android.widget.TextView;
 
 public abstract class DialogAdapter
 {
+	
 	protected Activity activity;
-	protected List<MenuItemBase> list;
+	protected List<ICommand> list;
 	protected static LayoutInflater layoutInflater;
 	protected static Dialog dialog;
 	protected View[] titleViews;
@@ -35,18 +34,18 @@ public abstract class DialogAdapter
 	public DialogAdapter(Activity activity)
 	{
 		this.activity = activity;
-		layoutInflater = LayoutInflater.from(activity);
-		list = new ArrayList<MenuItemBase>();
+		this.layoutInflater = LayoutInflater.from(activity);
+		this.list = new ArrayList<ICommand>();
 	}
 
-	public DialogAdapter setMenuItems(List<? extends MenuItemBase> list)
+	public DialogAdapter setMenuItems(List<? extends ICommand> list)
 	{
 		this.list.clear();
 		this.list.addAll(list);
 		return this;
 	}
 
-	public List<MenuItemBase> getList()
+	public List<ICommand> getList()
 	{
 		return list;
 	}
@@ -68,7 +67,7 @@ public abstract class DialogAdapter
 		}
 	}
 	
-	public void setTitleViews(View... views)
+	public void setTitle(View... views)
 	{
 		titleViews = views;
 	}
@@ -85,17 +84,14 @@ public abstract class DialogAdapter
 		title.setTextColor(Client.getResource().getColor(R.color.White));
 		title.setText(string);
 		title.setPadding(10, 15, 0, 15);
-		setTitleViews(title);
+		setTitle(title);
 	}
 
 	public abstract Dialog createMenuDialog(boolean init);
 	
 	protected Dialog createMenuDialog()
 	{
-		if(dialog != null)
-		{
-			dialog.dismiss();
-		}
+		dispose();
 		
 		dialog = new Dialog(activity);
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -116,14 +112,21 @@ public abstract class DialogAdapter
 			titleLinearLayout.addView(v);
 		}
 
-		for (MenuItemBase item : list)
+		for (ICommand item : list)
 		{
-			if (item.isVisible())
+			if(item instanceof IHideable)
+			{
+				if(((IHideable)item).getIsVisible())
+				{
+					itemsLinearLayout.addView(new MenuItemView(activity, item).getView());
+				}
+			}
+			else
 			{
 				itemsLinearLayout.addView(new MenuItemView(activity, item).getView());
 			}
 		}
-		itemsLinearLayout.addView(new MenuItemView(activity, new MenuItemClose(activity, this)).getView());
+		itemsLinearLayout.addView(new MenuItemView(activity, new CommandMenuClose()).getView());
 		itemsLinearLayout.setClickable(true);
 		dialog.setContentView(view);
 		LayoutParams lp = dialog.getWindow().getAttributes();
@@ -144,10 +147,10 @@ public abstract class DialogAdapter
 
 	public static class MenuItemView
 	{
-		private MenuItemBase item;
+		private ICommand item;
 		private LayoutInflater layoutInflater;
 
-		public MenuItemView(Activity activity, MenuItemBase item)
+		public MenuItemView(Activity activity, ICommand item)
 		{
 			this.item = item;
 			layoutInflater = LayoutInflater.from(activity);
@@ -157,7 +160,7 @@ public abstract class DialogAdapter
 		{
 			View view = layoutInflater.inflate(R.layout.menuitem_layout, null);
 			TextView textView = (TextView) view.findViewById(R.id.textView_menuItem);
-			textView.setText(item.getText());
+			textView.setText(item.getName());
 			view.setOnClickListener(new OnClickListener()
 			{
 				@Override

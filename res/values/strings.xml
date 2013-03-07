@@ -10,4 +10,6 @@
     <string name="key_setting_aftersubmit">after_submit</string>
 
     <string name="key_setting_delete_accounts">deleteAccounts</string>
+
+    <string name="key_setting_notice_unfav">notice_unfav</string>
 </resources>

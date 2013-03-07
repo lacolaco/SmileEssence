@@ -190,13 +190,13 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int linearlayout1=0x7f05002f;
         public static final int linearlayout2=0x7f050034;
         public static final int linearlayout3=0x7f05003d;
-        public static final int listView_history=0x7f050018;
-        public static final int listView_home=0x7f050014;
-        public static final int listView_mentions=0x7f050017;
+        public static final int listView_history=0x7f050019;
+        public static final int listView_home=0x7f050016;
+        public static final int listView_mentions=0x7f050018;
         public static final int listView_template=0x7f050029;
         public static final int margin=0x7f050002;
-        public static final int relativeLayout1=0x7f050016;
-        public static final int relativeLayout2=0x7f050015;
+        public static final int relativeLayout1=0x7f050014;
+        public static final int relativeLayout2=0x7f050017;
         public static final int relativeLayout_toastBase=0x7f050011;
         public static final int right=0x7f050001;
         public static final int seekBar_seekDialog=0x7f05000b;
@@ -213,7 +213,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int textView_seekDialog=0x7f050009;
         public static final int textView_seekLevel=0x7f05000a;
         public static final int textView_text=0x7f050024;
-        public static final int textView_title=0x7f050019;
+        public static final int textView_title=0x7f050015;
         public static final int textView_toastText=0x7f050012;
         public static final int text_navigate=0x7f050005;
         public static final int user_bio=0x7f05003b;
@@ -258,6 +258,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int app_name=0x7f090000;
         public static final int key_setting_aftersubmit=0x7f090003;
         public static final int key_setting_delete_accounts=0x7f090004;
+        public static final int key_setting_notice_unfav=0x7f090005;
         public static final int key_setting_t4j=0x7f090002;
         public static final int key_setting_textSize=0x7f090001;
     }

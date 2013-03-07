@@ -2,6 +2,8 @@ package net.miz_hi.smileessence.view;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import net.miz_hi.smileessence.Client;
@@ -13,9 +15,10 @@ import net.miz_hi.smileessence.data.IconCaches;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.UserModel;
 import net.miz_hi.smileessence.data.UserStore;
-import net.miz_hi.smileessence.dialog.UserMenuAdapter;
+import net.miz_hi.smileessence.menu.UserMenuAdapter;
 import net.miz_hi.smileessence.status.StatusViewFactory;
 import net.miz_hi.smileessence.util.StringUtils;
+import net.miz_hi.smileessence.util.TwitterManager;
 import twitter4j.Paging;
 import twitter4j.User;
 import android.app.Activity;
@@ -55,14 +58,27 @@ public class UserActivity extends Activity
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.useractivity_layout);
 
-		UserModel model = UserStore.get(getIntent().getLongExtra("user_id", -1));
-		if (model == null)
+		Future f1 = MyExecutor.submit(new Callable<User>()
 		{
+
+			@Override
+			public User call()
+			{
+				return TwitterManager.getUser(Client.getMainAccount(), getIntent().getStringExtra("screen_name"));
+			}
+		});
+		
+		try
+		{
+			user = (User) f1.get();
+		}
+		catch (Exception e1)
+		{
+			e1.printStackTrace();
 			finish();
 		}
 
-		user = model.getUser();
-		model.updateData(user);
+		UserModel model = UserStore.put(user);
 
 		userMenu = new UserMenuAdapter(this, model);
 

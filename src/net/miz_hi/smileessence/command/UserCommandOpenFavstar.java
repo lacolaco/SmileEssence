@@ -1,0 +1,38 @@
+package net.miz_hi.smileessence.command;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+
+public class UserCommandOpenFavstar extends UserCommand
+{
+
+	private Activity activity;
+
+	public UserCommandOpenFavstar(Activity activity, String userName)
+	{
+		super(userName);
+		this.activity = activity;
+	}
+
+	@Override
+	public String getName()
+	{
+		return "ユーザーのFavstarを開く";
+	}
+
+	@Override
+	public void workOnUiThread()
+	{
+		String url = "http://favstar.fm/users/" + userName + "/recent";
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+		activity.startActivity(intent);
+	}
+
+	@Override
+	public boolean getIsVisible()
+	{
+		return true;
+	}
+
+}

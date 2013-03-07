@@ -4,7 +4,7 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.dialog.StatusMenuAdapter;
+import net.miz_hi.smileessence.menu.StatusMenuAdapter;
 import android.app.Activity;
 import android.view.View;
 import android.view.View.OnClickListener;

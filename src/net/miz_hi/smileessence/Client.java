@@ -2,6 +2,7 @@ package net.miz_hi.smileessence;
 
 import java.io.File;
 
+import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.auth.AuthentificationDB;
 import net.miz_hi.smileessence.core.DataBaseHelper;
@@ -122,6 +123,8 @@ public class Client
 		SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(DataBaseHelper.dbName, null);
 		helper.onCreate(db);
 		db.close();
+		
+		MyExecutor.init();
 	}
 
 	public static final String HOMEPAGE_URL = "http://warotter.web.fc2.com/";

@@ -3,6 +3,7 @@
     
     <PreferenceCategory android:title="基本設定" android:shouldDisableView="false"><Preference android:title="文字サイズ" android:key="@string/key_setting_textSize" android:summary="文字のサイズだよ" android:defaultValue="10" />
     <CheckBoxPreference android:key="@string/key_setting_aftersubmit" android:defaultValue="true" android:title="投稿後にTLに戻る"/>
+    <CheckBoxPreference android:title="あんふぁぼ通知" android:key="@string/key_setting_notice_unfav" android:summary="する？" android:defaultValue="false"/>
 </PreferenceCategory>
 
 <PreferenceCategory android:title="その他" android:shouldDisableView="false"><Preference android:key="@string/key_setting_delete_accounts" android:summary="再起動後に認証してね" android:title="認証情報を削除"/><Preference android:title="Powered by twitter4j" android:summary="Apache License 2.0" android:key="@string/key_setting_t4j" />

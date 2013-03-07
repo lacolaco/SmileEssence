@@ -5,11 +5,20 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 public class MyExecutor
 {
 
-	private static ExecutorService executor = Executors.newFixedThreadPool(10);
+	private static ExecutorService executor;
+	
+	public static void init()
+	{
+		if(executor == null)
+		{	
+			executor = Executors.newFixedThreadPool(5);
+		}
+	}
 
 	public static ExecutorService getExecutor()
 	{
@@ -28,6 +37,13 @@ public class MyExecutor
 
 	public static void shutdown()
 	{
-		executor.shutdown();
+		try
+		{
+			executor.awaitTermination(1000, TimeUnit.MILLISECONDS);
+		}
+		catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

@@ -5,7 +5,8 @@ import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
 import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.core.UiHandler;
-import net.miz_hi.smileessence.dialog.TweetMenuAdapter;
+import net.miz_hi.smileessence.event.ToastManager;
+import net.miz_hi.smileessence.menu.TweetMenuAdapter;
 import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.util.StringUtils;
 import twitter4j.StatusUpdate;
@@ -31,51 +32,175 @@ import com.slidingmenu.lib.SlidingMenu.OnOpenedListener;
 public class TweetViewManager
 {
 
+	private static TweetViewManager instance;
 	private SlidingMenu menu;
-	private String text;
 	private long inReplyTo;
 	private Activity activity;
-	private TextView textViewCount;
 	private EditText editTextTweet;
-	private ImageButton imageButtonSubmit;
-	private ImageButton imageButtonClear;
-	private ImageButton imageButtonMenu;
 	private TweetMenuAdapter menuAdapter;
 
-	public TweetViewManager(Activity activity)
+	private TweetViewManager(Activity activity)
 	{
 		this.activity = activity;
 		createSlidingMenu();
-		text = "";
+		init();
 		inReplyTo = -1;
+	}
+	
+	public static void init(Activity activity)
+	{
+		instance = new TweetViewManager(activity);
+	}
+	
+	public static TweetViewManager getInstance()
+	{
+		return instance;
+	}
+	
+	public String getText()
+	{
+		return editTextTweet.getText().toString();
 	}
 
 	public void setText(String str)
 	{
-		text = str;
+		editTextTweet.setText(str);
+		editTextTweet.setSelection(str.length());
 	}
 	
 	public void appendText(String str)
 	{
-		text = text + " " + str;
+		String text = editTextTweet.getText().toString() + str;
+		setText(text);
+	}
+	
+	public void insertText(String str)
+	{
+		int cursor = editTextTweet.getSelectionEnd();
+		StringBuilder sb = new StringBuilder(editTextTweet.getText().toString());
+		sb.insert(cursor, str);
+		setText(sb.toString());
+		cursor = cursor + sb.length();
+		if (cursor > editTextTweet.getText().length())
+		{
+			cursor = editTextTweet.getText().length();
+		}
+		editTextTweet.setSelection(cursor);
 	}
 
-	public void setInReplyToStatusId(long l)
+	public void setInReplyToStatusId(long statusId)
 	{
-		inReplyTo = l;
+		inReplyTo = statusId;
 	}
 
-	public void init()
+	public void setReply(String userName, long statusId)
 	{
-		textViewCount = (TextView) menu.findViewById(R.id.textView_count);
+		setText("@" + userName + " ");
+		inReplyTo = statusId;
+	}
+	
+	public void addReply(String userName)
+	{
+		String text = editTextTweet.getText().toString();
+		if (text.startsWith("@"))
+		{
+			text = "." + text;
+		}
+		if (!text.contains("@" + userName))
+		{
+			text = text + " @" + userName + " ";
+		}
+		setText(text);
+		inReplyTo = -1;
+	}
+
+	public void setCursor(int index)
+	{
+		editTextTweet.setSelection(index);
+	}
+	
+	public void toggle()
+	{
+		new UiHandler()
+		{
+			
+			@Override
+			public void run()
+			{
+				menu.toggle();
+			}
+		}.post();
+	}
+
+	public void open()
+	{
+		new UiHandler()
+		{
+			
+			@Override
+			public void run()
+			{
+				menu.showMenu();
+			}
+		}.post();
+	}
+	
+	public void close()
+	{
+		new UiHandler()
+		{
+			
+			@Override
+			public void run()
+			{
+				menu.showContent();
+			}
+		}.post();
+	}
+
+	public boolean isOpening()
+	{
+		return menu.isMenuShowing();
+	}
+	
+	private void submit(final String text)
+	{
+		if (StringUtils.isNullOrEmpty(text))
+		{
+			ToastManager.getInstance().toast("‰½‚©“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
+		}
+		else
+		{
+			new UiHandler()
+			{
+				
+				@Override
+				public void run()
+				{
+					StatusUpdate update = new StatusUpdate(text);
+					if (inReplyTo >= 0)
+					{
+						update.setInReplyToStatusId(inReplyTo);
+						inReplyTo = -1;
+					}
+					new AsyncTweetTask(update).addToQueue();
+				}
+			}.postDelayed(10);
+		}
+	}
+
+	private void init()
+	{
 		editTextTweet = (EditText) menu.findViewById(R.id.editText_tweet);
-		imageButtonSubmit = (ImageButton) menu.findViewById(R.id.imageButton_submit);
-		imageButtonClear = (ImageButton) menu.findViewById(R.id.imageButton_clean);
-		imageButtonMenu = (ImageButton)menu.findViewById(R.id.imageButton_menu);
+		final TextView textViewCount = (TextView) menu.findViewById(R.id.textView_count);
+		ImageButton imageButtonSubmit = (ImageButton) menu.findViewById(R.id.imageButton_submit);
+		ImageButton imageButtonClear = (ImageButton) menu.findViewById(R.id.imageButton_clean);
+		ImageButton imageButtonMenu = (ImageButton)menu.findViewById(R.id.imageButton_menu);
 
-		menuAdapter = new TweetMenuAdapter(activity, this);
-		editTextTweet.setFocusable(true);
+		menuAdapter = new TweetMenuAdapter(activity);
 		textViewCount.setText("140");
+		editTextTweet.setFocusable(true);
+		editTextTweet.setTextSize(Client.getTextSize());
 		editTextTweet.addTextChangedListener(new TextWatcher()
 		{
 
@@ -86,14 +211,10 @@ public class TweetViewManager
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after)
-			{
-			}
-
+			public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+			
 			@Override
-			public void afterTextChanged(Editable s)
-			{
-			}
+			public void afterTextChanged(Editable s){}
 		});
 
 		imageButtonSubmit.setOnClickListener(new OnClickListener()
@@ -106,7 +227,7 @@ public class TweetViewManager
 				editTextTweet.setText("");
 				if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.AFTER_SUBMIT))
 				{
-					MainActivity.getInstance().toggleTweetView();
+					close();
 				}
 			}
 		});
@@ -134,27 +255,7 @@ public class TweetViewManager
 		});
 	}
 
-	public void toggle()
-	{
-		menu.toggle();
-	}
-
-	public void open()
-	{
-		menu.showMenu();
-	}
-
-	public void close()
-	{
-		menu.showContent();
-	}
-
-	public boolean isOpening()
-	{
-		return menu.isMenuShowing();
-	}
-
-	public void createSlidingMenu()
+	private void createSlidingMenu()
 	{
 		menu = new SlidingMenu(activity);
 		menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
@@ -166,15 +267,6 @@ public class TweetViewManager
 		View rootView = LayoutInflater.from(activity).inflate(R.layout.tweet_layout, null);
 		menu.setMenu(rootView);
 
-		menu.setOnCloseListener(new OnCloseListener()
-		{
-
-			@Override
-			public void onClose()
-			{
-				
-			}
-		});
 		menu.setOnClosedListener(new OnClosedListener()
 		{
 			
@@ -182,15 +274,6 @@ public class TweetViewManager
 			public void onClosed()
 			{
 				onCloseSlidingMenu();
-			}
-		});
-		menu.setOnOpenListener(new OnOpenListener()
-		{
-
-			@Override
-			public void onOpen()
-			{
-				
 			}
 		});
 		menu.setOnOpenedListener(new OnOpenedListener()
@@ -206,108 +289,19 @@ public class TweetViewManager
 
 	private void onOpenSlidingMenu()
 	{
-
-		if (!StringUtils.isNullOrEmpty(text))
-		{
-			editTextTweet.setText(text);
-			text = "";
-		}
 		editTextTweet.setTextSize(Client.getTextSize());
-		if(editTextTweet.getText().toString().contains(" RT @"))
+		if(getText().contains(" RT @"))
 		{
 			editTextTweet.setSelection(0);
 		}
-		else
-		{
-			editTextTweet.setSelection(editTextTweet.getText().length());
-		}
 		editTextTweet.requestFocus();
 		InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.showSoftInput(editTextTweet, InputMethodManager.SHOW_IMPLICIT);
+		imm.showSoftInput(editTextTweet, 0);
 	}
 
 	private void onCloseSlidingMenu()
 	{
-		if (!StringUtils.isNullOrEmpty(editTextTweet.getText().toString()))
-		{
-			text = editTextTweet.getText().toString();
-		}
-		new UiHandler()
-		{
-			
-			@Override
-			public void run()
-			{
-				InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(editTextTweet.getWindowToken(), 0);
-			}
-		}.post();
-	}
-
-	private void submit(final String text)
-	{
-		if (StringUtils.isNullOrEmpty(text))
-		{
-			Toast.makeText(activity, "‰½‚©“ü—Í‚µ‚Ä‚­‚¾‚³‚¢", Toast.LENGTH_SHORT).show();
-		}
-		else
-		{
-			new UiHandler()
-			{
-				
-				@Override
-				public void run()
-				{
-					StatusUpdate update = new StatusUpdate(text);
-					if (inReplyTo >= 0)
-					{
-						update.setInReplyToStatusId(inReplyTo);
-						inReplyTo = -1;
-					}
-					new AsyncTweetTask(update).addToQueue();
-				}
-			}.postDelayed(10);
-		}
-	}
-	
-	public void addReply(String userName, long l, boolean append)
-	{
-		if(!append)
-		{
-			text = "@" + userName + " ";
-		}
-		else
-		{
-			if (!text.contains("@" + userName))
-			{
-				text = text + "@" + userName + " ";
-				if (!text.startsWith("."))
-				{
-					text = "." + text;
-				}
-			}
-		}
-		inReplyTo = l;
-	}
-	
-	public void openToReply(String userName, long l, boolean append)
-	{
-		addReply(userName, l, append);
-		open();
-	}
-
-	public String getText()
-	{
-		return text;
-	}
-
-	public EditText getEditTextTweet()
-	{
-		return editTextTweet;
-	}
-
-	public SlidingMenu getMenu()
-	{
-		return menu;
+		InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(editTextTweet.getWindowToken(), 0);
 	}
 }

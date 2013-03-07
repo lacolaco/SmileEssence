@@ -24,13 +24,13 @@ import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.data.UserStore;
 import net.miz_hi.smileessence.dialog.AuthDialogHelper;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
-import net.miz_hi.smileessence.dialog.OptionMenuAdapter;
 import net.miz_hi.smileessence.dialog.ProgressDialogHelper;
 import net.miz_hi.smileessence.event.HistoryListAdapter;
 import net.miz_hi.smileessence.event.StatusEventModel;
 import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.listener.TimelineScrollListener;
 import net.miz_hi.smileessence.listener.WarotterUserStreamListener;
+import net.miz_hi.smileessence.menu.OptionMenuAdapter;
 import net.miz_hi.smileessence.status.StatusListAdapter;
 import net.miz_hi.smileessence.util.ExtendedBoolean;
 import net.miz_hi.smileessence.util.LogHelper;
@@ -72,7 +72,6 @@ public class MainActivity extends Activity implements Runnable
 	private static final int LIST_HISTORY = 2;
 	private static int currentList;
 
-	private TweetViewManager tweetViewManager;
 	private StatusListAdapter homeListAdapter;
 	private StatusListAdapter mentionsListAdapter;
 	private HistoryListAdapter historyListAdapter;
@@ -195,7 +194,7 @@ public class MainActivity extends Activity implements Runnable
 	{
 		super.onCreate(bundle);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		this.setContentView(R.layout.mainactivity_layout);
+		setContentView(R.layout.mainactivity_layout);
 		LogHelper.printD("main create");
 
 		instance = this;
@@ -204,11 +203,10 @@ public class MainActivity extends Activity implements Runnable
 		homeListAdapter = new StatusListAdapter(instance);
 		mentionsListAdapter = new StatusListAdapter(instance);
 		historyListAdapter = new HistoryListAdapter(instance);
-		optionMenuAdapter = new OptionMenuAdapter(instance, "ÉÅÉjÉÖÅ[");
+		optionMenuAdapter = new OptionMenuAdapter(instance);
 		authHelper = new AuthorizeHelper(instance, Consumers.getDedault());
-		tweetViewManager = new TweetViewManager(instance);
-		tweetViewManager.init();
 
+		TweetViewManager.init(instance);
 		viewSetUp();
 	}
 
@@ -272,8 +270,8 @@ public class MainActivity extends Activity implements Runnable
 	public void onConfigurationChanged(Configuration newConfig)
 	{
 		super.onConfigurationChanged(newConfig);
-		tweetViewManager.open();
-		tweetViewManager.close();
+		TweetViewManager.getInstance().open(); //ïùÇÃîΩâfÇÃÇΩÇﬂÇ…äJï¬
+		TweetViewManager.getInstance().close(); 
 		DialogAdapter.dispose();
 	}
 
@@ -297,7 +295,7 @@ public class MainActivity extends Activity implements Runnable
 		IconCaches.clearCache();
 		StatusStore.clearCache();
 		UserStore.clearCache();
-		
+		MyExecutor.shutdown();
 		instance = null;
 	}
 
@@ -468,40 +466,14 @@ public class MainActivity extends Activity implements Runnable
 		}
 	}
 
-	public void toggleTweetView()
-	{
-		tweetViewManager.toggle();
-	}
-
-	public void openTweetView()
-	{
-		tweetViewManager.open();
-	}
-
-	public void openTweetViewToTweet(String str)
-	{
-		tweetViewManager.setText(str);
-		tweetViewManager.open();
-	}
-
-	public void openTweetViewToReply(String userName, long l, boolean append)
-	{
-		tweetViewManager.openToReply(userName, l, append);
-	}
-
-	public void closeTweetView()
-	{
-		tweetViewManager.close();
-	}
-
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event)
 	{
 		if (keyCode == KeyEvent.KEYCODE_BACK)
 		{
-			if (tweetViewManager.isOpening())
+			if (TweetViewManager.getInstance().isOpening())
 			{
-				tweetViewManager.toggle();
+				TweetViewManager.getInstance().toggle();
 				return false;
 			}
 			else if (currentList != LIST_HOME)
@@ -540,7 +512,7 @@ public class MainActivity extends Activity implements Runnable
 			@Override
 			public void onClick(View v)
 			{
-				toggleTweetView();
+				TweetViewManager.getInstance().toggle();
 			}
 		});
 		
@@ -583,11 +555,6 @@ public class MainActivity extends Activity implements Runnable
 		historyListView.setVisibility(View.INVISIBLE);
 		historyListView.setFastScrollEnabled(true);
 		historyListView.setOnScrollListener(new TimelineScrollListener(historyListAdapter));
-	}
-
-	public TweetViewManager getTweetViewManager()
-	{
-		return tweetViewManager;
 	}
 
 	public ListView getHomeListView()

@@ -24,10 +24,10 @@ public class StatusModel implements Comparable<StatusModel>
 	public long statusId;
 	public long inReplyToStatusId;
 	public UserModel user;
+	public UserModel retweeter;
 	public String screenName;
 	public String name;
 	public String text;
-	public String retweeterScreenName;
 	public String headerText;
 	public String footerText;
 	public Date createdAt;
@@ -50,7 +50,7 @@ public class StatusModel implements Comparable<StatusModel>
 		Status shownStatus;
 		if (isRetweet)
 		{
-			retweeterScreenName = status.getUser().getScreenName();
+			retweeter = UserStore.put(status.getUser());
 			shownStatus = status.getRetweetedStatus();
 		}
 		else

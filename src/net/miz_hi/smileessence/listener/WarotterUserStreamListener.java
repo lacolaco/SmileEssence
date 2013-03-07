@@ -1,6 +1,7 @@
 package net.miz_hi.smileessence.listener;
 
 import net.miz_hi.smileessence.Client;
+import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
@@ -272,17 +273,20 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 	@Override
 	public void onUnfavorite(final User sourceUser, User targetUser, final Status targetStatus)
 	{
-		if (targetUser.getId() == Client.getMainAccount().getUserId())
+		if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.NOTICE_UNFAV))
 		{
-			new UiHandler()
+			if (targetUser.getId() == Client.getMainAccount().getUserId())
 			{
-				
-				@Override
-				public void run()
+				new UiHandler()
 				{
-					eventListAdapter.addFirst(new StatusEventModel(sourceUser, EnumStatusEventType.UNFAVORITE, targetStatus));
-				}
-			}.post();
+
+					@Override
+					public void run()
+					{
+						eventListAdapter.addFirst(new StatusEventModel(sourceUser, EnumStatusEventType.UNFAVORITE, targetStatus));
+					}
+				}.post();
+			}
 		}
 	}
 
