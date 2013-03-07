@@ -6,6 +6,7 @@ import net.miz_hi.smileessence.async.AsyncTweetTask;
 import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.event.ToastManager;
+import net.miz_hi.smileessence.listener.TweetViewTouchListener;
 import net.miz_hi.smileessence.menu.TweetMenuAdapter;
 import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.util.StringUtils;
@@ -266,7 +267,7 @@ public class TweetViewManager
 		menu.attachToActivity(activity, SlidingMenu.SLIDING_WINDOW);
 		View rootView = LayoutInflater.from(activity).inflate(R.layout.tweet_layout, null);
 		menu.setMenu(rootView);
-
+		rootView.setOnTouchListener(new TweetViewTouchListener());
 		menu.setOnClosedListener(new OnClosedListener()
 		{
 			
@@ -295,13 +296,21 @@ public class TweetViewManager
 			editTextTweet.setSelection(0);
 		}
 		editTextTweet.requestFocus();
-		InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.showSoftInput(editTextTweet, 0);
+		if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.OPEN_IME))
+		{
+			InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(editTextTweet, 0);
+		}
 	}
 
 	private void onCloseSlidingMenu()
 	{
 		InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(editTextTweet.getWindowToken(), 0);
+	}
+
+	public SlidingMenu getSlidingMenu()
+	{
+		return menu;
 	}
 }

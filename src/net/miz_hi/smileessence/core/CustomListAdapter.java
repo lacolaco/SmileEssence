@@ -3,14 +3,12 @@ package net.miz_hi.smileessence.core;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.util.LogHelper;
-import net.miz_hi.smileessence.view.MainActivity;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 
 public abstract class CustomListAdapter<T> extends BaseAdapter
 {
@@ -174,7 +172,7 @@ public abstract class CustomListAdapter<T> extends BaseAdapter
 	{
 		return count;
 	}
-
+	
 	@Override
 	public Object getItem(int position)
 	{

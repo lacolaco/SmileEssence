@@ -109,20 +109,9 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 					eventListAdapter.notice(new StatusEventModel(status.getUser(), EnumStatusEventType.REPLY, status));
 				}
 
-				ListView homeListView = MainActivity.getInstance().getHomeListView();
-				ListView mentionsListView = MainActivity.getInstance().getMentionsListView();
-
 				if (model.isReply)
 				{
 					mentionsListAdapter.addFirst(model);
-					if (mentionsListView.getFirstVisiblePosition() == 0 && mentionsListView.getChildAt(0) != null && mentionsListView.getChildAt(0).getTop() == 0)
-					{
-						mentionsListAdapter.setCanNotifyOnChange(true);
-					}
-					else
-					{
-						mentionsListAdapter.setCanNotifyOnChange(false);
-					}
 					mentionsListAdapter.notifyAdapter();
 				}
 				homeListAdapter.addFirst(model);				
@@ -215,8 +204,8 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 				@Override
 				public void run()
 				{
-					MainActivity.getInstance().getHomeListView().invalidateViews();
-					MainActivity.getInstance().getMentionsListView().invalidateViews();
+					MainActivity.getInstance().getHomeListAdapter().forceNotifyAdapter();
+					MainActivity.getInstance().getMentionsListAdapter().forceNotifyAdapter();
 				}
 			}.post();
 		}

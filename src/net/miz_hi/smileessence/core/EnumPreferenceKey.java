@@ -9,6 +9,7 @@ public enum EnumPreferenceKey
 	TEXT_SIZE(EnumValueType.INTEGER, Client.getResource().getString(R.string.key_setting_textSize), 10),
 	AFTER_SUBMIT(EnumValueType.BOOLEAN, Client.getResource().getString(R.string.key_setting_aftersubmit), true),
 	NOTICE_UNFAV(EnumValueType.BOOLEAN, Client.getResource().getString(R.string.key_setting_notice_unfav), false),
+	OPEN_IME(EnumValueType.BOOLEAN, Client.getResource().getString(R.string.key_setting_open_ime), true),
 
 	;
 

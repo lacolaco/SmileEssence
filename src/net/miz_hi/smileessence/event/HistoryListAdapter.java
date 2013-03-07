@@ -36,23 +36,7 @@ public class HistoryListAdapter extends CustomListAdapter<EventModel>
 			public void run()
 			{
 				manager.noticeEvent(model);		
-
-				ListView historyListView = MainActivity.getInstance().getHistoryListView();
-
 				HistoryListAdapter.super.addFirst(model);
-
-				if (historyListView.getFirstVisiblePosition() == 0 && historyListView.getChildAt(0) != null && historyListView.getChildAt(0).getTop() == 0)
-				{
-					setCanNotifyOnChange(true);
-				}
-				else if(historyListView.getChildCount() == 0)
-				{
-					setCanNotifyOnChange(true);
-				}					
-				else
-				{
-					setCanNotifyOnChange(false);
-				}
 				notifyAdapter();
 			}
 		}.post();

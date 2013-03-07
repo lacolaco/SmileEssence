@@ -5,13 +5,13 @@ import android.util.Log;
 public class LogHelper
 {
 
-	public static void printD(String text)
+	public static void printD(Object obj)
 	{
-		Log.d("SE", text);
+		Log.d("SE", obj.toString());
 	}
 
-	public static void printI(String text)
+	public static void printI(Object obj)
 	{
-		Log.i("SE", text);
+		Log.i("SE", obj.toString());
 	}
 }

@@ -7,6 +7,7 @@ import twitter4j.User;
 import android.app.Activity;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 public class ToastManager
@@ -38,6 +39,10 @@ public class ToastManager
 	
 	public void toast(final String text)
 	{
+		if(activity == null || activity.isFinishing())
+		{
+			return;
+		}
 		new UiHandler()
 		{
 			

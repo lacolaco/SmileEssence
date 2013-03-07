@@ -1,95 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+	<android.support.v4.view.ViewPager
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:splitMotionEvents="true" >
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout1"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/Black" >
-
-        <TextView
-            android:id="@+id/textView_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/MetroBlue"
-            android:textStyle="bold"
-            android:typeface="sans" />
-    </RelativeLayout>
-
-    <ListView
-        android:id="@+id/listView_home"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/relativeLayout2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/relativeLayout1"
-        android:background="@color/White" />
-
-    <ListView
-        android:id="@+id/listView_mentions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/relativeLayout2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/relativeLayout1"
-        android:background="@color/White"/>
-    
-    <ListView
-        android:id="@+id/listView_history"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/relativeLayout2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/relativeLayout1"
-        android:background="@color/White"/>
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/Black" >
-
-        <ImageView
-            android:id="@+id/imageView_tweet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="40dp"
-            android:adjustViewBounds="false"
-            android:padding="10dp"
-            android:src="@drawable/icon_tweet_w" />
-
-        <ImageView
-            android:id="@+id/imageView_timeline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:padding="10dp"
-            android:src="@drawable/icon_home_w" />
-
-        <ImageView
-            android:id="@+id/imageView_history"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="40dp"
-            android:padding="10dp"
-            android:src="@drawable/icon_history" />
-    </RelativeLayout>
+    android:id="@+id/viewpager"/>
 
 </RelativeLayout>

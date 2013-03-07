@@ -12,4 +12,6 @@
     <string name="key_setting_delete_accounts">deleteAccounts</string>
 
     <string name="key_setting_notice_unfav">notice_unfav</string>
+
+    <string name="key_setting_open_ime">open_ime</string>
 </resources>

@@ -6,6 +6,7 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.core.SimpleAsyncTask;
 import net.miz_hi.smileessence.core.UiHandler;
+import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.util.TwitterManager;
 import net.miz_hi.smileessence.view.MainActivity;
 import twitter4j.StatusUpdate;
@@ -38,26 +39,11 @@ public class AsyncTweetTask extends SimpleAsyncTask<Boolean> implements Callable
 	{
 		if (result)
 		{
-			new UiHandler()
-			{
-				@Override
-				public void run()
-				{
-					Toast.makeText(MainActivity.getInstance(), TwitterManager.MESSAGE_TWEET_SUCCESS, Toast.LENGTH_SHORT).show();
-				}
-			}.post();
+			ToastManager.getInstance().toast(TwitterManager.MESSAGE_TWEET_SUCCESS);
 		}
 		else
 		{
-			new UiHandler()
-			{
-
-				@Override
-				public void run()
-				{
-					Toast.makeText(MainActivity.getInstance(), TwitterManager.MESSAGE_TWEET_DEPLICATE, Toast.LENGTH_SHORT).show();
-				}
-			}.post();
+			ToastManager.getInstance().toast(TwitterManager.MESSAGE_TWEET_DEPLICATE);
 		}
 	}
 
