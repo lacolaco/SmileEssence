@@ -51,7 +51,7 @@ public class ToastManager
 			{
 				Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
 			}
-		}.post();
+		}.postDelayed(200);
 	}
 
 	public void noticeEvent(final EventModel model)
