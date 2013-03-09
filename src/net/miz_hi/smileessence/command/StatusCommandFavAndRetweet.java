@@ -9,7 +9,7 @@ import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.util.TwitterManager;
 
-public class StatusCommandFavAndRetweet extends StatusCommand
+public class StatusCommandFavAndRetweet extends StatusCommand implements IHideable
 {
 
 	public StatusCommandFavAndRetweet(StatusModel model)
@@ -51,6 +51,17 @@ public class StatusCommandFavAndRetweet extends StatusCommand
 				}
 			}
 		});
+	}
+
+	@Override
+	public boolean getIsVisible()
+	{
+		return !status.user.isProtected;
+	}
+
+	@Override
+	public void setIsVisible(boolean value)
+	{
 	}
 
 }
