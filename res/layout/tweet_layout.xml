@@ -29,7 +29,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
             android:gravity="top"
-            android:inputType="textMultiLine"
+            android:inputType="text|textMultiLine"
             android:textAppearance="?android:attr/textAppearanceMedium" >
 
             <requestFocus />
