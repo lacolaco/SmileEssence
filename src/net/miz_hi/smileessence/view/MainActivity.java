@@ -22,6 +22,7 @@ import net.miz_hi.smileessence.dialog.AuthDialogHelper;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 import net.miz_hi.smileessence.dialog.ProgressDialogHelper;
 import net.miz_hi.smileessence.event.HistoryListAdapter;
+import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.listener.WarotterUserStreamListener;
 import net.miz_hi.smileessence.menu.OptionMenuAdapter;
 import net.miz_hi.smileessence.status.StatusListAdapter;
@@ -42,13 +43,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.PagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -61,7 +61,7 @@ public class MainActivity extends FragmentActivity implements Runnable
 	private static final int HANDLER_OAUTH_SUCCESS = 2;
 	private static final int HANDLER_NOT_CONNECTION = 3;
 
-	private PagerAdapter pageAdapter;
+	private FragmentPagerAdapter pageAdapter;
 	private StatusListAdapter homeListAdapter;
 	private StatusListAdapter mentionsListAdapter;
 	private HistoryListAdapter historyListAdapter;
@@ -72,6 +72,7 @@ public class MainActivity extends FragmentActivity implements Runnable
 	private TwitterStream twitterStream;
 	private boolean isFirstLoad = false;
 	private ProgressDialog progressDialog;
+	private ViewPager viewPager;
 	private Handler handler = new Handler()
 	{
 		@Override
@@ -86,12 +87,12 @@ public class MainActivity extends FragmentActivity implements Runnable
 				}
 				case HANDLER_OAUTH_SUCCESS:
 				{
-					new Thread(instance).start();
+					MyExecutor.execute(instance);
 					break;
 				}
 				case HANDLER_NOT_CONNECTION:
 				{
-					Toast.makeText(instance, "ê⁄ë±èoóàÇ‹ÇπÇÒ", Toast.LENGTH_LONG).show();
+					ToastManager.getInstance().toast("ê⁄ë±èoóàÇ‹ÇπÇÒ");
 					break;
 				}
 			}
@@ -132,7 +133,7 @@ public class MainActivity extends FragmentActivity implements Runnable
 			{
 				progressDialog = new ProgressDialog(instance);
 				ProgressDialogHelper.makeProgressDialog(instance, progressDialog).show();
-				new Thread(instance).start();
+				MyExecutor.execute(instance);
 			}
 			else
 			{
@@ -280,12 +281,15 @@ public class MainActivity extends FragmentActivity implements Runnable
 			}
 			progressDialog = new ProgressDialog(instance);
 			ProgressDialogHelper.makeProgressDialog(instance, progressDialog).show();
-			new Thread(instance).start();
+			MyExecutor.execute(instance);
 		}
 	}
 	
 	public void refreshViews()
 	{
+		homeListAdapter.forceNotifyAdapter();
+		mentionsListAdapter.forceNotifyAdapter();
+		historyListAdapter.forceNotifyAdapter();
 		pageAdapter.notifyDataSetChanged();
 	}
 	
@@ -352,7 +356,7 @@ public class MainActivity extends FragmentActivity implements Runnable
 		
 		pageAdapter = new ListPagerAdapter(super.getSupportFragmentManager(), fragments);
 		
-		final ViewPager viewPager = (ViewPager)findViewById(R.id.viewpager);
+		viewPager = (ViewPager)findViewById(R.id.viewpager);
 		viewPager.setAdapter(pageAdapter);
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() 
 		{
@@ -360,7 +364,9 @@ public class MainActivity extends FragmentActivity implements Runnable
 			public void onPageScrollStateChanged(int arg0) { }
 
 			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) { }
+			public void onPageScrolled(int arg0, float arg1, int arg2) 
+			{ 
+			}
 
 			@Override
 			public void onPageSelected(int position) 

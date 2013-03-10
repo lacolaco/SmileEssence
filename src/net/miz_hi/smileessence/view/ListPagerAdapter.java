@@ -36,4 +36,10 @@ public class ListPagerAdapter extends FragmentPagerAdapter
 	{
 		return pagesMap[arg0];
 	}
+
+	@Override
+	public int getItemPosition(Object object)
+	{
+		return super.POSITION_NONE;
+	}
 }
