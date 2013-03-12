@@ -1,9 +1,8 @@
 package net.miz_hi.smileessence.data;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import twitter4j.Status;
@@ -30,6 +29,11 @@ public class StatusStore
 			statusesMap.put(status.getId(), model);
 		}
 		return model;
+	}
+	
+	public static List<StatusModel> getList()
+	{
+		return new ArrayList<StatusModel>(statusesMap.values());
 	}
 
 	public static StatusModel get(long id)

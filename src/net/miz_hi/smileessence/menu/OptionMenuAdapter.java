@@ -8,6 +8,7 @@ import net.miz_hi.smileessence.command.CommandOpenFriends;
 import net.miz_hi.smileessence.command.CommandOpenSetting;
 import net.miz_hi.smileessence.command.CommandReConnect;
 import net.miz_hi.smileessence.command.CommandReport;
+import net.miz_hi.smileessence.command.CommandTweet;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 import android.app.Activity;
 import android.app.Dialog;
@@ -27,6 +28,7 @@ public class OptionMenuAdapter extends DialogAdapter
 		if (init)
 		{
 			list.clear();
+			list.add(new CommandTweet());
 			list.add(new CommandOpenSetting(activity));
 			list.add(new CommandReConnect());
 			list.add(new CommandEditTemplate(activity));

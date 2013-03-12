@@ -17,6 +17,7 @@ import net.miz_hi.smileessence.command.CommandMenuParent;
 import net.miz_hi.smileessence.command.CommandOpenUrl;
 import net.miz_hi.smileessence.command.MenuCommand;
 import net.miz_hi.smileessence.command.StatusCommandAddReply;
+import net.miz_hi.smileessence.command.StatusCommandChaseRelation;
 import net.miz_hi.smileessence.command.StatusCommandClipboard;
 import net.miz_hi.smileessence.command.StatusCommandCopy;
 import net.miz_hi.smileessence.command.StatusCommandFavAndRetweet;
@@ -112,6 +113,7 @@ public class StatusMenuAdapter extends DialogAdapter
 		List<MenuCommand> list = new ArrayList<MenuCommand>();
 		list.add(new StatusCommandFavAndRetweet(model));
 		list.add(new StatusCommandAddReply(model));
+		list.add(new StatusCommandChaseRelation(model));
 		list.add(new StatusCommandCopy(model));
 		list.add(new StatusCommandUnOffRetweet(model));
 		list.add(new StatusCommandWarotaRT(model));

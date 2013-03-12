@@ -219,6 +219,20 @@ public class TwitterManager
 		}
 		return false;
 	}
+	
+	public static Status getStatus(Account account, long id)
+	{
+		Status status = null;
+		try
+		{
+			status = getTwitter(account).showStatus(id);
+		}
+		catch (TwitterException e)
+		{
+			e.printStackTrace();
+		}
+		return status;
+	}
 
 	public static List<Status> getOldTimeline(Account account, Paging page)
 	{

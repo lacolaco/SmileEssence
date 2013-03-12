@@ -16,7 +16,7 @@ import android.widget.TextView;
 public class ListPagerAdapter extends FragmentPagerAdapter
 {
 
-	private static int NUM_OF_VIEWS = 3;
+	private static int NUM_OF_VIEWS = 4;
 	private Fragment[] pagesMap;
 	
 	public ListPagerAdapter(FragmentManager fm, Fragment... fragments)

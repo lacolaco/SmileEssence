@@ -8,11 +8,13 @@ import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.event.HistoryListAdapter;
 import net.miz_hi.smileessence.event.StatusEventModel;
 import net.miz_hi.smileessence.event.StatusEventModel.EnumStatusEventType;
+import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.event.UserEventModel.EnumUserEventType;
 import net.miz_hi.smileessence.event.UserEventModel;
 import net.miz_hi.smileessence.status.StatusListAdapter;
 import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.view.MainActivity;
+import net.miz_hi.smileessence.view.RelationListPageFragment;
 import twitter4j.ConnectionLifeCycleListener;
 import twitter4j.DirectMessage;
 import twitter4j.StallWarning;
@@ -24,15 +26,16 @@ import twitter4j.UserStreamListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class WarotterUserStreamListener implements UserStreamListener, ConnectionLifeCycleListener
+public class MyUserStreamListener implements UserStreamListener, ConnectionLifeCycleListener
 {
 	private StatusListAdapter homeListAdapter;
 	private StatusListAdapter mentionsListAdapter;
 	private HistoryListAdapter eventListAdapter;
+	private StatusListAdapter relationListAdapter;
 	
 	private int exceptionCount;
 
-	public WarotterUserStreamListener()
+	public MyUserStreamListener()
 	{
 	}
 
@@ -50,6 +53,11 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 	{
 		this.eventListAdapter = adapter;
 	}
+	
+	public void setRelationListAdapter(StatusListAdapter adapter)
+	{
+		this.relationListAdapter = adapter;
+	}
 
 	@Override
 	public void onDeletionNotice(final StatusDeletionNotice arg0)
@@ -62,18 +70,12 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 		}
 		else
 		{
-			new UiHandler()
-			{
-
-				@Override
-				public void run()
-				{
-					homeListAdapter.removeElement(model);
-					homeListAdapter.notifyAdapter();
-					mentionsListAdapter.removeElement(model);
-					mentionsListAdapter.notifyAdapter();
-				}
-			}.post();
+			homeListAdapter.removeElement(model);
+			homeListAdapter.notifyAdapter();
+			mentionsListAdapter.removeElement(model);
+			mentionsListAdapter.notifyAdapter();
+			relationListAdapter.removeElement(model);
+			relationListAdapter.notifyAdapter();
 		}
 	}
 
@@ -95,30 +97,30 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 			return;
 		}
 		final StatusModel model = StatusStore.put(status);
-		new UiHandler()
-		{
-			@Override
-			public void run()
-			{
-				if (model.isRetweet && model.isMine)
-				{
-					eventListAdapter.addFirst(new StatusEventModel(status.getUser(), EnumStatusEventType.RETWEET, status));
-				}
-				else if (model.isReply)
-				{
-					eventListAdapter.notice(new StatusEventModel(status.getUser(), EnumStatusEventType.REPLY, status));
-				}
 
-				if (model.isReply)
-				{
-					mentionsListAdapter.addFirst(model);
-					mentionsListAdapter.notifyAdapter();
-				}
-				homeListAdapter.addFirst(model);				
-				homeListAdapter.notifyAdapter();
-				
-			}
-		}.post();
+		if (model.isRetweet && model.isMine)
+		{
+			eventListAdapter.addFirst(new StatusEventModel(status.getUser(), EnumStatusEventType.RETWEET, status));
+		}
+		else if (model.isReply)
+		{
+			eventListAdapter.notice(new StatusEventModel(status.getUser(), EnumStatusEventType.REPLY, status));
+		}
+
+		if (model.isReply)
+		{
+			mentionsListAdapter.addFirst(model);
+			mentionsListAdapter.notifyAdapter();
+		}
+		if(model.inReplyToStatusId == RelationListPageFragment.getChasingId())
+		{
+			relationListAdapter.addFirst(model);
+			relationListAdapter.notifyAdapter();
+			RelationListPageFragment.setChasingId(model.statusId);
+		}
+		homeListAdapter.addFirst(model);				
+		homeListAdapter.notifyAdapter();
+
 	}
 
 	@Override
@@ -173,15 +175,7 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 	{
 		if (message.getRecipientId() == Client.getMainAccount().getUserId())
 		{
-			new UiHandler()
-			{
-				
-				@Override
-				public void run()
-				{
-					eventListAdapter.addFirst(new UserEventModel(message.getSender(), EnumUserEventType.DIRECT_MESSAGE));					
-				}
-			}.post();
+			eventListAdapter.addFirst(new UserEventModel(message.getSender(), EnumUserEventType.DIRECT_MESSAGE));					
 		}
 	}
 
@@ -198,43 +192,20 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 			{
 				StatusStore.putFavoritedStatus(targetStatus.getId());
 			}			
-			new UiHandler()
-			{
-				
-				@Override
-				public void run()
-				{
-					MainActivity.getInstance().getHomeListAdapter().forceNotifyAdapter();
-					MainActivity.getInstance().getMentionsListAdapter().forceNotifyAdapter();
-				}
-			}.post();
+
+			MainActivity.getInstance().getHomeListAdapter().forceNotifyAdapter();
+			MainActivity.getInstance().getMentionsListAdapter().forceNotifyAdapter();
 		}
 		if (targetUser.getId() == Client.getMainAccount().getUserId())
 		{
-			new UiHandler()
-			{
-				
-				@Override
-				public void run()
-				{
-					eventListAdapter.addFirst(new StatusEventModel(sourceUser, EnumStatusEventType.FAVORITE, targetStatus));
-				}
-			}.post();
+			eventListAdapter.addFirst(new StatusEventModel(sourceUser, EnumStatusEventType.FAVORITE, targetStatus));
 		}
 	}
 
 	@Override
 	public void onFollow(final User sourceUser, User targetUser)
 	{
-		new UiHandler()
-		{
-			
-			@Override
-			public void run()
-			{
-				eventListAdapter.addFirst(new UserEventModel(sourceUser, EnumUserEventType.FOLLOW));	
-			}
-		}.post();
+		eventListAdapter.addFirst(new UserEventModel(sourceUser, EnumUserEventType.FOLLOW));	
 	}
 
 	@Override
@@ -247,15 +218,7 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 	{
 		if (targetUser.getId() == Client.getMainAccount().getUserId())
 		{
-			new UiHandler()
-			{
-				
-				@Override
-				public void run()
-				{
-					eventListAdapter.addFirst(new UserEventModel(sourceUser, EnumUserEventType.UNBLOCK));					
-				}
-			}.post();
+			eventListAdapter.addFirst(new UserEventModel(sourceUser, EnumUserEventType.UNBLOCK));					
 		}
 	}
 
@@ -266,15 +229,7 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 		{
 			if (targetUser.getId() == Client.getMainAccount().getUserId())
 			{
-				new UiHandler()
-				{
-
-					@Override
-					public void run()
-					{
-						eventListAdapter.addFirst(new StatusEventModel(sourceUser, EnumStatusEventType.UNFAVORITE, targetStatus));
-					}
-				}.post();
+				eventListAdapter.addFirst(new StatusEventModel(sourceUser, EnumStatusEventType.UNFAVORITE, targetStatus));
 			}
 		}
 	}
@@ -327,16 +282,7 @@ public class WarotterUserStreamListener implements UserStreamListener, Connectio
 	@Override
 	public void onConnect()
 	{
-		new UiHandler()
-		{
-			
-			@Override
-			public void run()
-			{
-				Toast.makeText(MainActivity.getInstance(), "ê⁄ë±ÇµÇ‹ÇµÇΩ", Toast.LENGTH_SHORT).show();				
-			}
-		}.post();
-
+		ToastManager.getInstance().toast("ê⁄ë±ÇµÇ‹ÇµÇΩ");
 	}
 
 	@Override

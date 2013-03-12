@@ -23,7 +23,7 @@ import net.miz_hi.smileessence.dialog.DialogAdapter;
 import net.miz_hi.smileessence.dialog.ProgressDialogHelper;
 import net.miz_hi.smileessence.event.HistoryListAdapter;
 import net.miz_hi.smileessence.event.ToastManager;
-import net.miz_hi.smileessence.listener.WarotterUserStreamListener;
+import net.miz_hi.smileessence.listener.MyUserStreamListener;
 import net.miz_hi.smileessence.menu.OptionMenuAdapter;
 import net.miz_hi.smileessence.status.StatusListAdapter;
 import net.miz_hi.smileessence.util.LogHelper;
@@ -64,11 +64,12 @@ public class MainActivity extends FragmentActivity implements Runnable
 	private FragmentPagerAdapter pageAdapter;
 	private StatusListAdapter homeListAdapter;
 	private StatusListAdapter mentionsListAdapter;
+	private StatusListAdapter relationListAdapter;
 	private HistoryListAdapter historyListAdapter;
 	private OptionMenuAdapter optionMenuAdapter;
 	private AuthorizeHelper authHelper;
 	private AuthDialogHelper authDialog;
-	private WarotterUserStreamListener usListener;
+	private MyUserStreamListener usListener;
 	private TwitterStream twitterStream;
 	private boolean isFirstLoad = false;
 	private ProgressDialog progressDialog;
@@ -113,6 +114,7 @@ public class MainActivity extends FragmentActivity implements Runnable
 		homeListAdapter = new StatusListAdapter(instance);
 		mentionsListAdapter = new StatusListAdapter(instance);
 		historyListAdapter = new HistoryListAdapter(instance);
+		relationListAdapter = new StatusListAdapter(instance);
 		optionMenuAdapter = new OptionMenuAdapter(instance);
 		authHelper = new AuthorizeHelper(instance, Consumers.getDedault());
 		
@@ -178,10 +180,11 @@ public class MainActivity extends FragmentActivity implements Runnable
 			if (account.getUserId() == lastUsedId)
 			{
 				Client.setMainAccount(account);
-				usListener = new WarotterUserStreamListener();
+				usListener = new MyUserStreamListener();
 				usListener.setHomeListAdapter(homeListAdapter);
 				usListener.setMentionsListAdapter(mentionsListAdapter);
 				usListener.setEventListAdapter(historyListAdapter);
+				usListener.setRelationListAdapter(relationListAdapter);
 				twitterStream = TwitterManager.getTwitterStream(Client.getMainAccount());
 				twitterStream.addListener(usListener);
 				twitterStream.addConnectionLifeCycleListener(usListener);
@@ -202,7 +205,7 @@ public class MainActivity extends FragmentActivity implements Runnable
 						homeListAdapter.forceNotifyAdapter();
 						mentionsListAdapter.forceNotifyAdapter();
 						historyListAdapter.forceNotifyAdapter();
-						
+						relationListAdapter.forceNotifyAdapter();
 					}
 					catch (Exception e)
 					{
@@ -329,6 +332,11 @@ public class MainActivity extends FragmentActivity implements Runnable
 				TweetViewManager.getInstance().toggle();
 				return false;
 			}
+			else if(viewPager.getCurrentItem() != 0)
+			{
+				viewPager.setCurrentItem(0, true);
+				return false;
+			}
 			else
 			{
 				finish();
@@ -349,10 +357,11 @@ public class MainActivity extends FragmentActivity implements Runnable
 	private void viewSetUp()
 	{	
 		
-		Fragment[] fragments = new Fragment[3];
+		Fragment[] fragments = new Fragment[4];
 		fragments[0] = Fragment.instantiate(this, HomeListPageFragment.class.getName());
 		fragments[1] = Fragment.instantiate(this, MentionsListPageFragment.class.getName());
 		fragments[2] = Fragment.instantiate(this, HistoryListPageFragment.class.getName());
+		fragments[3] = Fragment.instantiate(this, RelationListPageFragment.class.getName());
 		
 		pageAdapter = new ListPagerAdapter(super.getSupportFragmentManager(), fragments);
 		
@@ -402,10 +411,20 @@ public class MainActivity extends FragmentActivity implements Runnable
 	{
 		return historyListAdapter;
 	}
+	
+	public StatusListAdapter getRelationListAdapter()
+	{
+		return relationListAdapter;
+	}
 
 	public OptionMenuAdapter getOptionMenuAdapter()
 	{
 		return optionMenuAdapter;
+	}
+
+	public ViewPager getViewPager()
+	{
+		return viewPager;
 	}
 
 

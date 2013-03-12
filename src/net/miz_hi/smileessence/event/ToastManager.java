@@ -1,6 +1,7 @@
 package net.miz_hi.smileessence.event;
 
 import net.miz_hi.smileessence.core.UiHandler;
+import net.miz_hi.smileessence.event.StatusEventModel.EnumStatusEventType;
 import net.miz_hi.smileessence.util.CountUpInteger;
 import net.miz_hi.smileessence.view.MainActivity;
 import twitter4j.User;
@@ -56,31 +57,37 @@ public class ToastManager
 
 	public void noticeEvent(final EventModel model)
 	{
-		if (lastUserId == model.source.getId())
+		if(model instanceof StatusEventModel)
 		{
-			if (counterSourceUser.isOver())
+			if(((StatusEventModel)model).type != EnumStatusEventType.REPLY)
 			{
-				return;
-			}
-			else if (counterSourceUser.countUp())
-			{
-				new UiHandler()
+				if (lastUserId == model.source.getId())
 				{
-					@Override
-					public void run()
+					if (counterSourceUser.isOver())
 					{
-						toast.cancel();
-						Toast.makeText(activity, enemyUser.getScreenName() + "‚É”šŒ‚‚ðŽó‚¯‚Ä‚¢‚Ü‚·", Toast.LENGTH_LONG).show();
+						return;
 					}
-				}.post();
-				return;
+					else if (counterSourceUser.countUp())
+					{
+						new UiHandler()
+						{
+							@Override
+							public void run()
+							{
+								toast.cancel();
+								toast(enemyUser.getScreenName() + "‚É”šŒ‚‚ðŽó‚¯‚Ä‚¢‚Ü‚·");
+							}
+						}.post();
+						return;
+					}
+				}
+				else
+				{
+					lastUserId = model.source.getId();
+					counterSourceUser.reset();
+					enemyUser = model.source;
+				}
 			}
-		}
-		else
-		{
-			lastUserId = model.source.getId();
-			counterSourceUser.reset();
-			enemyUser = model.source;
 		}
 		
 		new UiHandler()
