@@ -13,7 +13,7 @@ import twitter4j.User;
 public class UserModel
 {
 
-	public final long userId;
+	public long userId;
 	public String screenName;
 	public String name;
 	public String homePageUrl;
@@ -27,6 +27,8 @@ public class UserModel
 	public Date createdAt;
 	public boolean isProtected;
 
+	private UserModel(){}
+	
 	public UserModel(User user)
 	{
 		userId = user.getId();
@@ -120,5 +122,23 @@ public class UserModel
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	public static UserModel getNullUserModel()
+	{
+		UserModel user = new UserModel();
+		user.screenName = "";
+		user.name = "";
+		user.homePageUrl = "";
+		user.location = "";
+		user.description = "";
+		user.iconUrl = "";
+		user.statusCount = 0;
+		user.friendCount = 0;
+		user.followerCount = 0;
+		user.favoriteCount = 0;
+		user.createdAt = new Date();
+		user.isProtected = false;
+		return user;
 	}
 }

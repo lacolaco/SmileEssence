@@ -9,8 +9,6 @@ import android.text.ClipboardManager;
 public class StatusCommandClipboard extends StatusCommand implements IHideable
 {
 
-	private static boolean isVisible = true;
-
 	public StatusCommandClipboard(StatusModel model)
 	{
 		super(model);
@@ -37,15 +35,4 @@ public class StatusCommandClipboard extends StatusCommand implements IHideable
 		}
 	}
 
-	@Override
-	public boolean getIsVisible()
-	{
-		return isVisible;
-	}
-
-	@Override
-	public void setIsVisible(boolean value)
-	{
-		isVisible = value;
-	}
 }

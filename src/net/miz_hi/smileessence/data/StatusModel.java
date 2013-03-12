@@ -41,6 +41,8 @@ public class StatusModel implements Comparable<StatusModel>
 	public boolean isRetweet;
 	public boolean isReply;
 	public boolean isMine;
+	
+	private StatusModel(){};
 
 	public StatusModel(Status status)
 	{
@@ -122,5 +124,30 @@ public class StatusModel implements Comparable<StatusModel>
 	public int compareTo(StatusModel another)
 	{
 		return another.createdAt.compareTo(this.createdAt);
+	}
+	
+	public static StatusModel getNullStatusModel()
+	{
+		StatusModel status = new StatusModel();
+		status.isRetweet = false;
+		status.createdAt = new Date();
+		status.statusId = -1;
+		status.inReplyToStatusId = -1;		
+		status.user = UserModel.getNullUserModel();
+		status.screenName = status.user.screenName;
+		status.name = status.user.name;		
+		status.text = "";
+		
+		status.urls = null;
+		status.medias = null;
+		status.hashtags = null;
+		status.userMentions = null;
+		
+		status.headerText = "";
+		status.footerText = "";
+
+		status.isMine = false;
+		status.isReply = false;
+		return status;
 	}
 }

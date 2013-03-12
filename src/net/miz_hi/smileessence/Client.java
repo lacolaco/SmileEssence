@@ -26,6 +26,11 @@ public class Client
 	private Client()
 	{
 	}
+	
+	public static PreferenceHelper getPreferenceHelper()
+	{
+		return prefHelper;
+	}
 
 	public static void putPreferenceValue(EnumPreferenceKey key, Object value)
 	{

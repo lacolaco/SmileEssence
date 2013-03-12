@@ -7,6 +7,12 @@ public abstract class MenuCommand implements ICommand
 {
 
 	@Override
+	public boolean getDefaultVisibility()
+	{
+		return true;
+	}
+
+	@Override
 	public final void run()
 	{
 		new UiHandler()

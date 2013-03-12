@@ -4,11 +4,18 @@ import net.miz_hi.smileessence.data.StatusModel;
 
 public abstract class StatusCommand extends MenuCommand
 {
-	protected StatusModel status;
+	protected final StatusModel status;
 
 	public StatusCommand(StatusModel status)
 	{
-		this.status = status;
+		if(status == null)
+		{
+			this.status = StatusModel.getNullStatusModel();
+		}
+		else
+		{
+			this.status = status;
+		}
 	}
 
 }

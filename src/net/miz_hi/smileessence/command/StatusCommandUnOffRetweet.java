@@ -7,8 +7,6 @@ import net.miz_hi.smileessence.view.TweetViewManager;
 public class StatusCommandUnOffRetweet extends StatusCommand implements IHideable
 {
 
-	private static boolean isVisible = true;
-
 	public StatusCommandUnOffRetweet(StatusModel model)
 	{
 		super(model);
@@ -31,14 +29,8 @@ public class StatusCommandUnOffRetweet extends StatusCommand implements IHideabl
 	}
 
 	@Override
-	public boolean getIsVisible()
+	public boolean getDefaultVisibility()
 	{
-		return isVisible && Client.getPermission().canUnOffRetweet() && !status.user.isProtected;
-	}
-
-	@Override
-	public void setIsVisible(boolean value)
-	{
-		isVisible = value;
+		return Client.getPermission().canUnOffRetweet() && !status.user.isProtected;
 	}
 }

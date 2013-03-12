@@ -14,8 +14,6 @@ import twitter4j.StatusUpdate;
 public class StatusCommandWarotaRT extends StatusCommand implements IHideable
 {
 
-	private static boolean isVisible = true;
-
 	public StatusCommandWarotaRT(StatusModel model)
 	{
 		super(model);
@@ -67,15 +65,8 @@ public class StatusCommandWarotaRT extends StatusCommand implements IHideable
 	}
 
 	@Override
-	public boolean getIsVisible()
-	{
-		return isVisible && Client.getPermission().canWarotaRT() && !status.user.isProtected;
+	public boolean getDefaultVisibility()
+	{	
+		return Client.getPermission().canWarotaRT() && !status.user.isProtected;
 	}
-
-	@Override
-	public void setIsVisible(boolean value)
-	{
-		isVisible = value;
-	}
-
 }

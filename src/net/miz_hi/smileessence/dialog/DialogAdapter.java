@@ -8,6 +8,8 @@ import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.command.CommandMenuClose;
 import net.miz_hi.smileessence.command.ICommand;
 import net.miz_hi.smileessence.command.IHideable;
+import net.miz_hi.smileessence.core.EnumPreferenceKey.EnumValueType;
+import net.miz_hi.smileessence.core.PreferenceHelper;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
@@ -114,14 +116,15 @@ public abstract class DialogAdapter
 
 		for (ICommand item : list)
 		{
+			boolean isEnabled = true;
+			
 			if(item instanceof IHideable)
 			{
-				if(((IHideable)item).getIsVisible())
-				{
-					itemsLinearLayout.addView(new MenuItemView(activity, item).getView());
-				}
+				PreferenceHelper pref = Client.getPreferenceHelper();
+				isEnabled = pref.getPreferenceValue(item.getClass().getSimpleName(), EnumValueType.BOOLEAN, true);
 			}
-			else
+			
+			if(item.getDefaultVisibility() && isEnabled)
 			{
 				itemsLinearLayout.addView(new MenuItemView(activity, item).getView());
 			}

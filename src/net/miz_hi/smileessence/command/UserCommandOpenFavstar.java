@@ -28,11 +28,4 @@ public class UserCommandOpenFavstar extends UserCommand
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 		activity.startActivity(intent);
 	}
-
-	@Override
-	public boolean getIsVisible()
-	{
-		return true;
-	}
-
 }

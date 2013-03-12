@@ -14,23 +14,15 @@ import twitter4j.StatusUpdate;
 public class StatusCommandCopy extends StatusCommand implements IHideable
 {
 
-	private static boolean isVisible = true;
-
 	public StatusCommandCopy(StatusModel model)
 	{
 		super(model);
 	}
 
 	@Override
-	public boolean getIsVisible()
+	public boolean getDefaultVisibility()
 	{
-		return Client.getPermission().canCopyTweet() && isVisible;
-	}
-
-	@Override
-	public void setIsVisible(boolean value)
-	{
-		isVisible = value;
+		return Client.getPermission().canCopyTweet();
 	}
 
 	@Override

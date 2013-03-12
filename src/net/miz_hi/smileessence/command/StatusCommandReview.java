@@ -17,7 +17,6 @@ import android.content.DialogInterface.OnClickListener;
 public class StatusCommandReview extends StatusCommand implements IHideable
 {
 
-	private static boolean isVisible = false;
 	private Activity activity;
 
 	public StatusCommandReview(Activity activity, StatusModel model)
@@ -90,15 +89,10 @@ public class StatusCommandReview extends StatusCommand implements IHideable
 	}
 
 	@Override
-	public boolean getIsVisible()
+	public boolean getDefaultVisibility()
 	{
-		return isVisible;
+		return !status.user.isProtected;
 	}
-
-	@Override
-	public void setIsVisible(boolean value)
-	{
-		isVisible = value;
-	}
-
+	
+	
 }

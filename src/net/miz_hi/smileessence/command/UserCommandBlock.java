@@ -36,7 +36,7 @@ public class UserCommandBlock extends UserCommand
 	}
 
 	@Override
-	public boolean getIsVisible()
+	public boolean getDefaultVisibility()
 	{
 		return !Client.getMainAccount().getScreenName().equals(userName);
 	}

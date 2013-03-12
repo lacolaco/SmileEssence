@@ -25,10 +25,4 @@ public class UserCommandReply extends UserCommand
 		manager.open();
 	}
 
-	@Override
-	public boolean getIsVisible()
-	{
-		return true;
-	}
-
 }

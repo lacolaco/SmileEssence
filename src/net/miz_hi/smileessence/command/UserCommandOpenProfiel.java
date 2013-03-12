@@ -28,11 +28,4 @@ public class UserCommandOpenProfiel extends UserCommand
 		intent.putExtra("screen_name", userName);
 		activity.startActivity(intent);
 	}
-
-	@Override
-	public boolean getIsVisible()
-	{
-		return true;
-	}
-
 }

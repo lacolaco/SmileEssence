@@ -5,4 +5,5 @@ public interface ICommand extends Runnable
 
 	String getName();
 
+	boolean getDefaultVisibility();
 }
