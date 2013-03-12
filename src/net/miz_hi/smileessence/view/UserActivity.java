@@ -15,6 +15,7 @@ import net.miz_hi.smileessence.data.IconCaches;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.UserModel;
 import net.miz_hi.smileessence.data.UserStore;
+import net.miz_hi.smileessence.listener.StatusOnClickListener;
 import net.miz_hi.smileessence.menu.UserMenuAdapter;
 import net.miz_hi.smileessence.status.StatusViewFactory;
 import net.miz_hi.smileessence.util.StringUtils;
@@ -146,9 +147,26 @@ public class UserActivity extends Activity
 						public void run()
 						{
 							statusesView.removeAllViews();
+							int i = 0;
 							while (!list.isEmpty())
 							{
-								statusesView.addView(StatusViewFactory.getView(getLayoutInflater(), list.poll()));
+								StatusModel model = list.poll();
+								View v = StatusViewFactory.getView(getLayoutInflater(), model);
+								if(!model.isRetweet && !model.isReply)
+								{
+									if(i % 2 == 0)
+									{				
+										model.backgroundColor = Client.getColor(R.color.White);
+									}
+									else
+									{
+										model.backgroundColor = Client.getColor(R.color.LightGray);
+									}
+								}
+								v.setBackgroundColor(model.backgroundColor);
+								v.setOnClickListener(new StatusOnClickListener(UserActivity.this, model));
+								statusesView.addView(v);
+								i++;
 							}
 							statusesView.postInvalidate();
 						}

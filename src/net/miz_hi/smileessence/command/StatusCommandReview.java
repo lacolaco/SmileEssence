@@ -2,6 +2,7 @@ package net.miz_hi.smileessence.command;
 
 import java.util.concurrent.Future;
 
+import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
 import net.miz_hi.smileessence.async.MyExecutor;
@@ -91,7 +92,7 @@ public class StatusCommandReview extends StatusCommand implements IHideable
 	@Override
 	public boolean getDefaultVisibility()
 	{
-		return !status.user.isProtected;
+		return !status.user.isProtected && Client.getPermission().canWarotaRT();
 	}
 	
 	

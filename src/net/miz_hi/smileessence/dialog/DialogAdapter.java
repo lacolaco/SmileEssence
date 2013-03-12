@@ -135,8 +135,8 @@ public abstract class DialogAdapter
 		LayoutParams lp = dialog.getWindow().getAttributes();
 		DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
 		lp.width = (int) (metrics.widthPixels * 0.95);
-		lp.gravity = Gravity.CENTER;
-		// lp.height = (int) (metrics.heightPixels * 0.9);
+		lp.gravity = Gravity.BOTTOM;
+		//lp.height = (int) (metrics.heightPixels * 0.7);
 		return dialog;
 	}
 

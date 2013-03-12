@@ -103,13 +103,14 @@ public class TweetViewManager
 	public void addReply(String userName)
 	{
 		String text = editTextTweet.getText().toString();
-		if (text.startsWith("@"))
-		{
-			text = "." + text;
-		}
+
 		if (!text.contains("@" + userName))
 		{
 			text = text + " @" + userName + " ";
+		}
+		if (text.startsWith("@"))
+		{
+			text = "." + text;
 		}
 		setText(text);
 		inReplyTo = -1;

@@ -112,7 +112,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 			mentionsListAdapter.addFirst(model);
 			mentionsListAdapter.notifyAdapter();
 		}
-		if(model.inReplyToStatusId == RelationListPageFragment.getChasingId())
+		if(RelationListPageFragment.getChasingId() > -1 && model.inReplyToStatusId == RelationListPageFragment.getChasingId())
 		{
 			relationListAdapter.addFirst(model);
 			relationListAdapter.notifyAdapter();

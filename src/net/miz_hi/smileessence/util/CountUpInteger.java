@@ -13,7 +13,7 @@ public class CountUpInteger
 	public boolean countUp()
 	{
 		count++;
-		if (count == maxCount)
+		if (count >= maxCount)
 		{
 			return true;
 		}

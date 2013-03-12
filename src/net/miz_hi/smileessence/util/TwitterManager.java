@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.auth.Account;
+import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.view.MainActivity;
 import twitter4j.Paging;
 import twitter4j.Relationship;
@@ -29,11 +30,12 @@ public class TwitterManager
 	public static final String MESSAGE_FAVORITE_DEPLICATE = "お気に入りの追加に失敗しました";
 	public static final String MESSAGE_TWEET_LIMIT = "規制されています";
 	public static final String MESSAGE_SOMETHING_ERROR = "何かがおかしいです";
-	private static final String ERROR_STATUS_DUPLICATE = "Status is a duplicate.";
-	private static final String ERROR_STATUS_LIMIT = "User is over daily status update limit.";
-	private static Twitter _twitter;
-	private static boolean _isStatusUpdateLimit = false;
-	private static Account _lastAccount;
+	private static final String ERROR_STATUS_DUPLICATE = "Status is a duplicate";
+	private static final String ERROR_STATUS_LIMIT = "User is over daily status update limit";
+	private static Twitter twitter;
+	private static boolean isStatusUpdateLimit = false;
+	private static Account lastAccount;
+	private static CountUpInteger count = new CountUpInteger(5);
 
 	private static ConfigurationBuilder generateConfig(Account account)
 	{
@@ -47,12 +49,12 @@ public class TwitterManager
 
 	public static Twitter getTwitter(Account account)
 	{
-		if (_lastAccount == null || !account.equals(_lastAccount) || _twitter == null)
+		if (lastAccount == null || !account.equals(lastAccount) || twitter == null)
 		{
-			_twitter = new TwitterFactory(generateConfig(account).build()).getInstance();
-			_lastAccount = account;
+			twitter = new TwitterFactory(generateConfig(account).build()).getInstance();
+			lastAccount = account;
 		}
-		return _twitter;
+		return twitter;
 	}
 
 	public static TwitterStream getTwitterStream(Account account)
@@ -77,55 +79,20 @@ public class TwitterManager
 
 	public static boolean isStatusUpdateLimit()
 	{
-		return _isStatusUpdateLimit;
+		return isStatusUpdateLimit;
 	}
 
 	public static boolean tweet(Account account, String str)
 	{
-		try
-		{
-			getTwitter(account).updateStatus(str);
-			_isStatusUpdateLimit = false;
-			return true;
-		}
-		catch (TwitterException e)
-		{
-			int code = e.getStatusCode();
-			String message = e.getErrorMessage();
-			if (code == 403)
-			{
-				if (message.equals(ERROR_STATUS_LIMIT))
-				{
-					_isStatusUpdateLimit = true;
-				}
-			}
-		}
-		return false;
+		StatusUpdate update = new StatusUpdate(str);
+		return tweet(account, update);
 	}
 
 	public static boolean tweet(Account account, String str, long l)
 	{
-		try
-		{
-			StatusUpdate update = new StatusUpdate(str);
-			update.setInReplyToStatusId(l);
-			getTwitter(account).updateStatus(update);
-			_isStatusUpdateLimit = false;
-			return true;
-		}
-		catch (TwitterException e)
-		{
-			int code = e.getStatusCode();
-			String message = e.getErrorMessage();
-			if (code == 403)
-			{
-				if (message.equals(ERROR_STATUS_LIMIT))
-				{
-					_isStatusUpdateLimit = true;
-				}
-			}
-		}
-		return false;
+		StatusUpdate update = new StatusUpdate(str);
+		update.setInReplyToStatusId(l);
+		return tweet(account, update);
 	}
 
 	public static boolean tweet(Account account, StatusUpdate update)
@@ -133,18 +100,32 @@ public class TwitterManager
 		try
 		{
 			getTwitter(account).updateStatus(update);
-			_isStatusUpdateLimit = false;
+			isStatusUpdateLimit = false;
+			count.reset();
 			return true;
 		}
 		catch (TwitterException e)
 		{
+			e.printStackTrace();
 			int code = e.getStatusCode();
 			String message = e.getErrorMessage();
 			if (code == 403)
 			{
-				if (message.equals(ERROR_STATUS_LIMIT))
+				if(message.equals(ERROR_STATUS_DUPLICATE))
 				{
-					_isStatusUpdateLimit = true;
+					if(!count.countUp())
+					{
+						String str = update.getStatus() + "　";
+						long id = update.getInReplyToStatusId();
+						StatusUpdate update1 = new StatusUpdate(str);
+						update1.setInReplyToStatusId(id);
+						return tweet(account, update1);
+					}
+				}
+				else if (message.equals(ERROR_STATUS_LIMIT))
+				{
+					isStatusUpdateLimit = true;
+					ToastManager.getInstance().toast("規制されています");
 				}
 			}
 		}

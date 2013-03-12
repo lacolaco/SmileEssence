@@ -19,9 +19,15 @@ import net.miz_hi.smileessence.command.MenuCommand;
 import net.miz_hi.smileessence.command.StatusCommandAddReply;
 import net.miz_hi.smileessence.command.StatusCommandChaseRelation;
 import net.miz_hi.smileessence.command.StatusCommandClipboard;
+import net.miz_hi.smileessence.command.StatusCommandCongrats;
 import net.miz_hi.smileessence.command.StatusCommandCopy;
+import net.miz_hi.smileessence.command.StatusCommandDelete;
 import net.miz_hi.smileessence.command.StatusCommandFavAndRetweet;
+import net.miz_hi.smileessence.command.StatusCommandNanigaja;
 import net.miz_hi.smileessence.command.StatusCommandReview;
+import net.miz_hi.smileessence.command.StatusCommandThankToFav;
+import net.miz_hi.smileessence.command.StatusCommandTofuBuster;
+import net.miz_hi.smileessence.command.StatusCommandUnOffFav;
 import net.miz_hi.smileessence.command.StatusCommandUnOffRetweet;
 import net.miz_hi.smileessence.command.StatusCommandWarotaRT;
 import net.miz_hi.smileessence.command.UserCommandFollow;
@@ -111,14 +117,20 @@ public class StatusMenuAdapter extends DialogAdapter
 	public List<MenuCommand> getStatusMenu()
 	{
 		List<MenuCommand> list = new ArrayList<MenuCommand>();
-		list.add(new StatusCommandFavAndRetweet(model));
 		list.add(new StatusCommandAddReply(model));
+		list.add(new StatusCommandDelete(model));
+		list.add(new StatusCommandFavAndRetweet(model));
 		list.add(new StatusCommandChaseRelation(model));
 		list.add(new StatusCommandCopy(model));
 		list.add(new StatusCommandUnOffRetweet(model));
 		list.add(new StatusCommandWarotaRT(model));
-		list.add(new CommandAddTemplate(model.text));
+		list.add(new StatusCommandNanigaja(model));
+		list.add(new StatusCommandUnOffFav(model));
+		list.add(new StatusCommandThankToFav(model));
+		list.add(new StatusCommandCongrats(model));
 		list.add(new StatusCommandReview(activity, model));
+		list.add(new StatusCommandTofuBuster(activity, model));
+		list.add(new CommandAddTemplate(model.text));
 		list.add(new StatusCommandClipboard(model));
 		
 		return list;
