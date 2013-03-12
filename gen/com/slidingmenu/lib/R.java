@@ -9,11 +9,11 @@ package com.slidingmenu.lib;
 public final class R {
 	public static final class id {
 		public static final int fullscreen = 0x7f050003;
-		public static final int slidingmenumain = 0x7f050018;
-		public static final int slidingmenulayout = 0x7f050019;
-		public static final int slidingmenurowicon = 0x7f05001a;
+		public static final int slidingmenumain = 0x7f050019;
+		public static final int slidingmenulayout = 0x7f05001a;
+		public static final int slidingmenurowicon = 0x7f05001b;
 		public static final int selected_view = 0x7f050004;
-		public static final int slidingmenurowtitle = 0x7f05001b;
+		public static final int slidingmenurowtitle = 0x7f05001c;
 		public static final int margin = 0x7f050002;
 		public static final int left = 0x7f050000;
 		public static final int right = 0x7f050001;
@@ -22,11 +22,11 @@ public final class R {
 		public static final int holo_blue_bright = 0x7f060000;
 	}
 	public static final class layout {
-		public static final int slidingmenumain = 0x7f03000c;
-		public static final int list = 0x7f030007;
-		public static final int slidingmenurow = 0x7f03000e;
-		public static final int slidingmenumainlist = 0x7f03000d;
-		public static final int shadow = 0x7f03000b;
+		public static final int slidingmenumain = 0x7f03000d;
+		public static final int list = 0x7f030008;
+		public static final int slidingmenurow = 0x7f03000f;
+		public static final int slidingmenumainlist = 0x7f03000e;
+		public static final int shadow = 0x7f03000c;
 	}
 	public static final class styleable {
 		public static final int SlidingMenu_mode = 0;

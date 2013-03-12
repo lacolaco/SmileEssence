@@ -1,5 +1,6 @@
 package net.miz_hi.smileessence.menu;
 
+import net.miz_hi.smileessence.command.CommandEditMenu;
 import net.miz_hi.smileessence.command.CommandEditTemplate;
 import net.miz_hi.smileessence.command.CommandOpenFavstar;
 import net.miz_hi.smileessence.command.CommandOpenFollowers;
@@ -29,6 +30,7 @@ public class OptionMenuAdapter extends DialogAdapter
 			list.add(new CommandOpenSetting(activity));
 			list.add(new CommandReConnect());
 			list.add(new CommandEditTemplate(activity));
+			list.add(new CommandEditMenu(activity));
 			list.add(new CommandOpenFavstar(activity));
 			list.add(new CommandReport());
 			

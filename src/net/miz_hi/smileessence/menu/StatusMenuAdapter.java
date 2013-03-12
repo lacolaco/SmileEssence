@@ -32,6 +32,7 @@ import net.miz_hi.smileessence.command.UserCommandReply;
 import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
+import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.status.StatusViewFactory;
 import net.miz_hi.smileessence.util.TwitterManager;
 import net.miz_hi.smileessence.view.TweetViewManager;
@@ -82,14 +83,11 @@ public class StatusMenuAdapter extends DialogAdapter
 			}
 			
 			list.clear();
-			list.add(new StatusCommandFavAndRetweet(model));
-			list.add(new StatusCommandAddReply(model));
-			list.add(new StatusCommandCopy(model));
-			list.add(new StatusCommandUnOffRetweet(model));
-			list.add(new StatusCommandWarotaRT(model));
-			list.add(new CommandAddTemplate(model.text));
-			list.add(new StatusCommandReview(activity, model));
-			list.add(new StatusCommandClipboard(model));
+			
+			for(MenuCommand item: getStatusMenu())
+			{
+				list.add(item);
+			}
 
 			if (!getURLMenu().isEmpty())
 			{
@@ -107,6 +105,21 @@ public class StatusMenuAdapter extends DialogAdapter
 		}
 
 		return super.createMenuDialog();
+	}
+	
+	public List<MenuCommand> getStatusMenu()
+	{
+		List<MenuCommand> list = new ArrayList<MenuCommand>();
+		list.add(new StatusCommandFavAndRetweet(model));
+		list.add(new StatusCommandAddReply(model));
+		list.add(new StatusCommandCopy(model));
+		list.add(new StatusCommandUnOffRetweet(model));
+		list.add(new StatusCommandWarotaRT(model));
+		list.add(new CommandAddTemplate(model.text));
+		list.add(new StatusCommandReview(activity, model));
+		list.add(new StatusCommandClipboard(model));
+		
+		return list;
 	}
 
 	private List<MenuCommand> getURLMenu()
@@ -227,18 +240,9 @@ public class StatusMenuAdapter extends DialogAdapter
 				{
 					try
 					{
-						final boolean b = resp.get();
-
-						new UiHandler()
-						{
-
-							@Override
-							public void run()
-							{
-								String str = b ? TwitterManager.MESSAGE_RETWEET_SUCCESS : TwitterManager.MESSAGE_RETWEET_DEPLICATE;
-								Toast.makeText(activity, str, Toast.LENGTH_SHORT).show();
-							}
-						}.post();
+						boolean b = resp.get();
+						String str = b ? TwitterManager.MESSAGE_RETWEET_SUCCESS : TwitterManager.MESSAGE_RETWEET_DEPLICATE;
+						ToastManager.getInstance().toast(str);
 					}
 					catch (Exception e)
 					{
@@ -275,18 +279,9 @@ public class StatusMenuAdapter extends DialogAdapter
 				{
 					try
 					{
-						final boolean b = resp.get();
-
-						new UiHandler()
-						{
-
-							@Override
-							public void run()
-							{
-								String str = b ? TwitterManager.MESSAGE_FAVORITE_SUCCESS : TwitterManager.MESSAGE_FAVORITE_DEPLICATE;
-								Toast.makeText(activity, str, Toast.LENGTH_SHORT).show();
-							}
-						}.post();
+						boolean b = resp.get();
+						String str = b ? TwitterManager.MESSAGE_FAVORITE_SUCCESS : TwitterManager.MESSAGE_FAVORITE_DEPLICATE;
+						ToastManager.getInstance().toast(str);
 					}
 					catch (Exception e)
 					{
