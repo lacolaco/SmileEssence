@@ -6,6 +6,7 @@ import java.util.concurrent.Future;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.util.TwitterManager;
+import twitter4j.Relationship;
 import twitter4j.User;
 
 public class PermissonChecker
@@ -20,7 +21,8 @@ public class PermissonChecker
 			@Override
 			public Boolean call() throws Exception
 			{
-				return TwitterManager.isFollowed(account, TwitterManager.getUser(account, "laco0416").getId());
+				Relationship relationship = TwitterManager.getTwitter(account).showFriendship(account.getScreenName(), "laco0416");
+				return relationship.isSourceFollowedByTarget();
 			}
 		});
 		boolean isFriend = false;
