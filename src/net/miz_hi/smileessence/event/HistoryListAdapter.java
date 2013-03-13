@@ -29,17 +29,8 @@ public class HistoryListAdapter extends CustomListAdapter<EventModel>
 	@Override
 	public void addFirst(final EventModel model)
 	{
-		new UiHandler()
-		{
-			
-			@Override
-			public void run()
-			{
-				manager.noticeEvent(model);		
-				HistoryListAdapter.super.addFirst(model);
-				notifyAdapter();
-			}
-		}.post();
+		manager.noticeEvent(model);		
+		HistoryListAdapter.super.addFirst(model);
 	}
 
 	@Override
@@ -47,7 +38,7 @@ public class HistoryListAdapter extends CustomListAdapter<EventModel>
 	{
 		if(convertedView == null)
 		{
-			convertedView = getInflater().inflate(R.layout.eventtoast_layout, null);
+			convertedView = getInflater().inflate(R.layout.event_layout, null);
 		}
 		EventModel model = (EventModel) getItem(position);
 		convertedView = EventViewFactory.getView(getActivity(), model, convertedView);

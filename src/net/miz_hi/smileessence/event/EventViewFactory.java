@@ -83,7 +83,7 @@ public class EventViewFactory
 		viewBase.setBackgroundColor(gray);
 		baseLayout.setBackgroundColor(black);
 		bodyLayout.removeAllViews();
-		baseLayout.setVisibility(View.GONE);
+		bodyLayout.setVisibility(View.GONE);
 
 		DisplayMetrics metrics = _activity.getResources().getDisplayMetrics();
 		viewText.setWidth((int) (metrics.widthPixels * 0.8));
@@ -107,9 +107,9 @@ public class EventViewFactory
 		}
 	}
 	
-	public static View getView(Activity _activity, UserEventModel model, View viewBase)
+	public static View getView(Activity activity, UserEventModel model, View viewBase)
 	{
-		LayoutInflater layoutInflater = LayoutInflater.from(_activity);
+		LayoutInflater layoutInflater = LayoutInflater.from(activity);
 		if (viewBase == null)
 		{
 			viewBase = layoutInflater.inflate(R.layout.event_layout, null);
@@ -124,21 +124,17 @@ public class EventViewFactory
 
 		viewBase.setBackgroundColor(gray);
 		baseLayout.setBackgroundColor(black);
-		bodyLayout.removeAllViews();
 		viewText.setText(model.source.getScreenName() + model.type.getText());
 		viewText.setTextColor(Client.getResource().getColor(R.color.White));
 
-		baseLayout.setVisibility(View.GONE);
-
-		DisplayMetrics metrics = _activity.getResources().getDisplayMetrics();
-		viewText.setWidth((int) (metrics.widthPixels * 0.8));
+		bodyLayout.setVisibility(View.GONE);
 
 		return viewBase;
 	}
 	
-	public static View getView(Activity _activity, StatusEventModel model, View viewBase)
+	public static View getView(Activity activity, StatusEventModel model, View viewBase)
 	{
-		LayoutInflater layoutInflater = LayoutInflater.from(_activity);
+		LayoutInflater layoutInflater = LayoutInflater.from(activity);
 		if (viewBase == null)
 		{
 			viewBase = layoutInflater.inflate(R.layout.event_layout, null);
@@ -159,17 +155,14 @@ public class EventViewFactory
 
 		if (model.targetModel == null)
 		{
-			baseLayout.setVisibility(View.GONE);
+			bodyLayout.setVisibility(View.GONE);
 		}
 		else
 		{
-			baseLayout.setVisibility(View.VISIBLE);
+			bodyLayout.setVisibility(View.VISIBLE);
 			View viewStatus = StatusViewFactory.getView(layoutInflater, model.targetModel);
 			bodyLayout.addView(viewStatus);
 		}
-
-		DisplayMetrics metrics = _activity.getResources().getDisplayMetrics();
-		viewText.setWidth((int) (metrics.widthPixels * 0.8));
 
 		return viewBase;
 	}

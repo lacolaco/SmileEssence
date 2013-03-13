@@ -7,6 +7,8 @@
         android:id="@+id/listView_listpage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/textView_listpage"
         android:layout_centerHorizontal="true" >
 

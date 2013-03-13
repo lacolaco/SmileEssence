@@ -60,7 +60,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 	}
 
 	@Override
-	public void onDeletionNotice(final StatusDeletionNotice arg0)
+	public void onDeletionNotice(StatusDeletionNotice arg0)
 	{
 		LogHelper.printD("on status detete");
 		final StatusModel model = StatusStore.get(arg0.getStatusId());
@@ -90,7 +90,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 	}
 
 	@Override
-	public void onStatus(final Status status)
+	public void onStatus(Status status)
 	{
 		if(MainActivity.getInstance() == null || MainActivity.getInstance().isFinishing())
 		{
@@ -135,33 +135,18 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 		{
 			return;
 		}
-		new UiHandler()
-		{
-			
-			@Override
-			public void run()
-			{
-				Toast.makeText(MainActivity.getInstance(), "ê⁄ë±Ç™êÿÇÍÇ‹ÇµÇΩ", Toast.LENGTH_SHORT).show();				
-			}
-		}.post();
+		
+		ToastManager.getInstance().toast("ê⁄ë±Ç™êÿÇÍÇ‹ÇµÇΩ");				
 		MainActivity.getInstance().connectUserStream();
 	}
 
 	@Override
-	public void onBlock(final User sourceUser, User targetUser)
+	public void onBlock(User sourceUser, User targetUser)
 	{
 		if (targetUser.getId() == Client.getMainAccount().getUserId())
 		{
-			new UiHandler()
-			{
-				
-				@Override
-				public void run()
-				{
-					eventListAdapter.addFirst(new UserEventModel(sourceUser, EnumUserEventType.BLOCK));
-					eventListAdapter.notifyAdapter();
-				}
-			}.post();			
+			eventListAdapter.addFirst(new UserEventModel(sourceUser, EnumUserEventType.BLOCK));
+			eventListAdapter.notifyAdapter();	
 		}
 	}
 
@@ -171,16 +156,17 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 	}
 
 	@Override
-	public void onDirectMessage(final DirectMessage message)
+	public void onDirectMessage(DirectMessage message)
 	{
 		if (message.getRecipientId() == Client.getMainAccount().getUserId())
 		{
-			eventListAdapter.addFirst(new UserEventModel(message.getSender(), EnumUserEventType.DIRECT_MESSAGE));					
+			eventListAdapter.addFirst(new UserEventModel(message.getSender(), EnumUserEventType.DIRECT_MESSAGE));
+			eventListAdapter.notifyAdapter();	
 		}
 	}
 
 	@Override
-	public void onFavorite(final User sourceUser, User targetUser, final Status targetStatus)
+	public void onFavorite(User sourceUser, User targetUser, Status targetStatus)
 	{
 		if(sourceUser.getId() == Client.getMainAccount().getUserId())
 		{
@@ -199,13 +185,15 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 		if (targetUser.getId() == Client.getMainAccount().getUserId())
 		{
 			eventListAdapter.addFirst(new StatusEventModel(sourceUser, EnumStatusEventType.FAVORITE, targetStatus));
+			eventListAdapter.notifyAdapter();	
 		}
 	}
 
 	@Override
-	public void onFollow(final User sourceUser, User targetUser)
+	public void onFollow(User sourceUser, User targetUser)
 	{
 		eventListAdapter.addFirst(new UserEventModel(sourceUser, EnumUserEventType.FOLLOW));	
+		eventListAdapter.notifyAdapter();	
 	}
 
 	@Override
@@ -214,22 +202,24 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 	}
 
 	@Override
-	public void onUnblock(final User sourceUser, User targetUser)
+	public void onUnblock(User sourceUser, User targetUser)
 	{
 		if (targetUser.getId() == Client.getMainAccount().getUserId())
 		{
-			eventListAdapter.addFirst(new UserEventModel(sourceUser, EnumUserEventType.UNBLOCK));					
+			eventListAdapter.addFirst(new UserEventModel(sourceUser, EnumUserEventType.UNBLOCK));
+			eventListAdapter.notifyAdapter();	
 		}
 	}
 
 	@Override
-	public void onUnfavorite(final User sourceUser, User targetUser, final Status targetStatus)
+	public void onUnfavorite(User sourceUser, User targetUser, Status targetStatus)
 	{
 		if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.NOTICE_UNFAV))
 		{
 			if (targetUser.getId() == Client.getMainAccount().getUserId())
 			{
 				eventListAdapter.addFirst(new StatusEventModel(sourceUser, EnumStatusEventType.UNFAVORITE, targetStatus));
+				eventListAdapter.notifyAdapter();	
 			}
 		}
 	}

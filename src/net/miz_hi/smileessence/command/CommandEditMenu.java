@@ -42,7 +42,7 @@ public class CommandEditMenu extends MenuCommand
 		StatusMenuAdapter adapter = new StatusMenuAdapter(activity, nullModel);
 		for(MenuCommand item : adapter.getStatusMenu())
 		{
-			if(item instanceof IHideable)
+			if(item instanceof IHideable && item.getDefaultVisibility())
 			{
 				boolean startValue = Client.getPreferenceHelper().getPreferenceValue(item.getClass().getSimpleName(), EnumValueType.BOOLEAN, true);
 				CheckBoxItem checkBoxItem = new CheckBoxItem(item.getName(), startValue);
