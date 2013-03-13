@@ -42,7 +42,9 @@ public class StatusCommandNanigaja extends StatusCommand implements IHideable
 			id = status.statusId;
 		}
 		MyExecutor.submit(new AsyncFavoriteTask(status.statusId));
-		new AsyncTweetTask(new StatusUpdate(str)).addToQueue();
+		StatusUpdate update = new StatusUpdate(str);
+		update.setInReplyToStatusId(id);
+		new AsyncTweetTask(update).addToQueue();
 	}
 
 	@Override
