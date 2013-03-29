@@ -1,7 +1,8 @@
-package net.miz_hi.smileessence.core;
+package net.miz_hi.smileessence.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 
 import android.app.Activity;
 import android.view.LayoutInflater;

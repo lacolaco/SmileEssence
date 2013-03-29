@@ -1,7 +1,8 @@
 package net.miz_hi.smileessence.command;
 
+import net.miz_hi.smileessence.system.TweetSystem;
 import net.miz_hi.smileessence.view.MainActivity;
-import net.miz_hi.smileessence.view.TweetViewManager;
+import net.miz_hi.smileessence.view.TweetView;
 
 public class UserCommandReply extends UserCommand
 {
@@ -20,9 +21,9 @@ public class UserCommandReply extends UserCommand
 	@Override
 	public void workOnUiThread()
 	{
-		TweetViewManager manager = TweetViewManager.getInstance();
-		manager.setReply(userName, -1);
-		manager.open();
+		TweetSystem system = TweetSystem.getInstance();
+		system.setReply(userName, -1);
+		TweetView.getInstance().open();
 	}
 
 }

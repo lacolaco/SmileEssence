@@ -10,16 +10,16 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncTimelineGetter;
 import net.miz_hi.smileessence.async.MyExecutor;
-import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.data.IconCaches;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.UserModel;
 import net.miz_hi.smileessence.data.UserStore;
 import net.miz_hi.smileessence.listener.StatusOnClickListener;
-import net.miz_hi.smileessence.menu.UserMenuAdapter;
+import net.miz_hi.smileessence.menu.UserMenu;
 import net.miz_hi.smileessence.status.StatusViewFactory;
 import net.miz_hi.smileessence.util.StringUtils;
 import net.miz_hi.smileessence.util.TwitterManager;
+import net.miz_hi.smileessence.util.UiHandler;
 import twitter4j.Paging;
 import twitter4j.User;
 import android.app.Activity;
@@ -50,7 +50,7 @@ public class UserActivity extends Activity
 	private ImageView iconView;
 	private LinearLayout statusesView;
 
-	private UserMenuAdapter userMenu;
+	private UserMenu userMenu;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -81,7 +81,7 @@ public class UserActivity extends Activity
 
 		UserModel model = UserStore.put(user);
 
-		userMenu = new UserMenuAdapter(this, model);
+		userMenu = new UserMenu(this, model);
 
 		screennameView = (TextView) findViewById(R.id.user_screenname);
 		nameView = (TextView) findViewById(R.id.user_name);

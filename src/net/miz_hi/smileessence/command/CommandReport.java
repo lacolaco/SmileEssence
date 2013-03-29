@@ -1,6 +1,6 @@
 package net.miz_hi.smileessence.command;
 
-import net.miz_hi.smileessence.view.TweetViewManager;
+import net.miz_hi.smileessence.view.TweetView;
 
 public class CommandReport extends MenuCommand
 {
@@ -18,8 +18,8 @@ public class CommandReport extends MenuCommand
 	@Override
 	public void workOnUiThread()
 	{
-		TweetViewManager.getInstance().setText("#SmileEssence @laco0416 ");
-		TweetViewManager.getInstance().open();
+		TweetView.getInstance().setText("#SmileEssence @laco0416 ");
+		TweetView.getInstance().open();
 	}
 
 }

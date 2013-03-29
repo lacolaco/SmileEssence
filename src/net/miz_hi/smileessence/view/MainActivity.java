@@ -1,35 +1,20 @@
 package net.miz_hi.smileessence.view;
 
-import java.util.List;
-import java.util.concurrent.Future;
-
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.async.AsyncMentionsGetter;
-import net.miz_hi.smileessence.async.AsyncTimelineGetter;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.auth.Account;
-import net.miz_hi.smileessence.auth.AuthentificationDB;
 import net.miz_hi.smileessence.auth.AuthorizeHelper;
 import net.miz_hi.smileessence.auth.Consumers;
-import net.miz_hi.smileessence.core.EnumPreferenceKey;
 import net.miz_hi.smileessence.core.EnumRequestCode;
-import net.miz_hi.smileessence.data.IconCaches;
-import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.data.StatusStore;
-import net.miz_hi.smileessence.data.UserStore;
 import net.miz_hi.smileessence.dialog.AuthDialogHelper;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 import net.miz_hi.smileessence.dialog.ProgressDialogHelper;
-import net.miz_hi.smileessence.event.HistoryListAdapter;
 import net.miz_hi.smileessence.event.ToastManager;
-import net.miz_hi.smileessence.listener.MyUserStreamListener;
-import net.miz_hi.smileessence.menu.OptionMenuAdapter;
-import net.miz_hi.smileessence.status.StatusListAdapter;
+import net.miz_hi.smileessence.menu.MainMenu;
+import net.miz_hi.smileessence.menu.TweetMenu;
+import net.miz_hi.smileessence.system.MainSystem;
 import net.miz_hi.smileessence.util.LogHelper;
-import net.miz_hi.smileessence.util.TwitterManager;
-import twitter4j.Paging;
-import twitter4j.TwitterStream;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -41,9 +26,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.KeyEvent;
@@ -52,28 +35,19 @@ import android.view.WindowManager;
 
 import com.slidingmenu.lib.SlidingMenu;
 
-public class MainActivity extends FragmentActivity implements Runnable
+public class MainActivity extends FragmentActivity
 {
 
 	private static MainActivity instance;
-	private static final int HANDLER_NOT_AUTHED = 0;
-	private static final int HANDLER_SETUPED = 1;
-	private static final int HANDLER_OAUTH_SUCCESS = 2;
-	private static final int HANDLER_NOT_CONNECTION = 3;
-
-	private FragmentPagerAdapter pageAdapter;
-	private StatusListAdapter homeListAdapter;
-	private StatusListAdapter mentionsListAdapter;
-	private StatusListAdapter relationListAdapter;
-	private HistoryListAdapter historyListAdapter;
-	private OptionMenuAdapter optionMenuAdapter;
+	public static final int HANDLER_NOT_AUTHED = 0;
+	public static final int HANDLER_SETUPED = 1;
+	public static final int HANDLER_OAUTH_SUCCESS = 2;
+	public static final int HANDLER_NOT_CONNECTION = 3;
 	private AuthorizeHelper authHelper;
 	private AuthDialogHelper authDialog;
-	private MyUserStreamListener usListener;
-	private TwitterStream twitterStream;
 	private boolean isFirstLoad = false;
-	private ProgressDialog progressDialog;
 	private ViewPager viewPager;
+	private ProgressDialog progressDialog;
 	private Handler handler = new Handler()
 	{
 		@Override
@@ -88,7 +62,15 @@ public class MainActivity extends FragmentActivity implements Runnable
 				}
 				case HANDLER_OAUTH_SUCCESS:
 				{
-					MyExecutor.execute(instance);
+					MyExecutor.execute(new Runnable()
+					{
+						
+						@Override
+						public void run()
+						{
+							MainSystem.getInstance().twitterSetup(handler);							
+						}
+					});
 					break;
 				}
 				case HANDLER_NOT_CONNECTION:
@@ -107,18 +89,12 @@ public class MainActivity extends FragmentActivity implements Runnable
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.mainactivity_layout);
 		LogHelper.printD("main create");
-
+		
 		instance = this;
 		isFirstLoad = true;
-		
-		homeListAdapter = new StatusListAdapter(instance);
-		mentionsListAdapter = new StatusListAdapter(instance);
-		historyListAdapter = new HistoryListAdapter(instance);
-		relationListAdapter = new StatusListAdapter(instance);
-		optionMenuAdapter = new OptionMenuAdapter(instance);
-		authHelper = new AuthorizeHelper(instance, Consumers.getDedault());
-		
-		TweetViewManager.init(instance);
+		MainSystem.getInstance().start(instance);
+		authHelper = new AuthorizeHelper(instance, Consumers.getDedault());		
+		TweetView.init(instance);
 		viewSetUp();
 	}
 	
@@ -135,7 +111,15 @@ public class MainActivity extends FragmentActivity implements Runnable
 			{
 				progressDialog = new ProgressDialog(instance);
 				ProgressDialogHelper.makeProgressDialog(instance, progressDialog).show();
-				MyExecutor.execute(instance);
+				MyExecutor.execute(new Runnable()
+				{
+					
+					@Override
+					public void run()
+					{
+						MainSystem.getInstance().twitterSetup(handler);
+					}
+				});
 			}
 			else
 			{
@@ -164,64 +148,10 @@ public class MainActivity extends FragmentActivity implements Runnable
 		}
 		else
 		{
-			refreshViews();
+			MainSystem.getInstance().refreshLists();
 		}
 
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-	}
-
-	@Override
-	public void run()
-	{
-		long lastUsedId = (Long) Client.getPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID);
-
-		for (Account account : AuthentificationDB.instance().findAll())
-		{
-			if (account.getUserId() == lastUsedId)
-			{
-				Client.setMainAccount(account);
-				usListener = new MyUserStreamListener();
-				usListener.setHomeListAdapter(homeListAdapter);
-				usListener.setMentionsListAdapter(mentionsListAdapter);
-				usListener.setEventListAdapter(historyListAdapter);
-				usListener.setRelationListAdapter(relationListAdapter);
-				twitterStream = TwitterManager.getTwitterStream(Client.getMainAccount());
-				twitterStream.addListener(usListener);
-				twitterStream.addConnectionLifeCycleListener(usListener);
-				boolean canConnect = TwitterManager.canConnect();
-				
-				if(canConnect)
-				{
-					connectUserStream();
-
-					final Future<List<StatusModel>> resp_home = MyExecutor.submit(new AsyncTimelineGetter(account, null));					
-					final Future<List<StatusModel>> resp_mentions = MyExecutor.submit(new AsyncMentionsGetter(account, new Paging(1)));
-					try
-					{
-						List<StatusModel> oldTimeline = resp_home.get();
-						homeListAdapter.addAll(oldTimeline);
-						List<StatusModel> oldMentions = resp_mentions.get();
-						mentionsListAdapter.addAll(oldMentions);
-						homeListAdapter.forceNotifyAdapter();
-						mentionsListAdapter.forceNotifyAdapter();
-						historyListAdapter.forceNotifyAdapter();
-						relationListAdapter.forceNotifyAdapter();
-					}
-					catch (Exception e)
-					{
-						e.printStackTrace();
-					}
-				}
-				else
-				{
-					handler.sendEmptyMessage(HANDLER_NOT_CONNECTION);
-				}
-
-				handler.sendEmptyMessage(HANDLER_SETUPED);
-				return;
-			}
-		}
-
 	}
 
 	public static MainActivity getInstance()
@@ -241,8 +171,8 @@ public class MainActivity extends FragmentActivity implements Runnable
 	public void onConfigurationChanged(Configuration newConfig)
 	{
 		super.onConfigurationChanged(newConfig);
-		TweetViewManager.getInstance().open(); //ïùÇÃîΩâfÇÃÇΩÇﬂÇ…äJï¬
-		TweetViewManager.getInstance().close(); 
+		TweetView.getInstance().open(); //ïùÇÃîΩâfÇÃÇΩÇﬂÇ…äJï¬
+		TweetView.getInstance().close(); 
 		DialogAdapter.dispose();
 	}
 
@@ -258,15 +188,7 @@ public class MainActivity extends FragmentActivity implements Runnable
 	{
 		super.onDestroy();
 		LogHelper.printD("main destroy");
-		if (twitterStream != null)
-		{
-			twitterStream.shutdown();
-			twitterStream = null;
-		}
-		IconCaches.clearCache();
-		StatusStore.clearCache();
-		UserStore.clearCache();
-		MyExecutor.shutdown();
+		MainSystem.getInstance().finish();
 		instance = null;
 	}
 
@@ -284,52 +206,26 @@ public class MainActivity extends FragmentActivity implements Runnable
 			}
 			progressDialog = new ProgressDialog(instance);
 			ProgressDialogHelper.makeProgressDialog(instance, progressDialog).show();
-			MyExecutor.execute(instance);
+			MyExecutor.execute(new Runnable()
+			{
+				
+				@Override
+				public void run()
+				{
+					MainSystem.getInstance().twitterSetup(handler);
+				}
+			});
 		}
 	}
 	
-	public void refreshViews()
-	{
-		homeListAdapter.forceNotifyAdapter();
-		mentionsListAdapter.forceNotifyAdapter();
-		historyListAdapter.forceNotifyAdapter();
-		pageAdapter.notifyDataSetChanged();
-	}
-	
-	public void connectUserStream()
-	{
-		if(!TwitterManager.canConnect())
-		{
-			handler.sendEmptyMessage(HANDLER_NOT_CONNECTION);
-			return;
-		}
-		if(twitterStream != null)
-		{
-			twitterStream.shutdown();
-			twitterStream.user();
-		}
-	}
-
-	public void toggleMenu()
-	{
-		if (!optionMenuAdapter.isShowing())
-		{
-			optionMenuAdapter.createMenuDialog(true).show();
-		}
-		else
-		{
-			optionMenuAdapter.dispose();
-		}
-	}
-
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event)
 	{
 		if (keyCode == KeyEvent.KEYCODE_BACK)
 		{
-			if (TweetViewManager.getInstance().isOpening())
+			if (TweetView.getInstance().isOpening())
 			{
-				TweetViewManager.getInstance().toggle();
+				TweetView.getInstance().toggle();
 				return false;
 			}
 			else if(viewPager.getCurrentItem() != 0)
@@ -345,7 +241,14 @@ public class MainActivity extends FragmentActivity implements Runnable
 		}
 		else if (keyCode == KeyEvent.KEYCODE_MENU)
 		{
-			toggleMenu();
+			if(TweetView.getInstance().isOpening())
+			{
+				TweetMenu.getInstance().createMenuDialog(true).show();
+			}
+			else
+			{
+				MainMenu.getInstance().createMenuDialog(true).show();
+			}
 			return false;
 		}
 		else
@@ -356,17 +259,8 @@ public class MainActivity extends FragmentActivity implements Runnable
 
 	private void viewSetUp()
 	{	
-		
-		Fragment[] fragments = new Fragment[4];
-		fragments[0] = Fragment.instantiate(this, HomeListPageFragment.class.getName());
-		fragments[1] = Fragment.instantiate(this, MentionsListPageFragment.class.getName());
-		fragments[2] = Fragment.instantiate(this, HistoryListPageFragment.class.getName());
-		fragments[3] = Fragment.instantiate(this, RelationListPageFragment.class.getName());
-		
-		pageAdapter = new ListPagerAdapter(super.getSupportFragmentManager(), fragments);
-		
 		viewPager = (ViewPager)findViewById(R.id.viewpager);
-		viewPager.setAdapter(pageAdapter);
+		viewPager.setAdapter(MainSystem.getInstance().pageAdapter);
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() 
 		{
 			@Override
@@ -384,42 +278,17 @@ public class MainActivity extends FragmentActivity implements Runnable
 				{
 					case 0:
 					{
-						TweetViewManager.getInstance().getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);						
+						TweetView.getInstance().getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);						
 						break;
 					}
 					default:
 					{
-						TweetViewManager.getInstance().getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+						TweetView.getInstance().getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 						break;
 					}
 				}
 			}
 		});
-	}
-	
-	public StatusListAdapter getHomeListAdapter()
-	{
-		return homeListAdapter;
-	}
-
-	public StatusListAdapter getMentionsListAdapter()
-	{
-		return mentionsListAdapter;
-	}
-
-	public HistoryListAdapter getHistoryListAdapter()
-	{
-		return historyListAdapter;
-	}
-	
-	public StatusListAdapter getRelationListAdapter()
-	{
-		return relationListAdapter;
-	}
-
-	public OptionMenuAdapter getOptionMenuAdapter()
-	{
-		return optionMenuAdapter;
 	}
 
 	public ViewPager getViewPager()

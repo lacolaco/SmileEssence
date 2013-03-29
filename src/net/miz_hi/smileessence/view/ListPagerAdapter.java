@@ -1,40 +1,98 @@
 package net.miz_hi.smileessence.view;
 
-import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.listener.TimelineScrollListener;
+import java.util.List;
+
+import net.miz_hi.smileessence.util.UiHandler;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 public class ListPagerAdapter extends FragmentPagerAdapter
 {
 
-	private static int NUM_OF_VIEWS = 4;
-	private Fragment[] pagesMap;
+	private Fragment[] pageArray;
+	private List<Fragment> pageList;
+	private boolean canMotifyOnChange = true;
 	
 	public ListPagerAdapter(FragmentManager fm, Fragment... fragments)
 	{
 		super(fm);
-		pagesMap = fragments;
+		pageArray = fragments;
 	}
 	
 	@Override
 	public int getCount()
 	{
-		return NUM_OF_VIEWS;
+		return pageArray.length;
 	}
 	
-	@Override
-	public Fragment getItem(int arg0)
+	public synchronized void add(Fragment element)
 	{
-		return pagesMap[arg0];
+		if (pageList.contains(element))
+		{
+			pageList.remove(element);
+		}
+		pageList.add(element);
+		notifyAdapter();
+	}
+	
+	public synchronized void remove(Fragment element)
+	{
+		pageList.remove(element);
+		notifyAdapter();
+	}
+	
+	public void notifyAdapter()
+	{
+		if (canMotifyOnChange)
+		{
+			new UiHandler()
+			{
+				
+				@Override
+				public void run()
+				{
+					pageArray = (Fragment[]) pageList.toArray();
+					notifyDataSetChanged();
+				}
+			}.post();
+		}
+	}
+
+	public synchronized void forceNotifyAdapter()
+	{
+		new UiHandler()
+		{
+			@Override
+			public void run()
+			{
+				notifyDataSetChanged();
+			}
+		}.post();
+	}
+
+	public synchronized void setCanNotifyOnChange(boolean notifyOnChange)
+	{
+		canMotifyOnChange = notifyOnChange;
+	}
+
+	public synchronized boolean getCanNotifyOnChange()
+	{
+		return canMotifyOnChange;
+	}
+
+	@Override
+	public Fragment getItem(int position)
+	{
+		if(pageArray != null && pageArray.length >= position)
+		{
+			return pageArray[position];
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	@Override

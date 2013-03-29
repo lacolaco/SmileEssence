@@ -8,13 +8,18 @@ import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.command.CommandMenuClose;
 import net.miz_hi.smileessence.command.ICommand;
 import net.miz_hi.smileessence.command.IHideable;
-import net.miz_hi.smileessence.core.EnumPreferenceKey.EnumValueType;
-import net.miz_hi.smileessence.core.PreferenceHelper;
+import net.miz_hi.smileessence.preference.EnumPreferenceKey.EnumValueType;
+import net.miz_hi.smileessence.preference.PreferenceHelper;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnKeyListener;
 import android.graphics.Color;
+import android.inputmethodservice.Keyboard;
+import android.inputmethodservice.Keyboard.Key;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -121,7 +126,7 @@ public abstract class DialogAdapter
 			if(item instanceof IHideable)
 			{
 				PreferenceHelper pref = Client.getPreferenceHelper();
-				isEnabled = pref.getPreferenceValue(item.getClass().getSimpleName(), EnumValueType.BOOLEAN, true);
+				isEnabled = pref.getPreferenceValue(item.getClass().getSimpleName(), EnumValueType.BOOLEAN, false);
 			}
 			
 			if(item.getDefaultVisibility() && isEnabled)
@@ -136,7 +141,6 @@ public abstract class DialogAdapter
 		DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
 		lp.width = (int) (metrics.widthPixels * 0.95);
 		lp.gravity = Gravity.BOTTOM;
-		//lp.height = (int) (metrics.heightPixels * 0.7);
 		return dialog;
 	}
 

@@ -1,6 +1,7 @@
 package net.miz_hi.smileessence.command;
 
-import net.miz_hi.smileessence.view.TweetViewManager;
+import net.miz_hi.smileessence.system.TweetSystem;
+import net.miz_hi.smileessence.view.TweetView;
 
 public class CommandAppendHashtag extends MenuCommand
 {
@@ -21,7 +22,7 @@ public class CommandAppendHashtag extends MenuCommand
 	@Override
 	public void workOnUiThread()
 	{
-		TweetViewManager.getInstance().appendText(" #" + hashtag);
-		TweetViewManager.getInstance().open();
+		TweetSystem.getInstance().appendText(" #" + hashtag);
+		TweetView.getInstance().open();
 	}
 }

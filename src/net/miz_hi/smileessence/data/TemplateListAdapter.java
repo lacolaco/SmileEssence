@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.core.CustomListAdapter;
 import net.miz_hi.smileessence.listener.TemplateOnClickListener;
+import net.miz_hi.smileessence.util.CustomListAdapter;
 
 public class TemplateListAdapter extends CustomListAdapter<Template>
 {

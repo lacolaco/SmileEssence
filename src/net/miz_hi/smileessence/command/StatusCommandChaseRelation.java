@@ -8,6 +8,7 @@ import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.status.StatusListAdapter;
+import net.miz_hi.smileessence.system.MainSystem;
 import net.miz_hi.smileessence.util.TwitterManager;
 import net.miz_hi.smileessence.view.MainActivity;
 import net.miz_hi.smileessence.view.RelationListPageFragment;
@@ -31,7 +32,7 @@ public class StatusCommandChaseRelation extends StatusCommand implements IHideab
 	public void workOnUiThread()
 	{
 		RelationListPageFragment.setChasingId(status.statusId);
-		final StatusListAdapter adapter = MainActivity.getInstance().getRelationListAdapter();
+		final StatusListAdapter adapter = MainSystem.getInstance().relationListAdapter;
 		adapter.clear();
 		adapter.forceNotifyAdapter();
 		adapter.addFirst(status);

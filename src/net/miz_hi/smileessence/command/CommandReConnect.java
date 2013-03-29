@@ -1,6 +1,6 @@
 package net.miz_hi.smileessence.command;
 
-import net.miz_hi.smileessence.view.MainActivity;
+import net.miz_hi.smileessence.system.MainSystem;
 
 public class CommandReConnect extends MenuCommand
 {
@@ -18,7 +18,7 @@ public class CommandReConnect extends MenuCommand
 	@Override
 	public void workOnUiThread()
 	{
-		MainActivity.getInstance().connectUserStream();
+		MainSystem.getInstance().connectUserStream();
 	}
 
 }

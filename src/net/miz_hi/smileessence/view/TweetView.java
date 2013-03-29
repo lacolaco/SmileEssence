@@ -2,15 +2,13 @@ package net.miz_hi.smileessence.view;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.async.AsyncTweetTask;
-import net.miz_hi.smileessence.core.EnumPreferenceKey;
-import net.miz_hi.smileessence.core.UiHandler;
-import net.miz_hi.smileessence.event.ToastManager;
+import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.listener.TweetViewTouchListener;
-import net.miz_hi.smileessence.menu.TweetMenuAdapter;
-import net.miz_hi.smileessence.util.LogHelper;
-import net.miz_hi.smileessence.util.StringUtils;
-import twitter4j.StatusUpdate;
+import net.miz_hi.smileessence.menu.TweetMenu;
+import net.miz_hi.smileessence.preference.EnumPreferenceKey;
+import net.miz_hi.smileessence.status.StatusViewFactory;
+import net.miz_hi.smileessence.system.TweetSystem;
+import net.miz_hi.smileessence.util.UiHandler;
 import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
@@ -21,8 +19,9 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.SlidingMenu.OnCloseListener;
@@ -30,30 +29,28 @@ import com.slidingmenu.lib.SlidingMenu.OnClosedListener;
 import com.slidingmenu.lib.SlidingMenu.OnOpenListener;
 import com.slidingmenu.lib.SlidingMenu.OnOpenedListener;
 
-public class TweetViewManager
+public class TweetView
 {
 
-	private static TweetViewManager instance;
+	private static TweetView instance;
 	private SlidingMenu menu;
-	private long inReplyTo;
 	private Activity activity;
 	private EditText editTextTweet;
-	private TweetMenuAdapter menuAdapter;
+	private ListView listViewReply;
+	private LinearLayout linearLayoutObj;
 
-	private TweetViewManager(Activity activity)
+	private TweetView(Activity activity)
 	{
 		this.activity = activity;
-		createSlidingMenu();
 		init();
-		inReplyTo = -1;
 	}
 	
 	public static void init(Activity activity)
 	{
-		instance = new TweetViewManager(activity);
+		instance = new TweetView(activity);
 	}
 	
-	public static TweetViewManager getInstance()
+	public static TweetView getInstance()
 	{
 		return instance;
 	}
@@ -69,51 +66,9 @@ public class TweetViewManager
 		editTextTweet.setSelection(str.length());
 	}
 	
-	public void appendText(String str)
+	public int getCursor()
 	{
-		String text = editTextTweet.getText().toString() + str;
-		setText(text);
-	}
-	
-	public void insertText(String str)
-	{
-		int cursor = editTextTweet.getSelectionEnd();
-		StringBuilder sb = new StringBuilder(editTextTweet.getText().toString());
-		sb.insert(cursor, str);
-		setText(sb.toString());
-		cursor = cursor + sb.length();
-		if (cursor > editTextTweet.getText().length())
-		{
-			cursor = editTextTweet.getText().length();
-		}
-		editTextTweet.setSelection(cursor);
-	}
-
-	public void setInReplyToStatusId(long statusId)
-	{
-		inReplyTo = statusId;
-	}
-
-	public void setReply(String userName, long statusId)
-	{
-		setText("@" + userName + " ");
-		inReplyTo = statusId;
-	}
-	
-	public void addReply(String userName)
-	{
-		String text = editTextTweet.getText().toString();
-
-		if (!text.contains("@" + userName))
-		{
-			text = text + " @" + userName + " ";
-		}
-		if (text.startsWith("@"))
-		{
-			text = "." + text;
-		}
-		setText(text);
-		inReplyTo = -1;
+		return editTextTweet.getSelectionEnd();
 	}
 
 	public void setCursor(int index)
@@ -121,6 +76,18 @@ public class TweetViewManager
 		editTextTweet.setSelection(index);
 	}
 	
+	public void removeObjects()
+	{
+		linearLayoutObj.removeAllViews();
+	}
+	
+	public void setInReplyToStatus(StatusModel status)
+	{
+		linearLayoutObj.removeAllViews();
+		View viewStatus = StatusViewFactory.getView(activity.getLayoutInflater(), status);
+		linearLayoutObj.addView(viewStatus);
+	}
+
 	public void toggle()
 	{
 		new UiHandler()
@@ -164,42 +131,20 @@ public class TweetViewManager
 	{
 		return menu.isMenuShowing();
 	}
-	
-	private void submit(final String text)
-	{
-		if (StringUtils.isNullOrEmpty(text))
-		{
-			ToastManager.getInstance().toast("‰½‚©“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
-		}
-		else
-		{
-			new UiHandler()
-			{
-				
-				@Override
-				public void run()
-				{
-					StatusUpdate update = new StatusUpdate(text);
-					if (inReplyTo >= 0)
-					{
-						update.setInReplyToStatusId(inReplyTo);
-						inReplyTo = -1;
-					}
-					new AsyncTweetTask(update).addToQueue();
-				}
-			}.postDelayed(10);
-		}
-	}
 
 	private void init()
 	{
+		TweetSystem.start(activity);
+		createSlidingMenu();
 		editTextTweet = (EditText) menu.findViewById(R.id.editText_tweet);
 		final TextView textViewCount = (TextView) menu.findViewById(R.id.textView_count);
 		ImageButton imageButtonSubmit = (ImageButton) menu.findViewById(R.id.imageButton_submit);
 		ImageButton imageButtonClear = (ImageButton) menu.findViewById(R.id.imageButton_clean);
 		ImageButton imageButtonMenu = (ImageButton)menu.findViewById(R.id.imageButton_menu);
-
-		menuAdapter = new TweetMenuAdapter(activity);
+		ImageButton imageButtonPict = (ImageButton)menu.findViewById(R.id.imageButton_pict);
+		ImageButton imageButtonCamera = (ImageButton)menu.findViewById(R.id.imageButton_camera);
+		linearLayoutObj = (LinearLayout)menu.findViewById(R.id.linearLayout_tweet_obj);
+		
 		textViewCount.setText("140");
 		editTextTweet.setFocusable(true);
 		editTextTweet.setTextSize(Client.getTextSize());
@@ -225,7 +170,8 @@ public class TweetViewManager
 			@Override
 			public void onClick(View v)
 			{
-				submit(editTextTweet.getText().toString());
+				TweetSystem.getInstance().setText(editTextTweet.getText().toString());
+				TweetSystem.getInstance().submit();
 				editTextTweet.setText("");
 				if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.AFTER_SUBMIT))
 				{
@@ -241,6 +187,7 @@ public class TweetViewManager
 			public void onClick(View v)
 			{
 				editTextTweet.setText("");
+				TweetSystem.getInstance().clear();
 			}
 		});
 
@@ -251,10 +198,48 @@ public class TweetViewManager
 			public void onClick(View v)
 			{
 				InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(editTextTweet.getWindowToken(), 0);
-				menuAdapter.createMenuDialog(true).show();
+				imm.hideSoftInputFromWindow(editTextTweet.getWindowToken(), 0);	
+				TweetMenu.getInstance().createMenuDialog(true).show();
 			}
 		});
+	}
+	
+	private void onOpeningMenu()
+	{
+		String text = TweetSystem.getInstance().getText();
+		editTextTweet.setText(text);
+		
+		if(text.startsWith(" RT"))
+		{
+			editTextTweet.setSelection(0);
+		}
+		else
+		{
+			editTextTweet.setSelection(text.length());
+		}
+	}
+
+	private void onOpenedMenu()
+	{
+		editTextTweet.setTextSize(Client.getTextSize());
+		editTextTweet.requestFocus();
+				
+		if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.OPEN_IME))
+		{
+			InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(editTextTweet, 0);
+		}
+	}
+	
+	private void onClosingMenu()
+	{
+		TweetSystem.getInstance().setText(editTextTweet.getText().toString());
+	}
+
+	private void onClosedMenu()
+	{
+		InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(editTextTweet.getWindowToken(), 0);
 	}
 
 	private void createSlidingMenu()
@@ -269,13 +254,14 @@ public class TweetViewManager
 		View rootView = LayoutInflater.from(activity).inflate(R.layout.tweet_layout, null);
 		menu.setMenu(rootView);
 		rootView.setOnTouchListener(new TweetViewTouchListener());
-		menu.setOnClosedListener(new OnClosedListener()
+
+		menu.setOnOpenListener(new OnOpenListener()
 		{
 			
 			@Override
-			public void onClosed()
+			public void onOpen()
 			{
-				onCloseSlidingMenu();
+				onOpeningMenu();
 			}
 		});
 		menu.setOnOpenedListener(new OnOpenedListener()
@@ -284,30 +270,27 @@ public class TweetViewManager
 			@Override
 			public void onOpened()
 			{
-				onOpenSlidingMenu();
+				onOpenedMenu();
 			}
 		});
-	}
-
-	private void onOpenSlidingMenu()
-	{
-		editTextTweet.setTextSize(Client.getTextSize());
-		if(getText().contains(" RT @"))
+		menu.setOnCloseListener(new OnCloseListener()
 		{
-			editTextTweet.setSelection(0);
-		}
-		editTextTweet.requestFocus();
-		if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.OPEN_IME))
+			
+			@Override
+			public void onClose()
+			{
+				onClosingMenu();				
+			}
+		});
+		menu.setOnClosedListener(new OnClosedListener()
 		{
-			InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.showSoftInput(editTextTweet, 0);
-		}
-	}
-
-	private void onCloseSlidingMenu()
-	{
-		InputMethodManager imm = (InputMethodManager) Client.getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(editTextTweet.getWindowToken(), 0);
+			
+			@Override
+			public void onClosed()
+			{
+				onClosedMenu();
+			}
+		});
 	}
 
 	public SlidingMenu getSlidingMenu()

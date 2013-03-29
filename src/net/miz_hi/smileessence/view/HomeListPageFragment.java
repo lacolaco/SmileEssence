@@ -3,6 +3,7 @@ package net.miz_hi.smileessence.view;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.listener.TimelineScrollListener;
+import net.miz_hi.smileessence.system.MainSystem;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,8 +28,8 @@ public class HomeListPageFragment extends Fragment
 		textView.setTextSize(Client.getTextSize() + 3);
 		listView.setFastScrollEnabled(true);
 		textView.setText("Home");
-		listView.setAdapter(MainActivity.getInstance().getHomeListAdapter());
-		listView.setOnScrollListener(new TimelineScrollListener(MainActivity.getInstance().getHomeListAdapter()));
+		listView.setAdapter(MainSystem.getInstance().homeListAdapter);
+		listView.setOnScrollListener(new TimelineScrollListener(MainSystem.getInstance().homeListAdapter));
 
 		return page;
 	}

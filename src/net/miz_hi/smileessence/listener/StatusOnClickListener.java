@@ -2,9 +2,9 @@ package net.miz_hi.smileessence.listener;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.menu.StatusMenuAdapter;
+import net.miz_hi.smileessence.status.StatusCommandDialog;
+import net.miz_hi.smileessence.util.UiHandler;
 import android.app.Activity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,7 +24,7 @@ public class StatusOnClickListener implements OnClickListener
 	@Override
 	public void onClick(final View v)
 	{
-		final StatusMenuAdapter adapter = new StatusMenuAdapter(activity, model);
+		final StatusCommandDialog adapter = new StatusCommandDialog(activity, model);
 		v.setBackgroundColor(Client.getColor(R.color.MetroBlue));
 		v.invalidate();
 		new UiHandler()

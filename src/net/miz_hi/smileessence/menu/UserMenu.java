@@ -17,13 +17,12 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.widget.TextView;
 
-public class UserMenuAdapter extends DialogAdapter
+public class UserMenu extends DialogAdapter
 {
 	private String userName;
 	private boolean isMe;
-	private int textSize = 15;
 
-	public UserMenuAdapter(Activity activity, UserModel model)
+	public UserMenu(Activity activity, UserModel model)
 	{
 		super(activity);
 		this.userName = model.screenName;
@@ -48,5 +47,4 @@ public class UserMenuAdapter extends DialogAdapter
 
 		return super.createMenuDialog();
 	}
-
 }

@@ -9,11 +9,11 @@ import java.net.URL;
 import java.util.concurrent.Callable;
 
 import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.core.SimpleAsyncTask;
 import net.miz_hi.smileessence.data.IconCaches;
 import net.miz_hi.smileessence.data.IconCaches.Icon;
 import net.miz_hi.smileessence.data.UserModel;
 import net.miz_hi.smileessence.util.LogHelper;
+import net.miz_hi.smileessence.util.SimpleAsyncTask;
 import net.miz_hi.smileessence.view.MainActivity;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;

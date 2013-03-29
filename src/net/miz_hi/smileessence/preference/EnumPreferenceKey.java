@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.core;
+package net.miz_hi.smileessence.preference;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;

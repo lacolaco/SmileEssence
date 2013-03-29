@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.core;
+package net.miz_hi.smileessence.util;
 
 import java.util.LinkedList;
 import net.miz_hi.smileessence.async.MyExecutor;

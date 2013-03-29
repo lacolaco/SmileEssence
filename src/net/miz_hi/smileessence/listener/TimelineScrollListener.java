@@ -1,6 +1,6 @@
 package net.miz_hi.smileessence.listener;
 
-import net.miz_hi.smileessence.core.CustomListAdapter;
+import net.miz_hi.smileessence.util.CustomListAdapter;
 import net.miz_hi.smileessence.util.LogHelper;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;

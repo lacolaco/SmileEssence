@@ -2,7 +2,7 @@ package net.miz_hi.smileessence.command;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.view.TweetViewManager;
+import net.miz_hi.smileessence.view.TweetView;
 
 public class StatusCommandUnOffRetweet extends StatusCommand implements IHideable
 {
@@ -22,7 +22,7 @@ public class StatusCommandUnOffRetweet extends StatusCommand implements IHideabl
 	public void workOnUiThread()
 	{
 		String text = " RT @" + status.screenName + ": " + status.text;
-		TweetViewManager manager = TweetViewManager.getInstance();
+		TweetView manager = TweetView.getInstance();
 		manager.setText(text);
 		manager.setCursor(0);
 		manager.open();

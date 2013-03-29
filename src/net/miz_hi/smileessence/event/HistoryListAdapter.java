@@ -1,9 +1,9 @@
 package net.miz_hi.smileessence.event;
 
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.core.CustomListAdapter;
-import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.listener.EventOnClickListener;
+import net.miz_hi.smileessence.util.CustomListAdapter;
+import net.miz_hi.smileessence.util.UiHandler;
 import net.miz_hi.smileessence.view.MainActivity;
 import android.app.Activity;
 import android.view.View;

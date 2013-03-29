@@ -1,7 +1,7 @@
 package net.miz_hi.smileessence.command;
 
-import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
+import net.miz_hi.smileessence.util.UiHandler;
 
 public abstract class MenuCommand implements ICommand
 {

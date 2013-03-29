@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.menu;
+package net.miz_hi.smileessence.status;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,13 +36,13 @@ import net.miz_hi.smileessence.command.UserCommandOpenPage;
 import net.miz_hi.smileessence.command.UserCommandOpenProfiel;
 import net.miz_hi.smileessence.command.UserCommandRemove;
 import net.miz_hi.smileessence.command.UserCommandReply;
-import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 import net.miz_hi.smileessence.event.ToastManager;
-import net.miz_hi.smileessence.status.StatusViewFactory;
+import net.miz_hi.smileessence.system.TweetSystem;
 import net.miz_hi.smileessence.util.TwitterManager;
-import net.miz_hi.smileessence.view.TweetViewManager;
+import net.miz_hi.smileessence.util.UiHandler;
+import net.miz_hi.smileessence.view.TweetView;
 import twitter4j.HashtagEntity;
 import twitter4j.MediaEntity;
 import twitter4j.URLEntity;
@@ -54,11 +54,11 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class StatusMenuAdapter extends DialogAdapter
+public class StatusCommandDialog extends DialogAdapter
 {
 	private StatusModel model;
 
-	public StatusMenuAdapter(Activity activity, StatusModel model)
+	public StatusCommandDialog(Activity activity, StatusModel model)
 	{
 		super(activity);
 		this.model = model;
@@ -229,8 +229,8 @@ public class StatusMenuAdapter extends DialogAdapter
 				@Override
 				public void run()
 				{
-					TweetViewManager.getInstance().setReply(model.screenName, model.statusId);
-					TweetViewManager.getInstance().open();
+					TweetSystem.getInstance().setReply(model.screenName, model.statusId);
+					TweetView.getInstance().open();
 					dispose();
 				}
 			}.postDelayed(20);

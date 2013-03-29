@@ -15,10 +15,12 @@ import net.miz_hi.smileessence.dialog.DialogAdapter;
 import android.app.Activity;
 import android.app.Dialog;
 
-public class TweetMenuAdapter extends DialogAdapter
+public class TweetMenu extends DialogAdapter
 {
 
-	public TweetMenuAdapter(Activity activity)
+	private static TweetMenu instance;
+
+	private TweetMenu(Activity activity)
 	{
 		super(activity);
 	}
@@ -63,6 +65,16 @@ public class TweetMenuAdapter extends DialogAdapter
 			list.add(new CommandInsertText(template.getText()));
 		}
 		return list;
+	}
+	
+	public static void init(Activity activity)
+	{
+		instance = new TweetMenu(activity);
+	}
+	
+	public static TweetMenu getInstance()
+	{
+		return instance;
 	}
 
 }

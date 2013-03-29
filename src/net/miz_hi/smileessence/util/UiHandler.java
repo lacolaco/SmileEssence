@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.core;
+package net.miz_hi.smileessence.util;
 
 import android.os.Handler;
 import android.os.Looper;

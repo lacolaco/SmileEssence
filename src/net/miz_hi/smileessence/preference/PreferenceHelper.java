@@ -1,9 +1,8 @@
-package net.miz_hi.smileessence.core;
+package net.miz_hi.smileessence.preference;
 
-import net.miz_hi.smileessence.core.EnumPreferenceKey.EnumValueType;
+import net.miz_hi.smileessence.preference.EnumPreferenceKey.EnumValueType;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.view.KeyCharacterMap.KeyData;
 
 public class PreferenceHelper
 {

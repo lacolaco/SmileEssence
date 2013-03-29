@@ -1,8 +1,8 @@
 package net.miz_hi.smileessence.event;
 
-import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.event.StatusEventModel.EnumStatusEventType;
 import net.miz_hi.smileessence.util.CountUpInteger;
+import net.miz_hi.smileessence.util.UiHandler;
 import net.miz_hi.smileessence.view.MainActivity;
 import twitter4j.User;
 import android.app.Activity;

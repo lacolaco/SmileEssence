@@ -32,9 +32,9 @@ public class EventViewFactory
 		}
 	}
 	
-	private static View getToastView(Activity _activity, StatusEventModel model, View viewBase)
+	private static View getToastView(Activity activity, StatusEventModel model, View viewBase)
 	{
-		LayoutInflater layoutInflater = LayoutInflater.from(_activity);
+		LayoutInflater layoutInflater = LayoutInflater.from(activity);
 		if (viewBase == null)
 		{
 			viewBase = layoutInflater.inflate(R.layout.eventtoast_layout, null);
@@ -53,19 +53,19 @@ public class EventViewFactory
 		baseLayout.setBackgroundColor(black);
 		bodyLayout.removeAllViews();
 
-		baseLayout.setVisibility(View.VISIBLE);
+		bodyLayout.setVisibility(View.VISIBLE);
 		View viewStatus = StatusViewFactory.getView(layoutInflater, model.targetModel);
 		bodyLayout.addView(viewStatus);
 
-		DisplayMetrics metrics = _activity.getResources().getDisplayMetrics();
+		DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
 		viewText.setWidth((int) (metrics.widthPixels * 0.8));
 
 		return viewBase;
 	}
 	
-	private static View getToastView(Activity _activity, UserEventModel model, View viewBase)
+	private static View getToastView(Activity activity, UserEventModel model, View viewBase)
 	{
-		LayoutInflater layoutInflater = LayoutInflater.from(_activity);
+		LayoutInflater layoutInflater = LayoutInflater.from(activity);
 		if (viewBase == null)
 		{
 			viewBase = layoutInflater.inflate(R.layout.eventtoast_layout, null);
@@ -85,7 +85,7 @@ public class EventViewFactory
 		bodyLayout.removeAllViews();
 		bodyLayout.setVisibility(View.GONE);
 
-		DisplayMetrics metrics = _activity.getResources().getDisplayMetrics();
+		DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
 		viewText.setWidth((int) (metrics.widthPixels * 0.8));
 
 		return viewBase;
@@ -126,7 +126,6 @@ public class EventViewFactory
 		baseLayout.setBackgroundColor(black);
 		viewText.setText(model.source.getScreenName() + model.type.getText());
 		viewText.setTextColor(Client.getResource().getColor(R.color.White));
-
 		bodyLayout.setVisibility(View.GONE);
 
 		return viewBase;

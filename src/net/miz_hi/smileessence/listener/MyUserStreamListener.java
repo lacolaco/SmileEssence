@@ -1,17 +1,17 @@
 package net.miz_hi.smileessence.listener;
 
 import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.core.EnumPreferenceKey;
-import net.miz_hi.smileessence.core.UiHandler;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.event.HistoryListAdapter;
 import net.miz_hi.smileessence.event.StatusEventModel;
 import net.miz_hi.smileessence.event.StatusEventModel.EnumStatusEventType;
 import net.miz_hi.smileessence.event.ToastManager;
-import net.miz_hi.smileessence.event.UserEventModel.EnumUserEventType;
 import net.miz_hi.smileessence.event.UserEventModel;
+import net.miz_hi.smileessence.event.UserEventModel.EnumUserEventType;
+import net.miz_hi.smileessence.preference.EnumPreferenceKey;
 import net.miz_hi.smileessence.status.StatusListAdapter;
+import net.miz_hi.smileessence.system.MainSystem;
 import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.view.MainActivity;
 import net.miz_hi.smileessence.view.RelationListPageFragment;
@@ -23,8 +23,6 @@ import twitter4j.StatusDeletionNotice;
 import twitter4j.User;
 import twitter4j.UserList;
 import twitter4j.UserStreamListener;
-import android.widget.ListView;
-import android.widget.Toast;
 
 public class MyUserStreamListener implements UserStreamListener, ConnectionLifeCycleListener
 {
@@ -137,7 +135,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 		}
 		
 		ToastManager.getInstance().toast("ê⁄ë±Ç™êÿÇÍÇ‹ÇµÇΩ");				
-		MainActivity.getInstance().connectUserStream();
+		MainSystem.getInstance().connectUserStream();
 	}
 
 	@Override
@@ -179,8 +177,8 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 				StatusStore.putFavoritedStatus(targetStatus.getId());
 			}			
 
-			MainActivity.getInstance().getHomeListAdapter().forceNotifyAdapter();
-			MainActivity.getInstance().getMentionsListAdapter().forceNotifyAdapter();
+			MainSystem.getInstance().homeListAdapter.forceNotifyAdapter();
+			MainSystem.getInstance().mentionsListAdapter.forceNotifyAdapter();
 		}
 		if (targetUser.getId() == Client.getMainAccount().getUserId())
 		{

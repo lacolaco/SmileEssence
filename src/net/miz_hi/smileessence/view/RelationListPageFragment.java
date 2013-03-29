@@ -3,6 +3,7 @@ package net.miz_hi.smileessence.view;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.listener.TimelineScrollListener;
+import net.miz_hi.smileessence.system.MainSystem;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -29,8 +30,8 @@ public class RelationListPageFragment extends Fragment
 		textView.setTextSize(Client.getTextSize() + 3);
 		listView.setFastScrollEnabled(true);
 		textView.setText("Relation");
-		listView.setAdapter(MainActivity.getInstance().getRelationListAdapter());
-		listView.setOnScrollListener(new TimelineScrollListener(MainActivity.getInstance().getRelationListAdapter()));
+		listView.setAdapter(MainSystem.getInstance().relationListAdapter);
+		listView.setOnScrollListener(new TimelineScrollListener(MainSystem.getInstance().relationListAdapter));
 
 		return page;
 	}

@@ -2,7 +2,8 @@ package net.miz_hi.smileessence.command;
 
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.event.ToastManager;
-import net.miz_hi.smileessence.view.TweetViewManager;
+import net.miz_hi.smileessence.system.TweetSystem;
+import net.miz_hi.smileessence.view.TweetView;
 
 public class StatusCommandAddReply extends StatusCommand
 {
@@ -21,7 +22,7 @@ public class StatusCommandAddReply extends StatusCommand
 	@Override
 	public void workOnUiThread()
 	{
-		TweetViewManager.getInstance().addReply(status.screenName);
+		TweetSystem.getInstance().addReply(status.screenName);
 		ToastManager.getInstance().toast(status.screenName + "‚ğƒŠƒvƒ‰ƒCæ‚É’Ç‰Á‚µ‚Ü‚µ‚½");
 	}
 }
