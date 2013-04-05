@@ -9,7 +9,7 @@ import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.util.TwitterManager;
 
-public class StatusCommandFavAndRetweet extends StatusCommand implements IHideable
+public class StatusCommandFavAndRetweet extends StatusCommand implements IHideable, IConfirmable
 {
 
 	public StatusCommandFavAndRetweet(StatusModel model)

@@ -10,6 +10,7 @@ public enum EnumPreferenceKey
 	AFTER_SUBMIT(EnumValueType.BOOLEAN, Client.getResource().getString(R.string.key_setting_aftersubmit), true),
 	NOTICE_UNFAV(EnumValueType.BOOLEAN, Client.getResource().getString(R.string.key_setting_notice_unfav), false),
 	OPEN_IME(EnumValueType.BOOLEAN, Client.getResource().getString(R.string.key_setting_open_ime), true),
+	CONFIRM_DIALOG(EnumValueType.BOOLEAN, Client.getResource().getString(R.string.key_setting_confirm_dialog),true),
 
 	;
 

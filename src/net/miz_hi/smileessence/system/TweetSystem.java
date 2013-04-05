@@ -116,7 +116,7 @@ public class TweetSystem
 
 		text = builder.toString();
 		TweetView.getInstance().setText(text);
-		TweetView.getInstance().removeObjects();
+		TweetView.getInstance().removeReply();
 	}
 	
 	public void setPicturePath(File path)

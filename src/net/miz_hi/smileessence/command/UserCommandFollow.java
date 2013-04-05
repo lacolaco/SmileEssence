@@ -5,7 +5,7 @@ import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.util.TwitterManager;
 
-public class UserCommandFollow extends UserCommand
+public class UserCommandFollow extends UserCommand implements IConfirmable
 {
 
 	public UserCommandFollow(String userName)

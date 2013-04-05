@@ -7,8 +7,10 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.command.CommandMenuClose;
 import net.miz_hi.smileessence.command.ICommand;
+import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey.EnumValueType;
+import net.miz_hi.smileessence.preference.EnumPreferenceKey;
 import net.miz_hi.smileessence.preference.PreferenceHelper;
 import android.app.Activity;
 import android.app.Dialog;
@@ -154,11 +156,13 @@ public abstract class DialogAdapter
 
 	public static class MenuItemView
 	{
+		private Activity activity;
 		private ICommand item;
 		private LayoutInflater layoutInflater;
 
 		public MenuItemView(Activity activity, ICommand item)
 		{
+			this.activity = activity;
 			this.item = item;
 			layoutInflater = LayoutInflater.from(activity);
 		}
@@ -174,7 +178,29 @@ public abstract class DialogAdapter
 				public void onClick(View view)
 				{
 					view.setBackgroundColor(Color.rgb(30, 30, 120));
-					item.run();
+					if(item instanceof IConfirmable && Client.<Boolean>getPreferenceValue(EnumPreferenceKey.CONFIRM_DIALOG))
+					{
+						YesNoDialogHelper.show(activity, item.getName(), "é¿çsÇµÇ‹Ç∑Ç©ÅH", new Runnable()
+						{
+							public void run()
+							{
+								item.run();
+							}
+						},
+						new Runnable()
+						{
+							
+							@Override
+							public void run()
+							{
+								dispose();
+							}
+						});
+					}
+					else
+					{
+						item.run();
+					}
 				}
 			});
 			return view;

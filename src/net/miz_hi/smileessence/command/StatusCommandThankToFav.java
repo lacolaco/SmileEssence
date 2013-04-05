@@ -11,7 +11,7 @@ import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.util.TwitterManager;
 
-public class StatusCommandThankToFav extends StatusCommand implements IHideable
+public class StatusCommandThankToFav extends StatusCommand implements IHideable, IConfirmable
 {
 
 	public StatusCommandThankToFav(StatusModel status)

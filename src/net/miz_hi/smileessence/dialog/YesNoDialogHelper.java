@@ -58,12 +58,18 @@ public class YesNoDialogHelper
 		AlertDialog.Builder ad = new AlertDialog.Builder(activity);
 		ad.setTitle(textTitle);
 		ad.setView(contentView);
+		ad.setCancelable(false);
 		ad.setPositiveButton(textPositive, listener);
 		ad.setNegativeButton(textNegative, listener);
 		return ad.create();
 	}
 	
 	public static void show(Activity activity, String title, String text, final Runnable onYes)
+	{
+		show(activity, title, text, onYes, null);
+	}
+	
+	public static void show(Activity activity, String title, String text, final Runnable onYes, final Runnable onNo)
 	{
 		YesNoDialogHelper helper = new YesNoDialogHelper(activity, title);
 		TextView viewText = new TextView(activity);
@@ -86,6 +92,10 @@ public class YesNoDialogHelper
 					}
 					case DialogInterface.BUTTON_NEGATIVE:
 					{
+						if(onNo != null)
+						{
+							onNo.run();
+						}
 						dialog.dismiss();
 						break;
 					}

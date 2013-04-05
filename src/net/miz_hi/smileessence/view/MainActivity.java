@@ -244,6 +244,7 @@ public class MainActivity extends FragmentActivity
 			
 			if(uri == null)
 			{
+				ToastManager.show("ファイルが存在しません");
 				return;
 			}
 			ContentResolver cr = getContentResolver();
@@ -252,6 +253,7 @@ public class MainActivity extends FragmentActivity
 			c.moveToFirst();
 			if(c.isNull(c.getColumnIndex(MediaStore.Images.Media.DATA)))
 			{
+				ToastManager.show("ファイルが存在しません");
 				return;
 			}
 			
@@ -259,6 +261,7 @@ public class MainActivity extends FragmentActivity
 			if (!path.exists())
 			{
 				ToastManager.show("ファイルが存在しません");
+				return;
 			}
 			else
 			{

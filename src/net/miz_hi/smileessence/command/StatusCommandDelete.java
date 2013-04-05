@@ -13,7 +13,7 @@ import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.util.TwitterManager;
 
-public class StatusCommandDelete extends StatusCommand
+public class StatusCommandDelete extends StatusCommand implements IConfirmable
 {
 
 	public StatusCommandDelete(StatusModel status)

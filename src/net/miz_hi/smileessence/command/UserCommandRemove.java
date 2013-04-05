@@ -5,7 +5,7 @@ import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.util.TwitterManager;
 
-public class UserCommandRemove extends UserCommand
+public class UserCommandRemove extends UserCommand implements IConfirmable
 {
 
 	public UserCommandRemove(String userName)

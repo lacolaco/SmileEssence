@@ -92,7 +92,7 @@ public class TweetView
 		editTextTweet.setSelection(index);
 	}
 	
-	public void removeObjects()
+	public void removeReply()
 	{
 		linearLayoutReply.removeAllViews();
 	}

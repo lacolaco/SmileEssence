@@ -4,7 +4,7 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.view.TweetView;
 
-public class StatusCommandUnOffRetweet extends StatusCommand implements IHideable
+public class StatusCommandUnOffRetweet extends StatusCommand implements IHideable, IConfirmable
 {
 
 	public StatusCommandUnOffRetweet(StatusModel model)

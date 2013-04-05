@@ -7,7 +7,7 @@ import net.miz_hi.smileessence.async.AsyncTweetTask;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.data.StatusModel;
 
-public class StatusCommandNanigaja extends StatusCommand implements IHideable
+public class StatusCommandNanigaja extends StatusCommand implements IHideable, IConfirmable
 {
 
 	public StatusCommandNanigaja(StatusModel status)

@@ -11,7 +11,7 @@ import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.util.TwitterManager;
 import twitter4j.StatusUpdate;
 
-public class StatusCommandCopy extends StatusCommand implements IHideable
+public class StatusCommandCopy extends StatusCommand implements IHideable, IConfirmable
 {
 
 	public StatusCommandCopy(StatusModel model)
