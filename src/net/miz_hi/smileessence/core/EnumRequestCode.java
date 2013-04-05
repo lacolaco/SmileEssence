@@ -4,4 +4,6 @@ public enum EnumRequestCode
 {
 	AUTHORIZE,
 	MAIN,
+	PICTURE,
+	CAMERA
 }

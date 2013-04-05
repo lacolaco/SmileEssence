@@ -230,7 +230,7 @@ public class StatusCommandDialog extends DialogAdapter
 				public void run()
 				{
 					TweetSystem.getInstance().setReply(model.screenName, model.statusId);
-					TweetView.getInstance().open();
+					TweetView.open();
 					dispose();
 				}
 			}.postDelayed(20);
@@ -256,7 +256,7 @@ public class StatusCommandDialog extends DialogAdapter
 					{
 						boolean b = resp.get();
 						String str = b ? TwitterManager.MESSAGE_RETWEET_SUCCESS : TwitterManager.MESSAGE_RETWEET_DEPLICATE;
-						ToastManager.getInstance().toast(str);
+						ToastManager.show(str);
 					}
 					catch (Exception e)
 					{
@@ -295,7 +295,7 @@ public class StatusCommandDialog extends DialogAdapter
 					{
 						boolean b = resp.get();
 						String str = b ? TwitterManager.MESSAGE_FAVORITE_SUCCESS : TwitterManager.MESSAGE_FAVORITE_DEPLICATE;
-						ToastManager.getInstance().toast(str);
+						ToastManager.show(str);
 					}
 					catch (Exception e)
 					{

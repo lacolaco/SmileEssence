@@ -69,11 +69,11 @@ public class StatusCommandCongrats extends StatusCommand implements IHideable
 				{
 					if(f.get())
 					{
-						ToastManager.getInstance().toast("Ç®èjÇ¢ÇµÇ‹ÇµÇΩ");
+						ToastManager.show("Ç®èjÇ¢ÇµÇ‹ÇµÇΩ");
 					}
 					else
 					{
-						ToastManager.getInstance().toast(TwitterManager.MESSAGE_SOMETHING_ERROR);
+						ToastManager.show(TwitterManager.MESSAGE_SOMETHING_ERROR);
 					}
 				}
 				catch(Exception e)

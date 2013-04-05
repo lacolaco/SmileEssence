@@ -58,11 +58,11 @@ public class StatusCommandDelete extends StatusCommand
 				{
 					if(f.get())
 					{
-						ToastManager.getInstance().toast("íœ‚µ‚Ü‚µ‚½");
+						ToastManager.show("íœ‚µ‚Ü‚µ‚½");
 					}
 					else
 					{
-						ToastManager.getInstance().toast(TwitterManager.MESSAGE_SOMETHING_ERROR);
+						ToastManager.show(TwitterManager.MESSAGE_SOMETHING_ERROR);
 					}
 				}
 				catch (Exception e)

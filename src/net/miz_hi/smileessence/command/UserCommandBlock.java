@@ -29,7 +29,7 @@ public class UserCommandBlock extends UserCommand
 			{
 				if (TwitterManager.block(Client.getMainAccount(), userName))
 				{
-					ToastManager.getInstance().toast(userName + "をブロックしました");
+					ToastManager.show(userName + "をブロックしました");
 				}
 			}
 		});

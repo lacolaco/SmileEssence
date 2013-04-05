@@ -19,7 +19,7 @@ public class CommandReport extends MenuCommand
 	public void workOnUiThread()
 	{
 		TweetView.getInstance().setText("#SmileEssence @laco0416 ");
-		TweetView.getInstance().open();
+		TweetView.open();
 	}
 
 }

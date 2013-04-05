@@ -29,7 +29,7 @@ public class UserCommandSpam extends UserCommand
 			{
 				if (TwitterManager.spam(Client.getMainAccount(), userName))
 				{
-					ToastManager.getInstance().toast("スパム報告しました");
+					ToastManager.show("スパム報告しました");
 				}
 			}
 		});

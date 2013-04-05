@@ -16,9 +16,21 @@
             android:id="@+id/textView_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/MetroBlue" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout_tweet_reply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1">
+        </LinearLayout>
 
         <EditText
             android:id="@+id/editText_tweet"
@@ -42,7 +54,6 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:clickable="true"
-            android:focusable="true"
             android:orientation="horizontal"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="horizontal"
@@ -120,16 +131,13 @@
         </TableLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout_tweet_obj"
+            android:id="@+id/linearLayout_tweet_pict"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="15dp"
-            android:layout_weight="1"
-            android:clickable="false"
-            android:focusable="true"
-            android:splitMotionEvents="true" >
+            android:layout_weight="1" >
 
         </LinearLayout>
 

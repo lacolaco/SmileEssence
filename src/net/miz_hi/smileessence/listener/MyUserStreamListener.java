@@ -134,7 +134,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 			return;
 		}
 		
-		ToastManager.getInstance().toast("Ú‘±‚ªØ‚ê‚Ü‚µ‚½");				
+		ToastManager.show("Ú‘±‚ªØ‚ê‚Ü‚µ‚½");				
 		MainSystem.getInstance().connectUserStream();
 	}
 
@@ -270,7 +270,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 	@Override
 	public void onConnect()
 	{
-		ToastManager.getInstance().toast("Ú‘±‚µ‚Ü‚µ‚½");
+		ToastManager.show("Ú‘±‚µ‚Ü‚µ‚½");
 	}
 
 	@Override

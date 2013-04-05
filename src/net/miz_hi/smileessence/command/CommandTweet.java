@@ -14,7 +14,7 @@ public class CommandTweet extends MenuCommand
 	@Override
 	public void workOnUiThread()
 	{
-		TweetView.getInstance().open();
+		TweetView.open();
 	}
 
 }

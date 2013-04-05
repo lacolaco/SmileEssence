@@ -27,11 +27,11 @@ public class StatusCommandClipboard extends StatusCommand implements IHideable
 		{
 			ClipboardManager manager = (ClipboardManager) Client.getApplication().getSystemService(Context.CLIPBOARD_SERVICE);
 			manager.setText(status.text);
-			ToastManager.getInstance().toast("コピーしました");
+			ToastManager.show("コピーしました");
 		}
 		catch (Exception e)
 		{
-			ToastManager.getInstance().toast("コピー失敗しました");
+			ToastManager.show("コピー失敗しました");
 		}
 	}
 

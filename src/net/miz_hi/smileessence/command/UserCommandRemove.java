@@ -30,7 +30,7 @@ public class UserCommandRemove extends UserCommand
 			{
 				if (TwitterManager.remove(Client.getMainAccount(), userName))
 				{
-					ToastManager.getInstance().toast("ƒŠƒ€[ƒ”‚µ‚Ü‚µ‚½");
+					ToastManager.show("ƒŠƒ€[ƒ”‚µ‚Ü‚µ‚½");
 				}
 			}
 		});

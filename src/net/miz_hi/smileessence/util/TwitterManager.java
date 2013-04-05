@@ -44,7 +44,13 @@ public class TwitterManager
 		cb.setOAuthConsumerSecret(account.getConsumerSecret());
 		cb.setOAuthAccessToken(account.getAccessToken());
 		cb.setOAuthAccessTokenSecret(account.getAccessTokenSecret());
+		cb.setMediaProvider("TWITTER");
 		return cb;
+	}
+	
+	public static Twitter getTwitter()
+	{
+		return getTwitter(Client.getMainAccount());
 	}
 
 	public static Twitter getTwitter(Account account)
@@ -125,7 +131,7 @@ public class TwitterManager
 				else if (message.equals(ERROR_STATUS_LIMIT))
 				{
 					isStatusUpdateLimit = true;
-					ToastManager.getInstance().toast("規制されています");
+					ToastManager.show("規制されています");
 				}
 			}
 		}

@@ -30,7 +30,7 @@ public class UserCommandFollow extends UserCommand
 			{
 				if (TwitterManager.follow(Client.getMainAccount(), userName))
 				{
-					ToastManager.getInstance().toast("フォローしました");
+					ToastManager.show("フォローしました");
 				}
 			}
 		});

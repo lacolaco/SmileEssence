@@ -46,11 +46,11 @@ public class StatusCommandUnOffFav extends StatusCommand implements IHideable
 				{
 					if(f.get())
 					{
-						ToastManager.getInstance().toast(TwitterManager.MESSAGE_FAVORITE_SUCCESS);
+						ToastManager.show(TwitterManager.MESSAGE_FAVORITE_SUCCESS);
 					}
 					else
 					{
-						ToastManager.getInstance().toast(TwitterManager.MESSAGE_FAVORITE_DEPLICATE);
+						ToastManager.show(TwitterManager.MESSAGE_FAVORITE_DEPLICATE);
 					}
 				}
 				catch (Exception e)

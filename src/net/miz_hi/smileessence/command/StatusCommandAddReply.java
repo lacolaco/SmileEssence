@@ -23,6 +23,6 @@ public class StatusCommandAddReply extends StatusCommand
 	public void workOnUiThread()
 	{
 		TweetSystem.getInstance().addReply(status.screenName);
-		ToastManager.getInstance().toast(status.screenName + "をリプライ先に追加しました");
+		ToastManager.show(status.screenName + "をリプライ先に追加しました");
 	}
 }

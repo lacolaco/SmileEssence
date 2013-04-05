@@ -23,7 +23,7 @@ public class UserCommandReply extends UserCommand
 	{
 		TweetSystem system = TweetSystem.getInstance();
 		system.setReply(userName, -1);
-		TweetView.getInstance().open();
+		TweetView.open();
 	}
 
 }

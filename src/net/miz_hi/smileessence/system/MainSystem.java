@@ -13,8 +13,8 @@ import net.miz_hi.smileessence.data.IconCaches;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.data.UserStore;
+import net.miz_hi.smileessence.dialog.ProgressDialogHelper;
 import net.miz_hi.smileessence.event.HistoryListAdapter;
-import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.listener.MyUserStreamListener;
 import net.miz_hi.smileessence.menu.MainMenu;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
@@ -29,8 +29,9 @@ import net.miz_hi.smileessence.view.RelationListPageFragment;
 import twitter4j.Paging;
 import twitter4j.TwitterStream;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -46,6 +47,7 @@ public class MainSystem
 	public StatusListAdapter mentionsListAdapter;
 	public StatusListAdapter relationListAdapter;
 	public HistoryListAdapter historyListAdapter;
+	public Uri tempFilePath;
 	
 	
 	public static MainSystem getInstance()
@@ -141,7 +143,7 @@ public class MainSystem
 		UserStore.clearCache();
 		MyExecutor.shutdown();
 	}
-	
+
 	public boolean connectUserStream()
 	{
 		if(!TwitterManager.canConnect())

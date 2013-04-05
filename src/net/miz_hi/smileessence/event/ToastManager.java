@@ -38,7 +38,12 @@ public class ToastManager
 		return instance;
 	}
 	
-	public void toast(final String text)
+	public static void show(String text)
+	{
+		getInstance().showToast(text);
+	}
+	
+	private void showToast(final String text)
 	{
 		if(activity == null || activity.isFinishing())
 		{
@@ -75,7 +80,7 @@ public class ToastManager
 							public void run()
 							{
 								toast.cancel();
-								toast(enemyUser.getScreenName() + "‚É”šŒ‚‚ðŽó‚¯‚Ä‚¢‚Ü‚·");
+								show(enemyUser.getScreenName() + "‚É”šŒ‚‚ðŽó‚¯‚Ä‚¢‚Ü‚·");
 							}
 						}.post();
 						return;

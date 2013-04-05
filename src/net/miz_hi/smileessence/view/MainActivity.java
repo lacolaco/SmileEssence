@@ -1,5 +1,10 @@
 package net.miz_hi.smileessence.view;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.URI;
+
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.MyExecutor;
@@ -14,18 +19,22 @@ import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.menu.MainMenu;
 import net.miz_hi.smileessence.menu.TweetMenu;
 import net.miz_hi.smileessence.system.MainSystem;
+import net.miz_hi.smileessence.system.TweetSystem;
 import net.miz_hi.smileessence.util.LogHelper;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -75,7 +84,7 @@ public class MainActivity extends FragmentActivity
 				}
 				case HANDLER_NOT_CONNECTION:
 				{
-					ToastManager.getInstance().toast("接続出来ません");
+					ToastManager.show("接続出来ません");
 					break;
 				}
 			}
@@ -171,8 +180,8 @@ public class MainActivity extends FragmentActivity
 	public void onConfigurationChanged(Configuration newConfig)
 	{
 		super.onConfigurationChanged(newConfig);
-		TweetView.getInstance().open(); //幅の反映のために開閉
-		TweetView.getInstance().close(); 
+		TweetView.open(); //幅の反映のために開閉
+		TweetView.close(); 
 		DialogAdapter.dispose();
 	}
 
@@ -195,7 +204,12 @@ public class MainActivity extends FragmentActivity
 	@Override
 	public void onActivityResult(int reqCode, int resultCode, Intent data)
 	{
-		if (reqCode == EnumRequestCode.AUTHORIZE.ordinal() && resultCode == Activity.RESULT_OK)
+		if(resultCode != Activity.RESULT_OK)
+		{
+			return;
+		}
+		
+		if (reqCode == EnumRequestCode.AUTHORIZE.ordinal())
 		{
 			final Uri uri = data.getData();
 
@@ -216,6 +230,43 @@ public class MainActivity extends FragmentActivity
 				}
 			});
 		}
+		else if(reqCode == EnumRequestCode.PICTURE.ordinal() || reqCode == EnumRequestCode.CAMERA.ordinal())
+		{
+			Uri uri;
+			if(reqCode == EnumRequestCode.PICTURE.ordinal())
+			{
+				uri = data.getData();
+			}
+			else
+			{
+				uri = MainSystem.getInstance().tempFilePath;
+			}
+			
+			if(uri == null)
+			{
+				return;
+			}
+			ContentResolver cr = getContentResolver();
+			String[] columns = { MediaStore.Images.Media.DATA };
+			Cursor c = cr.query(uri, columns, null, null, null);
+			c.moveToFirst();
+			if(c.isNull(c.getColumnIndex(MediaStore.Images.Media.DATA)))
+			{
+				return;
+			}
+			
+			File path = new File(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA)));
+			if (!path.exists())
+			{
+				ToastManager.show("ファイルが存在しません");
+			}
+			else
+			{
+				TweetSystem.getInstance().setPicturePath(path);
+				ToastManager.show("画像をセットしました");
+				TweetView.open();
+			}
+		}
 	}
 	
 	@Override
@@ -225,7 +276,7 @@ public class MainActivity extends FragmentActivity
 		{
 			if (TweetView.getInstance().isOpening())
 			{
-				TweetView.getInstance().toggle();
+				TweetView.toggle();
 				return false;
 			}
 			else if(viewPager.getCurrentItem() != 0)

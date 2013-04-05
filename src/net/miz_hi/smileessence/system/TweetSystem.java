@@ -1,26 +1,19 @@
 package net.miz_hi.smileessence.system;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.slidingmenu.lib.SlidingMenu;
-
-import android.app.Activity;
-import android.view.View;
-import android.widget.EditText;
 
 import net.miz_hi.smileessence.async.AsyncTweetTask;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.menu.TweetMenu;
-import net.miz_hi.smileessence.status.StatusViewFactory;
 import net.miz_hi.smileessence.util.StringUtils;
 import net.miz_hi.smileessence.util.UiHandler;
 import net.miz_hi.smileessence.view.TweetView;
 import twitter4j.StatusUpdate;
+import android.app.Activity;
 
 public class TweetSystem
 {
@@ -28,7 +21,7 @@ public class TweetSystem
 	
 	private long inReplyTo = NONE_ID;
 	private String text = ""; 
-	private Pattern replyPattern = Pattern.compile("@[a-zA-Z0-9_]+");
+	private File pathPict;
 	public static final long NONE_ID = -1;
 	
 	public static void start(Activity activity)
@@ -126,33 +119,51 @@ public class TweetSystem
 		TweetView.getInstance().removeObjects();
 	}
 	
+	public void setPicturePath(File path)
+	{
+		pathPict = path;
+		TweetView.getInstance().setPictureImage(pathPict);
+	}
+	
+	public File getPicturePath()
+	{
+		return pathPict;
+	}
+	
 	public void clear()
 	{
 		text = "";
 		TweetView.getInstance().setText(text);
+		setPicturePath(null);	
+		inReplyTo = -1;
 	}
 	
 	public void submit()
 	{
-		if (StringUtils.isNullOrEmpty(text))
+		if (StringUtils.isNullOrEmpty(text) && pathPict == null)
 		{
-			ToastManager.getInstance().toast("‰½‚©“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
+			ToastManager.show("‰½‚©“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
 		}
 		else
 		{
+
+			final StatusUpdate update = new StatusUpdate(text);
+			if (inReplyTo >= 0)
+			{
+				update.setInReplyToStatusId(inReplyTo);
+			}
+			if(pathPict != null)
+			{
+				update.setMedia(pathPict);
+			}
 			new UiHandler()
 			{
-				
+
 				@Override
 				public void run()
 				{
-					StatusUpdate update = new StatusUpdate(text);
-					if (inReplyTo >= 0)
-					{
-						update.setInReplyToStatusId(inReplyTo);
-						inReplyTo = -1;
-					}
 					new AsyncTweetTask(update).addToQueue();
+					clear();
 				}
 			}.postDelayed(10);
 		}

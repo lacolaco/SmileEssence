@@ -24,6 +24,11 @@ public class TweetMenu extends DialogAdapter
 	{
 		super(activity);
 	}
+	
+	public static void show()
+	{
+		instance.createMenuDialog(true).show();
+	}
 
 	@Override
 	public Dialog createMenuDialog(boolean init)

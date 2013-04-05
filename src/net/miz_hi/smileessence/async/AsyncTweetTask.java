@@ -39,11 +39,11 @@ public class AsyncTweetTask extends SimpleAsyncTask<Boolean> implements Callable
 	{
 		if (result)
 		{
-			ToastManager.getInstance().toast(TwitterManager.MESSAGE_TWEET_SUCCESS);
+			ToastManager.show(TwitterManager.MESSAGE_TWEET_SUCCESS);
 		}
 		else
 		{
-			ToastManager.getInstance().toast(TwitterManager.MESSAGE_TWEET_DEPLICATE);
+			ToastManager.show(TwitterManager.MESSAGE_TWEET_DEPLICATE);
 		}
 	}
 
