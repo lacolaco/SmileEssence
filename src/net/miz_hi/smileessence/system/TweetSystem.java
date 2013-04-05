@@ -134,6 +134,7 @@ public class TweetSystem
 	{
 		text = "";
 		TweetView.getInstance().setText(text);
+		TweetView.getInstance().removeReply();
 		setPicturePath(null);	
 		inReplyTo = -1;
 	}

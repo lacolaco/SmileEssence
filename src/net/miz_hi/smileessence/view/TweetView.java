@@ -310,6 +310,10 @@ public class TweetView
 		{
 			editTextTweet.setSelection(0);
 		}
+		else
+		{
+			editTextTweet.setSelection(text.length());
+		}
 	}
 
 	private void onOpenedMenu()
