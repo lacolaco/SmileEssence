@@ -30,7 +30,7 @@ public class UserCommandFollow extends UserCommand implements IConfirmable
 			{
 				if (TwitterManager.follow(Client.getMainAccount(), userName))
 				{
-					ToastManager.show("フォローしました");
+					ToastManager.toast("フォローしました");
 				}
 			}
 		});

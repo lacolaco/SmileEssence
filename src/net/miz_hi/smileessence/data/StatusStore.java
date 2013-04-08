@@ -51,6 +51,11 @@ public class StatusStore
 		favoriteList.add(id);
 	}
 	
+	public static void removeFavoritedStatus(long id)
+	{
+		favoriteList.remove(id);
+	}
+	
 	public static boolean isFavorited(long id)
 	{
 		return favoriteList.contains(id);

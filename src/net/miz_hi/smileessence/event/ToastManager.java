@@ -1,6 +1,5 @@
 package net.miz_hi.smileessence.event;
 
-import net.miz_hi.smileessence.event.StatusEventModel.EnumStatusEventType;
 import net.miz_hi.smileessence.util.CountUpInteger;
 import net.miz_hi.smileessence.util.UiHandler;
 import net.miz_hi.smileessence.view.MainActivity;
@@ -8,7 +7,6 @@ import twitter4j.User;
 import android.app.Activity;
 import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 public class ToastManager
@@ -38,7 +36,7 @@ public class ToastManager
 		return instance;
 	}
 	
-	public static void show(String text)
+	public static void toast(String text)
 	{
 		getInstance().showToast(text);
 	}
@@ -62,39 +60,50 @@ public class ToastManager
 
 	public void noticeEvent(final EventModel model)
 	{
-		if(model instanceof StatusEventModel)
+		if(model instanceof StatusEvent)
 		{
-			if(((StatusEventModel)model).type != EnumStatusEventType.REPLY)
-			{
-				if (lastUserId == model.source.getId())
+			StatusEvent se = (StatusEvent)model;
+			if(se instanceof IAttackEvent)
+			{				
+				if(lastUserId != se.source.getId())
+				{
+					counterSourceUser.reset();
+					lastUserId = se.source.getId();
+				}
+				else
 				{
 					if (counterSourceUser.isOver())
 					{
 						return;
 					}
-					else if (counterSourceUser.countUp())
+					
+					if(counterSourceUser.countUp())
 					{
-						new UiHandler()
-						{
-							@Override
-							public void run()
-							{
-								toast.cancel();
-								show(enemyUser.getScreenName() + "に爆撃を受けています");
-							}
-						}.post();
+						showToast(se.source.getScreenName() + "から攻撃を受けています");
 						return;
 					}
 				}
+				
+				if(lastStatusId != se.targetModel.statusId)
+				{
+					counterTargetStatus.reset();
+					lastStatusId = se.targetModel.statusId;
+				}
 				else
 				{
-					lastUserId = model.source.getId();
-					counterSourceUser.reset();
-					enemyUser = model.source;
+					if(counterTargetStatus.isOver())
+					{
+						return;
+					}
+					if(counterTargetStatus.countUp())
+					{
+						showToast("あなたのツイートが攻撃を受けています");
+						return;
+					}
 				}
 			}
 		}
-		
+
 		new UiHandler()
 		{
 			@Override

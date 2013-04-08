@@ -7,9 +7,8 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.dialog.CheckBoxListDialogHelper;
 import net.miz_hi.smileessence.dialog.CheckBoxListDialogHelper.CheckBoxItem;
+import net.miz_hi.smileessence.menu.StatusMenu;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey.EnumValueType;
-import net.miz_hi.smileessence.status.StatusCommandDialog;
-import net.miz_hi.smileessence.view.MainActivity;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -39,12 +38,12 @@ public class CommandEditMenu extends MenuCommand
 		ArrayList<CheckBoxItem> list = new ArrayList<CheckBoxItem>();
 		final HashMap<CheckBoxItem, MenuCommand> map = new HashMap<CheckBoxItem, MenuCommand>();
 		StatusModel nullModel = StatusModel.getNullStatusModel();
-		StatusCommandDialog adapter = new StatusCommandDialog(activity, nullModel);
+		StatusMenu adapter = new StatusMenu(activity, nullModel);
 		for(MenuCommand item : adapter.getStatusMenu())
 		{
 			if(item instanceof IHideable && item.getDefaultVisibility())
 			{
-				boolean startValue = Client.getPreferenceHelper().getPreferenceValue(item.getClass().getSimpleName(), EnumValueType.BOOLEAN, true);
+				boolean startValue = Client.getPreferenceHelper().getPreferenceValue(item.getClass().getSimpleName(), EnumValueType.BOOLEAN, false);
 				CheckBoxItem checkBoxItem = new CheckBoxItem(item.getName(), startValue);
 				list.add(checkBoxItem);
 				map.put(checkBoxItem, item);

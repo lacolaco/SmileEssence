@@ -1,6 +1,5 @@
 package net.miz_hi.smileessence.command;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import twitter4j.StatusUpdate;
@@ -46,11 +45,11 @@ public class StatusCommandUnOffFav extends StatusCommand implements IHideable, I
 				{
 					if(f.get())
 					{
-						ToastManager.show(TwitterManager.MESSAGE_FAVORITE_SUCCESS);
+						ToastManager.toast(TwitterManager.MESSAGE_FAVORITE_SUCCESS);
 					}
 					else
 					{
-						ToastManager.show(TwitterManager.MESSAGE_FAVORITE_DEPLICATE);
+						ToastManager.toast(TwitterManager.MESSAGE_FAVORITE_DEPLICATE);
 					}
 				}
 				catch (Exception e)

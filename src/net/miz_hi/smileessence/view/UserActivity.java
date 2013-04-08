@@ -3,7 +3,6 @@ package net.miz_hi.smileessence.view;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import net.miz_hi.smileessence.Client;
@@ -14,6 +13,7 @@ import net.miz_hi.smileessence.data.IconCaches;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.UserModel;
 import net.miz_hi.smileessence.data.UserStore;
+import net.miz_hi.smileessence.dialog.DialogAdapter;
 import net.miz_hi.smileessence.listener.StatusOnClickListener;
 import net.miz_hi.smileessence.menu.UserMenu;
 import net.miz_hi.smileessence.status.StatusViewFactory;
@@ -192,7 +192,7 @@ public class UserActivity extends Activity
 		{
 			if (userMenu.isShowing())
 			{
-				userMenu.dispose();
+				DialogAdapter.dispose();
 			}
 			else
 			{

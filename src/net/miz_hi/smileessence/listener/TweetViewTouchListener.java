@@ -1,8 +1,5 @@
 package net.miz_hi.smileessence.listener;
 
-import net.miz_hi.smileessence.util.LogHelper;
-import net.miz_hi.smileessence.util.UiHandler;
-import net.miz_hi.smileessence.view.MainActivity;
 import net.miz_hi.smileessence.view.TweetView;
 import android.view.MotionEvent;
 import android.view.View;
@@ -70,7 +67,8 @@ public class TweetViewTouchListener implements OnTouchListener
 			}
 			case MOVE_RIGHT:
 			{
-				TweetView.getInstance().close();
+				TweetView.getInstance();
+				TweetView.close();
 				break;
 			}
 		}

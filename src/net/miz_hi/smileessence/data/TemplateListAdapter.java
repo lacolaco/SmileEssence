@@ -1,7 +1,5 @@
 package net.miz_hi.smileessence.data;
 
-import java.util.Collection;
-
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;

@@ -2,9 +2,9 @@ package net.miz_hi.smileessence.event;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.listener.EventOnClickListener;
 import net.miz_hi.smileessence.status.StatusViewFactory;
 import net.miz_hi.smileessence.util.ColorUtils;
+import net.miz_hi.smileessence.view.MainActivity;
 import android.app.Activity;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -18,13 +18,13 @@ public class EventViewFactory
 
 	public static View getToastView(Activity activity, EventModel model, View viewBase)
 	{
-		if(model instanceof StatusEventModel)
+		if(model instanceof StatusEvent)
 		{
-			return getToastView(activity, (StatusEventModel)model, viewBase);
+			return getToastView(activity, (StatusEvent)model, viewBase);
 		}
-		else if(model instanceof UserEventModel)
+		else if(model instanceof UserEvent)
 		{
-			return getToastView(activity, (UserEventModel)model, viewBase);
+			return getToastView(activity, (UserEvent)model, viewBase);
 		}
 		else
 		{
@@ -32,7 +32,7 @@ public class EventViewFactory
 		}
 	}
 	
-	private static View getToastView(Activity activity, StatusEventModel model, View viewBase)
+	private static View getToastView(Activity activity, StatusEvent model, View viewBase)
 	{
 		LayoutInflater layoutInflater = LayoutInflater.from(activity);
 		if (viewBase == null)
@@ -46,7 +46,7 @@ public class EventViewFactory
 		TextView viewText = (TextView) viewBase.findViewById(R.id.textView_toastText);
 		RelativeLayout baseLayout = (RelativeLayout) viewBase.findViewById(R.id.relativeLayout_toastBase);
 		LinearLayout bodyLayout = (LinearLayout) viewBase.findViewById(R.id.linearLayout_toastBody);
-		viewText.setText(model.source.getScreenName() + model.type.getText());
+		viewText.setText(model.getText());
 		viewText.setTextColor(Client.getResource().getColor(R.color.White));
 
 		viewBase.setBackgroundColor(gray);
@@ -63,7 +63,7 @@ public class EventViewFactory
 		return viewBase;
 	}
 	
-	private static View getToastView(Activity activity, UserEventModel model, View viewBase)
+	private static View getToastView(Activity activity, UserEvent model, View viewBase)
 	{
 		LayoutInflater layoutInflater = LayoutInflater.from(activity);
 		if (viewBase == null)
@@ -77,7 +77,7 @@ public class EventViewFactory
 		TextView viewText = (TextView) viewBase.findViewById(R.id.textView_toastText);
 		RelativeLayout baseLayout = (RelativeLayout) viewBase.findViewById(R.id.relativeLayout_toastBase);
 		LinearLayout bodyLayout = (LinearLayout) viewBase.findViewById(R.id.linearLayout_toastBody);
-		viewText.setText(model.source.getScreenName() + model.type.getText());
+		viewText.setText(model.getText());
 		viewText.setTextColor(Client.getColor(R.color.White));
 
 		viewBase.setBackgroundColor(gray);
@@ -91,15 +91,15 @@ public class EventViewFactory
 		return viewBase;
 	}
 	
-	public static View getView(Activity activity, EventModel model, View viewBase)
+	public static View getView(EventModel model, View viewBase)
 	{
-		if(model instanceof StatusEventModel)
+		if(model instanceof StatusEvent)
 		{
-			return getView(activity, (StatusEventModel)model, viewBase);
+			return getView((StatusEvent)model, viewBase);
 		}
-		else if(model instanceof UserEventModel)
+		else if(model instanceof UserEvent)
 		{
-			return getView(activity, (UserEventModel)model, viewBase);
+			return getView((UserEvent)model, viewBase);
 		}
 		else
 		{
@@ -107,9 +107,9 @@ public class EventViewFactory
 		}
 	}
 	
-	public static View getView(Activity activity, UserEventModel model, View viewBase)
+	private static View getView(UserEvent model, View viewBase)
 	{
-		LayoutInflater layoutInflater = LayoutInflater.from(activity);
+		LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.getInstance());
 		if (viewBase == null)
 		{
 			viewBase = layoutInflater.inflate(R.layout.event_layout, null);
@@ -124,16 +124,16 @@ public class EventViewFactory
 
 		viewBase.setBackgroundColor(gray);
 		baseLayout.setBackgroundColor(black);
-		viewText.setText(model.source.getScreenName() + model.type.getText());
+		viewText.setText(model.getText());
 		viewText.setTextColor(Client.getResource().getColor(R.color.White));
 		bodyLayout.setVisibility(View.GONE);
 
 		return viewBase;
 	}
 	
-	public static View getView(Activity activity, StatusEventModel model, View viewBase)
+	private static View getView(StatusEvent model, View viewBase)
 	{
-		LayoutInflater layoutInflater = LayoutInflater.from(activity);
+		LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.getInstance());
 		if (viewBase == null)
 		{
 			viewBase = layoutInflater.inflate(R.layout.event_layout, null);
@@ -149,7 +149,7 @@ public class EventViewFactory
 		viewBase.setBackgroundColor(gray);
 		baseLayout.setBackgroundColor(black);
 		bodyLayout.removeAllViews();
-		viewText.setText(model.source.getScreenName() + model.type.getText());
+		viewText.setText(model.getText());
 		viewText.setTextColor(Client.getResource().getColor(R.color.White));
 
 		if (model.targetModel == null)

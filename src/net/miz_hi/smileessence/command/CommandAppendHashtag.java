@@ -22,7 +22,7 @@ public class CommandAppendHashtag extends MenuCommand
 	@Override
 	public void workOnUiThread()
 	{
-		TweetSystem.getInstance().appendText(" #" + hashtag);
+		TweetSystem.appendText(" #" + hashtag);
 		TweetView.open();
 	}
 }

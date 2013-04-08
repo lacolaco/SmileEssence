@@ -1,10 +1,8 @@
 package net.miz_hi.smileessence.command;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import twitter4j.Status;
 import twitter4j.TwitterException;
 
 import net.miz_hi.smileessence.Client;
@@ -58,11 +56,11 @@ public class StatusCommandDelete extends StatusCommand implements IConfirmable
 				{
 					if(f.get())
 					{
-						ToastManager.show("çÌèúÇµÇ‹ÇµÇΩ");
+						ToastManager.toast("çÌèúÇµÇ‹ÇµÇΩ");
 					}
 					else
 					{
-						ToastManager.show(TwitterManager.MESSAGE_SOMETHING_ERROR);
+						ToastManager.toast(TwitterManager.MESSAGE_SOMETHING_ERROR);
 					}
 				}
 				catch (Exception e)

@@ -1,7 +1,6 @@
 package net.miz_hi.smileessence.command;
 
 import net.miz_hi.smileessence.system.TweetSystem;
-import net.miz_hi.smileessence.view.TweetView;
 
 public class CommandInsertText extends MenuCommand
 {
@@ -22,7 +21,7 @@ public class CommandInsertText extends MenuCommand
 	@Override
 	public void workOnUiThread()
 	{
-		TweetSystem.getInstance().insertText(text);
+		TweetSystem.insertText(text);
 	}
 
 }

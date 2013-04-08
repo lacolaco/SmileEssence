@@ -29,7 +29,7 @@ public class UserCommandBlock extends UserCommand implements IConfirmable
 			{
 				if (TwitterManager.block(Client.getMainAccount(), userName))
 				{
-					ToastManager.show(userName + "をブロックしました");
+					ToastManager.toast(userName + "をブロックしました");
 				}
 			}
 		});

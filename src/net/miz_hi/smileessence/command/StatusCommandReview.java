@@ -73,11 +73,11 @@ public class StatusCommandReview extends StatusCommand implements IHideable
 				{
 					if (f1.get() && f2.get())
 					{
-						ToastManager.show(TwitterManager.MESSAGE_TWEET_SUCCESS);
+						ToastManager.toast(TwitterManager.MESSAGE_TWEET_SUCCESS);
 					}
 					else
 					{
-						ToastManager.show(TwitterManager.MESSAGE_SOMETHING_ERROR);
+						ToastManager.toast(TwitterManager.MESSAGE_SOMETHING_ERROR);
 					}
 				}
 				catch (Exception e)

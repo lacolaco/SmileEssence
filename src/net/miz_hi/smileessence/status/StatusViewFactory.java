@@ -2,9 +2,7 @@ package net.miz_hi.smileessence.status;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.data.IconCaches;
-import net.miz_hi.smileessence.data.IconCaches.Icon;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.util.Morse;

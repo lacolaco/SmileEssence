@@ -3,12 +3,9 @@ package net.miz_hi.smileessence.event;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.listener.EventOnClickListener;
 import net.miz_hi.smileessence.util.CustomListAdapter;
-import net.miz_hi.smileessence.util.UiHandler;
-import net.miz_hi.smileessence.view.MainActivity;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 public class HistoryListAdapter extends CustomListAdapter<EventModel>
 {
@@ -41,7 +38,7 @@ public class HistoryListAdapter extends CustomListAdapter<EventModel>
 			convertedView = getInflater().inflate(R.layout.event_layout, null);
 		}
 		EventModel model = (EventModel) getItem(position);
-		convertedView = EventViewFactory.getView(getActivity(), model, convertedView);
+		convertedView = EventViewFactory.getView(model, convertedView);
 		convertedView.setOnClickListener(new EventOnClickListener(getActivity(), model));
 		
 		return convertedView;

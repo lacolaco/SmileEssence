@@ -1,13 +1,10 @@
 package net.miz_hi.smileessence.view;
 
-import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.data.Template;
 import net.miz_hi.smileessence.data.TemplateListAdapter;
 import net.miz_hi.smileessence.data.Templates;
 import net.miz_hi.smileessence.dialog.YesNoDialogHelper;
-import net.miz_hi.smileessence.util.ColorUtils;
-import net.miz_hi.smileessence.util.UiHandler;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;

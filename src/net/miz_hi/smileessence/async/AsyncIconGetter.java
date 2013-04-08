@@ -2,7 +2,6 @@ package net.miz_hi.smileessence.async;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -13,13 +12,10 @@ import net.miz_hi.smileessence.data.IconCaches;
 import net.miz_hi.smileessence.data.IconCaches.Icon;
 import net.miz_hi.smileessence.data.UserModel;
 import net.miz_hi.smileessence.util.LogHelper;
-import net.miz_hi.smileessence.util.SimpleAsyncTask;
-import net.miz_hi.smileessence.view.MainActivity;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
-import android.widget.ImageView;
 
 public class AsyncIconGetter implements Callable<Bitmap>
 {

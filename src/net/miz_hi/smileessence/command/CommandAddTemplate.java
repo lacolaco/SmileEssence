@@ -23,6 +23,6 @@ public class CommandAddTemplate extends MenuCommand
 	public void workOnUiThread()
 	{
 		Templates.addTemplate(text);
-		ToastManager.show("’Ç‰Á‚µ‚Ü‚µ‚½");
+		ToastManager.toast("’Ç‰Á‚µ‚Ü‚µ‚½");
 	}
 }

@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.status;
+package net.miz_hi.smileessence.menu;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,8 +27,10 @@ import net.miz_hi.smileessence.command.StatusCommandNanigaja;
 import net.miz_hi.smileessence.command.StatusCommandReview;
 import net.miz_hi.smileessence.command.StatusCommandThankToFav;
 import net.miz_hi.smileessence.command.StatusCommandTofuBuster;
+import net.miz_hi.smileessence.command.StatusCommandTranslate;
 import net.miz_hi.smileessence.command.StatusCommandUnOffFav;
 import net.miz_hi.smileessence.command.StatusCommandUnOffRetweet;
+import net.miz_hi.smileessence.command.StatusCommandUnfavorite;
 import net.miz_hi.smileessence.command.StatusCommandWarotaRT;
 import net.miz_hi.smileessence.command.UserCommandFollow;
 import net.miz_hi.smileessence.command.UserCommandOpenFavstar;
@@ -39,6 +41,7 @@ import net.miz_hi.smileessence.command.UserCommandReply;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 import net.miz_hi.smileessence.event.ToastManager;
+import net.miz_hi.smileessence.status.StatusViewFactory;
 import net.miz_hi.smileessence.system.TweetSystem;
 import net.miz_hi.smileessence.util.TwitterManager;
 import net.miz_hi.smileessence.util.UiHandler;
@@ -52,13 +55,12 @@ import android.app.Dialog;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-public class StatusCommandDialog extends DialogAdapter
+public class StatusMenu extends DialogAdapter
 {
 	private StatusModel model;
 
-	public StatusCommandDialog(Activity activity, StatusModel model)
+	public StatusMenu(Activity activity, StatusModel model)
 	{
 		super(activity);
 		this.model = model;
@@ -91,23 +93,26 @@ public class StatusCommandDialog extends DialogAdapter
 			
 			list.clear();
 			
+			if (!getURLMenu().isEmpty())
+			{
+				list.add(new CommandMenuParent(this, "URL‚ðŠJ‚­", getURLMenu()));
+			}
+			
 			for(MenuCommand item: getStatusMenu())
 			{
 				list.add(item);
 			}
 
-			if (!getURLMenu().isEmpty())
-			{
-				list.add(new CommandMenuParent(this, "URL‚ðŠJ‚­", getURLMenu()));
-			}
 			for(MenuCommand item : getHashtagMenu())
 			{
 				list.add(item);
 			}
+			
 			for (String name : getUsersList())
 			{
 				list.add(new CommandMenuParent(this, "@" + name, getUserMenu(getUsersList()).get(name)));
 			}
+			
 			setTitle(viewStatus, viewCommands);
 		}
 
@@ -121,7 +126,9 @@ public class StatusCommandDialog extends DialogAdapter
 		list.add(new StatusCommandDelete(model));
 		list.add(new StatusCommandFavAndRetweet(model));
 		list.add(new StatusCommandChaseRelation(model));
+		list.add(new StatusCommandUnfavorite(model));
 		list.add(new StatusCommandCopy(model));
+		list.add(new StatusCommandTofuBuster(activity, model));
 		list.add(new StatusCommandUnOffRetweet(model));
 		list.add(new StatusCommandWarotaRT(model));
 		list.add(new StatusCommandNanigaja(model));
@@ -129,7 +136,7 @@ public class StatusCommandDialog extends DialogAdapter
 		list.add(new StatusCommandThankToFav(model));
 		list.add(new StatusCommandCongrats(model));
 		list.add(new StatusCommandReview(activity, model));
-		list.add(new StatusCommandTofuBuster(activity, model));
+		list.add(new StatusCommandTranslate(activity, model));
 		list.add(new CommandAddTemplate(model.text));
 		list.add(new StatusCommandClipboard(model));
 		
@@ -229,7 +236,7 @@ public class StatusCommandDialog extends DialogAdapter
 				@Override
 				public void run()
 				{
-					TweetSystem.getInstance().setReply(model.screenName, model.statusId);
+					TweetSystem.setReply(model.screenName, model.statusId);
 					TweetView.open();
 					dispose();
 				}
@@ -256,7 +263,7 @@ public class StatusCommandDialog extends DialogAdapter
 					{
 						boolean b = resp.get();
 						String str = b ? TwitterManager.MESSAGE_RETWEET_SUCCESS : TwitterManager.MESSAGE_RETWEET_DEPLICATE;
-						ToastManager.show(str);
+						ToastManager.toast(str);
 					}
 					catch (Exception e)
 					{
@@ -295,7 +302,7 @@ public class StatusCommandDialog extends DialogAdapter
 					{
 						boolean b = resp.get();
 						String str = b ? TwitterManager.MESSAGE_FAVORITE_SUCCESS : TwitterManager.MESSAGE_FAVORITE_DEPLICATE;
-						ToastManager.show(str);
+						ToastManager.toast(str);
 					}
 					catch (Exception e)
 					{

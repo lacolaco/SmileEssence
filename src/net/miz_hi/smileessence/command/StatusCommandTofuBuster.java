@@ -43,7 +43,7 @@ public class StatusCommandTofuBuster extends StatusCommand implements IHideable
 		}
 		catch(ActivityNotFoundException e)
 		{
-			ToastManager.show("TofuBusterがインストールされていません");
+			ToastManager.toast("TofuBusterがインストールされていません");
 		}
 	}
 }

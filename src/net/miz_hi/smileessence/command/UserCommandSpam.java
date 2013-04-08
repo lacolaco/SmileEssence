@@ -29,7 +29,7 @@ public class UserCommandSpam extends UserCommand implements IConfirmable
 			{
 				if (TwitterManager.spam(Client.getMainAccount(), userName))
 				{
-					ToastManager.show("スパム報告しました");
+					ToastManager.toast("スパム報告しました");
 				}
 			}
 		});

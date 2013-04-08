@@ -55,6 +55,7 @@ public class SettingActivity extends PreferenceActivity
 		Preference t4j = findPreference(getResources().getString(R.string.key_setting_t4j));
 		t4j.setOnPreferenceClickListener(new OnPreferenceClickListener()
 		{
+			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(T4J_URL)));
@@ -65,6 +66,7 @@ public class SettingActivity extends PreferenceActivity
 		Preference deleteAccounts = findPreference(getResources().getString(R.string.key_setting_delete_accounts));
 		deleteAccounts.setOnPreferenceClickListener(new OnPreferenceClickListener()
 		{
+			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
 				YesNoDialogHelper helper = new YesNoDialogHelper(SettingActivity.this, "本当にリセットしますか？");

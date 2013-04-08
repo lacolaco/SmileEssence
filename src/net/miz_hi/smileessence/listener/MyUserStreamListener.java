@@ -3,12 +3,16 @@ package net.miz_hi.smileessence.listener;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
+import net.miz_hi.smileessence.event.BlockEvent;
+import net.miz_hi.smileessence.event.DirectMessageEvent;
+import net.miz_hi.smileessence.event.FavoriteEvent;
+import net.miz_hi.smileessence.event.FollowEvent;
 import net.miz_hi.smileessence.event.HistoryListAdapter;
-import net.miz_hi.smileessence.event.StatusEventModel;
-import net.miz_hi.smileessence.event.StatusEventModel.EnumStatusEventType;
+import net.miz_hi.smileessence.event.ReplyEvent;
+import net.miz_hi.smileessence.event.RetweetEvent;
 import net.miz_hi.smileessence.event.ToastManager;
-import net.miz_hi.smileessence.event.UserEventModel;
-import net.miz_hi.smileessence.event.UserEventModel.EnumUserEventType;
+import net.miz_hi.smileessence.event.UnblockEvent;
+import net.miz_hi.smileessence.event.UnfavoriteEvent;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
 import net.miz_hi.smileessence.status.StatusListAdapter;
 import net.miz_hi.smileessence.system.MainSystem;
@@ -98,11 +102,11 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 
 		if (model.isRetweet && model.isMine)
 		{
-			eventListAdapter.addFirst(new StatusEventModel(status.getUser(), EnumStatusEventType.RETWEET, status));
+			eventListAdapter.addFirst(new RetweetEvent(status.getUser(), status));
 		}
-		else if (model.isReply)
+		else if (!model.isRetweet && model.isReply)
 		{
-			eventListAdapter.notice(new StatusEventModel(status.getUser(), EnumStatusEventType.REPLY, status));
+			eventListAdapter.notice(new ReplyEvent(status.getUser(), status));
 		}
 
 		if (model.isReply)
@@ -134,7 +138,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 			return;
 		}
 		
-		ToastManager.show("ê⁄ë±Ç™êÿÇÍÇ‹ÇµÇΩ");				
+		ToastManager.toast("ê⁄ë±Ç™êÿÇÍÇ‹ÇµÇΩ");				
 		MainSystem.getInstance().connectUserStream();
 	}
 
@@ -143,7 +147,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 	{
 		if (targetUser.getId() == Client.getMainAccount().getUserId())
 		{
-			eventListAdapter.addFirst(new UserEventModel(sourceUser, EnumUserEventType.BLOCK));
+			eventListAdapter.addFirst(new BlockEvent(sourceUser));
 			eventListAdapter.notifyAdapter();	
 		}
 	}
@@ -158,7 +162,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 	{
 		if (message.getRecipientId() == Client.getMainAccount().getUserId())
 		{
-			eventListAdapter.addFirst(new UserEventModel(message.getSender(), EnumUserEventType.DIRECT_MESSAGE));
+			eventListAdapter.addFirst(new DirectMessageEvent(message.getSender()));
 			eventListAdapter.notifyAdapter();	
 		}
 	}
@@ -182,7 +186,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 		}
 		if (targetUser.getId() == Client.getMainAccount().getUserId())
 		{
-			eventListAdapter.addFirst(new StatusEventModel(sourceUser, EnumStatusEventType.FAVORITE, targetStatus));
+			eventListAdapter.addFirst(new FavoriteEvent(sourceUser, targetStatus));
 			eventListAdapter.notifyAdapter();	
 		}
 	}
@@ -190,8 +194,11 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 	@Override
 	public void onFollow(User sourceUser, User targetUser)
 	{
-		eventListAdapter.addFirst(new UserEventModel(sourceUser, EnumUserEventType.FOLLOW));	
-		eventListAdapter.notifyAdapter();	
+		if(sourceUser.getId() != Client.getMainAccount().getUserId())
+		{
+			eventListAdapter.addFirst(new FollowEvent(sourceUser));	
+			eventListAdapter.notifyAdapter();	
+		}
 	}
 
 	@Override
@@ -204,7 +211,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 	{
 		if (targetUser.getId() == Client.getMainAccount().getUserId())
 		{
-			eventListAdapter.addFirst(new UserEventModel(sourceUser, EnumUserEventType.UNBLOCK));
+			eventListAdapter.addFirst(new UnblockEvent(sourceUser));
 			eventListAdapter.notifyAdapter();	
 		}
 	}
@@ -212,11 +219,28 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 	@Override
 	public void onUnfavorite(User sourceUser, User targetUser, Status targetStatus)
 	{
+		if(sourceUser.getId() == Client.getMainAccount().getUserId())
+		{
+			if(targetStatus.isRetweet())
+			{
+				StatusStore.removeFavoritedStatus(targetStatus.getRetweetedStatus().getId());				
+			}
+			else
+			{
+				StatusStore.removeFavoritedStatus(targetStatus.getId());
+			}			
+
+			MainSystem.getInstance().homeListAdapter.forceNotifyAdapter();
+			MainSystem.getInstance().mentionsListAdapter.forceNotifyAdapter();
+		}
+		MainSystem.getInstance().homeListAdapter.forceNotifyAdapter();
+		MainSystem.getInstance().mentionsListAdapter.forceNotifyAdapter();
+		
 		if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.NOTICE_UNFAV))
 		{
 			if (targetUser.getId() == Client.getMainAccount().getUserId())
 			{
-				eventListAdapter.addFirst(new StatusEventModel(sourceUser, EnumStatusEventType.UNFAVORITE, targetStatus));
+				eventListAdapter.addFirst(new UnfavoriteEvent(sourceUser, targetStatus));
 				eventListAdapter.notifyAdapter();	
 			}
 		}
@@ -270,7 +294,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 	@Override
 	public void onConnect()
 	{
-		ToastManager.show("ê⁄ë±ÇµÇ‹ÇµÇΩ");
+		ToastManager.toast("ê⁄ë±ÇµÇ‹ÇµÇΩ");
 	}
 
 	@Override

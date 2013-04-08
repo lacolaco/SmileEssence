@@ -1,21 +1,15 @@
 package net.miz_hi.smileessence.menu;
 
-import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.command.UserCommandBlock;
 import net.miz_hi.smileessence.command.UserCommandFollow;
 import net.miz_hi.smileessence.command.UserCommandOpenFavstar;
 import net.miz_hi.smileessence.command.UserCommandOpenPage;
 import net.miz_hi.smileessence.command.UserCommandRemove;
-import net.miz_hi.smileessence.command.UserCommandReply;
 import net.miz_hi.smileessence.command.UserCommandSpam;
 import net.miz_hi.smileessence.data.UserModel;
-import net.miz_hi.smileessence.data.UserStore;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
-import net.miz_hi.smileessence.status.StatusUtils;
 import android.app.Activity;
 import android.app.Dialog;
-import android.widget.TextView;
 
 public class UserMenu extends DialogAdapter
 {

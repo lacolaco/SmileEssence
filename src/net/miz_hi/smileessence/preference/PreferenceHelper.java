@@ -74,7 +74,7 @@ public class PreferenceHelper
 		}
 		else
 		{
-			return (T)defaultValue;
+			return defaultValue;
 		}
 	}
 }

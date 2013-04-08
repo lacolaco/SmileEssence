@@ -30,7 +30,7 @@ public class UserCommandRemove extends UserCommand implements IConfirmable
 			{
 				if (TwitterManager.remove(Client.getMainAccount(), userName))
 				{
-					ToastManager.show("ƒŠƒ€[ƒ”‚µ‚Ü‚µ‚½");
+					ToastManager.toast("ƒŠƒ€[ƒ”‚µ‚Ü‚µ‚½");
 				}
 			}
 		});

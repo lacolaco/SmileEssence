@@ -13,7 +13,6 @@ import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.AsyncIconGetter;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.util.CountUpInteger;
-import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.util.StringUtils;
 import net.miz_hi.smileessence.util.UiHandler;
 import android.graphics.Bitmap;
@@ -93,7 +92,7 @@ public class IconCaches
 							@Override
 							public void run()
 							{			
-								if(viewIcon.getTag() == (Long)user.userId)
+								if((Long)viewIcon.getTag() == user.userId)
 								{
 									viewIcon.setImageBitmap(bm);
 									viewIcon.invalidate();

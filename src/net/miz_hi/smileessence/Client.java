@@ -26,7 +26,7 @@ public class Client
 	private Client()
 	{
 	}
-	
+
 	public static PreferenceHelper getPreferenceHelper()
 	{
 		return prefHelper;
@@ -45,7 +45,7 @@ public class Client
 	public static boolean hasAuthedAccount()
 	{
 		Long lastUsedId = (Long) getPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID);
-		if(AuthentificationDB.instance().findAll() == null)
+		if (AuthentificationDB.instance().findAll() == null)
 		{
 			return false;
 		}
@@ -111,7 +111,7 @@ public class Client
 	public static void loadPreferences()
 	{
 		int tSize = getPreferenceValue(EnumPreferenceKey.TEXT_SIZE);
-		if(tSize < 0)
+		if (tSize < 0)
 		{
 			putPreferenceValue(EnumPreferenceKey.TEXT_SIZE, 10);
 		}
@@ -123,12 +123,12 @@ public class Client
 		Client.prefHelper = new PreferenceHelper(PreferenceManager.getDefaultSharedPreferences(app));
 		Client.app = app;
 		loadPreferences();
-		
+
 		DataBaseHelper helper = new DataBaseHelper(app);
 		SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(DataBaseHelper.dbName, null);
 		helper.onCreate(db);
 		db.close();
-		
+
 		MyExecutor.init();
 	}
 

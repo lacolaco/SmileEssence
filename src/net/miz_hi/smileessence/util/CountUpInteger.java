@@ -25,7 +25,7 @@ public class CountUpInteger
 
 	public boolean isOver()
 	{
-		return count > maxCount;
+		return count >= maxCount;
 	}
 
 	public void reset()

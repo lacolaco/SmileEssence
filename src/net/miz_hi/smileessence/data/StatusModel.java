@@ -1,18 +1,13 @@
 package net.miz_hi.smileessence.data;
 
-import java.util.Calendar;
 import java.util.Date;
 
-import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.status.StatusUtils;
-import net.miz_hi.smileessence.util.LogHelper;
-import net.miz_hi.smileessence.util.Morse;
 import net.miz_hi.smileessence.util.StringUtils;
 import twitter4j.HashtagEntity;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.URLEntity;
-import twitter4j.User;
 import twitter4j.UserMentionEntity;
 import android.text.Html;
 
@@ -131,8 +126,8 @@ public class StatusModel implements Comparable<StatusModel>
 		StatusModel status = new StatusModel();
 		status.isRetweet = false;
 		status.createdAt = new Date();
-		status.statusId = -1;
-		status.inReplyToStatusId = -1;		
+		status.statusId = 0;
+		status.inReplyToStatusId = 0;		
 		status.user = UserModel.getNullUserModel();
 		status.screenName = status.user.screenName;
 		status.name = status.user.name;		

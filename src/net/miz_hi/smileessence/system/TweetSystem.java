@@ -14,6 +14,7 @@ import net.miz_hi.smileessence.util.UiHandler;
 import net.miz_hi.smileessence.view.TweetView;
 import twitter4j.StatusUpdate;
 import android.app.Activity;
+import android.widget.EditText;
 
 public class TweetSystem
 {
@@ -29,133 +30,131 @@ public class TweetSystem
 		TweetMenu.init(activity);
 	}
 	
-	public static TweetSystem getInstance()
+	public static String getText()
 	{
-		return instance;
+		return instance.text;
 	}
 	
-	public void setText(String text)
+	public static void setText(String text)
 	{
-		this.text = text;
-		TweetView.getInstance().setText(text);
+		instance.text = text;
+		TweetView view = TweetView.getInstance();
+		EditText edit = view.getEditTextTweet();
+		edit.setText(text);
+		edit.setSelection(text.length());
 	}
 	
-	public void appendText(String str)
+	public static void setCursor(int index)
 	{
-		text = text + str;
-		TweetView.getInstance().setText(text);
+		TweetView view = TweetView.getInstance();
+		EditText edit = view.getEditTextTweet();
+		edit.setSelection(index);
 	}
 	
-	public void insertText(String str)
+	public static void appendText(String str)
+	{
+		setText(getText() + str);
+	}
+	
+	public static void insertText(String str)
 	{
 		int cursor = TweetView.getInstance().getCursor();
-		StringBuilder sb = new StringBuilder(text);
+		StringBuilder sb = new StringBuilder(getText());
 		sb.insert(cursor, str);
-		text = sb.toString();
 		cursor = cursor + sb.length();
-		if (cursor > text.length())
+		if (cursor > sb.length())
 		{
-			cursor = text.length();
+			cursor = sb.length();
 		}
-		TweetView.getInstance().setText(text);
-		TweetView.getInstance().setCursor(cursor);
+		setText(sb.toString());
+		setCursor(cursor);
 	}
 	
-	public String getText()
+	public static long getInReplyStatusId()
 	{
-		return text;
+		return instance.inReplyTo;
 	}
 	
-	public long getInReplyStatusId()
+	public static void setInReplyToStatusId(long statusId)
 	{
-		return inReplyTo;
+		instance.inReplyTo = statusId;
 	}
 	
-	public void setInReplyToStatusId(long statusId)
-	{
-		inReplyTo = statusId;
-	}
-	
-	public void setReply(String userName, long statusId)
-	{
-		inReplyTo = statusId;
-		text = "@" + userName + " ";
-		
-		if(inReplyTo != NONE_ID)
+	public static void setReply(String userName, long statusId)
+	{		
+		if(statusId != NONE_ID)
 		{
-			StatusModel model = StatusStore.get(TweetSystem.getInstance().getInReplyStatusId());
+			StatusModel model = StatusStore.get(statusId);
 			if(model != null)
 			{
 				TweetView.getInstance().setInReplyToStatus(model);
 			}
 		}
-		TweetView.getInstance().setText(text);
+		setText("@" + userName + " ");
+		setInReplyToStatusId(statusId);
 	}
 	
-	public void addReply(String userName)
+	public static void addReply(String userName)
 	{
-		inReplyTo = NONE_ID;
+		setInReplyToStatusId(NONE_ID);
 		Pattern pattern = Pattern.compile("@"+ userName);
-		Matcher hasReply = pattern.matcher(text);
-		StringBuilder builder = new StringBuilder();
+		Matcher hasReply = pattern.matcher(getText());
+		StringBuilder sb = new StringBuilder(getText());
 
-		builder.append(text);
 		if(hasReply.find())
 		{
 			return;
 		}
 		else
 		{
-			builder.append(String.format("@%s ", userName));
+			sb.append(String.format("@%s ", userName));
 		}
 		
-		if(!text.startsWith("."))
+		if(!getText().startsWith("."))
 		{
-			builder.insert(0, ".");
+			sb.insert(0, ".");
 		}		
 
-		text = builder.toString();
-		TweetView.getInstance().setText(text);
+		setText(sb.toString());
 		TweetView.getInstance().removeReply();
 	}
 	
-	public void setPicturePath(File path)
+	public static void setPicturePath(File path)
 	{
-		pathPict = path;
-		TweetView.getInstance().setPictureImage(pathPict);
+		instance.pathPict = path;
+		TweetView.getInstance().setPictureImage(instance.pathPict);
 	}
 	
-	public File getPicturePath()
+	public static File getPicturePath()
 	{
-		return pathPict;
+		return instance.pathPict;
 	}
 	
-	public void clear()
+	public static void clear()
 	{
-		text = "";
-		TweetView.getInstance().setText(text);
+		setText("");
 		TweetView.getInstance().removeReply();
 		setPicturePath(null);	
-		inReplyTo = -1;
+		setInReplyToStatusId(NONE_ID);
 	}
 	
-	public void submit()
+	public static void submit()
 	{
-		if (StringUtils.isNullOrEmpty(text) && pathPict == null)
+		if (StringUtils.isNullOrEmpty(getText()) && getPicturePath() == null)
 		{
-			ToastManager.show("‰½‚©“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
+			ToastManager.toast("‰½‚©“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
 		}
 		else
 		{
 
-			final StatusUpdate update = new StatusUpdate(text);
-			if (inReplyTo >= 0)
+			final StatusUpdate update = new StatusUpdate(getText());
+			if (getInReplyStatusId() >= 0)
 			{
-				update.setInReplyToStatusId(inReplyTo);
+				update.setInReplyToStatusId(getInReplyStatusId());
 			}
-			if(pathPict != null)
+			if(getPicturePath() != null)
 			{
-				update.setMedia(pathPict);
+				update.setMedia(getPicturePath());
 			}
 			new UiHandler()
 			{

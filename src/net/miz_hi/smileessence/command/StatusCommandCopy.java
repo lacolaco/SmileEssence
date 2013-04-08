@@ -49,11 +49,11 @@ public class StatusCommandCopy extends StatusCommand implements IHideable, IConf
 					boolean result = resp.get();
 					if (result)
 					{
-						ToastManager.show(TwitterManager.MESSAGE_TWEET_SUCCESS);
+						ToastManager.toast(TwitterManager.MESSAGE_TWEET_SUCCESS);
 					}
 					else
 					{
-						ToastManager.show(TwitterManager.MESSAGE_SOMETHING_ERROR);
+						ToastManager.toast(TwitterManager.MESSAGE_SOMETHING_ERROR);
 					}
 				}
 				catch (Exception e)

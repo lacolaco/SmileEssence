@@ -44,11 +44,11 @@ public class StatusCommandThankToFav extends StatusCommand implements IHideable,
 				{
 					if(f.get())
 					{
-						ToastManager.show("‚Ó‚Ÿ‚Ú‚ ‚è‚µ‚Ü‚µ‚½");
+						ToastManager.toast("‚Ó‚Ÿ‚Ú‚ ‚è‚µ‚Ü‚µ‚½");
 					}
 					else
 					{
-						ToastManager.show(TwitterManager.MESSAGE_FAVORITE_DEPLICATE);
+						ToastManager.toast(TwitterManager.MESSAGE_FAVORITE_DEPLICATE);
 					}
 				}
 				catch (Exception e)

@@ -14,14 +14,9 @@ import net.miz_hi.smileessence.preference.EnumPreferenceKey;
 import net.miz_hi.smileessence.preference.PreferenceHelper;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnKeyListener;
 import android.graphics.Color;
-import android.inputmethodservice.Keyboard;
-import android.inputmethodservice.Keyboard.Key;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,7 +38,7 @@ public abstract class DialogAdapter
 	public DialogAdapter(Activity activity)
 	{
 		this.activity = activity;
-		this.layoutInflater = LayoutInflater.from(activity);
+		DialogAdapter.layoutInflater = LayoutInflater.from(activity);
 		this.list = new ArrayList<ICommand>();
 	}
 
@@ -182,6 +177,7 @@ public abstract class DialogAdapter
 					{
 						YesNoDialogHelper.show(activity, item.getName(), "é¿çsÇµÇ‹Ç∑Ç©ÅH", new Runnable()
 						{
+							@Override
 							public void run()
 							{
 								item.run();

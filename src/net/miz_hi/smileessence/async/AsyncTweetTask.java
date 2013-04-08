@@ -7,10 +7,7 @@ import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.util.SimpleAsyncTask;
 import net.miz_hi.smileessence.util.TwitterManager;
-import net.miz_hi.smileessence.util.UiHandler;
-import net.miz_hi.smileessence.view.MainActivity;
 import twitter4j.StatusUpdate;
-import android.widget.Toast;
 
 public class AsyncTweetTask extends SimpleAsyncTask<Boolean> implements Callable<Boolean>
 {
@@ -39,11 +36,11 @@ public class AsyncTweetTask extends SimpleAsyncTask<Boolean> implements Callable
 	{
 		if (result)
 		{
-			ToastManager.show(TwitterManager.MESSAGE_TWEET_SUCCESS);
+			ToastManager.toast(TwitterManager.MESSAGE_TWEET_SUCCESS);
 		}
 		else
 		{
-			ToastManager.show(TwitterManager.MESSAGE_TWEET_DEPLICATE);
+			ToastManager.toast(TwitterManager.MESSAGE_TWEET_DEPLICATE);
 		}
 	}
 

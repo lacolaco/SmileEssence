@@ -23,6 +23,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.provider.MediaStore;
+import android.provider.MediaStore.MediaColumns;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -75,21 +76,10 @@ public class TweetView
 	{
 		return editTextTweet.getText().toString();
 	}
-
-	public void setText(String str)
-	{
-		editTextTweet.setText(str);
-		editTextTweet.setSelection(str.length());
-	}
 	
 	public int getCursor()
 	{
 		return editTextTweet.getSelectionEnd();
-	}
-
-	public void setCursor(int index)
-	{
-		editTextTweet.setSelection(index);
 	}
 	
 	public void removeReply()
@@ -131,9 +121,9 @@ public class TweetView
 					@Override
 					public void run()
 					{
-						TweetSystem.getInstance().setPicturePath(null);
+						TweetSystem.setPicturePath(null);
 						linearLayoutPict.removeAllViews();
-						ToastManager.show("取り消しました");
+						ToastManager.toast("取り消しました");
 					}
 				});
 				return true;
@@ -225,8 +215,8 @@ public class TweetView
 			@Override
 			public void onClick(View v)
 			{
-				TweetSystem.getInstance().setText(editTextTweet.getText().toString());
-				TweetSystem.getInstance().submit();
+				TweetSystem.setText(editTextTweet.getText().toString());
+				TweetSystem.submit();
 				editTextTweet.setText("");
 				if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.AFTER_SUBMIT))
 				{
@@ -243,10 +233,11 @@ public class TweetView
 			{
 				YesNoDialogHelper.show(activity, "注意", "全消去しますか？", new Runnable()
 				{
+					@Override
 					public void run()
 					{
 						editTextTweet.setText("");
-						TweetSystem.getInstance().clear();
+						TweetSystem.clear();
 					}
 				});
 			}
@@ -287,8 +278,8 @@ public class TweetView
 				//ファイル名を決めて
 				String filename = System.currentTimeMillis() + ".jpg";
 				//必要な情報を詰める
-				values.put(MediaStore.Images.Media.TITLE, filename);
-				values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+				values.put(MediaColumns.TITLE, filename);
+				values.put(MediaColumns.MIME_TYPE, "image/jpeg");
 				//Uriを取得して覚えておく、Intentにも保存先として渡す
 				MainSystem.getInstance().tempFilePath= activity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
@@ -303,7 +294,7 @@ public class TweetView
 	
 	private void onOpeningMenu()
 	{
-		String text = TweetSystem.getInstance().getText();
+		String text = TweetSystem.getText();
 		editTextTweet.setText(text);
 		
 		if(text.startsWith(" RT"))
@@ -330,7 +321,7 @@ public class TweetView
 	
 	private void onClosingMenu()
 	{
-		TweetSystem.getInstance().setText(editTextTweet.getText().toString());
+		TweetSystem.setText(editTextTweet.getText().toString());
 	}
 
 	private void onClosedMenu()
@@ -393,5 +384,10 @@ public class TweetView
 	public SlidingMenu getSlidingMenu()
 	{
 		return menu;
+	}
+
+	public EditText getEditTextTweet()
+	{
+		return editTextTweet;
 	}
 }

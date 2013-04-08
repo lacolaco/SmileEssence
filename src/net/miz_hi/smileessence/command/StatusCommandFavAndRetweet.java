@@ -38,11 +38,11 @@ public class StatusCommandFavAndRetweet extends StatusCommand implements IHideab
 				{
 					if (f1.get() && f2.get())
 					{
-						ToastManager.show(TwitterManager.MESSAGE_RETWEET_SUCCESS);
+						ToastManager.toast(TwitterManager.MESSAGE_RETWEET_SUCCESS);
 					}
 					else
 					{
-						ToastManager.show(TwitterManager.MESSAGE_SOMETHING_ERROR);
+						ToastManager.toast(TwitterManager.MESSAGE_SOMETHING_ERROR);
 					}
 				}
 				catch (Exception e)

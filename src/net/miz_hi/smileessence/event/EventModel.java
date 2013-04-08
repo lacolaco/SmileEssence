@@ -2,9 +2,11 @@ package net.miz_hi.smileessence.event;
 
 import java.util.Date;
 
+import net.miz_hi.smileessence.data.ITimelineItem;
+
 import twitter4j.User;
 
-public abstract class EventModel implements Comparable<EventModel>
+public abstract class EventModel implements Comparable<EventModel>, ITimelineItem
 {
 
 	protected Date date;
@@ -15,6 +17,8 @@ public abstract class EventModel implements Comparable<EventModel>
 		this.date = new Date();
 		this.source = sourceUser;
 	}
+	
+	public abstract String getText();
 	
 	@Override
 	public int compareTo(EventModel another)

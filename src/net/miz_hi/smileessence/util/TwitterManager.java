@@ -6,7 +6,6 @@ import java.util.List;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.event.ToastManager;
-import net.miz_hi.smileessence.view.MainActivity;
 import twitter4j.Paging;
 import twitter4j.Relationship;
 import twitter4j.ResponseList;
@@ -45,6 +44,7 @@ public class TwitterManager
 		cb.setOAuthAccessToken(account.getAccessToken());
 		cb.setOAuthAccessTokenSecret(account.getAccessTokenSecret());
 		cb.setMediaProvider("TWITTER");
+		cb.setJSONStoreEnabled(true); //DataObjectFactory.getRawJSON(obj)で生JSONデータを取得
 		return cb;
 	}
 	
@@ -131,7 +131,7 @@ public class TwitterManager
 				else if (message.equals(ERROR_STATUS_LIMIT))
 				{
 					isStatusUpdateLimit = true;
-					ToastManager.show("規制されています");
+					ToastManager.toast("規制されています");
 				}
 			}
 		}

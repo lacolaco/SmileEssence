@@ -1,9 +1,6 @@
 package net.miz_hi.smileessence.view;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.net.URI;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
@@ -15,9 +12,11 @@ import net.miz_hi.smileessence.core.EnumRequestCode;
 import net.miz_hi.smileessence.dialog.AuthDialogHelper;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 import net.miz_hi.smileessence.dialog.ProgressDialogHelper;
+import net.miz_hi.smileessence.dialog.YesNoDialogHelper;
 import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.menu.MainMenu;
 import net.miz_hi.smileessence.menu.TweetMenu;
+import net.miz_hi.smileessence.preference.EnumPreferenceKey;
 import net.miz_hi.smileessence.system.MainSystem;
 import net.miz_hi.smileessence.system.TweetSystem;
 import net.miz_hi.smileessence.util.LogHelper;
@@ -34,7 +33,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
+import android.provider.MediaStore.MediaColumns;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -84,7 +83,7 @@ public class MainActivity extends FragmentActivity
 				}
 				case HANDLER_NOT_CONNECTION:
 				{
-					ToastManager.show("接続出来ません");
+					ToastManager.toast("接続出来ません");
 					break;
 				}
 			}
@@ -244,29 +243,29 @@ public class MainActivity extends FragmentActivity
 			
 			if(uri == null)
 			{
-				ToastManager.show("ファイルが存在しません");
+				ToastManager.toast("ファイルが存在しません");
 				return;
 			}
 			ContentResolver cr = getContentResolver();
-			String[] columns = { MediaStore.Images.Media.DATA };
+			String[] columns = { MediaColumns.DATA };
 			Cursor c = cr.query(uri, columns, null, null, null);
 			c.moveToFirst();
-			if(c.isNull(c.getColumnIndex(MediaStore.Images.Media.DATA)))
+			if(c.isNull(c.getColumnIndex(MediaColumns.DATA)))
 			{
-				ToastManager.show("ファイルが存在しません");
+				ToastManager.toast("ファイルが存在しません");
 				return;
 			}
 			
-			File path = new File(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA)));
+			File path = new File(c.getString(c.getColumnIndex(MediaColumns.DATA)));
 			if (!path.exists())
 			{
-				ToastManager.show("ファイルが存在しません");
+				ToastManager.toast("ファイルが存在しません");
 				return;
 			}
 			else
 			{
-				TweetSystem.getInstance().setPicturePath(path);
-				ToastManager.show("画像をセットしました");
+				TweetSystem.setPicturePath(path);
+				ToastManager.toast("画像をセットしました");
 				TweetView.open();
 			}
 		}
@@ -277,7 +276,8 @@ public class MainActivity extends FragmentActivity
 	{
 		if (keyCode == KeyEvent.KEYCODE_BACK)
 		{
-			if (TweetView.getInstance().isOpening())
+			TweetView.getInstance();
+			if (TweetView.isOpening())
 			{
 				TweetView.toggle();
 				return false;
@@ -289,13 +289,29 @@ public class MainActivity extends FragmentActivity
 			}
 			else
 			{
-				finish();
+				if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.CONFIRM_DIALOG))
+				{
+					YesNoDialogHelper.show(this, "確認", "終了しますか？", new Runnable()
+					{
+						
+						@Override
+						public void run()
+						{
+							finish();
+						}
+					});
+				}
+				else
+				{
+					finish();
+				}
 				return false;
 			}
 		}
 		else if (keyCode == KeyEvent.KEYCODE_MENU)
 		{
-			if(TweetView.getInstance().isOpening())
+			TweetView.getInstance();
+			if(TweetView.isOpening())
 			{
 				TweetMenu.getInstance().createMenuDialog(true).show();
 			}

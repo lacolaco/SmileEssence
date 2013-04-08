@@ -5,8 +5,6 @@ import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.listener.StatusOnClickListener;
 import net.miz_hi.smileessence.util.CustomListAdapter;
-import net.miz_hi.smileessence.util.UiHandler;
-import net.miz_hi.smileessence.view.MainActivity;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
