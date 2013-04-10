@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.command;
+package net.miz_hi.smileessence.command.status;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
+import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.data.StatusModel;
 
 public class StatusCommandTranslate extends StatusCommand implements IHideable

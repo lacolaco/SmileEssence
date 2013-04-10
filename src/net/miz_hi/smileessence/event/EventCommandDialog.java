@@ -1,11 +1,11 @@
 package net.miz_hi.smileessence.event;
 
-import net.miz_hi.smileessence.command.UserCommandFollow;
-import net.miz_hi.smileessence.command.UserCommandOpenFavstar;
-import net.miz_hi.smileessence.command.UserCommandOpenPage;
-import net.miz_hi.smileessence.command.UserCommandOpenProfiel;
-import net.miz_hi.smileessence.command.UserCommandRemove;
-import net.miz_hi.smileessence.command.UserCommandReply;
+import net.miz_hi.smileessence.command.user.UserCommandFollow;
+import net.miz_hi.smileessence.command.user.UserCommandOpenFavstar;
+import net.miz_hi.smileessence.command.user.UserCommandOpenPage;
+import net.miz_hi.smileessence.command.user.UserCommandOpenProfiel;
+import net.miz_hi.smileessence.command.user.UserCommandRemove;
+import net.miz_hi.smileessence.command.user.UserCommandReply;
 import net.miz_hi.smileessence.data.UserModel;
 import net.miz_hi.smileessence.data.UserStore;
 import net.miz_hi.smileessence.dialog.DialogAdapter;

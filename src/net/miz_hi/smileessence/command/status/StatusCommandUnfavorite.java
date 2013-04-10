@@ -1,7 +1,8 @@
-package net.miz_hi.smileessence.command;
+package net.miz_hi.smileessence.command.status;
 
 import twitter4j.TwitterException;
 import net.miz_hi.smileessence.async.MyExecutor;
+import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.util.TwitterManager;

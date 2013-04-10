@@ -1,59 +1,57 @@
-package net.miz_hi.smileessence.command;
+package net.miz_hi.smileessence.command.status;
 
 import java.util.concurrent.Future;
+
+import twitter4j.StatusUpdate;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
 import net.miz_hi.smileessence.async.MyExecutor;
+import net.miz_hi.smileessence.command.IConfirmable;
+import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.util.TwitterManager;
-import twitter4j.StatusUpdate;
 
-public class StatusCommandWarotaRT extends StatusCommand implements IHideable, IConfirmable
+public class StatusCommandUnOffFav extends StatusCommand implements IHideable, IConfirmable
 {
 
-	public StatusCommandWarotaRT(StatusModel model)
+	public StatusCommandUnOffFav(StatusModel status)
 	{
-		super(model);
+		super(status);
 	}
 
 	@Override
 	public String getName()
 	{
-		return "ÉèÉçÉ^éÆRT";
+		return "îÒåˆéÆÇ”ÇüÇ⁄";
 	}
 
 	@Override
 	public void workOnUiThread()
 	{
-		StringBuilder builder = new StringBuilder();
-		builder.append("ÉèÉçÉ^Çó RT @");
-		builder.append(status.screenName);
-		builder.append(": ");
-		builder.append(status.text);
-		StatusUpdate update = new StatusUpdate(builder.toString());
+		String str = "@" + status.user.screenName + " Ç¡Åö";
+		StatusUpdate update = new StatusUpdate(str);
 		update.setInReplyToStatusId(status.statusId);
-
-		final Future<Boolean> resp = MyExecutor.submit(new AsyncTweetTask(update));
 		MyExecutor.submit(new AsyncFavoriteTask(status.statusId));
+		final Future<Boolean> f = MyExecutor.submit(new AsyncTweetTask(update));
 		MyExecutor.execute(new Runnable()
 		{
-
+			
 			@Override
 			public void run()
 			{
+				
 				try
 				{
-					boolean result = resp.get();
-					if (result)
+					if(f.get())
 					{
-						ToastManager.toast(TwitterManager.MESSAGE_TWEET_SUCCESS);
+						ToastManager.toast(TwitterManager.MESSAGE_FAVORITE_SUCCESS);
 					}
 					else
 					{
-						ToastManager.toast(TwitterManager.MESSAGE_SOMETHING_ERROR);
+						ToastManager.toast(TwitterManager.MESSAGE_FAVORITE_DEPLICATE);
 					}
 				}
 				catch (Exception e)
@@ -63,10 +61,12 @@ public class StatusCommandWarotaRT extends StatusCommand implements IHideable, I
 			}
 		});
 	}
+	
 
 	@Override
 	public boolean getDefaultVisibility()
-	{	
-		return Client.getPermission().canWarotaRT() && !status.user.isProtected;
+	{
+		return Client.getPermission().canWarotaRT();
 	}
+
 }

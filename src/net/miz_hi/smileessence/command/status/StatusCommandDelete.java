@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.command;
+package net.miz_hi.smileessence.command.status;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -7,6 +7,7 @@ import twitter4j.TwitterException;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.MyExecutor;
+import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.util.TwitterManager;

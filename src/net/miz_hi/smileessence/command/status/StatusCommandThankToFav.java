@@ -1,22 +1,22 @@
-package net.miz_hi.smileessence.command;
+package net.miz_hi.smileessence.command.status;
 
-import java.util.Random;
 import java.util.concurrent.Future;
 
 import twitter4j.StatusUpdate;
-
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
 import net.miz_hi.smileessence.async.MyExecutor;
+import net.miz_hi.smileessence.command.IConfirmable;
+import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.util.TwitterManager;
 
-public class StatusCommandCongrats extends StatusCommand implements IHideable, IConfirmable
+public class StatusCommandThankToFav extends StatusCommand implements IHideable, IConfirmable
 {
 
-	public StatusCommandCongrats(StatusModel status)
+	public StatusCommandThankToFav(StatusModel status)
 	{
 		super(status);
 	}
@@ -24,37 +24,13 @@ public class StatusCommandCongrats extends StatusCommand implements IHideable, I
 	@Override
 	public String getName()
 	{
-		return "Ç®èjÇ¢Ç∑ÇÈ";
+		return "Ç”ÇüÇ⁄Ç†ÇË";
 	}
 
 	@Override
 	public void workOnUiThread()
 	{
-		int favCount;
-		Random rand = new Random();
-		int r = rand.nextInt(100);
-		if (r < 50)
-		{
-			favCount = 50;
-		}
-		else if (r < 80)
-		{
-			favCount = 100;
-		}
-		else if (r < 90)
-		{
-			favCount = 250;
-		}
-		else if (r < 99)
-		{
-			favCount = 1000;
-		}
-		else
-		{
-			favCount = 10000;
-		}
-
-		String str = "@" + status.user.screenName + " Congrats on your " + favCount + "Åö tweet! http://favstar.fm/t/" + status.statusId;
+		String str = "@" + status.user.screenName + " Ç”ÇüÇ⁄Ç†ÇË(o^-')b" ;
 		StatusUpdate update = new StatusUpdate(str);
 		update.setInReplyToStatusId(status.statusId);
 		MyExecutor.submit(new AsyncFavoriteTask(status.statusId));
@@ -65,24 +41,26 @@ public class StatusCommandCongrats extends StatusCommand implements IHideable, I
 			@Override
 			public void run()
 			{
+				
 				try
 				{
 					if(f.get())
 					{
-						ToastManager.toast("Ç®èjÇ¢ÇµÇ‹ÇµÇΩ");
+						ToastManager.toast("Ç”ÇüÇ⁄Ç†ÇËÇµÇ‹ÇµÇΩ");
 					}
 					else
 					{
-						ToastManager.toast(TwitterManager.MESSAGE_SOMETHING_ERROR);
+						ToastManager.toast(TwitterManager.MESSAGE_FAVORITE_DEPLICATE);
 					}
 				}
-				catch(Exception e)
+				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
 			}
 		});
-	}	
+	}
+	
 
 	@Override
 	public boolean getDefaultVisibility()

@@ -1,22 +1,23 @@
-package net.miz_hi.smileessence.command;
+package net.miz_hi.smileessence.command.user;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.MyExecutor;
+import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.util.TwitterManager;
 
-public class UserCommandBlock extends UserCommand implements IConfirmable
+public class UserCommandRemove extends UserCommand implements IConfirmable
 {
 
-	public UserCommandBlock(String username)
+	public UserCommandRemove(String userName)
 	{
-		super(username);
+		super(userName);
 	}
 
 	@Override
 	public String getName()
 	{
-		return "ブロック";
+		return "リムーヴする";
 	}
 
 	@Override
@@ -24,12 +25,13 @@ public class UserCommandBlock extends UserCommand implements IConfirmable
 	{
 		MyExecutor.execute(new Runnable()
 		{
+
 			@Override
 			public void run()
 			{
-				if (TwitterManager.block(Client.getMainAccount(), userName))
+				if (TwitterManager.remove(Client.getMainAccount(), userName))
 				{
-					ToastManager.toast(userName + "をブロックしました");
+					ToastManager.toast("リムーヴしました");
 				}
 			}
 		});

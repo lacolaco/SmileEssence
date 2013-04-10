@@ -1,8 +1,9 @@
-package net.miz_hi.smileessence.command;
+package net.miz_hi.smileessence.command.status;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.util.Morse;

@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.command;
+package net.miz_hi.smileessence.command.user;
 
 import android.app.Activity;
 import android.content.Intent;

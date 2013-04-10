@@ -1,6 +1,8 @@
-package net.miz_hi.smileessence.command;
+package net.miz_hi.smileessence.command.status;
 
 import net.miz_hi.smileessence.Client;
+import net.miz_hi.smileessence.command.IConfirmable;
+import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.system.TweetSystem;
 import net.miz_hi.smileessence.view.TweetView;

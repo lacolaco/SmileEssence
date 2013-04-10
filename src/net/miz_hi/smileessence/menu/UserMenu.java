@@ -1,11 +1,11 @@
 package net.miz_hi.smileessence.menu;
 
-import net.miz_hi.smileessence.command.UserCommandBlock;
-import net.miz_hi.smileessence.command.UserCommandFollow;
-import net.miz_hi.smileessence.command.UserCommandOpenFavstar;
-import net.miz_hi.smileessence.command.UserCommandOpenPage;
-import net.miz_hi.smileessence.command.UserCommandRemove;
-import net.miz_hi.smileessence.command.UserCommandSpam;
+import net.miz_hi.smileessence.command.user.UserCommandBlock;
+import net.miz_hi.smileessence.command.user.UserCommandFollow;
+import net.miz_hi.smileessence.command.user.UserCommandOpenFavstar;
+import net.miz_hi.smileessence.command.user.UserCommandOpenPage;
+import net.miz_hi.smileessence.command.user.UserCommandRemove;
+import net.miz_hi.smileessence.command.user.UserCommandSpam;
 import net.miz_hi.smileessence.data.UserModel;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 import android.app.Activity;
