@@ -2,7 +2,7 @@ package net.miz_hi.smileessence.event;
 
 import java.util.Date;
 
-import net.miz_hi.smileessence.data.ITimelineItem;
+import net.miz_hi.smileessence.view.ITimelineItem;
 
 import twitter4j.User;
 

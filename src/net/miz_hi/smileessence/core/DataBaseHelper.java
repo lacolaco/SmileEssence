@@ -2,7 +2,8 @@ package net.miz_hi.smileessence.core;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.auth.Account;
-import net.miz_hi.smileessence.data.Template;
+import net.miz_hi.smileessence.data.extra.ExtraWord;
+import net.miz_hi.smileessence.data.template.Template;
 import net.miz_hi.smileessence.util.LogHelper;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -29,6 +30,8 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper
 			LogHelper.printD("account table created");
 			TableUtils.createTableIfNotExists(arg1, Template.class);
 			LogHelper.printD("template table created");
+			TableUtils.createTableIfNotExists(arg1, ExtraWord.class);
+			LogHelper.printD("extra table created");
 		}
 		catch (Exception e)
 		{
@@ -46,6 +49,8 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper
 			LogHelper.printD("account table created");
 			TableUtils.createTableIfNotExists(arg1, Template.class);
 			LogHelper.printD("template table created");
+			TableUtils.createTableIfNotExists(arg1, ExtraWord.class);
+			LogHelper.printD("extra table created");
 		}
 		catch (Exception e)
 		{

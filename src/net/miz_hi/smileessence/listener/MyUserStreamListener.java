@@ -3,6 +3,8 @@ package net.miz_hi.smileessence.listener;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
+import net.miz_hi.smileessence.data.extra.ExtraWord;
+import net.miz_hi.smileessence.data.extra.ExtraWords;
 import net.miz_hi.smileessence.event.BlockEvent;
 import net.miz_hi.smileessence.event.DirectMessageEvent;
 import net.miz_hi.smileessence.event.FavoriteEvent;
@@ -98,6 +100,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 		{
 			return;
 		}
+		
 		final StatusModel model = StatusStore.put(status);
 
 		if (model.isRetweet && model.isMine)
@@ -114,6 +117,20 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 			mentionsListAdapter.addFirst(model);
 			mentionsListAdapter.notifyAdapter();
 		}
+		
+		if(!ExtraWords.getExtraWords().isEmpty())
+		{
+			for(ExtraWord word : ExtraWords.getExtraWords())
+			{
+				if(model.text.contains(word.getText()))
+				{
+					mentionsListAdapter.addFirst(model);
+					mentionsListAdapter.notifyAdapter();
+					break;
+				}
+			}
+		}
+		
 		if(RelationListPageFragment.getChasingId() > -1 && model.inReplyToStatusId == RelationListPageFragment.getChasingId())
 		{
 			relationListAdapter.addFirst(model);

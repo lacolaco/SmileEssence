@@ -15,6 +15,7 @@
         <activity android:name=".view.SettingActivity" android:launchMode="standard" android:configChanges="keyboardHidden|orientation"></activity>
         <activity android:name=".view.UserActivity" android:configChanges="keyboard|orientation"></activity>
         <activity android:name=".view.TemplateActivity" android:configChanges="orientation"></activity>
+        <activity android:name=".view.ExtraWordActivity" android:configChanges="orientation"></activity>
 </application>
 
 </manifest>

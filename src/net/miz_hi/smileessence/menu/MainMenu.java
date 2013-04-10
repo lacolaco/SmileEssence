@@ -1,5 +1,6 @@
 package net.miz_hi.smileessence.menu;
 
+import net.miz_hi.smileessence.command.CommandEditExtraWord;
 import net.miz_hi.smileessence.command.CommandEditMenu;
 import net.miz_hi.smileessence.command.CommandEditTemplate;
 import net.miz_hi.smileessence.command.CommandOpenFavstar;
@@ -31,6 +32,7 @@ public class MainMenu extends DialogAdapter
 			list.add(new CommandOpenSetting(activity));
 			list.add(new CommandReConnect());
 			list.add(new CommandEditTemplate(activity));
+			list.add(new CommandEditExtraWord(activity));
 			list.add(new CommandEditMenu(activity));
 			list.add(new CommandOpenFavstar(activity));
 			list.add(new CommandReport());
