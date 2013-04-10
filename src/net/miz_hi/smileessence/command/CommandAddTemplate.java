@@ -1,6 +1,6 @@
 package net.miz_hi.smileessence.command;
 
-import net.miz_hi.smileessence.data.Templates;
+import net.miz_hi.smileessence.data.template.Templates;
 import net.miz_hi.smileessence.event.ToastManager;
 
 public class CommandAddTemplate extends MenuCommand

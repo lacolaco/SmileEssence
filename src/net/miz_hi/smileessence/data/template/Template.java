@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.data;
+package net.miz_hi.smileessence.data.template;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;

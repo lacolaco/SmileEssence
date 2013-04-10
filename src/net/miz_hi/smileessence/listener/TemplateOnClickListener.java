@@ -2,8 +2,8 @@ package net.miz_hi.smileessence.listener;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.data.Template;
-import net.miz_hi.smileessence.data.Templates;
+import net.miz_hi.smileessence.data.template.Template;
+import net.miz_hi.smileessence.data.template.Templates;
 import net.miz_hi.smileessence.dialog.YesNoDialogHelper;
 import net.miz_hi.smileessence.util.ColorUtils;
 import net.miz_hi.smileessence.util.CustomListAdapter;

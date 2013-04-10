@@ -1,9 +1,9 @@
 package net.miz_hi.smileessence.view;
 
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.data.Template;
-import net.miz_hi.smileessence.data.TemplateListAdapter;
-import net.miz_hi.smileessence.data.Templates;
+import net.miz_hi.smileessence.data.template.Template;
+import net.miz_hi.smileessence.data.template.TemplateListAdapter;
+import net.miz_hi.smileessence.data.template.Templates;
 import net.miz_hi.smileessence.dialog.YesNoDialogHelper;
 import android.app.Activity;
 import android.content.DialogInterface;

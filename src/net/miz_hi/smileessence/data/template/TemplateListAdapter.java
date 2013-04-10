@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.data;
+package net.miz_hi.smileessence.data.template;
 
 import android.app.Activity;
 import android.view.View;
