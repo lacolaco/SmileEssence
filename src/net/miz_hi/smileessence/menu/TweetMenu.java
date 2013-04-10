@@ -9,8 +9,8 @@ import net.miz_hi.smileessence.command.CommandMenuParent;
 import net.miz_hi.smileessence.command.CommandParseMorse;
 import net.miz_hi.smileessence.command.MenuCommand;
 import net.miz_hi.smileessence.data.StatusStore;
-import net.miz_hi.smileessence.data.Template;
-import net.miz_hi.smileessence.data.Templates;
+import net.miz_hi.smileessence.data.template.Template;
+import net.miz_hi.smileessence.data.template.Templates;
 import net.miz_hi.smileessence.dialog.DialogAdapter;
 import android.app.Activity;
 import android.app.Dialog;
@@ -46,7 +46,7 @@ public class TweetMenu extends DialogAdapter
 			{
 				list.add(new CommandMenuParent(this, "最近見たハッシュタグ", getHashtagMenu()));
 			}
-			setTitle("メニュー");
+			setTitle("ツイートメニュー");
 		}
 
 		return super.createMenuDialog();
