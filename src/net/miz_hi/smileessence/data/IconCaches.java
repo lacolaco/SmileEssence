@@ -76,6 +76,7 @@ public class IconCaches
 		if(futureMap.containsKey(user.userId))
 		{
 			viewIcon.setImageBitmap(getEmptyIcon());
+			viewIcon.setTag(user.userId);
 			final Future<Bitmap> f = futureMap.remove(user.userId);
 			MyExecutor.execute(new Runnable()
 			{

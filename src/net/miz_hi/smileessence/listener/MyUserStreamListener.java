@@ -250,8 +250,6 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 			MainSystem.getInstance().homeListAdapter.forceNotifyAdapter();
 			MainSystem.getInstance().mentionsListAdapter.forceNotifyAdapter();
 		}
-		MainSystem.getInstance().homeListAdapter.forceNotifyAdapter();
-		MainSystem.getInstance().mentionsListAdapter.forceNotifyAdapter();
 		
 		if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.NOTICE_UNFAV))
 		{
