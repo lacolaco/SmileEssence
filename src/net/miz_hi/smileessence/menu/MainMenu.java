@@ -1,55 +1,40 @@
 package net.miz_hi.smileessence.menu;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.miz_hi.smileessence.command.CommandEditExtraWord;
 import net.miz_hi.smileessence.command.CommandEditMenu;
 import net.miz_hi.smileessence.command.CommandEditTemplate;
-import net.miz_hi.smileessence.command.CommandOpenFavstar;
-import net.miz_hi.smileessence.command.CommandOpenSetting;
+import net.miz_hi.smileessence.command.CommandOpenPostPage;
 import net.miz_hi.smileessence.command.CommandReConnect;
-import net.miz_hi.smileessence.command.CommandReport;
-import net.miz_hi.smileessence.command.CommandTweet;
-import net.miz_hi.smileessence.dialog.DialogAdapter;
+import net.miz_hi.smileessence.command.ICommand;
+import net.miz_hi.smileessence.command.main.CommandOpenFavstar;
+import net.miz_hi.smileessence.command.main.CommandOpenSetting;
+import net.miz_hi.smileessence.command.main.CommandReport;
+import net.miz_hi.smileessence.dialog.SimpleMenuDialog;
 import android.app.Activity;
-import android.app.Dialog;
 
-public class MainMenu extends DialogAdapter
+public class MainMenu extends SimpleMenuDialog
 {
-	
-	private static MainMenu instance;
 
-	private MainMenu(Activity activity)
+	public MainMenu(Activity activity)
 	{
 		super(activity);
+		setTitle("メインメニュー");
 	}
 
 	@Override
-	public Dialog createMenuDialog(boolean init)
+	public List<ICommand> getMenuList()
 	{
-		if (init)
-		{
-			list.clear();
-			list.add(new CommandTweet());
-			list.add(new CommandOpenSetting(activity));
-			list.add(new CommandReConnect());
-			list.add(new CommandEditTemplate(activity));
-			list.add(new CommandEditExtraWord(activity));
-			list.add(new CommandEditMenu(activity));
-			list.add(new CommandOpenFavstar(activity));
-			list.add(new CommandReport());
-			
-			setTitle("メニュー");
-		}
-		
-		return super.createMenuDialog();
-	}
-	
-	public static void init(Activity activity)
-	{
-		instance = new MainMenu(activity);
-	}
-	
-	public static MainMenu getInstance()
-	{
-		return instance;
+		List<ICommand> items = new ArrayList<ICommand>();
+		items.add(new CommandOpenSetting(activity));
+		items.add(new CommandReConnect());
+		items.add(new CommandEditTemplate(activity));
+		items.add(new CommandEditExtraWord(activity));
+		items.add(new CommandEditMenu(activity));
+		items.add(new CommandOpenFavstar(activity));
+		items.add(new CommandReport());
+		return items;
 	}
 }

@@ -5,7 +5,7 @@ import android.util.Log;
 public class LogHelper
 {
 
-	public static void printD(Object obj)
+	public static void d(Object obj)
 	{
 		Log.d("SE", obj.toString());
 	}

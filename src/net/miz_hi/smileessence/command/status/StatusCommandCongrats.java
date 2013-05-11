@@ -11,9 +11,9 @@ import net.miz_hi.smileessence.async.AsyncTweetTask;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.command.IHideable;
+import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.event.ToastManager;
-import net.miz_hi.smileessence.util.TwitterManager;
+import net.miz_hi.smileessence.twitter.TwitterManager;
 
 public class StatusCommandCongrats extends StatusCommand implements IHideable, IConfirmable
 {
@@ -59,7 +59,7 @@ public class StatusCommandCongrats extends StatusCommand implements IHideable, I
 		String str = "@" + status.user.screenName + " Congrats on your " + favCount + "Åö tweet! http://favstar.fm/t/" + status.statusId;
 		StatusUpdate update = new StatusUpdate(str);
 		update.setInReplyToStatusId(status.statusId);
-		MyExecutor.submit(new AsyncFavoriteTask(status.statusId));
+		new AsyncFavoriteTask(status.statusId).addToQueue();
 		final Future<Boolean> f = MyExecutor.submit(new AsyncTweetTask(update));
 		MyExecutor.execute(new Runnable()
 		{
@@ -71,11 +71,11 @@ public class StatusCommandCongrats extends StatusCommand implements IHideable, I
 				{
 					if(f.get())
 					{
-						ToastManager.toast("Ç®èjÇ¢ÇµÇ‹ÇµÇΩ");
+						Notifier.info("Ç®èjÇ¢ÇµÇ‹ÇµÇΩ");
 					}
 					else
 					{
-						ToastManager.toast(TwitterManager.MESSAGE_SOMETHING_ERROR);
+						Notifier.info(TwitterManager.MESSAGE_SOMETHING_ERROR);
 					}
 				}
 				catch(Exception e)

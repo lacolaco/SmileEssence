@@ -7,7 +7,7 @@ import java.util.concurrent.Callable;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
-import net.miz_hi.smileessence.util.TwitterManager;
+import net.miz_hi.smileessence.twitter.TwitterManager;
 import twitter4j.Paging;
 import twitter4j.Status;
 

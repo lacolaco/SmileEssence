@@ -3,10 +3,12 @@ package net.miz_hi.smileessence.core;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.data.extra.ExtraWord;
+import net.miz_hi.smileessence.data.page.Page;
 import net.miz_hi.smileessence.data.template.Template;
 import net.miz_hi.smileessence.util.LogHelper;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
@@ -27,16 +29,18 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper
 		try
 		{
 			TableUtils.createTableIfNotExists(arg1, Account.class);
-			LogHelper.printD("account table created");
+			LogHelper.d("account table created");
 			TableUtils.createTableIfNotExists(arg1, Template.class);
-			LogHelper.printD("template table created");
+			LogHelper.d("template table created");
 			TableUtils.createTableIfNotExists(arg1, ExtraWord.class);
-			LogHelper.printD("extra table created");
+			LogHelper.d("extra table created");
+			TableUtils.createTableIfNotExists(arg1, Page.class);
+			LogHelper.d("page table created");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			LogHelper.printD("error ontable created");
+			LogHelper.d("error ontable created");
 		}
 	}
 
@@ -46,16 +50,18 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper
 		try
 		{
 			TableUtils.createTableIfNotExists(arg1, Account.class);
-			LogHelper.printD("account table created");
+			LogHelper.d("account table created");
 			TableUtils.createTableIfNotExists(arg1, Template.class);
-			LogHelper.printD("template table created");
+			LogHelper.d("template table created");
 			TableUtils.createTableIfNotExists(arg1, ExtraWord.class);
-			LogHelper.printD("extra table created");
+			LogHelper.d("extra table created");
+			TableUtils.createTableIfNotExists(arg1, Page.class);
+			LogHelper.d("page table created");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			LogHelper.printD("error ontable created");
+			LogHelper.d("error ontable created");
 		}
 	}
 }

@@ -3,7 +3,7 @@ package net.miz_hi.smileessence.event;
 import twitter4j.Status;
 import twitter4j.User;
 
-public class UnfavoriteEvent extends StatusEvent implements IAttackEvent
+public class UnfavoriteEvent extends StatusEventModel implements IAttackEvent
 {
 
 	public UnfavoriteEvent(User source, Status targetStatus)

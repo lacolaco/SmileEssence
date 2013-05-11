@@ -2,10 +2,10 @@ package net.miz_hi.smileessence.command.status;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.command.IHideable;
+import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.event.ToastManager;
+import android.content.ClipboardManager;
 import android.content.Context;
-import android.text.ClipboardManager;
 
 public class StatusCommandClipboard extends StatusCommand implements IHideable
 {
@@ -28,11 +28,11 @@ public class StatusCommandClipboard extends StatusCommand implements IHideable
 		{
 			ClipboardManager manager = (ClipboardManager) Client.getApplication().getSystemService(Context.CLIPBOARD_SERVICE);
 			manager.setText(status.text);
-			ToastManager.toast("コピーしました");
+			Notifier.info("コピーしました");
 		}
 		catch (Exception e)
 		{
-			ToastManager.toast("コピー失敗しました");
+			Notifier.alert("コピー失敗しました");
 		}
 	}
 

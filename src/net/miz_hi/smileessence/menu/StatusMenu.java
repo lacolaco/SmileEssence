@@ -12,18 +12,20 @@ import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncRetweetTask;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.CommandAddTemplate;
-import net.miz_hi.smileessence.command.CommandAppendHashtag;
-import net.miz_hi.smileessence.command.CommandMenuParent;
 import net.miz_hi.smileessence.command.CommandOpenUrl;
-import net.miz_hi.smileessence.command.MenuCommand;
-import net.miz_hi.smileessence.command.status.StatusCommandAddReply;
+import net.miz_hi.smileessence.command.ICommand;
+import net.miz_hi.smileessence.command.IHideable;
+import net.miz_hi.smileessence.command.post.CommandAppendHashtag;
 import net.miz_hi.smileessence.command.status.StatusCommandChaseRelation;
 import net.miz_hi.smileessence.command.status.StatusCommandClipboard;
 import net.miz_hi.smileessence.command.status.StatusCommandCongrats;
 import net.miz_hi.smileessence.command.status.StatusCommandCopy;
 import net.miz_hi.smileessence.command.status.StatusCommandDelete;
 import net.miz_hi.smileessence.command.status.StatusCommandFavAndRetweet;
+import net.miz_hi.smileessence.command.status.StatusCommandFavorite;
 import net.miz_hi.smileessence.command.status.StatusCommandNanigaja;
+import net.miz_hi.smileessence.command.status.StatusCommandReply;
+import net.miz_hi.smileessence.command.status.StatusCommandRetweet;
 import net.miz_hi.smileessence.command.status.StatusCommandReview;
 import net.miz_hi.smileessence.command.status.StatusCommandThankToFav;
 import net.miz_hi.smileessence.command.status.StatusCommandTofuBuster;
@@ -32,31 +34,29 @@ import net.miz_hi.smileessence.command.status.StatusCommandUnOffFav;
 import net.miz_hi.smileessence.command.status.StatusCommandUnOffRetweet;
 import net.miz_hi.smileessence.command.status.StatusCommandUnfavorite;
 import net.miz_hi.smileessence.command.status.StatusCommandWarotaRT;
+import net.miz_hi.smileessence.command.user.UserCommandAddReply;
 import net.miz_hi.smileessence.command.user.UserCommandFollow;
 import net.miz_hi.smileessence.command.user.UserCommandOpenFavstar;
+import net.miz_hi.smileessence.command.user.UserCommandOpenInfo;
 import net.miz_hi.smileessence.command.user.UserCommandOpenPage;
-import net.miz_hi.smileessence.command.user.UserCommandOpenProfiel;
 import net.miz_hi.smileessence.command.user.UserCommandRemove;
 import net.miz_hi.smileessence.command.user.UserCommandReply;
 import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.dialog.DialogAdapter;
-import net.miz_hi.smileessence.event.ToastManager;
+import net.miz_hi.smileessence.dialog.ExpandMenuDialog;
 import net.miz_hi.smileessence.status.StatusViewFactory;
-import net.miz_hi.smileessence.system.TweetSystem;
-import net.miz_hi.smileessence.util.TwitterManager;
+import net.miz_hi.smileessence.twitter.TwitterManager;
 import net.miz_hi.smileessence.util.UiHandler;
-import net.miz_hi.smileessence.view.TweetView;
 import twitter4j.HashtagEntity;
 import twitter4j.MediaEntity;
 import twitter4j.URLEntity;
 import twitter4j.UserMentionEntity;
 import android.app.Activity;
-import android.app.Dialog;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 
-public class StatusMenu extends DialogAdapter
+public class StatusMenu extends ExpandMenuDialog
 {
 	private StatusModel model;
 
@@ -64,65 +64,75 @@ public class StatusMenu extends DialogAdapter
 	{
 		super(activity);
 		this.model = model;
-	}
-
-	@Override
-	public Dialog createMenuDialog(boolean init)
-	{
-		if (init)
-		{
-			View viewStatus = StatusViewFactory.getView(layoutInflater, model);
-
-			View viewCommands = layoutInflater.inflate(R.layout.dialog_statuscommand_layout, null);
-			ImageView viewReply = (ImageView) viewCommands.findViewById(R.id.imageView_status_reply);
-			ImageView viewRetweet = (ImageView) viewCommands.findViewById(R.id.imageView_status_retweet);
-			ImageView viewFavorite = (ImageView) viewCommands.findViewById(R.id.imageView_status_favorite);
-
-			viewReply.setOnClickListener(onClickReply);
-			viewRetweet.setOnClickListener(onClickRetweet);
-			viewFavorite.setOnClickListener(onClickFavorite);
-			
-			if(model.user.isProtected)
-			{
-				viewRetweet.setVisibility(View.INVISIBLE);
-			}
-			else
-			{
-				viewRetweet.setVisibility(View.VISIBLE);
-			}
-			
-			list.clear();
-			
-			if (!getURLMenu().isEmpty())
-			{
-				list.add(new CommandMenuParent(this, "URLを開く", getURLMenu()));
-			}
-			
-			for(MenuCommand item: getStatusMenu())
-			{
-				list.add(item);
-			}
-
-			for(MenuCommand item : getHashtagMenu())
-			{
-				list.add(item);
-			}
-			
-			for (String name : getUsersList())
-			{
-				list.add(new CommandMenuParent(this, "@" + name, getUserMenu(getUsersList()).get(name)));
-			}
-			
-			setTitle(viewStatus, viewCommands);
-		}
-
-		return super.createMenuDialog();
+		setTitle(getHeaderView());
 	}
 	
-	public List<MenuCommand> getStatusMenu()
+	private View getHeaderView()
 	{
-		List<MenuCommand> list = new ArrayList<MenuCommand>();
-		list.add(new StatusCommandAddReply(model));
+		View viewStatus = StatusViewFactory.getView(inflater, model);
+		LayoutParams p = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		p.setMargins(5, 5, 5, 0);
+		viewStatus.setLayoutParams(p);
+		
+		View commands = inflater.inflate(R.layout.statusmenu_header, null);
+		View reply = commands.findViewById(R.id.statusmenu_reply);
+		View retweet = commands.findViewById(R.id.statusmenu_retweet);
+		View favorite = commands.findViewById(R.id.statusmenu_favorite);
+		
+		final StatusCommandReply commandReply = new StatusCommandReply(model);
+		final StatusCommandRetweet commandRetweet = new StatusCommandRetweet(model);
+		final StatusCommandFavorite commandFavorite = new StatusCommandFavorite(model);
+		
+		if(!commandRetweet.getDefaultVisibility())
+		{
+			retweet.setVisibility(View.INVISIBLE);
+		}
+		
+		reply.setOnClickListener(new OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View arg0)
+			{
+				commandReply.run();
+				dispose();
+			}
+		});
+		retweet.setOnClickListener(new OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View v)
+			{
+				commandRetweet.run();
+				dispose();
+			}
+		});
+		favorite.setOnClickListener(new OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View v)
+			{
+				commandFavorite.run();
+				dispose();
+			}
+		});
+		
+		commands.setLayoutParams(p);
+		
+		LinearLayout header = new LinearLayout(activity);
+		header.setOrientation(LinearLayout.VERTICAL);
+		
+		header.setBackgroundColor(Client.getColor(R.color.White));
+		header.addView(viewStatus);
+		header.addView(commands);
+		return header;
+	}
+
+	public List<ICommand> getStatusMenu()
+	{
+		List<ICommand> list = new ArrayList<ICommand>();
 		list.add(new StatusCommandDelete(model));
 		list.add(new StatusCommandFavAndRetweet(model));
 		list.add(new StatusCommandChaseRelation(model));
@@ -143,9 +153,9 @@ public class StatusMenu extends DialogAdapter
 		return list;
 	}
 
-	private List<MenuCommand> getURLMenu()
+	private List<ICommand> getURLMenu()
 	{
-		List<MenuCommand> list = new ArrayList<MenuCommand>();
+		List<ICommand> list = new ArrayList<ICommand>();
 		if (model.urls != null)
 		{
 			for (URLEntity urlEntity : model.urls)
@@ -171,9 +181,9 @@ public class StatusMenu extends DialogAdapter
 		return list;
 	}
 	
-	private List<MenuCommand> getHashtagMenu()
+	private List<ICommand> getHashtagMenu()
 	{
-		List<MenuCommand> list = new ArrayList<MenuCommand>();
+		List<ICommand> list = new ArrayList<ICommand>();
 		if (model.hashtags != null)
 		{
 			for (HashtagEntity hashtag : model.hashtags)
@@ -205,120 +215,69 @@ public class StatusMenu extends DialogAdapter
 		return list;
 	}
 
-	private Map<String, List<MenuCommand>> getUserMenu(List<String> userList)
+	private Map<String, List<ICommand>> getUserMenu(List<String> userList)
 	{
-		Map<String, List<MenuCommand>> map = new HashMap<String, List<MenuCommand>>();
+		Map<String, List<ICommand>> map = new HashMap<String, List<ICommand>>();
 		for (String userName : userList)
 		{
-			ArrayList<MenuCommand> list = new ArrayList<MenuCommand>();
+			ArrayList<ICommand> list = new ArrayList<ICommand>();
 			list.add(new UserCommandReply(userName));
-			list.add(new UserCommandOpenProfiel(activity, userName));
-			list.add(new UserCommandOpenPage(activity, userName));
-			list.add(new UserCommandOpenFavstar(activity, userName));
-			list.add(new UserCommandFollow(userName));
-			list.add(new UserCommandRemove(userName));
+			list.add(new UserCommandAddReply(userName));
+			list.add(new UserCommandOpenInfo(userName));
 			map.put(userName, list);
 		}
 		return map;
 	}
 
-	private OnClickListener onClickReply = new OnClickListener()
+	@Override
+	public List<List<ICommand>> getLists()
 	{
-
-		@Override
-		public void onClick(View v)
+		
+		List<List<ICommand>> list = new ArrayList<List<ICommand>>();
+					
+		List<ICommand> url = getURLMenu();
+		if (!url.isEmpty())
 		{
-			v.setBackgroundColor(Client.getColor(R.color.MetroBlue));
-			v.invalidate();
-			new UiHandler()
-			{
-
-				@Override
-				public void run()
-				{
-					TweetSystem.setReply(model.screenName, model.statusId);
-					TweetView.open();
-					dispose();
-				}
-			}.postDelayed(20);
+			list.add(url);
 		}
-	};
+		
+		List<ICommand> commands = getStatusMenu();
+		list.add(commands);
+		
+		for (String name : getUsersList())
+		{
+			List<ICommand> user = getUserMenu(getUsersList()).get(name);
+			list.add(user);
+		}
+		
+		List<ICommand> hashtag = getHashtagMenu();
+		if(!hashtag.isEmpty())
+		{
+			list.add(hashtag);
+		}	
 
-	private OnClickListener onClickRetweet = new OnClickListener()
+		return list;
+	}
+
+	@Override
+	public List<String> getGroups()
 	{
-
-		@Override
-		public void onClick(View v)
+		List<String> list = new ArrayList<String>();
+		List<ICommand> url = getURLMenu();
+		if (!url.isEmpty())
 		{
-			v.setBackgroundColor(Client.getColor(R.color.MetroBlue));
-			v.invalidate();
-			final Future<Boolean> resp = MyExecutor.submit(new AsyncRetweetTask(model.statusId));
-			MyExecutor.execute(new Runnable()
-			{
-
-				@Override
-				public void run()
-				{
-					try
-					{
-						boolean b = resp.get();
-						String str = b ? TwitterManager.MESSAGE_RETWEET_SUCCESS : TwitterManager.MESSAGE_RETWEET_DEPLICATE;
-						ToastManager.toast(str);
-					}
-					catch (Exception e)
-					{
-						e.printStackTrace();
-					}
-				}
-			});
-			new UiHandler()
-			{
-
-				@Override
-				public void run()
-				{
-					dispose();
-				}
-			}.postDelayed(20);
-		}
-	};
-
-	private OnClickListener onClickFavorite = new OnClickListener()
-	{
-
-		@Override
-		public void onClick(View v)
+			list.add("URL");
+		}		
+		list.add("コマンド");
+		for (String name : getUsersList())
 		{
-			v.setBackgroundColor(Client.getColor(R.color.MetroBlue));
-			v.invalidate();
-			final Future<Boolean> resp = MyExecutor.submit(new AsyncFavoriteTask(model.statusId));
-			MyExecutor.execute(new Runnable()
-			{
-
-				@Override
-				public void run()
-				{
-					try
-					{
-						boolean b = resp.get();
-						String str = b ? TwitterManager.MESSAGE_FAVORITE_SUCCESS : TwitterManager.MESSAGE_FAVORITE_DEPLICATE;
-						ToastManager.toast(str);
-					}
-					catch (Exception e)
-					{
-						e.printStackTrace();
-					}
-				}
-			});
-			new UiHandler()
-			{
-
-				@Override
-				public void run()
-				{
-					dispose();
-				}
-			}.postDelayed(20);
+			list.add("@" + name);
 		}
-	};
+		List<ICommand> hashtag = getHashtagMenu();
+		if(!hashtag.isEmpty())
+		{
+			list.add("ハッシュタグ");
+		}	
+		return list;
+	}
 }

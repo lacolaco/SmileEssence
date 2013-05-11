@@ -43,7 +43,7 @@ public class StatusCommandNanigaja extends StatusCommand implements IHideable, I
 			str = "@" + status.user.screenName + " " + str;
 			id = status.statusId;
 		}
-		MyExecutor.submit(new AsyncFavoriteTask(status.statusId));
+		new AsyncFavoriteTask(status.statusId).addToQueue();
 		StatusUpdate update = new StatusUpdate(str);
 		update.setInReplyToStatusId(id);
 		new AsyncTweetTask(update).addToQueue();

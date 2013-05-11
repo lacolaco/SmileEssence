@@ -16,4 +16,8 @@
     <string name="key_setting_open_ime">open_ime</string>
 
     <string name="key_setting_confirm_dialog">confirm_dialog</string>
+
+    <string name="key_setting_footer">footer_visible</string>
+
+    <string name="key_setting_morse">morse_enabled</string>
 </resources>

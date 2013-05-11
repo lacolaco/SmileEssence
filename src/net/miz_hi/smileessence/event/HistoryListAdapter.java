@@ -1,6 +1,7 @@
 package net.miz_hi.smileessence.event;
 
 import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.listener.EventOnClickListener;
 import net.miz_hi.smileessence.util.CustomListAdapter;
 import android.app.Activity;
@@ -10,23 +11,15 @@ import android.view.ViewGroup;
 public class HistoryListAdapter extends CustomListAdapter<EventModel>
 {
 	
-	private ToastManager manager;
-
 	public HistoryListAdapter(Activity activity)
 	{
 		super(activity, 1000);
-		manager = ToastManager.getInstance();
 	}	
-	
-	public void notice(EventModel model)
-	{
-		manager.noticeEvent(model);
-	}
 
 	@Override
 	public void addFirst(final EventModel model)
 	{
-		manager.noticeEvent(model);		
+		Notifier.buildEvent(model).raise();		
 		HistoryListAdapter.super.addFirst(model);
 	}
 

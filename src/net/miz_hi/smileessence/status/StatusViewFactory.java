@@ -5,6 +5,7 @@ import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.data.IconCaches;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
+import net.miz_hi.smileessence.preference.EnumPreferenceKey;
 import net.miz_hi.smileessence.util.Morse;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,7 +63,7 @@ public class StatusViewFactory
 		viewHeader.setTextColor(model.nameColor);
 		viewHeader.setTextSize(textSize);
 		String text;
-		if(Morse.isMorse(model.text))
+		if(Morse.isMorse(model.text) && Client.<Boolean>getPreferenceValue(EnumPreferenceKey.READ_MORSE))
 		{
 			text = model.text + "\n(" + Morse.mcToJa(model.text) + ")";
 		}

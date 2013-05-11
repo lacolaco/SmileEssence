@@ -45,7 +45,7 @@ public class AsyncIconGetter implements Callable<Bitmap>
 			fos.close();
 			Icon icon = new Icon(bm, IconCaches.genIconName(user));
 			IconCaches.putIconToMap(user.userId, icon);
-			LogHelper.printD("icon get from web");
+			LogHelper.d("icon get from web");
 			return icon.use();
 		}
 		catch (Exception e)

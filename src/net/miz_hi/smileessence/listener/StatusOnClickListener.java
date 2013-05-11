@@ -24,7 +24,6 @@ public class StatusOnClickListener implements OnClickListener
 	@Override
 	public void onClick(final View v)
 	{
-		final StatusMenu adapter = new StatusMenu(activity, model);
 		v.setBackgroundColor(Client.getColor(R.color.MetroBlue));
 		v.invalidate();
 		new UiHandler()
@@ -34,9 +33,11 @@ public class StatusOnClickListener implements OnClickListener
 			public void run()
 			{
 				v.setBackgroundColor(model.backgroundColor);
-				adapter.createMenuDialog(true).show();
+				new StatusMenu(activity, model).create().show();
 			}
-		}.postDelayed(50);
+		}.postDelayed(20);
+		
 	}
+	
 
 }

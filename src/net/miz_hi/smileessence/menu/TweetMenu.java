@@ -1,60 +1,32 @@
 package net.miz_hi.smileessence.menu;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import net.miz_hi.smileessence.command.CommandAppendHashtag;
-import net.miz_hi.smileessence.command.CommandInsertText;
-import net.miz_hi.smileessence.command.CommandMenuParent;
-import net.miz_hi.smileessence.command.CommandParseMorse;
-import net.miz_hi.smileessence.command.MenuCommand;
+import net.miz_hi.smileessence.command.ICommand;
+import net.miz_hi.smileessence.command.post.CommandAppendHashtag;
+import net.miz_hi.smileessence.command.post.CommandInsertText;
+import net.miz_hi.smileessence.command.post.CommandParseMorse;
 import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.data.template.Template;
 import net.miz_hi.smileessence.data.template.Templates;
-import net.miz_hi.smileessence.dialog.DialogAdapter;
+import net.miz_hi.smileessence.dialog.ExpandMenuDialog;
 import android.app.Activity;
-import android.app.Dialog;
 
-public class TweetMenu extends DialogAdapter
+public class TweetMenu extends ExpandMenuDialog
 {
 
-	private static TweetMenu instance;
-
-	private TweetMenu(Activity activity)
+	public TweetMenu(Activity activity)
 	{
 		super(activity);
-	}
-	
-	public static void show()
-	{
-		instance.createMenuDialog(true).show();
+		setTitle("ツイートメニュー");
 	}
 
-	@Override
-	public Dialog createMenuDialog(boolean init)
+	private List<ICommand> getHashtagMenu()
 	{
-		if (init)
-		{
-			list.clear();
-			list.add(new CommandInsertText("ワロタｗ"));
-			list.add(new CommandParseMorse());
-			if(!getTemplateMenu().isEmpty())
-			{
-				list.add(new CommandMenuParent(this, "定型文", getTemplateMenu()));
-			}
-			if(!getHashtagMenu().isEmpty())
-			{
-				list.add(new CommandMenuParent(this, "最近見たハッシュタグ", getHashtagMenu()));
-			}
-			setTitle("ツイートメニュー");
-		}
-
-		return super.createMenuDialog();
-	}
-	
-	private List<MenuCommand> getHashtagMenu()
-	{
-		List<MenuCommand> list = new ArrayList<MenuCommand>();
+		List<ICommand> list = new ArrayList<ICommand>();
 		for(String hashtag : StatusStore.getHashtagList())
 		{
 			list.add(new CommandAppendHashtag(hashtag));
@@ -62,24 +34,58 @@ public class TweetMenu extends DialogAdapter
 		return list;
 	}
 	
-	private List<MenuCommand> getTemplateMenu()
+	private List<ICommand> getTemplateMenu()
 	{
-		List<MenuCommand> list = new ArrayList<MenuCommand>();
+		List<ICommand> list = new ArrayList<ICommand>();
 		for(Template template : Templates.getTemplates())
 		{
 			list.add(new CommandInsertText(template.getText()));
 		}
 		return list;
 	}
-	
-	public static void init(Activity activity)
+
+	@Override
+	public List<List<ICommand>> getLists()
 	{
-		instance = new TweetMenu(activity);
+		List<List<ICommand>> list = new ArrayList<List<ICommand>>();
+		
+		//Basic
+		List<ICommand> basic = new ArrayList<ICommand>();
+		basic.add(new CommandInsertText("ワロタｗ"));
+		basic.add(new CommandParseMorse());
+		list.add(basic);
+		
+		List<ICommand> template = getTemplateMenu();
+		if(!template.isEmpty())
+		{
+			list.add(template);
+		}
+		
+		List<ICommand> hashtag = getHashtagMenu();
+		if(!hashtag.isEmpty())
+		{
+			list.add(hashtag);
+		}
+
+		return list;
 	}
-	
-	public static TweetMenu getInstance()
+
+	@Override
+	public List<String> getGroups()
 	{
-		return instance;
+		List<String> list = new ArrayList<String>();
+		list.add("基本");
+		List<ICommand> template = getTemplateMenu();
+		if(!template.isEmpty())
+		{
+			list.add("定型文");
+		}
+		List<ICommand> hashtag = getHashtagMenu();
+		if(!hashtag.isEmpty())
+		{
+			list.add("最近見たハッシュタグ");
+		}
+		return list;
 	}
 
 }

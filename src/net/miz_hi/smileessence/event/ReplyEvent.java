@@ -3,7 +3,7 @@ package net.miz_hi.smileessence.event;
 import twitter4j.Status;
 import twitter4j.User;
 
-public class ReplyEvent extends StatusEvent
+public class ReplyEvent extends StatusEventModel
 {
 
 	public ReplyEvent(User source, Status targetStatus)

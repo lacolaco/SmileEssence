@@ -1,7 +1,7 @@
 package net.miz_hi.smileessence.command;
 
+import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.data.template.Templates;
-import net.miz_hi.smileessence.event.ToastManager;
 
 public class CommandAddTemplate extends MenuCommand
 {
@@ -23,6 +23,6 @@ public class CommandAddTemplate extends MenuCommand
 	public void workOnUiThread()
 	{
 		Templates.addTemplate(text);
-		ToastManager.toast("’Ç‰Á‚µ‚Ü‚µ‚½");
+		Notifier.info("’Ç‰Á‚µ‚Ü‚µ‚½");
 	}
 }

@@ -10,9 +10,9 @@ import net.miz_hi.smileessence.async.AsyncTweetTask;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.command.IHideable;
+import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.event.ToastManager;
-import net.miz_hi.smileessence.util.TwitterManager;
+import net.miz_hi.smileessence.twitter.TwitterManager;
 
 public class StatusCommandUnOffFav extends StatusCommand implements IHideable, IConfirmable
 {
@@ -34,32 +34,8 @@ public class StatusCommandUnOffFav extends StatusCommand implements IHideable, I
 		String str = "@" + status.user.screenName + " Ç¡Åö";
 		StatusUpdate update = new StatusUpdate(str);
 		update.setInReplyToStatusId(status.statusId);
-		MyExecutor.submit(new AsyncFavoriteTask(status.statusId));
-		final Future<Boolean> f = MyExecutor.submit(new AsyncTweetTask(update));
-		MyExecutor.execute(new Runnable()
-		{
-			
-			@Override
-			public void run()
-			{
-				
-				try
-				{
-					if(f.get())
-					{
-						ToastManager.toast(TwitterManager.MESSAGE_FAVORITE_SUCCESS);
-					}
-					else
-					{
-						ToastManager.toast(TwitterManager.MESSAGE_FAVORITE_DEPLICATE);
-					}
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-		});
+		new AsyncFavoriteTask(status.statusId).addToQueue();
+		new AsyncTweetTask(update).addToQueue();		
 	}
 	
 

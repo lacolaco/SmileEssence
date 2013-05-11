@@ -22,16 +22,13 @@ public class ExtraWordListAdapter extends CustomListAdapter<ExtraWord>
 	{
 		if(convertedView == null)
 		{
-			convertedView = getInflater().inflate(R.layout.menuitem_layout, null);
+			convertedView = getInflater().inflate(R.layout.menuitem_white, null);
 		}		
-		
-		convertedView.setBackgroundColor(Client.getColor(R.color.LightGray));
 		
 		ExtraWord ExtraWord = (ExtraWord)getItem(position);
 		
 		TextView viewText = (TextView)convertedView.findViewById(R.id.textView_menuItem);		
 		viewText.setText(ExtraWord.getText());
-		viewText.setTextColor(Client.getColor(R.color.Black));
 		
 		ExtraWordOnClickListener listener = new ExtraWordOnClickListener(this, getActivity(), ExtraWord);
 		

@@ -3,8 +3,8 @@ package net.miz_hi.smileessence.command.user;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IConfirmable;
-import net.miz_hi.smileessence.event.ToastManager;
-import net.miz_hi.smileessence.util.TwitterManager;
+import net.miz_hi.smileessence.core.Notifier;
+import net.miz_hi.smileessence.twitter.TwitterManager;
 
 public class UserCommandFollow extends UserCommand implements IConfirmable
 {
@@ -31,7 +31,7 @@ public class UserCommandFollow extends UserCommand implements IConfirmable
 			{
 				if (TwitterManager.follow(Client.getMainAccount(), userName))
 				{
-					ToastManager.toast("フォローしました");
+					Notifier.info("フォローしました");
 				}
 			}
 		});

@@ -4,8 +4,7 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.system.TweetSystem;
-import net.miz_hi.smileessence.view.TweetView;
+import net.miz_hi.smileessence.system.PostSystem;
 
 public class StatusCommandUnOffRetweet extends StatusCommand implements IHideable, IConfirmable
 {
@@ -25,9 +24,7 @@ public class StatusCommandUnOffRetweet extends StatusCommand implements IHideabl
 	public void workOnUiThread()
 	{
 		String text = " RT @" + status.screenName + ": " + status.text;
-		TweetSystem.setText(text);
-		TweetSystem.setCursor(0);
-		TweetView.open();
+		PostSystem.clear().setText(text).setCursor(0).openPostPage();
 	}
 
 	@Override

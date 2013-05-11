@@ -18,9 +18,9 @@ public class EventViewFactory
 
 	public static View getToastView(Activity activity, EventModel model, View viewBase)
 	{
-		if(model instanceof StatusEvent)
+		if(model instanceof StatusEventModel)
 		{
-			return getToastView(activity, (StatusEvent)model, viewBase);
+			return getToastView(activity, (StatusEventModel)model, viewBase);
 		}
 		else if(model instanceof UserEvent)
 		{
@@ -32,7 +32,7 @@ public class EventViewFactory
 		}
 	}
 	
-	private static View getToastView(Activity activity, StatusEvent model, View viewBase)
+	private static View getToastView(Activity activity, StatusEventModel model, View viewBase)
 	{
 		LayoutInflater layoutInflater = LayoutInflater.from(activity);
 		if (viewBase == null)
@@ -93,9 +93,9 @@ public class EventViewFactory
 	
 	public static View getView(EventModel model, View viewBase)
 	{
-		if(model instanceof StatusEvent)
+		if(model instanceof StatusEventModel)
 		{
-			return getView((StatusEvent)model, viewBase);
+			return getView((StatusEventModel)model, viewBase);
 		}
 		else if(model instanceof UserEvent)
 		{
@@ -131,7 +131,7 @@ public class EventViewFactory
 		return viewBase;
 	}
 	
-	private static View getView(StatusEvent model, View viewBase)
+	private static View getView(StatusEventModel model, View viewBase)
 	{
 		LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.getInstance());
 		if (viewBase == null)

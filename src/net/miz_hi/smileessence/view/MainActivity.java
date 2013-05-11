@@ -1,202 +1,183 @@
 package net.miz_hi.smileessence.view;
 
-import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.async.MyExecutor;
-import net.miz_hi.smileessence.auth.Account;
-import net.miz_hi.smileessence.auth.AuthorizeHelper;
-import net.miz_hi.smileessence.auth.Consumers;
 import net.miz_hi.smileessence.core.EnumRequestCode;
-import net.miz_hi.smileessence.dialog.AuthDialogHelper;
-import net.miz_hi.smileessence.dialog.DialogAdapter;
-import net.miz_hi.smileessence.dialog.ProgressDialogHelper;
-import net.miz_hi.smileessence.dialog.YesNoDialogHelper;
-import net.miz_hi.smileessence.event.ToastManager;
+import net.miz_hi.smileessence.dialog.ConfirmDialog;
+import net.miz_hi.smileessence.listener.PageChangeListener;
 import net.miz_hi.smileessence.menu.MainMenu;
-import net.miz_hi.smileessence.menu.TweetMenu;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
 import net.miz_hi.smileessence.system.MainSystem;
-import net.miz_hi.smileessence.system.TweetSystem;
+import net.miz_hi.smileessence.system.PostSystem;
 import net.miz_hi.smileessence.util.LogHelper;
+import net.miz_hi.smileessence.util.NamedFragment;
+import net.miz_hi.smileessence.util.NamedFragmentPagerAdapter;
+import net.miz_hi.smileessence.util.UiHandler;
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.ContentResolver;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.provider.MediaStore.MediaColumns;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.slidingmenu.lib.SlidingMenu;
+import com.viewpagerindicator.TitlePageIndicator;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public class MainActivity extends FragmentActivity
 {
 
 	private static MainActivity instance;
+	public static final int PAGE_POST = 0;
 	public static final int HANDLER_NOT_AUTHED = 0;
 	public static final int HANDLER_SETUPED = 1;
 	public static final int HANDLER_OAUTH_SUCCESS = 2;
 	public static final int HANDLER_NOT_CONNECTION = 3;
-	private AuthorizeHelper authHelper;
-	private AuthDialogHelper authDialog;
-	private boolean isFirstLoad = false;
-	private ViewPager viewPager;
-	private ProgressDialog progressDialog;
-	private Handler handler = new Handler()
-	{
-		@Override
-		public void handleMessage(Message msg)
-		{
-			progressDialog.dismiss();
-			switch (msg.what)
-			{
-				case HANDLER_SETUPED:
-				{
-					break;
-				}
-				case HANDLER_OAUTH_SUCCESS:
-				{
-					MyExecutor.execute(new Runnable()
-					{
-						
-						@Override
-						public void run()
-						{
-							MainSystem.getInstance().twitterSetup(handler);							
-						}
-					});
-					break;
-				}
-				case HANDLER_NOT_CONNECTION:
-				{
-					ToastManager.toast("接続出来ません");
-					break;
-				}
-			}
-		}
-	};
-	
-	@Override
-	public void onCreate(Bundle bundle)
-	{
-		super.onCreate(bundle);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.mainactivity_layout);
-		LogHelper.printD("main create");
-		
-		instance = this;
-		isFirstLoad = true;
-		MainSystem.getInstance().start(instance);
-		authHelper = new AuthorizeHelper(instance, Consumers.getDedault());		
-		TweetView.init(instance);
-		viewSetUp();
-	}
-	
-	@Override
-	protected void onResume()
-	{
-		super.onResume();
-		LogHelper.printD("main resume");
-		if (isFirstLoad)
-		{
-			isFirstLoad = false;
-
-			if (Client.hasAuthedAccount())
-			{
-				progressDialog = new ProgressDialog(instance);
-				ProgressDialogHelper.makeProgressDialog(instance, progressDialog).show();
-				MyExecutor.execute(new Runnable()
-				{
-					
-					@Override
-					public void run()
-					{
-						MainSystem.getInstance().twitterSetup(handler);
-					}
-				});
-			}
-			else
-			{
-				authDialog = new AuthDialogHelper(instance);
-				final Dialog dialog = authDialog.getAuthDialog();
-				authDialog.setOnComplete(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						dialog.dismiss();
-						authHelper.oauthSend();
-					}
-				});
-				dialog.setOnCancelListener(new OnCancelListener()
-				{
-
-					@Override
-					public void onCancel(DialogInterface dialog)
-					{
-						finish();
-					}
-				});
-				dialog.show();
-			}
-		}
-		else
-		{
-			MainSystem.getInstance().refreshLists();
-		}
-
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-	}
+	NamedFragmentPagerAdapter adapter;
+	ViewPager pager;
+	TitlePageIndicator indicator;
+	View footerBar;
 
 	public static MainActivity getInstance()
 	{
 		return instance;
 	}
 
+	public static void moveViewPage(final int index)
+	{
+		new UiHandler()
+		{
+			
+			@Override
+			public void run()
+			{
+				instance.pager.setCurrentItem(index, false);
+			}
+		}.post();
+	}
+
+	public static int getCurrentPage()
+	{
+		return instance.pager.getCurrentItem();
+	}
+
+	public static int addPage(NamedFragment fragment)
+	{
+		int i = instance.adapter.add(fragment);
+		instance.adapter.forceNotifyAdapter();
+		return i;
+	}
+
+	public static void removePage(int i)
+	{
+		instance.adapter.remove(i);
+		List<NamedFragment> list = Arrays.asList(instance.adapter.getList());
+		instance.adapter = new NamedFragmentPagerAdapter(instance.getSupportFragmentManager(), list);
+		instance.pager.setAdapter(instance.adapter);
+		moveViewPage(i);
+	}
+
+	public static int getPagerCount()
+	{
+		return instance.adapter.getCount();
+	}
+
+	@Override
+	public void onCreate(Bundle bundle)
+	{
+		super.onCreate(bundle);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.main_layout);
+		LogHelper.d("main create");
+		instance = this;
+		initializeViews();
+		MainSystem.getInstance().initialize(instance);
+	}
+
+	private void initializeViews()
+	{
+		adapter = new NamedFragmentPagerAdapter(getSupportFragmentManager());
+		adapter.add((NamedFragment) PostFragment.instantiate(instance, PostFragment.class.getName()));
+		adapter.add((NamedFragment) HomeFragment.instantiate(instance, HomeFragment.class.getName()));
+		adapter.add((NamedFragment) MentionsFragment.instantiate(instance, MentionsFragment.class.getName()));
+		adapter.add((NamedFragment) HistoryFragment.instantiate(instance, HistoryFragment.class.getName()));
+		pager = (ViewPager)findViewById(R.id.viewpager);
+		pager.setAdapter(adapter);
+		pager.destroyDrawingCache();
+		indicator = (TitlePageIndicator)findViewById(R.id.indicator);
+		indicator.setTextSize(21);
+		indicator.setViewPager(pager);
+		indicator.setOnPageChangeListener(new PageChangeListener());
+		footerBar = findViewById(R.id.footer);
+		new UiHandler()
+		{
+			
+			@Override
+			public void run()
+			{
+				moveViewPage(1);
+			}
+		}.post();
+
+	}	
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		getMenuInflater().inflate(R.menu.menu_main, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState)
+	{
+		super.onPostCreate(savedInstanceState);
+		MainSystem.getInstance().setup(instance);
+	}
+
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		LogHelper.d("main resume");
+		if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.VISIBLE_FOORER))
+		{
+			footerBar.setVisibility(View.VISIBLE);
+		}
+		else
+		{
+			footerBar.setVisibility(View.GONE);
+		}
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+	}
+
 	@Override
 	protected void onPause()
 	{
 		super.onPause();
-		LogHelper.printD("main pause");
+		LogHelper.d("main pause");
 		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig)
-	{
-		super.onConfigurationChanged(newConfig);
-		TweetView.open(); //幅の反映のために開閉
-		TweetView.close(); 
-		DialogAdapter.dispose();
-	}
-
-	@Override
-	protected void onRestart()
-	{
-		super.onRestart();
-		LogHelper.printD("main restart");
 	}
 
 	@Override
 	protected void onDestroy()
 	{
 		super.onDestroy();
-		LogHelper.printD("main destroy");
-		MainSystem.getInstance().finish();
+		LogHelper.d("main destroy");		
+		Crouton.cancelAllCroutons();
+		MainSystem.getInstance().onDestroyed();
 		instance = null;
 	}
 
@@ -207,164 +188,145 @@ public class MainActivity extends FragmentActivity
 		{
 			return;
 		}
-		
 		if (reqCode == EnumRequestCode.AUTHORIZE.ordinal())
 		{
-			final Uri uri = data.getData();
-
-			Account account = authHelper.oauthRecieve(uri);
-			if (account != null)
-			{
-				Client.setMainAccount(account);
-			}
-			progressDialog = new ProgressDialog(instance);
-			ProgressDialogHelper.makeProgressDialog(instance, progressDialog).show();
-			MyExecutor.execute(new Runnable()
-			{
-				
-				@Override
-				public void run()
-				{
-					MainSystem.getInstance().twitterSetup(handler);
-				}
-			});
+			MainSystem.getInstance().authorize(instance, data.getData());
 		}
 		else if(reqCode == EnumRequestCode.PICTURE.ordinal() || reqCode == EnumRequestCode.CAMERA.ordinal())
 		{
-			Uri uri;
-			if(reqCode == EnumRequestCode.PICTURE.ordinal())
-			{
-				uri = data.getData();
-			}
-			else
-			{
-				uri = MainSystem.getInstance().tempFilePath;
-			}
-			
-			if(uri == null)
-			{
-				ToastManager.toast("ファイルが存在しません");
-				return;
-			}
-			ContentResolver cr = getContentResolver();
-			String[] columns = { MediaColumns.DATA };
-			Cursor c = cr.query(uri, columns, null, null, null);
-			c.moveToFirst();
-			if(c.isNull(c.getColumnIndex(MediaColumns.DATA)))
-			{
-				ToastManager.toast("ファイルが存在しません");
-				return;
-			}
-			
-			File path = new File(c.getString(c.getColumnIndex(MediaColumns.DATA)));
-			if (!path.exists())
-			{
-				ToastManager.toast("ファイルが存在しません");
-				return;
-			}
-			else
-			{
-				TweetSystem.setPicturePath(path);
-				ToastManager.toast("画像をセットしました");
-				TweetView.open();
-			}
+			MainSystem.getInstance().receivePicture(instance, data, reqCode);
 		}
 	}
-	
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event)
+
+	public void onEditClick(View v)
 	{
-		if (keyCode == KeyEvent.KEYCODE_BACK)
+		moveViewPage(PAGE_POST);
+	}
+
+	public void onMenuClick(View v)
+	{
+		dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MENU));
+	}
+
+	public void onTwitterClick(View v)
+	{
+		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/")));
+	}	
+
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event)
+	{
+		if(event.getAction() != KeyEvent.ACTION_DOWN)
 		{
-			TweetView.getInstance();
-			if (TweetView.isOpening())
+			return super.dispatchKeyEvent(event);
+		}
+		switch(event.getKeyCode())
+		{
+			case KeyEvent.KEYCODE_BACK:
 			{
-				TweetView.toggle();
-				return false;
-			}
-			else if(viewPager.getCurrentItem() != 0)
-			{
-				viewPager.setCurrentItem(0, true);
-				return false;
-			}
-			else
-			{
-				if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.CONFIRM_DIALOG))
+				if(pager.getCurrentItem() != 1)
 				{
-					YesNoDialogHelper.show(this, "確認", "終了しますか？", new Runnable()
-					{
-						
-						@Override
-						public void run()
-						{
-							finish();
-						}
-					});
+					pager.setCurrentItem(1, true);
 				}
 				else
 				{
-					finish();
+					if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.CONFIRM_DIALOG))
+					{
+						ConfirmDialog.show(this, "終了しますか？", new Runnable()
+						{
+
+							@Override
+							public void run()
+							{
+								finish();
+							}
+						});
+					}
+					else
+					{
+						finish();
+					}
 				}
 				return false;
 			}
+			case KeyEvent.KEYCODE_MENU:
+			{				
+				openOptionsMenu();
+				return true;
+			}
+			default:
+			{
+				return super.dispatchKeyEvent(event);
+			}
 		}
-		else if (keyCode == KeyEvent.KEYCODE_MENU)
+
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu)
+	{
+		Fragment fragment = (NamedFragment) adapter.getItem(getCurrentPage());
+		if(fragment != null && fragment instanceof IRemovable)
 		{
-			TweetView.getInstance();
-			if(TweetView.isOpening())
-			{
-				TweetMenu.getInstance().createMenuDialog(true).show();
-			}
-			else
-			{
-				MainMenu.getInstance().createMenuDialog(true).show();
-			}
-			return false;
+			menu.findItem(R.id.menu_remove).setVisible(true);
 		}
 		else
 		{
-			return super.onKeyDown(keyCode, event);
+			menu.findItem(R.id.menu_remove).setVisible(false);
 		}
+		
+		menu.findItem(R.id.menu_extract).setVisible(!ExtractFragment.isShowing);
+		return super.onPrepareOptionsMenu(menu);
 	}
-
-	private void viewSetUp()
-	{	
-		viewPager = (ViewPager)findViewById(R.id.viewpager);
-		viewPager.setAdapter(MainSystem.getInstance().pageAdapter);
-		viewPager.setOnPageChangeListener(new OnPageChangeListener() 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch(item.getItemId())
 		{
-			@Override
-			public void onPageScrollStateChanged(int arg0) { }
-
-			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) 
-			{ 
-			}
-
-			@Override
-			public void onPageSelected(int position) 
+			case R.id.menu_post:
 			{
-				switch (position)
-				{
-					case 0:
-					{
-						TweetView.getInstance().getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);						
-						break;
-					}
-					default:
-					{
-						TweetView.getInstance().getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-						break;
-					}
-				}
+				PostSystem.openPostPage();
+				break;
 			}
-		});
+			case R.id.menu_home:
+			{
+				moveViewPage(1);
+				break;
+			}
+			case R.id.menu_option:
+			{
+				new MainMenu(instance).create().show();
+				break;
+			}
+			case R.id.menu_extract:
+			{
+				ExtractFragment fragment = ExtractFragment.singleton();
+				addPage(fragment);
+				moveViewPage(getPagerCount());
+				break;
+			}
+			case R.id.menu_remove:
+			{
+				removePage(getCurrentPage());
+				break;
+			}
+			case R.id.menu_exit:
+			{
+				finish();
+				break;
+			}
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	public ViewPager getViewPager()
 	{
-		return viewPager;
+		return pager;
 	}
 
+	public NamedFragmentPagerAdapter getFragmentAdapter()
+	{
+		return adapter;
+	}
 
 }

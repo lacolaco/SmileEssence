@@ -4,9 +4,9 @@ import java.util.concurrent.Callable;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.auth.Account;
-import net.miz_hi.smileessence.event.ToastManager;
+import net.miz_hi.smileessence.core.Notifier;
+import net.miz_hi.smileessence.twitter.TwitterManager;
 import net.miz_hi.smileessence.util.SimpleAsyncTask;
-import net.miz_hi.smileessence.util.TwitterManager;
 import twitter4j.StatusUpdate;
 
 public class AsyncTweetTask extends SimpleAsyncTask<Boolean> implements Callable<Boolean>
@@ -28,7 +28,7 @@ public class AsyncTweetTask extends SimpleAsyncTask<Boolean> implements Callable
 	@Override
 	protected Boolean doInBackground(Object... arg0)
 	{
-		return TwitterManager.tweet(account, status);
+		return call();
 	}
 
 	@Override
@@ -36,11 +36,11 @@ public class AsyncTweetTask extends SimpleAsyncTask<Boolean> implements Callable
 	{
 		if (result)
 		{
-			ToastManager.toast(TwitterManager.MESSAGE_TWEET_SUCCESS);
+			Notifier.info(TwitterManager.MESSAGE_TWEET_SUCCESS);
 		}
 		else
 		{
-			ToastManager.toast(TwitterManager.MESSAGE_TWEET_DEPLICATE);
+			Notifier.info(TwitterManager.MESSAGE_TWEET_DEPLICATE);
 		}
 	}
 

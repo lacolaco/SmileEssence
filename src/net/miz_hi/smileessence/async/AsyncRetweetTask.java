@@ -2,9 +2,10 @@ package net.miz_hi.smileessence.async;
 
 import java.util.concurrent.Callable;
 
+
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.auth.Account;
-import net.miz_hi.smileessence.util.TwitterManager;
+import net.miz_hi.smileessence.twitter.TwitterManager;
 
 public class AsyncRetweetTask implements Callable<Boolean>
 {

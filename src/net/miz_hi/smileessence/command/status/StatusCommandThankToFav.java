@@ -9,9 +9,9 @@ import net.miz_hi.smileessence.async.AsyncTweetTask;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.command.IHideable;
+import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.event.ToastManager;
-import net.miz_hi.smileessence.util.TwitterManager;
+import net.miz_hi.smileessence.twitter.TwitterManager;
 
 public class StatusCommandThankToFav extends StatusCommand implements IHideable, IConfirmable
 {
@@ -33,7 +33,7 @@ public class StatusCommandThankToFav extends StatusCommand implements IHideable,
 		String str = "@" + status.user.screenName + " ‚Ó‚Ÿ‚Ú‚ ‚è(o^-')b" ;
 		StatusUpdate update = new StatusUpdate(str);
 		update.setInReplyToStatusId(status.statusId);
-		MyExecutor.submit(new AsyncFavoriteTask(status.statusId));
+		new AsyncFavoriteTask(status.statusId).addToQueue();
 		final Future<Boolean> f = MyExecutor.submit(new AsyncTweetTask(update));
 		MyExecutor.execute(new Runnable()
 		{
@@ -46,11 +46,11 @@ public class StatusCommandThankToFav extends StatusCommand implements IHideable,
 				{
 					if(f.get())
 					{
-						ToastManager.toast("‚Ó‚Ÿ‚Ú‚ ‚è‚µ‚Ü‚µ‚½");
+						Notifier.info("‚Ó‚Ÿ‚Ú‚ ‚è‚µ‚Ü‚µ‚½");
 					}
 					else
 					{
-						ToastManager.toast(TwitterManager.MESSAGE_FAVORITE_DEPLICATE);
+						Notifier.alert(TwitterManager.MESSAGE_FAVORITE_DEPLICATE);
 					}
 				}
 				catch (Exception e)

@@ -5,8 +5,8 @@ import java.util.HashMap;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.dialog.CheckBoxListDialogHelper;
-import net.miz_hi.smileessence.dialog.CheckBoxListDialogHelper.CheckBoxItem;
+import net.miz_hi.smileessence.dialog.CheckBoxListDialog;
+import net.miz_hi.smileessence.dialog.CheckBoxListDialog.CheckBoxItem;
 import net.miz_hi.smileessence.menu.StatusMenu;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey.EnumValueType;
 import android.app.Activity;
@@ -32,14 +32,14 @@ public class CommandEditMenu extends MenuCommand
 	@Override
 	public void workOnUiThread()
 	{
-		final CheckBoxListDialogHelper helper = new CheckBoxListDialogHelper(activity);
-		helper.setTitle("ï\é¶Ç∑ÇÈçÄñ⁄Çê›íËÇµÇƒÇ≠ÇæÇ≥Ç¢");
+		final CheckBoxListDialog listDialog = new CheckBoxListDialog(activity);
+		listDialog.setTitle("ï\é¶Ç∑ÇÈçÄñ⁄Çê›íËÇµÇƒÇ≠ÇæÇ≥Ç¢");
 		
 		ArrayList<CheckBoxItem> list = new ArrayList<CheckBoxItem>();
-		final HashMap<CheckBoxItem, MenuCommand> map = new HashMap<CheckBoxItem, MenuCommand>();
+		final HashMap<CheckBoxItem, ICommand> map = new HashMap<CheckBoxItem, ICommand>();
 		StatusModel nullModel = StatusModel.getNullStatusModel();
 		StatusMenu adapter = new StatusMenu(activity, nullModel);
-		for(MenuCommand item : adapter.getStatusMenu())
+		for(ICommand item : adapter.getStatusMenu())
 		{
 			if(item instanceof IHideable && item.getDefaultVisibility())
 			{
@@ -50,9 +50,9 @@ public class CommandEditMenu extends MenuCommand
 			}
 		}
 		
-		helper.setItems((list.toArray(new CheckBoxItem[0])));
+		listDialog.setItems((list.toArray(new CheckBoxItem[0])));
 		
-		helper.setOnClicked(new OnClickListener()
+		listDialog.setOnClicked(new OnClickListener()
 		{
 			
 			@Override
@@ -62,11 +62,11 @@ public class CommandEditMenu extends MenuCommand
 				{
 					case DialogInterface.BUTTON_POSITIVE:
 					{
-						CheckBoxItem[] items = helper.getItems();
+						CheckBoxItem[] items = listDialog.getItems();
 						for(CheckBoxItem item : items)
 						{
 							boolean value = item.value;
-							MenuCommand command = map.get(item);
+							ICommand command = map.get(item);
 							Client.getPreferenceHelper().putPreferenceValue(command.getClass().getSimpleName(), EnumValueType.BOOLEAN, item.value);
 						}
 						dialog.dismiss();
@@ -80,7 +80,7 @@ public class CommandEditMenu extends MenuCommand
 			}
 		});
 		
-		helper.createDialog().show();
+		listDialog.createDialog().show();
 	}
 
 }

@@ -22,16 +22,13 @@ public class TemplateListAdapter extends CustomListAdapter<Template>
 	{
 		if(convertedView == null)
 		{
-			convertedView = getInflater().inflate(R.layout.menuitem_layout, null);
+			convertedView = getInflater().inflate(R.layout.menuitem_white, null);
 		}		
-		
-		convertedView.setBackgroundColor(Client.getColor(R.color.LightGray));
 		
 		Template template = (Template)getItem(position);
 		
 		TextView viewText = (TextView)convertedView.findViewById(R.id.textView_menuItem);		
 		viewText.setText(template.getText());
-		viewText.setTextColor(Client.getColor(R.color.Black));
 		
 		TemplateOnClickListener listener = new TemplateOnClickListener(this, getActivity(), template);
 		

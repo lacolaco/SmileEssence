@@ -3,7 +3,7 @@ package net.miz_hi.smileessence.event;
 import twitter4j.Status;
 import twitter4j.User;
 
-public class FavoriteEvent extends StatusEvent implements IAttackEvent
+public class FavoriteEvent extends StatusEventModel implements IAttackEvent
 {
 
 //	private int favedCount;

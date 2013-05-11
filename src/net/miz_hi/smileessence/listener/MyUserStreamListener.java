@@ -1,26 +1,30 @@
 package net.miz_hi.smileessence.listener;
 
+import de.keyboardsurfer.android.widget.crouton.Style;
 import net.miz_hi.smileessence.Client;
+import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.data.extra.ExtraWord;
 import net.miz_hi.smileessence.data.extra.ExtraWords;
 import net.miz_hi.smileessence.event.BlockEvent;
 import net.miz_hi.smileessence.event.DirectMessageEvent;
+import net.miz_hi.smileessence.event.Event;
 import net.miz_hi.smileessence.event.FavoriteEvent;
 import net.miz_hi.smileessence.event.FollowEvent;
 import net.miz_hi.smileessence.event.HistoryListAdapter;
 import net.miz_hi.smileessence.event.ReplyEvent;
 import net.miz_hi.smileessence.event.RetweetEvent;
-import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.event.UnblockEvent;
 import net.miz_hi.smileessence.event.UnfavoriteEvent;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
 import net.miz_hi.smileessence.status.StatusListAdapter;
 import net.miz_hi.smileessence.system.MainSystem;
+import net.miz_hi.smileessence.system.RelationSystem;
 import net.miz_hi.smileessence.util.LogHelper;
+import net.miz_hi.smileessence.view.ExtractFragment;
 import net.miz_hi.smileessence.view.MainActivity;
-import net.miz_hi.smileessence.view.RelationListPageFragment;
+import net.miz_hi.smileessence.view.RelationFragment;
 import twitter4j.ConnectionLifeCycleListener;
 import twitter4j.DirectMessage;
 import twitter4j.StallWarning;
@@ -35,7 +39,6 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 	private StatusListAdapter homeListAdapter;
 	private StatusListAdapter mentionsListAdapter;
 	private HistoryListAdapter eventListAdapter;
-	private StatusListAdapter relationListAdapter;
 	
 	private int exceptionCount;
 
@@ -43,30 +46,25 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 	{
 	}
 
-	public void setHomeListAdapter(StatusListAdapter adapter)
+	public void setHomeAdapter(StatusListAdapter adapter)
 	{
 		this.homeListAdapter = adapter;
 	}
 
-	public void setMentionsListAdapter(StatusListAdapter adapter)
+	public void setMentionsAdapter(StatusListAdapter adapter)
 	{
 		this.mentionsListAdapter = adapter;
 	}
 
-	public void setEventListAdapter(HistoryListAdapter adapter)
+	public void setHistoryAdapter(HistoryListAdapter adapter)
 	{
 		this.eventListAdapter = adapter;
-	}
-	
-	public void setRelationListAdapter(StatusListAdapter adapter)
-	{
-		this.relationListAdapter = adapter;
 	}
 
 	@Override
 	public void onDeletionNotice(StatusDeletionNotice arg0)
 	{
-		LogHelper.printD("on status detete");
+		LogHelper.d("on status detete");
 		final StatusModel model = StatusStore.get(arg0.getStatusId());
 		if (model == null)
 		{
@@ -78,8 +76,11 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 			homeListAdapter.notifyAdapter();
 			mentionsListAdapter.removeElement(model);
 			mentionsListAdapter.notifyAdapter();
-			relationListAdapter.removeElement(model);
-			relationListAdapter.notifyAdapter();
+			for(StatusListAdapter adapter : RelationSystem.getAdapters())
+			{
+				adapter.removeElement(model);
+				adapter.notifyAdapter();
+			}
 		}
 	}
 
@@ -109,7 +110,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 		}
 		else if (!model.isRetweet && model.isReply)
 		{
-			eventListAdapter.notice(new ReplyEvent(status.getUser(), status));
+			Notifier.buildEvent(new ReplyEvent(status.getUser(), status)).raise();
 		}
 
 		if (model.isReply)
@@ -118,28 +119,32 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 			mentionsListAdapter.notifyAdapter();
 		}
 		
-		if(!ExtraWords.getExtraWords().isEmpty())
+		if(!model.isRetweet && !ExtraWords.getExtraWords().isEmpty())
 		{
 			for(ExtraWord word : ExtraWords.getExtraWords())
 			{
 				if(model.text.contains(word.getText()))
 				{
-					mentionsListAdapter.addFirst(model);
-					mentionsListAdapter.notifyAdapter();
+					ExtractFragment.singleton().getAdapter().addFirst(model);
+					ExtractFragment.singleton().getAdapter().notifyAdapter();
 					break;
 				}
 			}
 		}
-		
-		if(RelationListPageFragment.getChasingId() > -1 && model.inReplyToStatusId == RelationListPageFragment.getChasingId())
+		if(RelationSystem.isChasing())
 		{
-			relationListAdapter.addFirst(model);
-			relationListAdapter.notifyAdapter();
-			RelationListPageFragment.setChasingId(model.statusId);
+			RelationFragment rel = RelationSystem.getRelationByChasingId(model.inReplyToStatusId);
+			if(rel != null)
+			{
+				StatusListAdapter relAdapter = RelationSystem.getAdapter(rel);
+				relAdapter.addFirst(model);
+				relAdapter.notifyAdapter();
+				rel.setChasingId(model.statusId);
+			}
 		}
+
 		homeListAdapter.addFirst(model);				
 		homeListAdapter.notifyAdapter();
-
 	}
 
 	@Override
@@ -150,13 +155,8 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 	@Override
 	public void onException(Exception arg0)
 	{
-		if(exceptionCount++ > 3)
-		{
-			return;
-		}
-		
-		ToastManager.toast("ê⁄ë±Ç™êÿÇÍÇ‹ÇµÇΩ");				
-		MainSystem.getInstance().connectUserStream();
+		arg0.printStackTrace();
+		Notifier.alert("ê⁄ë±Ç™êÿÇÍÇ‹ÇµÇΩ");	
 	}
 
 	@Override
@@ -198,8 +198,8 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 				StatusStore.putFavoritedStatus(targetStatus.getId());
 			}			
 
-			MainSystem.getInstance().homeListAdapter.forceNotifyAdapter();
-			MainSystem.getInstance().mentionsListAdapter.forceNotifyAdapter();
+			MainSystem.getInstance().homeListAdapter.notifyAdapter();
+			MainSystem.getInstance().mentionsListAdapter.notifyAdapter();
 		}
 		if (targetUser.getId() == Client.getMainAccount().getUserId())
 		{
@@ -247,8 +247,8 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 				StatusStore.removeFavoritedStatus(targetStatus.getId());
 			}			
 
-			MainSystem.getInstance().homeListAdapter.forceNotifyAdapter();
-			MainSystem.getInstance().mentionsListAdapter.forceNotifyAdapter();
+			MainSystem.getInstance().homeListAdapter.notifyAdapter();
+			MainSystem.getInstance().mentionsListAdapter.notifyAdapter();
 		}
 		
 		if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.NOTICE_UNFAV))
@@ -309,7 +309,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 	@Override
 	public void onConnect()
 	{
-		ToastManager.toast("ê⁄ë±ÇµÇ‹ÇµÇΩ");
+		Notifier.info("ê⁄ë±ÇµÇ‹ÇµÇΩ");
 	}
 
 	@Override

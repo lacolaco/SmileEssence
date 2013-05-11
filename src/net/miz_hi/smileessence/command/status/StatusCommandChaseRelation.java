@@ -3,21 +3,20 @@ package net.miz_hi.smileessence.command.status;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.MyExecutor;
-import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.status.StatusListAdapter;
-import net.miz_hi.smileessence.system.MainSystem;
-import net.miz_hi.smileessence.util.TwitterManager;
+import net.miz_hi.smileessence.status.StatusUtils;
+import net.miz_hi.smileessence.system.RelationSystem;
+import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.view.MainActivity;
-import net.miz_hi.smileessence.view.RelationListPageFragment;
-import twitter4j.Status;
+import net.miz_hi.smileessence.view.RelationFragment;
+import android.support.v4.app.Fragment;
 
-public class StatusCommandChaseRelation extends StatusCommand implements IHideable
+public class StatusCommandChaseRelation extends StatusCommand
 {
-
+	
 	public StatusCommandChaseRelation(StatusModel status)
 	{
 		super(status);
@@ -31,85 +30,17 @@ public class StatusCommandChaseRelation extends StatusCommand implements IHideab
 
 	@Override
 	public void workOnUiThread()
-	{
-		RelationListPageFragment.setChasingId(status.statusId);
-		final StatusListAdapter adapter = MainSystem.getInstance().relationListAdapter;
-		adapter.clear();
-		adapter.forceNotifyAdapter();
-		adapter.addFirst(status);
-		adapter.notifyAdapter();
-		
-		MyExecutor.execute(new Runnable()
+	{		
+		if(RelationSystem.getRelationByChasingId(status.statusId) != null)
 		{
-			
-			@Override
-			public void run()
-			{
-				long id = status.statusId;
-
-				for(StatusModel statusModel0: StatusStore.getList())
-				{
-					List<StatusModel> list = new ArrayList<StatusModel>();
-					for(StatusModel statusModel1: StatusStore.getList())
-					{
-						if(statusModel1.inReplyToStatusId == id)
-						{
-							list.add(statusModel1);
-						}
-					}
-					StatusModel statusModel;
-					if(!list.isEmpty())
-					{
-						statusModel = list.get(0);
-						for(StatusModel statusModel2 : list)
-						{
-							if(statusModel.compareTo(statusModel2) > 0)
-							{
-								statusModel = statusModel2;
-							}
-						}
-						adapter.addFirst(statusModel);
-						id = statusModel.statusId;
-						RelationListPageFragment.setChasingId(id);
-						continue;
-					}
-				}
-				
-				id = status.inReplyToStatusId;
-				while(id > -1)
-				{
-					StatusModel statusModel = chaseRelation(id);
-					if(statusModel != null)
-					{
-						adapter.addLast(statusModel);
-						adapter.forceNotifyAdapter();
-					}
-					else
-					{
-						break;
-					}
-					id = statusModel.inReplyToStatusId;
-				}				
-			}
-		});
-		
-		MainActivity.getInstance().getViewPager().setCurrentItem(3, true);
-		
-	}
-	
-	private StatusModel chaseRelation(long id)
-	{
-		StatusModel statusModel = StatusStore.get(id);
-		if(statusModel == null)
-		{
-			Status status = TwitterManager.getStatus(Client.getMainAccount(), id);
-			if(status == null)
-			{
-				return null;
-			}
-			statusModel = StatusStore.put(status);
+			Fragment fragment = RelationSystem.getRelationByChasingId(status.statusId);
+			MainActivity.moveViewPage(MainActivity.getInstance().getFragmentAdapter().getItemPosition(fragment));
+			return;
 		}
-		return statusModel;
+		final RelationFragment relFragment = RelationFragment.newInstance(status.statusId);
+		RelationSystem.startRelation(relFragment);		
+		MainActivity.addPage(relFragment);	
+		MainActivity.moveViewPage(MainActivity.getPagerCount());
 	}
 
 	@Override

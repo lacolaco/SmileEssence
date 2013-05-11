@@ -6,7 +6,7 @@ import java.util.concurrent.Future;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.MyExecutor;
-import net.miz_hi.smileessence.util.TwitterManager;
+import net.miz_hi.smileessence.twitter.TwitterManager;
 import twitter4j.User;
 
 public class UserModel
@@ -25,6 +25,8 @@ public class UserModel
 	public int favoriteCount;
 	public Date createdAt;
 	public boolean isProtected;
+	private Boolean isFriend = null;
+	private Boolean isFollower = null;
 
 	private UserModel(){}
 	
@@ -47,7 +49,7 @@ public class UserModel
 		followerCount = user.getFollowersCount();
 		favoriteCount = user.getFavouritesCount();
 		createdAt = user.getCreatedAt();
-		isProtected = user.isProtected();		
+		isProtected = user.isProtected();
 		IconCaches.checkIconCache(UserModel.this);
 		return this;
 	}
@@ -81,46 +83,55 @@ public class UserModel
 
 	public boolean isFriend()
 	{
-		Future<Boolean> resp = MyExecutor.submit(new Callable<Boolean>()
+		if(isFriend == null)
 		{
+			Future<Boolean> resp = MyExecutor.submit(new Callable<Boolean>()
+					{
 
-			@Override
-			public Boolean call() throws Exception
-			{
-				return TwitterManager.isFollowing(Client.getMainAccount(), userId);
-			}
-		});
-		try
-		{
-			return resp.get();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			return false;
-		}
+						@Override
+						public Boolean call() throws Exception
+						{
+							return TwitterManager.isFollowing(Client.getMainAccount(), userId);
+						}
+					});
+					try
+					{
+						isFriend = resp.get();
+					}
+					catch (Exception e)
+					{
+						e.printStackTrace();
+						return false;
+					}
+		}	
+
+		return isFriend.booleanValue();
 	}
 
 	public boolean isFollower()
 	{
-		Future<Boolean> resp = MyExecutor.submit(new Callable<Boolean>()
+		if(isFollower == null)
 		{
+			Future<Boolean> resp = MyExecutor.submit(new Callable<Boolean>()
+					{
 
-			@Override
-			public Boolean call() throws Exception
+				@Override
+				public Boolean call() throws Exception
+				{
+					return TwitterManager.isFollowed(Client.getMainAccount(), userId);
+				}
+					});
+			try
 			{
-				return TwitterManager.isFollowed(Client.getMainAccount(), userId);
+				isFollower = resp.get();
 			}
-		});
-		try
-		{
-			return resp.get();
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				return false;
+			}
 		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			return false;
-		}
+		return isFollower.booleanValue();
 	}
 
 	public static UserModel getNullUserModel()

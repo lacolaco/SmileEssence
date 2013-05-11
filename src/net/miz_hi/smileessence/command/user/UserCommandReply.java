@@ -1,7 +1,6 @@
 package net.miz_hi.smileessence.command.user;
 
-import net.miz_hi.smileessence.system.TweetSystem;
-import net.miz_hi.smileessence.view.TweetView;
+import net.miz_hi.smileessence.system.PostSystem;
 
 public class UserCommandReply extends UserCommand
 {
@@ -20,8 +19,8 @@ public class UserCommandReply extends UserCommand
 	@Override
 	public void workOnUiThread()
 	{
-		TweetSystem.setReply(userName, -1);
-		TweetView.open();
+		PostSystem.setReply(userName, -1);
+		PostSystem.openPostPage();
 	}
 
 }

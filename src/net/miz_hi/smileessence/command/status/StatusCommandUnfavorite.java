@@ -3,9 +3,9 @@ package net.miz_hi.smileessence.command.status;
 import twitter4j.TwitterException;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IHideable;
+import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.event.ToastManager;
-import net.miz_hi.smileessence.util.TwitterManager;
+import net.miz_hi.smileessence.twitter.TwitterManager;
 
 public class StatusCommandUnfavorite extends StatusCommand implements IHideable
 {
@@ -33,12 +33,12 @@ public class StatusCommandUnfavorite extends StatusCommand implements IHideable
 				try
 				{
 					TwitterManager.getTwitter().destroyFavorite(status.statusId);
-					ToastManager.toast("お気に入りを削除しました");
+					Notifier.info("お気に入りを削除しました");
 				}
 				catch (TwitterException e)
 				{
 					e.printStackTrace();
-					ToastManager.toast("お気に入りの削除に失敗しました");
+					Notifier.alert("お気に入りの削除に失敗しました");
 				}
 			}
 		});

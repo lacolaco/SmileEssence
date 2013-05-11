@@ -4,7 +4,7 @@ import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.data.extra.ExtraWord;
 import net.miz_hi.smileessence.data.extra.ExtraWordListAdapter;
 import net.miz_hi.smileessence.data.extra.ExtraWords;
-import net.miz_hi.smileessence.dialog.YesNoDialogHelper;
+import net.miz_hi.smileessence.dialog.ContentDialog;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class ExtraWordActivity extends Activity
 {
@@ -21,10 +22,12 @@ public class ExtraWordActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.extrawordactivity_layout);
+		setContentView(R.layout.listedit_layout);
 		
-		ListView listView = (ListView)findViewById(R.id.listView_extraword);
-		ImageButton buttonAdd = (ImageButton)findViewById(R.id.imageButton_extraword_add);
+		TextView titleView = (TextView)findViewById(R.id.listedit_title);
+		titleView.setText("抽出ワードの管理");
+		ListView listView = (ListView)findViewById(R.id.listedit_listview);
+		ImageButton buttonAdd = (ImageButton)findViewById(R.id.listedit_addbutton);
 		final ExtraWordListAdapter adapter = new ExtraWordListAdapter(this);
 		listView.setAdapter(adapter);
 		adapter.addAll(ExtraWords.getExtraWords());
@@ -36,9 +39,9 @@ public class ExtraWordActivity extends Activity
 			public void onClick(View v)
 			{
 				final EditText editText = new EditText(ExtraWordActivity.this);
-				YesNoDialogHelper helper = new YesNoDialogHelper(ExtraWordActivity.this, "編集");
-				helper.setContentView(editText);
-				helper.setOnClickListener(new DialogInterface.OnClickListener()
+				ContentDialog dialog = new ContentDialog(ExtraWordActivity.this, "編集");
+				dialog.setContentView(editText);
+				dialog.setOnClickListener(new DialogInterface.OnClickListener()
 				{
 
 					@Override
@@ -64,9 +67,9 @@ public class ExtraWordActivity extends Activity
 						}					
 					}
 				});
-				helper.setTextPositive("決定");
-				helper.setTextNegative("キャンセル");
-				helper.createYesNoAlert().show();
+				dialog.setTextPositive("決定");
+				dialog.setTextNegative("キャンセル");
+				dialog.create().show();
 			}
 		});
 	}

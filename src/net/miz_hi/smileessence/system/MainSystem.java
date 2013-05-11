@@ -9,29 +9,35 @@ import net.miz_hi.smileessence.async.AsyncTimelineGetter;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.auth.AuthentificationDB;
+import net.miz_hi.smileessence.auth.AuthorizeHelper;
+import net.miz_hi.smileessence.auth.Consumers;
+import net.miz_hi.smileessence.core.EnumRequestCode;
+import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.data.IconCaches;
 import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.data.UserStore;
+import net.miz_hi.smileessence.data.page.Page;
+import net.miz_hi.smileessence.data.page.Pages;
+import net.miz_hi.smileessence.dialog.OneButtonDialog;
 import net.miz_hi.smileessence.event.HistoryListAdapter;
 import net.miz_hi.smileessence.listener.MyUserStreamListener;
-import net.miz_hi.smileessence.menu.MainMenu;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
 import net.miz_hi.smileessence.status.StatusListAdapter;
-import net.miz_hi.smileessence.util.TwitterManager;
-import net.miz_hi.smileessence.view.HistoryListPageFragment;
-import net.miz_hi.smileessence.view.HomeListPageFragment;
-import net.miz_hi.smileessence.view.ListPagerAdapter;
+import net.miz_hi.smileessence.twitter.TwitterManager;
+import net.miz_hi.smileessence.util.NetworkUtils;
+import net.miz_hi.smileessence.view.ExtractFragment;
+import net.miz_hi.smileessence.view.IRemainable;
 import net.miz_hi.smileessence.view.MainActivity;
-import net.miz_hi.smileessence.view.MentionsListPageFragment;
-import net.miz_hi.smileessence.view.RelationListPageFragment;
+import net.miz_hi.smileessence.view.RelationFragment;
 import twitter4j.Paging;
 import twitter4j.TwitterStream;
+import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentPagerAdapter;
 
 public class MainSystem
 {
@@ -39,67 +45,65 @@ public class MainSystem
 	private static MainSystem instance = new MainSystem();
 	private MyUserStreamListener usListener;
 	private TwitterStream twitterStream;
-	public FragmentPagerAdapter pageAdapter;
 	public StatusListAdapter homeListAdapter;
 	public StatusListAdapter mentionsListAdapter;
-	public StatusListAdapter relationListAdapter;
 	public HistoryListAdapter historyListAdapter;
-	public Uri tempFilePath;
-	
+	public StatusListAdapter extractListAdapter;
+	public AuthorizeHelper authHelper;
+	public Uri tempFilePath;	
 	
 	public static MainSystem getInstance()
 	{
 		return instance;
 	}
 	
-	public void start(FragmentActivity activity)
+	public void initialize(FragmentActivity activity)
 	{
 		homeListAdapter = new StatusListAdapter(activity);
 		mentionsListAdapter = new StatusListAdapter(activity);
 		historyListAdapter = new HistoryListAdapter(activity);
-		relationListAdapter = new StatusListAdapter(activity);
-		
-		MainMenu.init(activity);
-		
-		Fragment[] fragments = new Fragment[4];
-		fragments[0] = Fragment.instantiate(activity, HomeListPageFragment.class.getName());
-		fragments[1] = Fragment.instantiate(activity, MentionsListPageFragment.class.getName());
-		fragments[2] = Fragment.instantiate(activity, HistoryListPageFragment.class.getName());
-		fragments[3] = Fragment.instantiate(activity, RelationListPageFragment.class.getName());
-		
-		pageAdapter = new ListPagerAdapter(activity.getSupportFragmentManager(), fragments);
+		extractListAdapter = new StatusListAdapter(activity);
 	}
 	
-	public void twitterSetup(Handler handler)
+	public void setup(Activity activity)
 	{
-		long lastUsedId = (Long) Client.getPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID);
-
-		for (Account account : AuthentificationDB.instance().findAll())
+		if (Client.hasAuthedAccount())
 		{
-			if (account.getUserId() == lastUsedId)
+			long lastUsedId = (Long) Client.getPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID);
+			
+			for (Account account : AuthentificationDB.instance().findAll())
 			{
-				Client.setMainAccount(account);
-				usListener = new MyUserStreamListener();
-				usListener.setHomeListAdapter(homeListAdapter);
-				usListener.setMentionsListAdapter(mentionsListAdapter);
-				usListener.setEventListAdapter(historyListAdapter);
-				usListener.setRelationListAdapter(relationListAdapter);
-				twitterStream = TwitterManager.getTwitterStream(Client.getMainAccount());
-				twitterStream.addListener(usListener);
-				twitterStream.addConnectionLifeCycleListener(usListener);
-				boolean canConnect = TwitterManager.canConnect();
-				
-				if(canConnect)
+				if (account.getUserId() == lastUsedId)
 				{
-					if(!connectUserStream())
-					{
-						handler.sendEmptyMessage(MainActivity.HANDLER_NOT_CONNECTION);
-					}
-					else
-					{
+					Client.setMainAccount(account);
+					break;
+				}
+			}
+			if(Client.getMainAccount() == null)
+			{
+				Client.setMainAccount(AuthentificationDB.instance().findAll().get(0));
+			}
+			
+			loadRemainablePages();
+			
+			usListener = new MyUserStreamListener();
+			usListener.setHomeAdapter(homeListAdapter);
+			usListener.setMentionsAdapter(mentionsListAdapter);
+			usListener.setHistoryAdapter(historyListAdapter);
+			twitterStream = TwitterManager.getTwitterStream(Client.getMainAccount());
+			twitterStream.addListener(usListener);
+			twitterStream.addConnectionLifeCycleListener(usListener);
+			if(connectUserStream(activity))
+			{
+				final Future<List<StatusModel>> resp_home = MyExecutor.submit(new AsyncTimelineGetter(Client.getMainAccount(), null));					
+				final Future<List<StatusModel>> resp_mentions = MyExecutor.submit(new AsyncMentionsGetter(Client.getMainAccount(), new Paging(1)));
 
-						final Future<List<StatusModel>> resp_home = MyExecutor.submit(new AsyncTimelineGetter(account, null));					
-						final Future<List<StatusModel>> resp_mentions = MyExecutor.submit(new AsyncMentionsGetter(account, new Paging(1)));
+				MyExecutor.execute(new Runnable()
+				{
+
+					@Override
+					public void run()
+					{
 						try
 						{
 							List<StatusModel> oldTimeline = resp_home.get();
@@ -109,41 +113,111 @@ public class MainSystem
 							homeListAdapter.forceNotifyAdapter();
 							mentionsListAdapter.forceNotifyAdapter();
 							historyListAdapter.forceNotifyAdapter();
-							relationListAdapter.forceNotifyAdapter();
 						}
 						catch (Exception e)
 						{
 							e.printStackTrace();
+							Notifier.alert("タイムラインの取得に失敗しました");
 						}
 					}
-				}
-				else
-				{
-					handler.sendEmptyMessage(MainActivity.HANDLER_NOT_CONNECTION);
-				}
-
-				handler.sendEmptyMessage(MainActivity.HANDLER_SETUPED);
-				return;
+				});
 			}
+			else
+			{
+				Notifier.alert("接続出来ません");
+			}
+		}
+		else
+		{
+			authHelper = new AuthorizeHelper(activity, Consumers.getDedault());
+			//NOT AUTHOLIZED
+			OneButtonDialog.show(activity, "認証してください", "認証ページヘ", new Runnable()
+			{
+				
+				@Override
+				public void run()
+				{
+					authHelper.oauthSend();
+				}
+			});
+			
 		}
 	}
 	
-	public void finish()
+	public void onDestroyed()
 	{
 		if (twitterStream != null)
 		{
 			twitterStream.shutdown();
 			twitterStream = null;
 		}
+		saveRamainablePages();
 		IconCaches.clearCache();
 		StatusStore.clearCache();
 		UserStore.clearCache();
 		MyExecutor.shutdown();
 	}
-
-	public boolean connectUserStream()
+	
+	private void loadRemainablePages()
 	{
-		if(!TwitterManager.canConnect())
+		Pages.update();
+		for(Page page : Pages.getPages())
+		{
+			String className = page.getClassName();
+			if(className.equals(RelationFragment.class.getSimpleName()))
+			{
+				RelationFragment fragment = RelationFragment.newInstance(-1);
+				fragment.load(page.getData());
+			}
+			else if(className.equals(ExtractFragment.class.getSimpleName()))
+			{
+				ExtractFragment fragment = ExtractFragment.singleton();
+				fragment.load(page.getData());
+			}
+		}
+	}
+	
+	private void saveRamainablePages()
+	{
+		Pages.clear();
+		for(Object element : MainActivity.getInstance().getFragmentAdapter().getList())
+		{
+			if(element instanceof IRemainable)
+			{
+				Pages.addPage(new Page(element.getClass().getSimpleName(), ((IRemainable) element).save()));
+			}
+		}
+	}
+	
+	public void receivePicture(Activity activity, Intent data, int reqCode)
+	{
+		try
+		{
+			Uri uri;
+			if(reqCode == EnumRequestCode.PICTURE.ordinal())
+			{
+				uri = data.getData();
+			}
+			else
+			{
+				uri = MainSystem.getInstance().tempFilePath;
+			}
+			Cursor c = activity.getContentResolver().query(uri, null, null, null, null);
+			c.moveToFirst();
+			String path = c.getString(c.getColumnIndex(MediaStore.MediaColumns.DATA));
+			PostSystem.setPicturePath(path).openPostPage();
+			Notifier.info("画像をセットしました");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			Notifier.alert("失敗しました");
+		}
+	}
+
+	public boolean connectUserStream(Activity activity)
+	{
+		if(!NetworkUtils.canConnect(activity))
 		{
 			return false;
 		}
@@ -154,12 +228,10 @@ public class MainSystem
 		}
 		return true;
 	}
-	
-	public void refreshLists()
+
+	public void authorize(Activity activity, Uri data)
 	{
-		homeListAdapter.forceNotifyAdapter();
-		mentionsListAdapter.forceNotifyAdapter();
-		historyListAdapter.forceNotifyAdapter();
-		pageAdapter.notifyDataSetChanged();
+		Account account = authHelper.oauthRecieve(data);
+		setup(activity);
 	}
 }

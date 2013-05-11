@@ -13,6 +13,7 @@ import net.miz_hi.smileessence.preference.PreferenceHelper;
 import android.app.Application;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.preference.PreferenceManager;
 
 public class Client
@@ -44,12 +45,11 @@ public class Client
 
 	public static boolean hasAuthedAccount()
 	{
-		Long lastUsedId = (Long) getPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID);
 		if (AuthentificationDB.instance().findAll() == null)
 		{
 			return false;
 		}
-		return lastUsedId > 0 && !AuthentificationDB.instance().findAll().isEmpty();
+		return !AuthentificationDB.instance().findAll().isEmpty();
 	}
 
 	public static Application getApplication()
@@ -132,8 +132,7 @@ public class Client
 		MyExecutor.init();
 	}
 
-	public static final String HOMEPAGE_URL = "http://warotter.web.fc2.com/";
-	public static final String T4J_URL = "http://twitter4j.org/";
+	public static final String HOMEPAGE_URL = "http://smileessence.miz-hi.net/";
 	public static final String PREF_OAUTH_NAME = "oauth_pref";
 	public static final String CALLBACK_OAUTH = "oauth://smileessence";
 

@@ -2,14 +2,15 @@ package net.miz_hi.smileessence.command.status;
 
 import java.util.concurrent.Future;
 
+
 import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncRetweetTask;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.command.IHideable;
+import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.event.ToastManager;
-import net.miz_hi.smileessence.util.TwitterManager;
+import net.miz_hi.smileessence.twitter.TwitterManager;
 
 public class StatusCommandFavAndRetweet extends StatusCommand implements IHideable, IConfirmable
 {
@@ -40,11 +41,11 @@ public class StatusCommandFavAndRetweet extends StatusCommand implements IHideab
 				{
 					if (f1.get() && f2.get())
 					{
-						ToastManager.toast(TwitterManager.MESSAGE_RETWEET_SUCCESS);
+						Notifier.info(TwitterManager.MESSAGE_RETWEET_SUCCESS);
 					}
 					else
 					{
-						ToastManager.toast(TwitterManager.MESSAGE_SOMETHING_ERROR);
+						Notifier.alert(TwitterManager.MESSAGE_SOMETHING_ERROR);
 					}
 				}
 				catch (Exception e)

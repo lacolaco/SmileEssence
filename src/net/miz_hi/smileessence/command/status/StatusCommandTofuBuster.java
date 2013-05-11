@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import net.miz_hi.smileessence.command.IHideable;
+import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.event.ToastManager;
 import net.miz_hi.smileessence.util.Morse;
 
 public class StatusCommandTofuBuster extends StatusCommand implements IHideable
@@ -44,7 +44,7 @@ public class StatusCommandTofuBuster extends StatusCommand implements IHideable
 		}
 		catch(ActivityNotFoundException e)
 		{
-			ToastManager.toast("TofuBusterがインストールされていません");
+			Notifier.alert("TofuBusterがインストールされていません");
 		}
 	}
 }

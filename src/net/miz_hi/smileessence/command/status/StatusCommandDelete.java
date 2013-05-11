@@ -8,9 +8,9 @@ import twitter4j.TwitterException;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IConfirmable;
+import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.event.ToastManager;
-import net.miz_hi.smileessence.util.TwitterManager;
+import net.miz_hi.smileessence.twitter.TwitterManager;
 
 public class StatusCommandDelete extends StatusCommand implements IConfirmable
 {
@@ -57,11 +57,11 @@ public class StatusCommandDelete extends StatusCommand implements IConfirmable
 				{
 					if(f.get())
 					{
-						ToastManager.toast("çÌèúÇµÇ‹ÇµÇΩ");
+						Notifier.info("çÌèúÇµÇ‹ÇµÇΩ");
 					}
 					else
 					{
-						ToastManager.toast(TwitterManager.MESSAGE_SOMETHING_ERROR);
+						Notifier.alert(TwitterManager.MESSAGE_SOMETHING_ERROR);
 					}
 				}
 				catch (Exception e)

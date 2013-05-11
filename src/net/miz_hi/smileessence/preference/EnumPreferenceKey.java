@@ -6,12 +6,13 @@ import net.miz_hi.smileessence.R;
 public enum EnumPreferenceKey
 {
 	LAST_USED_USER_ID(EnumValueType.LONG, "user_id", -1L),
+	VISIBLE_FOORER(EnumValueType.BOOLEAN, Client.getResource().getString(R.string.key_setting_footer), true),
 	TEXT_SIZE(EnumValueType.INTEGER, Client.getResource().getString(R.string.key_setting_textSize), 10),
 	AFTER_SUBMIT(EnumValueType.BOOLEAN, Client.getResource().getString(R.string.key_setting_aftersubmit), true),
 	NOTICE_UNFAV(EnumValueType.BOOLEAN, Client.getResource().getString(R.string.key_setting_notice_unfav), false),
 	OPEN_IME(EnumValueType.BOOLEAN, Client.getResource().getString(R.string.key_setting_open_ime), true),
 	CONFIRM_DIALOG(EnumValueType.BOOLEAN, Client.getResource().getString(R.string.key_setting_confirm_dialog),true),
-
+	READ_MORSE(EnumValueType.BOOLEAN, Client.getResource().getString(R.string.key_setting_morse), true);
 	;
 
 	private final EnumValueType type;

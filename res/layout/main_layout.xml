@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:scrollbarStyle="outsideInset" >
+
+    <com.viewpagerindicator.TitlePageIndicator
+        android:id="@+id/indicator"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/Gray" />
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/indicator"
+        android:layout_above="@+id/footer" >
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:fitsSystemWindows="false" />
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/viewpager"
+        android:background="@color/Gray"
+        android:orientation="horizontal"
+        android:paddingTop="1dp"
+        android:visibility="visible" >
+
+        <ImageView
+            android:id="@+id/imageBtn_edit"
+            style="@style/grayBtn"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_alignParentLeft="true"
+            android:onClick="onEditClick"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_edit" />
+
+        <ImageButton
+            android:id="@+id/imageBtn_menu"
+            style="@style/grayBtn"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:onClick="onMenuClick"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_row" />
+
+        <ImageButton
+            android:id="@+id/imageBtn_twitter"
+            style="@style/grayBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignLeft="@+id/frame1"
+            android:layout_alignRight="@+id/frame2"
+            android:onClick="onTwitterClick"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_twitter" />
+
+        <FrameLayout
+            android:id="@+id/frame1"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_alignRight="@+id/imageBtn_edit"
+            android:background="@color/Gray2" />
+
+        <FrameLayout
+            android:id="@+id/frame2"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_alignLeft="@+id/imageBtn_menu"
+            android:background="@color/Gray2" />
+    </RelativeLayout>
+
+</RelativeLayout>

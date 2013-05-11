@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.auth.Consumers.Consumer;
 import net.miz_hi.smileessence.core.EnumRequestCode;
 import net.miz_hi.smileessence.view.WebViewActivity;
@@ -22,7 +23,6 @@ public class AuthorizeHelper
 	private Consumer consumer;
 	private Twitter twitter;
 	private RequestToken req;
-	private ExecutorService executor;
 
 	public static final String CALLBACK_OAUTH = "oauth://smileessence";
 	public static final String OAUTH_VERIFIER = "oauth_verifier";
@@ -31,7 +31,6 @@ public class AuthorizeHelper
 	{
 		this.activity = activity;
 		this.consumer = consumer;
-		executor = Executors.newSingleThreadExecutor();
 	}
 
 	public void oauthSend()
@@ -40,7 +39,7 @@ public class AuthorizeHelper
 		{
 			twitter = new TwitterFactory().getInstance();
 			twitter.setOAuthConsumer(consumer.key, consumer.secret);
-			Future<RequestToken> f = executor.submit(new Callable<RequestToken>()
+			Future<RequestToken> f = MyExecutor.submit(new Callable<RequestToken>()
 			{
 
 				@Override
@@ -67,7 +66,7 @@ public class AuthorizeHelper
 		{
 			final String verifier = uri.getQueryParameter(OAUTH_VERIFIER);
 			AccessToken accessToken = null;
-			Future<AccessToken> f = executor.submit(new Callable<AccessToken>()
+			Future<AccessToken> f = MyExecutor.submit(new Callable<AccessToken>()
 			{
 
 				@Override

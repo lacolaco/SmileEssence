@@ -1,6 +1,6 @@
 package net.miz_hi.smileessence.command;
 
-import net.miz_hi.smileessence.dialog.DialogAdapter;
+import net.miz_hi.smileessence.dialog.MenuDialog;
 import net.miz_hi.smileessence.util.UiHandler;
 
 public abstract class MenuCommand implements ICommand
@@ -21,7 +21,7 @@ public abstract class MenuCommand implements ICommand
 			@Override
 			public void run()
 			{
-				DialogAdapter.dispose();
+				MenuDialog.dispose();
 				workOnUiThread();
 			}
 		}.post();

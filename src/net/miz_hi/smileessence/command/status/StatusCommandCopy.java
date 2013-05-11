@@ -8,9 +8,9 @@ import net.miz_hi.smileessence.async.AsyncTweetTask;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.command.IHideable;
+import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.event.ToastManager;
-import net.miz_hi.smileessence.util.TwitterManager;
+import net.miz_hi.smileessence.twitter.TwitterManager;
 import twitter4j.StatusUpdate;
 
 public class StatusCommandCopy extends StatusCommand implements IHideable, IConfirmable
@@ -38,32 +38,8 @@ public class StatusCommandCopy extends StatusCommand implements IHideable, IConf
 	{
 		StatusUpdate update = new StatusUpdate(status.text);
 		update.setInReplyToStatusId(status.inReplyToStatusId);
-		final Future<Boolean> resp = MyExecutor.submit(new AsyncTweetTask(update));
-		MyExecutor.submit(new AsyncFavoriteTask(status.statusId));
-		MyExecutor.execute(new Runnable()
-		{
-
-			@Override
-			public void run()
-			{
-				try
-				{
-					boolean result = resp.get();
-					if (result)
-					{
-						ToastManager.toast(TwitterManager.MESSAGE_TWEET_SUCCESS);
-					}
-					else
-					{
-						ToastManager.toast(TwitterManager.MESSAGE_SOMETHING_ERROR);
-					}
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-		});
+		new AsyncTweetTask(update).addToQueue();
+		new AsyncFavoriteTask(status.statusId).addToQueue();
 	}
 
 }

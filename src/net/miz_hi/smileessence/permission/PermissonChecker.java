@@ -5,7 +5,7 @@ import java.util.concurrent.Future;
 
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.auth.Account;
-import net.miz_hi.smileessence.util.TwitterManager;
+import net.miz_hi.smileessence.twitter.TwitterManager;
 import twitter4j.Relationship;
 import twitter4j.User;
 
