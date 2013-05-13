@@ -96,9 +96,17 @@ public class NamedFragmentPagerAdapter extends FragmentStatePagerAdapter
 
 	public synchronized void forceNotifyAdapter()
 	{
-		pageArray = (NamedFragment[]) pageList.toArray(new NamedFragment[]{});
-		count = pageArray.length;
-		notifyDataSetChanged();
+		new UiHandler()
+		{
+			
+			@Override
+			public void run()
+			{
+				pageArray = (NamedFragment[]) pageList.toArray(new NamedFragment[]{});
+				count = pageArray.length;
+				notifyDataSetChanged();
+			}
+		}.post();
 	}
 
 	public synchronized void setCanNotifyOnChange(boolean notifyOnChange)
