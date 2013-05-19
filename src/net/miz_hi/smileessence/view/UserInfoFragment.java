@@ -77,11 +77,11 @@ public class UserInfoFragment extends NamedFragment implements OnClickListener, 
 		followedView = (TextView) page.findViewById(R.id.user_count_followed);
 		favoriteView = (TextView) page.findViewById(R.id.user_count_favorite);
 		iconView = (ImageView) page.findViewById(R.id.user_icon);
-		reload();
+		reload(false);
 		return page;
 	}
 	
-	private void reload()
+	private void reload(final boolean force)
 	{
 		new UiHandler()
 		{
@@ -107,8 +107,8 @@ public class UserInfoFragment extends NamedFragment implements OnClickListener, 
 				{
 					locateView.setText(user.location);
 				}
-				isFollowingView.setText(user.isFriend() ? "フォローしています" : user.isMe() ? "あなたです" : "フォローしていません");
-				isFollowedView.setText(user.isFollower() ? "フォローされています" : user.isMe() ? "あなたです" : "フォローされていません");
+				isFollowingView.setText(user.isFriend(force) ? "フォローしています" : user.isMe() ? "あなたです" : "フォローしていません");
+				isFollowedView.setText(user.isFollower(force) ? "フォローされています" : user.isMe() ? "あなたです" : "フォローされていません");
 				isProtectedView.setText(user.isProtected ? "非公開" : "公開");
 				descriptionView.setText(user.description);
 				tweetcountView.setText(Integer.toString(user.statusCount));
@@ -133,7 +133,7 @@ public class UserInfoFragment extends NamedFragment implements OnClickListener, 
 					{
 						User u = TwitterManager.getUser(Client.getMainAccount(), user.userId);
 						user.updateData(u);
-						reload();
+						reload(true);
 					}
 				});				
 				break;

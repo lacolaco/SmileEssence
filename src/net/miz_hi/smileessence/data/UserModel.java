@@ -81,9 +81,9 @@ public class UserModel
 		return userId == Client.getMainAccount().getUserId();
 	}
 
-	public boolean isFriend()
+	public boolean isFriend(boolean force)
 	{
-		if(isFriend == null)
+		if(isFriend == null || force)
 		{
 			Future<Boolean> resp = MyExecutor.submit(new Callable<Boolean>()
 					{
@@ -108,9 +108,9 @@ public class UserModel
 		return isFriend.booleanValue();
 	}
 
-	public boolean isFollower()
+	public boolean isFollower(boolean force)
 	{
-		if(isFollower == null)
+		if(isFollower == null || force)
 		{
 			Future<Boolean> resp = MyExecutor.submit(new Callable<Boolean>()
 					{
