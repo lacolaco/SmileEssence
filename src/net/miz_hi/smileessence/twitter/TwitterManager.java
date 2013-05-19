@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
+import android.text.TextUtils;
+
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.auth.Account;
@@ -160,7 +162,7 @@ public class TwitterManager
 
 	public static boolean isOauthed(Account account)
 	{
-		return StringUtils.isNullOrEmpty(account.getAccessToken());
+		return !TextUtils.isEmpty(account.getAccessToken());
 	}
 
 	public static boolean isFollowing(Account account, long id)
