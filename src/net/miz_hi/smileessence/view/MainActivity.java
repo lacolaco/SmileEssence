@@ -5,8 +5,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import twitter4j.TwitterException;
+
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.core.EnumRequestCode;
 import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.dialog.ConfirmDialog;
@@ -17,6 +20,7 @@ import net.miz_hi.smileessence.preference.EnumPreferenceKey.EnumValueType;
 import net.miz_hi.smileessence.system.IntentRouter;
 import net.miz_hi.smileessence.system.MainSystem;
 import net.miz_hi.smileessence.system.PostSystem;
+import net.miz_hi.smileessence.twitter.TwitterManager;
 import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.util.NamedFragment;
 import net.miz_hi.smileessence.util.NamedFragmentPagerAdapter;

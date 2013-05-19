@@ -51,7 +51,6 @@ public class TwitterManager
 		cb.setOAuthAccessToken(account.getAccessToken());
 		cb.setOAuthAccessTokenSecret(account.getAccessTokenSecret());
 		cb.setMediaProvider("TWITTER");
-		cb.setJSONStoreEnabled(true); //DataObjectFactory.getRawJSON(obj)で生JSONデータを取得
 		return cb;
 	}
 	
