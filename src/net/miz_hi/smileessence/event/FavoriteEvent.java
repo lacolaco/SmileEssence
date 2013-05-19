@@ -13,7 +13,7 @@ public class FavoriteEvent extends StatusEventModel implements IAttackEvent
 	}
 
 	@Override
-	public String getText()
+	public String getHeaderText()
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append(source.screenName).append("‚É‚Ó‚Ÿ‚Ú‚ç‚ê‚½");

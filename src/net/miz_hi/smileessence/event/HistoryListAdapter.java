@@ -1,5 +1,6 @@
 package net.miz_hi.smileessence.event;
 
+import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.listener.EventOnClickListener;
@@ -32,7 +33,20 @@ public class HistoryListAdapter extends CustomListAdapter<EventModel>
 		}
 		EventModel model = (EventModel) getItem(position);
 		convertedView = EventViewFactory.getView(model, convertedView);
-		convertedView.setOnClickListener(new EventOnClickListener(getActivity(), model));
+
+		int color;
+		if(position % 2 == 0)
+		{				
+			color = Client.getColor(R.color.White);
+		}
+		else
+		{
+			color = Client.getColor(R.color.LightGray);
+		}
+		
+		convertedView.setBackgroundColor(color);
+		
+		convertedView.setOnClickListener(new EventOnClickListener(getActivity(), model, color));
 		
 		return convertedView;
 	}

@@ -12,7 +12,7 @@ public class RetweetEvent extends StatusEventModel implements IAttackEvent
 	}
 
 	@Override
-	public String getText()
+	public String getHeaderText()
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append(source.screenName).append("にリツイートされた");

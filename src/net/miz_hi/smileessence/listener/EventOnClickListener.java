@@ -14,11 +14,13 @@ public class EventOnClickListener implements OnClickListener
 {
 	private Activity activity;
 	private EventModel model;
+	private int bgColor;
 
-	public EventOnClickListener(Activity _activity, EventModel model)
+	public EventOnClickListener(Activity activity, EventModel model, int color)
 	{
-		this.activity = _activity;
+		this.activity = activity;
 		this.model = model;
+		this.bgColor = color;
 	}
 
 	@Override
@@ -28,13 +30,14 @@ public class EventOnClickListener implements OnClickListener
 		v.invalidate();
 		new UiHandler()
 		{
+			
 			@Override
 			public void run()
 			{
-				v.setBackgroundColor(ColorUtils.setAlpha(Client.getColor(R.color.LightGray), 200));
+				v.setBackgroundColor(bgColor);
 				new EventMenu(activity, model).create().show();
 			}
-		}.postDelayed(50);
+		}.postDelayed(20);
 	}
 
 }

@@ -1,37 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    android:padding="1dp" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:padding="5dp">
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout_toastBase"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/event_icon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:id="@+id/event_header"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:orientation="vertical" >
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/event_icon"
+        android:gravity="top" />
 
-        <TextView
-            android:id="@+id/textView_toastText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:gravity="fill_horizontal"
-            android:paddingBottom="2dp"
-            android:paddingLeft="5dp"
-            android:paddingTop="2dp"
-            android:text="Text"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+    <TextView
+        android:id="@+id/event_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/event_header"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/event_header"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="1dp" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout_toastBody"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView_toastText"
-            android:layout_gravity="top"
-            android:orientation="vertical" >
+    <TextView
+        android:id="@+id/event_footer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/event_text"
+        android:layout_below="@+id/event_text"
+        android:layout_marginRight="2dp" />
 
-        </LinearLayout>
-    </RelativeLayout>
-
-</FrameLayout>
+</RelativeLayout>

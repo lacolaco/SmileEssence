@@ -11,7 +11,7 @@ public class DirectMessageEvent extends UserEvent
 	}
 
 	@Override
-	public String getText()
+	public String getHeaderText()
 	{
 		return source.screenName + "‚©‚çDM‚ğó‚¯æ‚Á‚½";
 	}

@@ -3,6 +3,7 @@ package net.miz_hi.smileessence.event;
 import java.util.Date;
 
 import net.miz_hi.smileessence.data.UserModel;
+import net.miz_hi.smileessence.util.StringUtils;
 import net.miz_hi.smileessence.view.ITimelineItem;
 
 public abstract class EventModel implements Comparable<EventModel>, ITimelineItem
@@ -17,7 +18,12 @@ public abstract class EventModel implements Comparable<EventModel>, ITimelineIte
 		this.source = retweeter;
 	}
 	
-	public abstract String getText();
+	public abstract String getHeaderText();
+	
+	public String getFooterText()
+	{
+		return StringUtils.dateToString(date);
+	}
 	
 	@Override
 	public int compareTo(EventModel another)

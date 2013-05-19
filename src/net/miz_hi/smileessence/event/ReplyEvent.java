@@ -12,7 +12,7 @@ public class ReplyEvent extends StatusEventModel
 	}
 
 	@Override
-	public String getText()
+	public String getHeaderText()
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append(source.screenName).append("‚©‚ç‚Ì•ÔM");

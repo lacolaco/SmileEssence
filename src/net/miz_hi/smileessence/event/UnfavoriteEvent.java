@@ -12,7 +12,7 @@ public class UnfavoriteEvent extends StatusEventModel implements IAttackEvent
 	}
 
 	@Override
-	public String getText()
+	public String getHeaderText()
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append(source.screenName).append("‚É‚ ‚ñ‚Ó‚Ÿ‚Ú‚³‚ê‚½");

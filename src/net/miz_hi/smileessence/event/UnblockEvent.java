@@ -11,7 +11,7 @@ public class UnblockEvent extends UserEvent
 	}
 
 	@Override
-	public String getText()
+	public String getHeaderText()
 	{
 		return source.screenName + "‚ÉƒuƒƒbƒN‰ğœ‚³‚ê‚½";
 	}

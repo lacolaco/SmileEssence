@@ -129,6 +129,6 @@ public class Notifier
 			}
 		}
 		
-		return new Event(model.getText());
+		return new Event(model.getHeaderText());
 	}
 }

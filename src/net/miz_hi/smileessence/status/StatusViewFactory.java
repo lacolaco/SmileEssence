@@ -74,8 +74,8 @@ public class StatusViewFactory
 		viewText.setTextColor(model.textColor);
 		viewText.setTextSize(textSize);
 		viewFooter.setText(model.footerText);
-		viewFooter.setTextColor(model.textColor);
-		viewFooter.setTextSize(textSize - 1);
+		viewFooter.setTextColor(Client.getColor(R.color.Gray2));
+		viewFooter.setTextSize(textSize - 2);
 		
 		return baseView;
 	}
