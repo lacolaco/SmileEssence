@@ -49,12 +49,14 @@ public class EventViewFactory
 		
 		if(model instanceof StatusEventModel)
 		{
+			viewText.setVisibility(View.VISIBLE);
 			viewText.setText(((StatusEventModel)model).targetModel.text);
 			viewText.setTextColor(Client.getColor(R.color.Gray));
 			viewText.setTextSize(textSize);
 		}
 		else
 		{
+			viewText.setText("");
 			viewText.setVisibility(View.INVISIBLE);
 		}
 		
