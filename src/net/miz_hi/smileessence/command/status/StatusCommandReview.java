@@ -48,7 +48,7 @@ public class StatusCommandReview extends StatusCommand implements IHideable
 			{
 				if(which == dialog.BUTTON_POSITIVE)
 				{
-					int star = reviewDialog.getProgress() + 1;
+					int star = reviewDialog.getRates();
 					StringBuilder builder = new StringBuilder();
 					for (int i = 0; i < 5; i++)
 					{

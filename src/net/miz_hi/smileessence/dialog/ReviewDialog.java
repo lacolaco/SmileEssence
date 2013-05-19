@@ -37,7 +37,7 @@ public class ReviewDialog
 		this.listener = listener;
 	}
 
-	public int getProgress()
+	public int getRates()
 	{
 		return (int) this.ratingBar.getRating();
 	}
