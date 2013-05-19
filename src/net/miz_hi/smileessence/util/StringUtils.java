@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import net.miz_hi.smileessence.core.Notifier;
+
 import com.twitter.Extractor;
 
 import android.net.Uri;
@@ -59,4 +61,5 @@ public class StringUtils
 	    }
 	    return count;
 	}
+
 }

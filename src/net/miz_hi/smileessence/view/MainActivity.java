@@ -14,6 +14,7 @@ import net.miz_hi.smileessence.listener.PageChangeListener;
 import net.miz_hi.smileessence.menu.MainMenu;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey.EnumValueType;
+import net.miz_hi.smileessence.system.IntentRouter;
 import net.miz_hi.smileessence.system.MainSystem;
 import net.miz_hi.smileessence.system.PostSystem;
 import net.miz_hi.smileessence.util.LogHelper;
@@ -120,6 +121,10 @@ public class MainActivity extends FragmentActivity
 		instance = this;
 		initializeViews();
 		MainSystem.getInstance().initialize(instance);
+		if(getIntent().getData() != null)
+		{
+			IntentRouter.onNewIntent(getIntent());
+		}
 	}
 
 	private void initializeViews()
@@ -155,8 +160,6 @@ public class MainActivity extends FragmentActivity
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
-	
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState)
@@ -214,6 +217,12 @@ public class MainActivity extends FragmentActivity
 		{
 			MainSystem.getInstance().receivePicture(instance, data, reqCode);
 		}
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent)
+	{
+		IntentRouter.onNewIntent(intent);
 	}
 
 	public void onEditClick(View v)

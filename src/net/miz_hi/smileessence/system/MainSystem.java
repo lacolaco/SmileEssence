@@ -103,10 +103,8 @@ public class MainSystem
 					{
 						try
 						{
-							List<StatusModel> oldTimeline = resp_home.get();
-							homeListAdapter.addAll(oldTimeline);
-							List<StatusModel> oldMentions = resp_mentions.get();
-							mentionsListAdapter.addAll(oldMentions);
+							homeListAdapter.addAll(resp_home.get());
+							mentionsListAdapter.addAll(resp_mentions.get());
 							homeListAdapter.forceNotifyAdapter();
 							mentionsListAdapter.forceNotifyAdapter();
 							historyListAdapter.forceNotifyAdapter();

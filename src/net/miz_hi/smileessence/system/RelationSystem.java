@@ -81,14 +81,14 @@ public class RelationSystem
 					if(statusModel1 != null)
 					{
 						adapter.addLast(statusModel1);
-						adapter.forceNotifyAdapter();
 					}
 					else
 					{
 						break;
 					}
 					id = statusModel1.inReplyToStatusId;
-				}				
+				}		
+				adapter.forceNotifyAdapter();
 			}
 		});
 	}
