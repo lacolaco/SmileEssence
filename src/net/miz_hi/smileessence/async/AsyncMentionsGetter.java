@@ -1,12 +1,14 @@
 package net.miz_hi.smileessence.async;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
 import net.miz_hi.smileessence.auth.Account;
-import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.data.StatusStore;
+import net.miz_hi.smileessence.status.StatusChecker;
+import net.miz_hi.smileessence.status.StatusModel;
+import net.miz_hi.smileessence.status.StatusStore;
 import net.miz_hi.smileessence.twitter.TwitterManager;
 import twitter4j.Paging;
 import twitter4j.Status;
@@ -26,12 +28,15 @@ public class AsyncMentionsGetter implements Callable<List<StatusModel>>
 	@Override
 	public List<StatusModel> call()
 	{
-		List<Status> resp = TwitterManager.getOldMentions(account, page);
+		LinkedList<Status> resp = new LinkedList<Status>();
+		resp.addAll(TwitterManager.getOldMentions(account, page));
 
-		ArrayList<StatusModel> list = new ArrayList<StatusModel>();
-		for (twitter4j.Status st : resp)
+		LinkedList<StatusModel> list = new LinkedList<StatusModel>();
+		while(!resp.isEmpty())
 		{
-			list.add(StatusStore.put(st));
+			StatusModel model = StatusStore.put(resp.pollLast());
+			list.offerFirst(model);
+			StatusChecker.check(model);
 		}
 		return list;
 	}

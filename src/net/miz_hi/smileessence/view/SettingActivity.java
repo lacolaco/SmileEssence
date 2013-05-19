@@ -3,6 +3,7 @@ package net.miz_hi.smileessence.view;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.auth.AuthentificationDB;
+import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.dialog.ConfirmDialog;
 import net.miz_hi.smileessence.dialog.SeekBarDialog;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
@@ -13,6 +14,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -123,7 +125,7 @@ public class SettingActivity extends PreferenceActivity
 						{
 							case DialogInterface.BUTTON_POSITIVE:
 							{
-								Toast.makeText(SettingActivity.this, "全ての認証情報をリセットします。再起動してください", Toast.LENGTH_SHORT).show();
+								Notifier.toast("全ての認証情報をリセットします。再起動してください");
 								AuthentificationDB.instance().deleteAll();
 								finish();
 								MainActivity.getInstance().finish();

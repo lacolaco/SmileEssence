@@ -10,13 +10,18 @@ import net.miz_hi.smileessence.view.MainActivity;
 import net.miz_hi.smileessence.view.UserInfoFragment;
 import twitter4j.User;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.view.Window;
 
 public class UserCommandOpenInfo extends UserCommand
 {
 
-	public UserCommandOpenInfo(String userName)
+	Activity activity;
+	
+	public UserCommandOpenInfo(String userName, Activity activity)
 	{
 		super(userName);
+		this.activity = activity;
 	}
 
 	@Override
@@ -28,6 +33,7 @@ public class UserCommandOpenInfo extends UserCommand
 	@Override
 	public void workOnUiThread()
 	{
+		final ProgressDialog pd = ProgressDialog.show(activity, null, "Loading...", true);
 		MyExecutor.execute(new Runnable()
 		{
 			
@@ -36,9 +42,11 @@ public class UserCommandOpenInfo extends UserCommand
 			{
 				User user = TwitterManager.getUser(Client.getMainAccount(), userName);
 				UserModel model = UserStore.put(user);
-				UserInfoFragment fragment = UserInfoFragment.newInstance(model);
+				final UserInfoFragment fragment = UserInfoFragment.newInstance(model);
+
 				MainActivity.addPage(fragment);
 				MainActivity.moveViewPage(MainActivity.getPagerCount());
+				pd.dismiss();
 			}
 		});
 

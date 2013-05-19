@@ -1,11 +1,11 @@
 package net.miz_hi.smileessence.event;
 
-import twitter4j.User;
+import net.miz_hi.smileessence.data.UserModel;
 
 public class BlockEvent extends UserEvent
 {
 
-	public BlockEvent(User source)
+	public BlockEvent(UserModel source)
 	{
 		super(source);
 	}
@@ -13,7 +13,7 @@ public class BlockEvent extends UserEvent
 	@Override
 	public String getText()
 	{
-		return source.getScreenName() + "にブロックされた";
+		return source.screenName + "にブロックされた";
 	}
 
 }

@@ -14,8 +14,6 @@ import net.miz_hi.smileessence.auth.Consumers;
 import net.miz_hi.smileessence.core.EnumRequestCode;
 import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.data.IconCaches;
-import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.data.UserStore;
 import net.miz_hi.smileessence.data.page.Page;
 import net.miz_hi.smileessence.data.page.Pages;
@@ -24,6 +22,8 @@ import net.miz_hi.smileessence.event.HistoryListAdapter;
 import net.miz_hi.smileessence.listener.MyUserStreamListener;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
 import net.miz_hi.smileessence.status.StatusListAdapter;
+import net.miz_hi.smileessence.status.StatusModel;
+import net.miz_hi.smileessence.status.StatusStore;
 import net.miz_hi.smileessence.twitter.TwitterManager;
 import net.miz_hi.smileessence.util.NetworkUtils;
 import net.miz_hi.smileessence.view.ExtractFragment;
@@ -37,7 +37,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentActivity;
 
 public class MainSystem
 {
@@ -57,7 +56,7 @@ public class MainSystem
 		return instance;
 	}
 	
-	public void initialize(FragmentActivity activity)
+	public void initialize(Activity activity)
 	{
 		homeListAdapter = new StatusListAdapter(activity);
 		mentionsListAdapter = new StatusListAdapter(activity);
@@ -87,9 +86,7 @@ public class MainSystem
 			loadRemainablePages();
 			
 			usListener = new MyUserStreamListener();
-			usListener.setHomeAdapter(homeListAdapter);
-			usListener.setMentionsAdapter(mentionsListAdapter);
-			usListener.setHistoryAdapter(historyListAdapter);
+
 			twitterStream = TwitterManager.getTwitterStream(Client.getMainAccount());
 			twitterStream.addListener(usListener);
 			twitterStream.addConnectionLifeCycleListener(usListener);

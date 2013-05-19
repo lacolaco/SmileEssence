@@ -9,7 +9,7 @@ import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.core.Notifier;
-import net.miz_hi.smileessence.data.StatusModel;
+import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.twitter.TwitterManager;
 import twitter4j.StatusUpdate;
 

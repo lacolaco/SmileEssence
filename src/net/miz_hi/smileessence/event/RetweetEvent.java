@@ -1,40 +1,21 @@
 package net.miz_hi.smileessence.event;
 
-import twitter4j.Status;
-import twitter4j.User;
+import net.miz_hi.smileessence.data.UserModel;
+import net.miz_hi.smileessence.status.StatusModel;
 
 public class RetweetEvent extends StatusEventModel implements IAttackEvent
 {
-	
-//	private int retweetedCount;
 
-	public RetweetEvent(User source, Status targetStatus)
+	public RetweetEvent(UserModel retweeter, StatusModel status)
 	{
-		super(source, targetStatus);
-//		String jsonStr = DataObjectFactory.getRawJSON(targetStatus);
-//		try
-//		{
-//			JSONObject json = new JSONObject(jsonStr);
-//			retweetedCount = json.getInt("retweet_count");
-//		}
-//		catch (JSONException e)
-//		{
-//			retweetedCount = 0;
-//		}
+		super(retweeter, status);
 	}
 
 	@Override
 	public String getText()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(source.getScreenName());
-		sb.append("にリツイートされた");
-//		if(retweetedCount > 1)
-//		{
-//			sb.append(" (");
-//			sb.append(retweetedCount);
-//			sb.append(")");
-//		}
+		sb.append(source.screenName).append("にリツイートされた");
 		return sb.toString();
 	}
 }

@@ -1,19 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    
-    <PreferenceCategory android:title="基本設定" android:shouldDisableView="false"><Preference android:title="文字サイズ" android:key="@string/key_setting_textSize" android:summary="文字のサイズだよ" android:defaultValue="10" />
-    <SwitchPreference android:title="フッターバー" android:key="@string/key_setting_footer" android:summaryOn="表示する" android:summaryOff="表示しない" android:defaultValue="true"/>
-    <SwitchPreference android:key="@string/key_setting_aftersubmit" android:defaultValue="true" android:title="投稿後" android:summaryOn="ホームに戻る" android:summaryOff="そのまま"/>
-    <SwitchPreference android:title="あんふぁぼ通知" android:key="@string/key_setting_notice_unfav" android:defaultValue="false" android:summaryOn="有効" android:summaryOff="無効"/>
-    <SwitchPreference android:title="投稿画面表示時" android:key="@string/key_setting_open_ime" android:defaultValue="true" android:summaryOn="IMEを開く" android:summaryOff="IMEを開かない"/>
-    <SwitchPreference android:key="@string/key_setting_confirm_dialog" android:title="確認ダイアログ" android:defaultValue="true" android:summaryOn="有効" android:summaryOff="無効"/><SwitchPreference android:title="モールス解読" android:summaryOn="有効" android:summaryOff="無効" android:key="@string/key_setting_morse" android:defaultValue="true"/></PreferenceCategory>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-<PreferenceCategory android:title="その他" android:shouldDisableView="false"><Preference android:key="@string/key_setting_delete_accounts" android:summary="再起動後に認証してね" android:title="認証情報を削除"/>
-    <Preference android:title="Powered by twitter4j" android:summary="Apache License 2.0" android:key="@string/key_setting_t4j" />
+    <PreferenceCategory android:title="表示設定" >
+        <Preference
+            android:defaultValue="10"
+            android:key="@string/key_setting_textSize"
+            android:summary="文字のサイズだよ"
+            android:title="文字サイズ" />
 
-</PreferenceCategory>
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/key_setting_footer"
+            android:summaryOff="表示しない"
+            android:summaryOn="表示する"
+            android:title="フッターバー" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/key_setting_morse"
+            android:summaryOff="無効"
+            android:summaryOn="有効"
+            android:title="モールス解読" />
 
-
-
+        <ListPreference
+            android:dialogTitle="名前形式"
+            android:entries="@array/entry_namestyle"
+            android:entryValues="@array/entryvalues_namestyle"
+            android:key="@string/key_setting_namestyle"
+            android:summary="お好きなものを選んでください"
+            android:title="名前の形式" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="動作設定" >
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/key_setting_aftersubmit"
+            android:summaryOff="そのまま"
+            android:summaryOn="ホームに戻る"
+            android:title="投稿後" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/key_setting_notice_unfav"
+            android:summaryOff="無効"
+            android:summaryOn="有効"
+            android:title="あんふぁぼ通知" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/key_setting_open_ime"
+            android:summaryOff="IMEを開かない"
+            android:summaryOn="IMEを開く"
+            android:title="投稿画面表示時" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/key_setting_confirm_dialog"
+            android:summaryOff="無効"
+            android:summaryOn="有効"
+            android:title="確認ダイアログ" />
+        <SwitchPreference android:switchTextOn="専用タブ" android:switchTextOff="Mentions" android:title="抽出先" android:key="@string/key_setting_extract_to"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="その他" >
+        <Preference
+            android:key="@string/key_setting_delete_accounts"
+            android:summary="再起動後に認証してね"
+            android:title="認証情報を削除" />
+        <Preference
+            android:key="@string/key_setting_t4j"
+            android:title="Powered by twitter4j" />
+        <Preference android:summary="このアプリケーションはApache Licenseで保護されたライブラリを使用しています" android:selectable="false"/>
+    </PreferenceCategory>
 
 </PreferenceScreen>

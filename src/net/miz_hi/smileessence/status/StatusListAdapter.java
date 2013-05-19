@@ -2,7 +2,6 @@ package net.miz_hi.smileessence.status;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.listener.StatusOnClickListener;
 import net.miz_hi.smileessence.util.CustomListAdapter;
 import android.app.Activity;

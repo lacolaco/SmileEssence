@@ -1,8 +1,11 @@
-package net.miz_hi.smileessence.data;
+package net.miz_hi.smileessence.status;
 
 import java.util.Date;
 
-import net.miz_hi.smileessence.status.StatusUtils;
+import net.miz_hi.smileessence.Client;
+import net.miz_hi.smileessence.data.UserModel;
+import net.miz_hi.smileessence.data.UserStore;
+import net.miz_hi.smileessence.preference.EnumPreferenceKey;
 import net.miz_hi.smileessence.util.StringUtils;
 import twitter4j.HashtagEntity;
 import twitter4j.MediaEntity;
@@ -77,24 +80,40 @@ public class StatusModel implements Comparable<StatusModel>
 		}
 		userMentions = shownStatus.getUserMentionEntities();
 		
-		headerText = getHeaderText(user);
-		footerText = getFooterText(status);
+		updateHeaderText();
+		getFooterText(status);
 
 		isMine = user.isMe();
 
 		isReply = StatusUtils.isReply(shownStatus);
 	}
 
-	public String getHeaderText(UserModel user)
+	public void updateHeaderText()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append(user.screenName);
-		builder.append(" / ");
-		builder.append(user.name);
-		return builder.toString();
+		String style = Client.getPreferenceValue(EnumPreferenceKey.NAME_STYLE);
+		if(style.equals(EnumNameStyle.S_N.get()) || style.equals(EnumNameStyle.S.get()))
+		{
+			builder.append(user.screenName);
+		}
+		else if(style.equals(EnumNameStyle.N_S.get()) || style.equals(EnumNameStyle.N.get()))
+		{
+			builder.append(user.name);
+		}
+		if(style.equals(EnumNameStyle.S_N.get()))
+		{
+			builder.append(" / ");
+			builder.append(user.name);
+		}
+		else if(style.equals(EnumNameStyle.N_S.get()))
+		{
+			builder.append(" / ");
+			builder.append(user.screenName);
+		}
+		headerText = builder.toString();
 	}
 
-	public String getFooterText(Status status)
+	public void getFooterText(Status status)
 	{
 		StringBuilder builder = new StringBuilder();
 		if (isRetweet)
@@ -112,7 +131,7 @@ public class StatusModel implements Comparable<StatusModel>
 			builder.append(" via ");
 			builder.append(Html.fromHtml(status.getSource()).toString());
 		}
-		return builder.toString();
+		footerText = builder.toString();
 	}
 
 	@Override

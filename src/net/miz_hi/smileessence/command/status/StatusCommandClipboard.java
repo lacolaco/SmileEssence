@@ -3,7 +3,7 @@ package net.miz_hi.smileessence.command.status;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.core.Notifier;
-import net.miz_hi.smileessence.data.StatusModel;
+import net.miz_hi.smileessence.status.StatusModel;
 import android.content.ClipboardManager;
 import android.content.Context;
 

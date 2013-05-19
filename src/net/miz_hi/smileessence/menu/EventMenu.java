@@ -27,7 +27,7 @@ public class EventMenu extends SimpleMenuDialog
 	{
 		super(activity);
 		this.model = model;
-		this.user = UserStore.put(model.source);
+		this.user = model.source;
 		setTitle("@"+ this.user.screenName);
 	}
 
@@ -36,7 +36,7 @@ public class EventMenu extends SimpleMenuDialog
 	{
 		List<ICommand> items = new ArrayList<ICommand>();
 		items.add(new UserCommandReply(user.screenName));
-		items.add(new UserCommandOpenInfo(user.screenName));
+		items.add(new UserCommandOpenInfo(user.screenName, activity));
 		items.add(new UserCommandFollow(user.screenName));
 		items.add(new UserCommandRemove(user.screenName));
 		return items;

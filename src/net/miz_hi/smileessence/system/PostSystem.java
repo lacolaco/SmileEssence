@@ -6,10 +6,11 @@ import java.util.regex.Pattern;
 
 import net.miz_hi.smileessence.async.AsyncTweetTask;
 import net.miz_hi.smileessence.core.Notifier;
-import net.miz_hi.smileessence.data.StatusModel;
+import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusUtils;
 import net.miz_hi.smileessence.status.StatusViewFactory;
 import net.miz_hi.smileessence.util.LogHelper;
+import net.miz_hi.smileessence.util.StringUtils;
 import net.miz_hi.smileessence.util.UiHandler;
 import net.miz_hi.smileessence.view.MainActivity;
 import net.miz_hi.smileessence.view.PostFragment;
@@ -159,11 +160,17 @@ public class PostSystem
 		return instance;
 	}
 	
-	public static PostSystem submit(String text)
+	public static boolean submit(String text)
 	{
 		if (TextUtils.isEmpty(text) && getPicturePath() == null)
 		{
 			Notifier.alert("‰½‚©“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
+			return false;
+		}
+		else if(StringUtils.countTweetCharacters(text) > 140)
+		{
+			Notifier.alert("•¶š”‚ª‘½‚·‚¬‚Ü‚·");
+			return false;
 		}
 		else
 		{
@@ -187,7 +194,7 @@ public class PostSystem
 				}
 			}.postDelayed(10);
 		}
-		return instance;
+		return true;
 	}
 	
 	public static void openPostPage()

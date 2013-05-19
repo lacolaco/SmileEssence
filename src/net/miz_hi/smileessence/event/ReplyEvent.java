@@ -1,22 +1,21 @@
 package net.miz_hi.smileessence.event;
 
-import twitter4j.Status;
-import twitter4j.User;
+import net.miz_hi.smileessence.data.UserModel;
+import net.miz_hi.smileessence.status.StatusModel;
 
 public class ReplyEvent extends StatusEventModel
 {
 
-	public ReplyEvent(User source, Status targetStatus)
+	public ReplyEvent(UserModel user, StatusModel status)
 	{
-		super(source, targetStatus);
+		super(user, status);
 	}
 
 	@Override
 	public String getText()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(source.getScreenName());
-		sb.append("‚©‚ç‚Ì•ÔM");
+		sb.append(source.screenName).append("‚©‚ç‚Ì•ÔM");
 		return sb.toString();
 	}
 }

@@ -3,7 +3,7 @@ package net.miz_hi.smileessence.auth;
 import java.util.List;
 
 import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.core.DataBaseHelper;
+import net.miz_hi.smileessence.core.DBHelper;
 import android.content.Context;
 import android.util.Log;
 
@@ -26,7 +26,7 @@ public class AuthentificationDB
 
 	public void save(Account account)
 	{
-		DataBaseHelper helper = new DataBaseHelper(context);
+		DBHelper helper = new DBHelper(context);
 		try
 		{
 			Dao<Account, Integer> dao = helper.getDao(Account.class);
@@ -44,7 +44,7 @@ public class AuthentificationDB
 
 	public void delete(Account account)
 	{
-		DataBaseHelper helper = new DataBaseHelper(context);
+		DBHelper helper = new DBHelper(context);
 		try
 		{
 			Dao<Account, Integer> dao = helper.getDao(Account.class);
@@ -62,7 +62,7 @@ public class AuthentificationDB
 
 	public void deleteAll()
 	{
-		DataBaseHelper helper = new DataBaseHelper(context);
+		DBHelper helper = new DBHelper(context);
 		try
 		{
 			for (Account account : findAll())
@@ -83,7 +83,7 @@ public class AuthentificationDB
 
 	public List<Account> findAll()
 	{
-		DataBaseHelper helper = new DataBaseHelper(context);
+		DBHelper helper = new DBHelper(context);
 		try
 		{
 			Dao<Account, Integer> dao = helper.getDao(Account.class);

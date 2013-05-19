@@ -1,7 +1,7 @@
 package net.miz_hi.smileessence.command.status;
 
 import net.miz_hi.smileessence.command.MenuCommand;
-import net.miz_hi.smileessence.data.StatusModel;
+import net.miz_hi.smileessence.status.StatusModel;
 
 public abstract class StatusCommand extends MenuCommand
 {

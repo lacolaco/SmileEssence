@@ -158,7 +158,10 @@ public class IconCaches
 			});
 
 			Icon removed = iconCache.remove(entries.poll().getKey());
-			removed.bitmap.recycle();
+			if(removed != null)
+			{
+				removed.bitmap.recycle();
+			}
 			counter.reset();
 		}
 

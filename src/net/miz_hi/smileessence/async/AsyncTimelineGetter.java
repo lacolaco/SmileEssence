@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import net.miz_hi.smileessence.auth.Account;
-import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.data.StatusStore;
+import net.miz_hi.smileessence.status.StatusModel;
+import net.miz_hi.smileessence.status.StatusChecker;
+import net.miz_hi.smileessence.status.StatusStore;
 import net.miz_hi.smileessence.twitter.TwitterManager;
 import twitter4j.Paging;
 import twitter4j.Status;
@@ -34,7 +35,7 @@ public class AsyncTimelineGetter implements Callable<List<StatusModel>>
 	@Override
 	public List<StatusModel> call()
 	{
-		List<Status> resp = new LinkedList<Status>();
+		LinkedList<Status> resp = new LinkedList<Status>();
 		if (userId >= 0)
 		{
 			resp.addAll(TwitterManager.getUserTimeline(account, userId, page));
@@ -44,11 +45,13 @@ public class AsyncTimelineGetter implements Callable<List<StatusModel>>
 			resp.addAll(TwitterManager.getOldTimeline(account, page));
 		}
 
-		List<StatusModel> list = new ArrayList<StatusModel>();
+		LinkedList<StatusModel> list = new LinkedList<StatusModel>();
 
-		for (Status st : resp)
+		while(!resp.isEmpty())
 		{
-			list.add(StatusStore.put(st));
+			StatusModel model = StatusStore.put(resp.pollLast());
+			list.offerFirst(model);
+			StatusChecker.check(model);
 		}
 
 		return list;

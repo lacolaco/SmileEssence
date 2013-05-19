@@ -1,9 +1,10 @@
-package net.miz_hi.smileessence.data;
+package net.miz_hi.smileessence.status;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+
 
 import twitter4j.Status;
 

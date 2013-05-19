@@ -3,7 +3,7 @@ package net.miz_hi.smileessence.command.status;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.command.IHideable;
-import net.miz_hi.smileessence.data.StatusModel;
+import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.system.PostSystem;
 
 public class StatusCommandUnOffRetweet extends StatusCommand implements IHideable, IConfirmable

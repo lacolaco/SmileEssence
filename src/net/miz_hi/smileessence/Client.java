@@ -2,14 +2,21 @@ package net.miz_hi.smileessence;
 
 import java.io.File;
 
+import com.j256.ormlite.table.TableUtils;
+
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.auth.AuthentificationDB;
-import net.miz_hi.smileessence.core.DataBaseHelper;
+import net.miz_hi.smileessence.core.DBHelper;
+import net.miz_hi.smileessence.data.extra.ExtraWord;
+import net.miz_hi.smileessence.data.page.Page;
+import net.miz_hi.smileessence.data.template.Template;
 import net.miz_hi.smileessence.permission.IPermission;
 import net.miz_hi.smileessence.permission.PermissonChecker;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
+import net.miz_hi.smileessence.preference.EnumPreferenceKey.EnumValueType;
 import net.miz_hi.smileessence.preference.PreferenceHelper;
+import net.miz_hi.smileessence.util.LogHelper;
 import android.app.Application;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
@@ -97,6 +104,11 @@ public class Client
 	{
 		return app.getResources();
 	}
+	
+	public static String getString(int id)
+	{
+		return app.getResources().getString(id);
+	}
 
 	public static int getColor(int resId)
 	{
@@ -124,10 +136,19 @@ public class Client
 		Client.app = app;
 		loadPreferences();
 
-		DataBaseHelper helper = new DataBaseHelper(app);
-		SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(DataBaseHelper.dbName, null);
-		helper.onCreate(db);
-		db.close();
+		DBHelper helper = new DBHelper(app);
+		try
+		{
+			TableUtils.createTable(helper.getConnectionSource(), Account.class);
+			TableUtils.createTable(helper.getConnectionSource(), Template.class);
+			TableUtils.createTable(helper.getConnectionSource(), ExtraWord.class);
+			TableUtils.createTable(helper.getConnectionSource(), Page.class);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			LogHelper.d("error ontable created");
+		}
 
 		MyExecutor.init();
 	}

@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import net.miz_hi.smileessence.command.IHideable;
-import net.miz_hi.smileessence.data.StatusModel;
+import net.miz_hi.smileessence.status.StatusModel;
 
 public class StatusCommandTranslate extends StatusCommand implements IHideable
 {

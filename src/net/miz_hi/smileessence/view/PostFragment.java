@@ -5,11 +5,11 @@ import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.core.EnumRequestCode;
 import net.miz_hi.smileessence.core.Notifier;
-import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.dialog.ConfirmDialog;
 import net.miz_hi.smileessence.listener.PostEditTextListener;
 import net.miz_hi.smileessence.menu.TweetMenu;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
+import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusUtils;
 import net.miz_hi.smileessence.status.StatusViewFactory;
 import net.miz_hi.smileessence.system.MainSystem;
@@ -133,7 +133,6 @@ public class PostFragment extends NamedFragment implements OnClickListener
 			public void run()
 			{
 				editText.setText(s);
-				textCount.setText(String.valueOf(140 - s.length()));
 			}
 		}.post();
 	}
@@ -332,12 +331,14 @@ public class PostFragment extends NamedFragment implements OnClickListener
 		{
 			case R.id.btn_submit:
 			{
-				PostSystem.submit(editText.getText().toString());
-				if (Client.<Boolean> getPreferenceValue(EnumPreferenceKey.AFTER_SUBMIT))
+				if(PostSystem.submit(editText.getText().toString()))
 				{
-					MainActivity.getInstance().getViewPager().setCurrentItem(1);
+					if (Client.<Boolean> getPreferenceValue(EnumPreferenceKey.AFTER_SUBMIT))
+					{
+						MainActivity.getInstance().getViewPager().setCurrentItem(1);
+					}
+					clearBySubmit();
 				}
-				clearBySubmit();
 				break;
 			}
 			case R.id.imBtn_tweetmenu:

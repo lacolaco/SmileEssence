@@ -41,8 +41,8 @@ import net.miz_hi.smileessence.command.user.UserCommandOpenInfo;
 import net.miz_hi.smileessence.command.user.UserCommandOpenPage;
 import net.miz_hi.smileessence.command.user.UserCommandRemove;
 import net.miz_hi.smileessence.command.user.UserCommandReply;
-import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.dialog.ExpandMenuDialog;
+import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusViewFactory;
 import net.miz_hi.smileessence.twitter.TwitterManager;
 import net.miz_hi.smileessence.util.UiHandler;
@@ -223,7 +223,7 @@ public class StatusMenu extends ExpandMenuDialog
 			ArrayList<ICommand> list = new ArrayList<ICommand>();
 			list.add(new UserCommandReply(userName));
 			list.add(new UserCommandAddReply(userName));
-			list.add(new UserCommandOpenInfo(userName));
+			list.add(new UserCommandOpenInfo(userName, activity));
 			map.put(userName, list);
 		}
 		return map;

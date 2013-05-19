@@ -3,8 +3,6 @@ package net.miz_hi.smileessence.status;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.data.IconCaches;
-import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
 import net.miz_hi.smileessence.util.Morse;
 import android.view.LayoutInflater;
@@ -59,6 +57,7 @@ public class StatusViewFactory
 		viewFavorited.setVisibility(StatusStore.isFavorited(model.statusId) ? View.VISIBLE : View.GONE);
 		
 		int textSize = Client.getTextSize();
+		model.updateHeaderText();
 		viewHeader.setText(model.headerText);
 		viewHeader.setTextColor(model.nameColor);
 		viewHeader.setTextSize(textSize);

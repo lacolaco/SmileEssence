@@ -2,8 +2,8 @@ package net.miz_hi.smileessence.listener;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.menu.StatusMenu;
+import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.util.UiHandler;
 import android.app.Activity;
 import android.view.View;

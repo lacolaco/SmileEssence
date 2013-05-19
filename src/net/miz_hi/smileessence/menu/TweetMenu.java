@@ -9,10 +9,10 @@ import net.miz_hi.smileessence.command.ICommand;
 import net.miz_hi.smileessence.command.post.CommandAppendHashtag;
 import net.miz_hi.smileessence.command.post.CommandInsertText;
 import net.miz_hi.smileessence.command.post.CommandParseMorse;
-import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.data.template.Template;
 import net.miz_hi.smileessence.data.template.Templates;
 import net.miz_hi.smileessence.dialog.ExpandMenuDialog;
+import net.miz_hi.smileessence.status.StatusStore;
 import android.app.Activity;
 
 public class TweetMenu extends ExpandMenuDialog

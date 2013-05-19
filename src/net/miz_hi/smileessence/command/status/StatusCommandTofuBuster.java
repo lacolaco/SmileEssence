@@ -5,7 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.core.Notifier;
-import net.miz_hi.smileessence.data.StatusModel;
+import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.util.Morse;
 
 public class StatusCommandTofuBuster extends StatusCommand implements IHideable

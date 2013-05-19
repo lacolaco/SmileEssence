@@ -1,7 +1,7 @@
 package net.miz_hi.smileessence.command.user;
 
 import net.miz_hi.smileessence.core.Notifier;
-import net.miz_hi.smileessence.data.StatusModel;
+import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.system.PostSystem;
 
 public class UserCommandAddReply extends UserCommand

@@ -1,11 +1,11 @@
 package net.miz_hi.smileessence.event;
 
-import twitter4j.User;
+import net.miz_hi.smileessence.data.UserModel;
 
 public class FollowEvent extends UserEvent
 {
 
-	public FollowEvent(User source)
+	public FollowEvent(UserModel source)
 	{
 		super(source);
 	}
@@ -13,7 +13,7 @@ public class FollowEvent extends UserEvent
 	@Override
 	public String getText()
 	{
-		return source.getScreenName() + "にフォローされた";
+		return source.screenName + "にフォローされた";
 	}
 
 }

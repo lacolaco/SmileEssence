@@ -1,10 +1,7 @@
 package net.miz_hi.smileessence.core;
 
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 import net.miz_hi.smileessence.event.Event;
 import net.miz_hi.smileessence.event.EventModel;
-import net.miz_hi.smileessence.event.EventViewFactory;
 import net.miz_hi.smileessence.event.IAttackEvent;
 import net.miz_hi.smileessence.event.StatusEventModel;
 import net.miz_hi.smileessence.util.CountUpInteger;
@@ -13,8 +10,9 @@ import net.miz_hi.smileessence.view.MainActivity;
 import twitter4j.User;
 import android.app.Activity;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.Toast;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class Notifier
 {
@@ -53,6 +51,21 @@ public class Notifier
 		crouton(new Event(text).setStyle(Style.ALERT));
 	}
 	
+	private static Style getStyle(Style type)
+	{
+		Style.Builder builder = new Style.Builder();
+		builder.setHeight(70).setDuration(800).setGravity(Gravity.CENTER);
+		if(type == Style.INFO)
+		{
+			builder.setBackgroundColorValue(Style.holoBlueLight);
+		}
+		else if(type == Style.ALERT)
+		{
+			builder.setBackgroundColorValue(Style.holoRedLight);
+		}
+		return builder.build();
+	}
+	
 	public static void crouton(final Event event)
 	{
 		final Activity activity = MainActivity.getInstance();
@@ -67,7 +80,7 @@ public class Notifier
 			@Override
 			public void run()
 			{
-				Crouton.showText(activity, event.getText(), event.getStyle());
+				Crouton.showText(activity, event.getText(), getStyle(event.getStyle()));
 			}
 		}.post();
 	}
@@ -79,10 +92,10 @@ public class Notifier
 			StatusEventModel se = (StatusEventModel)model;
 			if(se instanceof IAttackEvent)
 			{				
-				if(lastUserId != se.source.getId())
+				if(lastUserId != se.source.userId)
 				{
 					counterSourceUser.reset();
-					lastUserId = se.source.getId();
+					lastUserId = se.source.userId;
 				}
 				else
 				{
@@ -93,7 +106,7 @@ public class Notifier
 					
 					if(counterSourceUser.countUp())
 					{
-						return new Event(se.source.getScreenName() + "Ç©ÇÁçUåÇÇéÛÇØÇƒÇ¢Ç‹Ç∑");
+						return new Event(se.source.screenName + "Ç©ÇÁçUåÇÇéÛÇØÇƒÇ¢Ç‹Ç∑");
 					}
 				}
 				

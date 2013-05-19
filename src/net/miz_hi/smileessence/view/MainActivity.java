@@ -1,15 +1,19 @@
 package net.miz_hi.smileessence.view;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.core.EnumRequestCode;
+import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.dialog.ConfirmDialog;
 import net.miz_hi.smileessence.listener.PageChangeListener;
 import net.miz_hi.smileessence.menu.MainMenu;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
+import net.miz_hi.smileessence.preference.EnumPreferenceKey.EnumValueType;
 import net.miz_hi.smileessence.system.MainSystem;
 import net.miz_hi.smileessence.system.PostSystem;
 import net.miz_hi.smileessence.util.LogHelper;
@@ -39,10 +43,6 @@ public class MainActivity extends FragmentActivity
 
 	private static MainActivity instance;
 	public static final int PAGE_POST = 0;
-	public static final int HANDLER_NOT_AUTHED = 0;
-	public static final int HANDLER_SETUPED = 1;
-	public static final int HANDLER_OAUTH_SUCCESS = 2;
-	public static final int HANDLER_NOT_CONNECTION = 3;
 	NamedFragmentPagerAdapter adapter;
 	ViewPager pager;
 	TitlePageIndicator indicator;
@@ -71,20 +71,38 @@ public class MainActivity extends FragmentActivity
 		return instance.pager.getCurrentItem();
 	}
 
-	public static int addPage(NamedFragment fragment)
+	public static void addPage(final NamedFragment fragment)
 	{
-		int i = instance.adapter.add(fragment);
-		instance.adapter.forceNotifyAdapter();
-		return i;
+		new UiHandler()
+		{
+			
+			@Override
+			public void run()
+			{
+				instance.adapter.add(fragment);
+			}
+		}.post();
+
 	}
 
-	public static void removePage(int i)
+	public static void removePage()
 	{
-		instance.adapter.remove(i);
-		List<NamedFragment> list = Arrays.asList(instance.adapter.getList());
-		instance.adapter = new NamedFragmentPagerAdapter(instance.getSupportFragmentManager(), list);
-		instance.pager.setAdapter(instance.adapter);
-		moveViewPage(i);
+		new UiHandler()
+		{
+			
+			@Override
+			public void run()
+			{
+				int current = instance.pager.getCurrentItem();
+				instance.adapter.remove(current);
+				List<NamedFragment> list = new ArrayList<NamedFragment>();
+				list.addAll(instance.adapter.getList());
+				instance.adapter = new NamedFragmentPagerAdapter(instance.getSupportFragmentManager(), list); //Refresh page caches...
+				instance.pager.setAdapter(instance.adapter);
+				instance.pager.setCurrentItem(current);
+			}
+		}.post();
+	
 	}
 
 	public static int getPagerCount()
@@ -274,8 +292,9 @@ public class MainActivity extends FragmentActivity
 		{
 			menu.findItem(R.id.menu_remove).setVisible(false);
 		}
+		boolean extract = Client.<Boolean>getPreferenceValue(EnumPreferenceKey.EXTRACT_TO) && !ExtractFragment.isShowing;
+		menu.findItem(R.id.menu_extract).setVisible(extract);
 		
-		menu.findItem(R.id.menu_extract).setVisible(!ExtractFragment.isShowing);
 		return super.onPrepareOptionsMenu(menu);
 	}
 	@Override
@@ -307,7 +326,7 @@ public class MainActivity extends FragmentActivity
 			}
 			case R.id.menu_remove:
 			{
-				removePage(getCurrentPage());
+				removePage();
 				break;
 			}
 			case R.id.menu_exit:

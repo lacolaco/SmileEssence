@@ -1,11 +1,11 @@
 package net.miz_hi.smileessence.event;
 
-import twitter4j.User;
+import net.miz_hi.smileessence.data.UserModel;
 
 public class DirectMessageEvent extends UserEvent
 {
 
-	public DirectMessageEvent(User source)
+	public DirectMessageEvent(UserModel source)
 	{
 		super(source);
 	}
@@ -13,7 +13,7 @@ public class DirectMessageEvent extends UserEvent
 	@Override
 	public String getText()
 	{
-		return source.getScreenName() + "‚©‚çDM‚ğó‚¯æ‚Á‚½";
+		return source.screenName + "‚©‚çDM‚ğó‚¯æ‚Á‚½";
 	}
 
 }

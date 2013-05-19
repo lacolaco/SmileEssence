@@ -4,9 +4,9 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import net.miz_hi.smileessence.async.MyExecutor;
-import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.status.StatusListAdapter;
+import net.miz_hi.smileessence.status.StatusModel;
+import net.miz_hi.smileessence.status.StatusStore;
 import net.miz_hi.smileessence.status.StatusUtils;
 import net.miz_hi.smileessence.view.MainActivity;
 import net.miz_hi.smileessence.view.RelationFragment;

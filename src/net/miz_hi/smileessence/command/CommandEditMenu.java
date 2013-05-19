@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.data.StatusModel;
 import net.miz_hi.smileessence.dialog.CheckBoxListDialog;
 import net.miz_hi.smileessence.dialog.CheckBoxListDialog.CheckBoxItem;
 import net.miz_hi.smileessence.menu.StatusMenu;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey.EnumValueType;
+import net.miz_hi.smileessence.status.StatusModel;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;

@@ -4,7 +4,7 @@ import twitter4j.TwitterException;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.core.Notifier;
-import net.miz_hi.smileessence.data.StatusModel;
+import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.twitter.TwitterManager;
 
 public class StatusCommandUnfavorite extends StatusCommand implements IHideable

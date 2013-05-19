@@ -57,10 +57,9 @@ public class ExtraWordActivity extends Activity
 							{
 								String newText = editText.getText().toString();
 
-								ExtraWord ExtraWord = new ExtraWord(newText);
-								ExtraWords.addExtraWord(ExtraWord);
-								ExtraWords.update();
-								adapter.addLast(ExtraWord);
+								ExtraWord extraWord = new ExtraWord(newText);
+								ExtraWords.addExtraWord(extraWord);
+								adapter.addLast(extraWord);
 								adapter.forceNotifyAdapter();
 								break;
 							}

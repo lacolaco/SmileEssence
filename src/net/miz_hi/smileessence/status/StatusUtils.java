@@ -6,8 +6,6 @@ import java.util.concurrent.Future;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.MyExecutor;
-import net.miz_hi.smileessence.data.StatusModel;
-import net.miz_hi.smileessence.data.StatusStore;
 import net.miz_hi.smileessence.twitter.TwitterManager;
 import twitter4j.Status;
 import twitter4j.UserMentionEntity;

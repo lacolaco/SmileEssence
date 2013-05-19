@@ -3,7 +3,7 @@ package net.miz_hi.smileessence.data.extra;
 import java.util.List;
 
 import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.core.DataBaseHelper;
+import net.miz_hi.smileessence.core.DBHelper;
 import android.content.Context;
 import android.util.Log;
 
@@ -26,7 +26,7 @@ public class ExtraWordDB
 
 	public void save(ExtraWord data)
 	{
-		DataBaseHelper helper = new DataBaseHelper(context);
+		DBHelper helper = new DBHelper(context);
 		try
 		{
 			Dao<ExtraWord, Integer> dao = helper.getDao(ExtraWord.class);
@@ -44,7 +44,7 @@ public class ExtraWordDB
 
 	public void delete(ExtraWord data)
 	{
-		DataBaseHelper helper = new DataBaseHelper(context);
+		DBHelper helper = new DBHelper(context);
 		try
 		{
 			Dao<ExtraWord, Integer> dao = helper.getDao(ExtraWord.class);
@@ -62,7 +62,7 @@ public class ExtraWordDB
 
 	public void deleteAll()
 	{
-		DataBaseHelper helper = new DataBaseHelper(context);
+		DBHelper helper = new DBHelper(context);
 		try
 		{
 			for (ExtraWord data : findAll())
@@ -83,7 +83,7 @@ public class ExtraWordDB
 
 	public List<ExtraWord> findAll()
 	{
-		DataBaseHelper helper = new DataBaseHelper(context);
+		DBHelper helper = new DBHelper(context);
 		try
 		{
 			Dao<ExtraWord, Integer> dao = helper.getDao(ExtraWord.class);

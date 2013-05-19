@@ -1,11 +1,11 @@
 package net.miz_hi.smileessence.event;
 
-import twitter4j.User;
+import net.miz_hi.smileessence.data.UserModel;
 
 public abstract class UserEvent extends EventModel
 {
 
-	public UserEvent(User source)
+	public UserEvent(UserModel source)
 	{
 		super(source);
 	}

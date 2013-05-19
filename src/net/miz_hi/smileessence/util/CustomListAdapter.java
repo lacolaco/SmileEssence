@@ -55,7 +55,7 @@ public abstract class CustomListAdapter<T> extends BaseAdapter
 		{
 			if (list.contains(element))
 			{
-				list.remove(element);
+				return;
 			}
 			list.add(0, element);
 
