@@ -139,10 +139,10 @@ public class Client
 		DBHelper helper = new DBHelper(app);
 		try
 		{
-			TableUtils.createTable(helper.getConnectionSource(), Account.class);
-			TableUtils.createTable(helper.getConnectionSource(), Template.class);
-			TableUtils.createTable(helper.getConnectionSource(), ExtraWord.class);
-			TableUtils.createTable(helper.getConnectionSource(), Page.class);
+			TableUtils.createTableIfNotExists(helper.getConnectionSource(), Account.class);
+			TableUtils.createTableIfNotExists(helper.getConnectionSource(), Template.class);
+			TableUtils.createTableIfNotExists(helper.getConnectionSource(), ExtraWord.class);
+			TableUtils.createTableIfNotExists(helper.getConnectionSource(), Page.class);
 		}
 		catch (Exception e)
 		{
