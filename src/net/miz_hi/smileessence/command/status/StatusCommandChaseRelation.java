@@ -10,8 +10,8 @@ import net.miz_hi.smileessence.status.StatusStore;
 import net.miz_hi.smileessence.status.StatusUtils;
 import net.miz_hi.smileessence.system.RelationSystem;
 import net.miz_hi.smileessence.util.LogHelper;
-import net.miz_hi.smileessence.view.MainActivity;
-import net.miz_hi.smileessence.view.RelationFragment;
+import net.miz_hi.smileessence.view.activity.MainActivity;
+import net.miz_hi.smileessence.view.fragment.RelationFragment;
 import android.support.v4.app.Fragment;
 
 public class StatusCommandChaseRelation extends StatusCommand

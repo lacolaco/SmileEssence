@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.miz_hi.smileessence"
-    android:versionCode="26"
-    android:versionName="beta1.4.2" >
+    android:versionCode="27"
+    android:versionName="beta1.4.21" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -20,7 +20,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".view.MainActivity"
+            android:name="net.miz_hi.smileessence.view.activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTask"
@@ -72,20 +72,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.WebViewActivity"
+            android:name="net.miz_hi.smileessence.view.activity.WebViewActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="standard" />
         <activity
-            android:name=".view.SettingActivity"
+            android:name="net.miz_hi.smileessence.view.activity.SettingActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="standard" >
         </activity>
         <activity
-            android:name=".view.TemplateActivity"
+            android:name="net.miz_hi.smileessence.view.activity.TemplateActivity"
             android:configChanges="orientation" >
         </activity>
         <activity
-            android:name=".view.ExtraWordActivity"
+            android:name="net.miz_hi.smileessence.view.activity.ExtraWordActivity"
             android:configChanges="orientation" >
         </activity>
     </application>

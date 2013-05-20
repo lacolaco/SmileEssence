@@ -26,10 +26,10 @@ import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusStore;
 import net.miz_hi.smileessence.twitter.TwitterManager;
 import net.miz_hi.smileessence.util.NetworkUtils;
-import net.miz_hi.smileessence.view.ExtractFragment;
 import net.miz_hi.smileessence.view.IRemainable;
-import net.miz_hi.smileessence.view.MainActivity;
-import net.miz_hi.smileessence.view.RelationFragment;
+import net.miz_hi.smileessence.view.activity.MainActivity;
+import net.miz_hi.smileessence.view.fragment.ExtractFragment;
+import net.miz_hi.smileessence.view.fragment.RelationFragment;
 import twitter4j.Paging;
 import twitter4j.TwitterStream;
 import android.app.Activity;
@@ -146,7 +146,6 @@ public class MainSystem
 			twitterStream.shutdown();
 			twitterStream = null;
 		}
-		saveRamainablePages();
 		IconCaches.clearCache();
 		StatusStore.clearCache();
 		UserStore.clearCache();
@@ -172,9 +171,10 @@ public class MainSystem
 		}
 	}
 	
-	private void saveRamainablePages()
+	public void saveRamainablePages()
 	{
 		Pages.clear();
+		Pages.startTransaction();
 		for(Object element : MainActivity.getInstance().getFragmentAdapter().getList())
 		{
 			if(element instanceof IRemainable)
@@ -182,6 +182,7 @@ public class MainSystem
 				Pages.addPage(new Page(element.getClass().getSimpleName(), ((IRemainable) element).save()));
 			}
 		}
+		Pages.stopTransaction();
 	}
 	
 	public void receivePicture(Activity activity, Intent data, int reqCode)

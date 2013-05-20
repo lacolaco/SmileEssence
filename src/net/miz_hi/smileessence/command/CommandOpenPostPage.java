@@ -1,7 +1,7 @@
 package net.miz_hi.smileessence.command;
 
 import net.miz_hi.smileessence.system.PostSystem;
-import net.miz_hi.smileessence.view.MainActivity;
+import net.miz_hi.smileessence.view.activity.MainActivity;
 
 public class CommandOpenPostPage extends MenuCommand
 {

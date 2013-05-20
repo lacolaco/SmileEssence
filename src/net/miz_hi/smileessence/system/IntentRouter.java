@@ -8,7 +8,7 @@ import net.miz_hi.smileessence.status.StatusUtils;
 import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.util.StringUtils;
 import net.miz_hi.smileessence.util.UiHandler;
-import net.miz_hi.smileessence.view.MainActivity;
+import net.miz_hi.smileessence.view.activity.MainActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.widget.Toast;

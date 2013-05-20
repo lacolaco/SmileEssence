@@ -20,7 +20,7 @@ import net.miz_hi.smileessence.status.StatusStore;
 import net.miz_hi.smileessence.system.MainSystem;
 import net.miz_hi.smileessence.system.RelationSystem;
 import net.miz_hi.smileessence.util.LogHelper;
-import net.miz_hi.smileessence.view.MainActivity;
+import net.miz_hi.smileessence.view.activity.MainActivity;
 import twitter4j.ConnectionLifeCycleListener;
 import twitter4j.DirectMessage;
 import twitter4j.StallWarning;

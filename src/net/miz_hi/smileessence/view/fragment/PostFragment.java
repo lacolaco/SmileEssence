@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.view;
+package net.miz_hi.smileessence.view.fragment;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
@@ -16,6 +16,7 @@ import net.miz_hi.smileessence.system.MainSystem;
 import net.miz_hi.smileessence.system.PostSystem;
 import net.miz_hi.smileessence.util.NamedFragment;
 import net.miz_hi.smileessence.util.UiHandler;
+import net.miz_hi.smileessence.view.activity.MainActivity;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;

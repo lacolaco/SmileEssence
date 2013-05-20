@@ -6,8 +6,8 @@ import net.miz_hi.smileessence.data.extra.ExtraWords;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
 import net.miz_hi.smileessence.system.MainSystem;
 import net.miz_hi.smileessence.system.RelationSystem;
-import net.miz_hi.smileessence.view.ExtractFragment;
-import net.miz_hi.smileessence.view.RelationFragment;
+import net.miz_hi.smileessence.view.fragment.ExtractFragment;
+import net.miz_hi.smileessence.view.fragment.RelationFragment;
 
 public class StatusChecker
 {

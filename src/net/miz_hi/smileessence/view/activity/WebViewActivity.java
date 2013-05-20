@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.view;
+package net.miz_hi.smileessence.view.activity;
 
 import net.miz_hi.smileessence.Client;
 import android.app.Activity;

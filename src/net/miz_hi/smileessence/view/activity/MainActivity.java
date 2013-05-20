@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.view;
+package net.miz_hi.smileessence.view.activity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +25,12 @@ import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.util.NamedFragment;
 import net.miz_hi.smileessence.util.NamedFragmentPagerAdapter;
 import net.miz_hi.smileessence.util.UiHandler;
+import net.miz_hi.smileessence.view.IRemovable;
+import net.miz_hi.smileessence.view.fragment.ExtractFragment;
+import net.miz_hi.smileessence.view.fragment.HistoryFragment;
+import net.miz_hi.smileessence.view.fragment.HomeFragment;
+import net.miz_hi.smileessence.view.fragment.MentionsFragment;
+import net.miz_hi.smileessence.view.fragment.PostFragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -62,7 +68,7 @@ public class MainActivity extends FragmentActivity
 	{
 		new UiHandler()
 		{
-			
+
 			@Override
 			public void run()
 			{
@@ -80,7 +86,7 @@ public class MainActivity extends FragmentActivity
 	{
 		new UiHandler()
 		{
-			
+
 			@Override
 			public void run()
 			{
@@ -94,7 +100,7 @@ public class MainActivity extends FragmentActivity
 	{
 		new UiHandler()
 		{
-			
+
 			@Override
 			public void run()
 			{
@@ -107,7 +113,7 @@ public class MainActivity extends FragmentActivity
 				instance.pager.setCurrentItem(current);
 			}
 		}.post();
-	
+
 	}
 
 	public static int getPagerCount()
@@ -148,7 +154,7 @@ public class MainActivity extends FragmentActivity
 		footerBar = findViewById(R.id.footer);
 		new UiHandler()
 		{
-			
+
 			@Override
 			public void run()
 			{
@@ -193,6 +199,7 @@ public class MainActivity extends FragmentActivity
 	{
 		super.onPause();
 		LogHelper.d("main pause");
+		MainSystem.getInstance().saveRamainablePages();
 		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 
@@ -226,7 +233,10 @@ public class MainActivity extends FragmentActivity
 	@Override
 	protected void onNewIntent(Intent intent)
 	{
-		IntentRouter.onNewIntent(intent);
+		if(intent.getData() != null)
+		{
+			IntentRouter.onNewIntent(intent);
+		}
 	}
 
 	public void onEditClick(View v)
@@ -307,7 +317,7 @@ public class MainActivity extends FragmentActivity
 		}
 		boolean extract = Client.<Boolean>getPreferenceValue(EnumPreferenceKey.EXTRACT_TO) && !ExtractFragment.isShowing;
 		menu.findItem(R.id.menu_extract).setVisible(extract);
-		
+
 		return super.onPrepareOptionsMenu(menu);
 	}
 	@Override

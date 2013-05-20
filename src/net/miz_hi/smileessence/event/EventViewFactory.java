@@ -7,7 +7,7 @@ import net.miz_hi.smileessence.preference.EnumPreferenceKey;
 import net.miz_hi.smileessence.status.StatusViewFactory;
 import net.miz_hi.smileessence.util.ColorUtils;
 import net.miz_hi.smileessence.util.Morse;
-import net.miz_hi.smileessence.view.MainActivity;
+import net.miz_hi.smileessence.view.activity.MainActivity;
 import android.app.Activity;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.view;
+package net.miz_hi.smileessence.view.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -13,6 +13,9 @@ import net.miz_hi.smileessence.listener.TimelineScrollListener;
 import net.miz_hi.smileessence.status.StatusListAdapter;
 import net.miz_hi.smileessence.system.MainSystem;
 import net.miz_hi.smileessence.util.NamedFragment;
+import net.miz_hi.smileessence.view.IRemainable;
+import net.miz_hi.smileessence.view.IRemovable;
+import net.miz_hi.smileessence.view.activity.MainActivity;
 
 @SuppressLint("ValidFragment")
 public class ExtractFragment extends NamedFragment implements IRemovable, IRemainable

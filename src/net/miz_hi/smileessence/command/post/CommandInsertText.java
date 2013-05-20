@@ -2,7 +2,7 @@ package net.miz_hi.smileessence.command.post;
 
 import net.miz_hi.smileessence.command.MenuCommand;
 import net.miz_hi.smileessence.system.PostSystem;
-import net.miz_hi.smileessence.view.PostFragment;
+import net.miz_hi.smileessence.view.fragment.PostFragment;
 
 public class CommandInsertText extends MenuCommand
 {

@@ -1,7 +1,7 @@
 package net.miz_hi.smileessence.command;
 
 import net.miz_hi.smileessence.system.MainSystem;
-import net.miz_hi.smileessence.view.MainActivity;
+import net.miz_hi.smileessence.view.activity.MainActivity;
 
 public class CommandReConnect extends MenuCommand
 {

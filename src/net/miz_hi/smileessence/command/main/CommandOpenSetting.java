@@ -1,7 +1,7 @@
 package net.miz_hi.smileessence.command.main;
 
 import net.miz_hi.smileessence.command.MenuCommand;
-import net.miz_hi.smileessence.view.SettingActivity;
+import net.miz_hi.smileessence.view.activity.SettingActivity;
 import android.app.Activity;
 import android.content.Intent;
 

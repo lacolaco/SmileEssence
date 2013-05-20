@@ -4,7 +4,7 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.auth.Consumers;
 import net.miz_hi.smileessence.auth.Consumers.Consumer;
-import net.miz_hi.smileessence.view.MainActivity;
+import net.miz_hi.smileessence.view.activity.MainActivity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.util.AttributeSet;

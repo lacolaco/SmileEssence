@@ -1,6 +1,6 @@
 package net.miz_hi.smileessence.command;
 
-import net.miz_hi.smileessence.view.TemplateActivity;
+import net.miz_hi.smileessence.view.activity.TemplateActivity;
 import android.app.Activity;
 import android.content.Intent;
 

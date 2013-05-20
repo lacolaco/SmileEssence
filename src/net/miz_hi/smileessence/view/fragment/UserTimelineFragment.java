@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.view;
+package net.miz_hi.smileessence.view.fragment;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
@@ -9,6 +9,7 @@ import net.miz_hi.smileessence.listener.TimelineScrollListener;
 import net.miz_hi.smileessence.status.StatusListAdapter;
 import net.miz_hi.smileessence.twitter.TwitterManager;
 import net.miz_hi.smileessence.util.NamedFragment;
+import net.miz_hi.smileessence.view.IRemovable;
 import twitter4j.Paging;
 import twitter4j.User;
 import android.annotation.SuppressLint;

@@ -7,8 +7,8 @@ import net.miz_hi.smileessence.data.UserModel;
 import net.miz_hi.smileessence.data.UserStore;
 import net.miz_hi.smileessence.twitter.TwitterManager;
 import net.miz_hi.smileessence.util.UiHandler;
-import net.miz_hi.smileessence.view.MainActivity;
-import net.miz_hi.smileessence.view.UserTimelineFragment;
+import net.miz_hi.smileessence.view.activity.MainActivity;
+import net.miz_hi.smileessence.view.fragment.UserTimelineFragment;
 
 public class UserCommandOpenTimeline extends UserCommand
 {

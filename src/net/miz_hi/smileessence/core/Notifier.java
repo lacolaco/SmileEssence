@@ -6,7 +6,7 @@ import net.miz_hi.smileessence.event.IAttackEvent;
 import net.miz_hi.smileessence.event.StatusEventModel;
 import net.miz_hi.smileessence.util.CountUpInteger;
 import net.miz_hi.smileessence.util.UiHandler;
-import net.miz_hi.smileessence.view.MainActivity;
+import net.miz_hi.smileessence.view.activity.MainActivity;
 import twitter4j.User;
 import android.app.Activity;
 import android.view.Gravity;

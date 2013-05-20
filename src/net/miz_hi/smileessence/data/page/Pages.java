@@ -12,21 +12,34 @@ import android.support.v4.app.Fragment;
 public class Pages
 {
 		
-	private static List<Page> Pages = new ArrayList<Page>();
+	private static List<Page> pages = new ArrayList<Page>();
+	private static boolean transaction;
 	
 	static
 	{
 		read();
+		transaction = false;
+	}
+	
+	public static void startTransaction()
+	{
+		transaction = true;
+	}
+	
+	public static void stopTransaction()
+	{
+		transaction = false;
+		update();
 	}
 	
 	private static void read()
 	{
-		Pages.clear();
+		pages.clear();
 		if(PageDB.instance().findAll() != null)
 		{
 			for(Page Page : PageDB.instance().findAll())
 			{
-				Pages.add(Page);
+				pages.add(Page);
 			}
 		}
 	}
@@ -34,7 +47,7 @@ public class Pages
 	public static void update()
 	{
 		PageDB.instance().deleteAll();
-		for(Page Page : Pages)
+		for(Page Page : pages)
 		{
 			PageDB.instance().save(Page);
 		}
@@ -49,36 +62,43 @@ public class Pages
 
 	public static void addPage(Fragment fragment)
 	{
-		Pages.add(new Page(fragment.getClass().getSimpleName(), ((IRemainable)fragment).save()));
-		update();
+		addPage(new Page(fragment.getClass().getSimpleName(), ((IRemainable)fragment).save()));
 	}
 	
 	public static void addPage(Page Page)
 	{
-		Pages.add(Page);
-		update();
+		pages.add(Page);
+		if(!transaction)
+		{
+			update();
+		}
 	}
 
 	public static void setPage(Fragment fragment, int index)
 	{
-		Pages.set(index, new Page(fragment.getClass().getSimpleName(), ((IRemainable)fragment).save()));
-		update();
+		setPage(new Page(fragment.getClass().getSimpleName(), ((IRemainable)fragment).save()), index);
 	}
 	
 	public static void setPage(Page Page, int index)
 	{
-		Pages.set(index, Page);
-		update();
+		pages.set(index, Page);
+		if(!transaction)
+		{
+			update();
+		}
 	}
-	
+
 	public static void deletePage(Page Page)
 	{
-		Pages.remove(Page);
-		update();
+		pages.remove(Page);
+		if(!transaction)
+		{
+			update();
+		}
 	}
 	
 	public static List<Page> getPages()
 	{
-		return Collections.unmodifiableList(Pages);
+		return Collections.unmodifiableList(pages);
 	}
 }

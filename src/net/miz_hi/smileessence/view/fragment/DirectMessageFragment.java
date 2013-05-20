@@ -1,4 +1,4 @@
-package net.miz_hi.smileessence.view;
+package net.miz_hi.smileessence.view.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
