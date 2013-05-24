@@ -41,7 +41,7 @@ public class MenuListAdapter extends CustomListAdapter<ICommand>
 			{
 				if(item instanceof IConfirmable && Client.<Boolean>getPreferenceValue(EnumPreferenceKey.CONFIRM_DIALOG))
 				{
-					ConfirmDialog.show(getActivity(), "Às‚µ‚Ü‚·‚©H", new Runnable()
+					ConfirmDialog.show(getActivity(), "å®Ÿè¡Œã—ã¾ã™ã‹ï¼Ÿ", new Runnable()
 					{
 						@Override
 						public void run()

@@ -1,16 +1,11 @@
 package net.miz_hi.smileessence.command.status;
 
-import java.util.concurrent.Future;
-
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
-import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.command.IHideable;
-import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.status.StatusModel;
-import net.miz_hi.smileessence.twitter.TwitterManager;
 import twitter4j.StatusUpdate;
 
 public class StatusCommandWarotaRT extends StatusCommand implements IHideable, IConfirmable
@@ -24,14 +19,14 @@ public class StatusCommandWarotaRT extends StatusCommand implements IHideable, I
 	@Override
 	public String getName()
 	{
-		return "ƒƒƒ^®RT";
+		return "ãƒ¯ãƒ­ã‚¿å¼RT";
 	}
 
 	@Override
 	public void workOnUiThread()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("ƒƒƒ^‚— RT @");
+		builder.append("ãƒ¯ãƒ­ã‚¿ï½— RT @");
 		builder.append(status.screenName);
 		builder.append(": ");
 		builder.append(status.text);

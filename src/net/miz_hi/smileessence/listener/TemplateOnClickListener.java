@@ -1,13 +1,9 @@
 package net.miz_hi.smileessence.listener;
 
-import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.data.extra.ExtraWords;
 import net.miz_hi.smileessence.data.template.Template;
 import net.miz_hi.smileessence.data.template.Templates;
 import net.miz_hi.smileessence.dialog.ConfirmDialog;
 import net.miz_hi.smileessence.dialog.ContentDialog;
-import net.miz_hi.smileessence.util.ColorUtils;
 import net.miz_hi.smileessence.util.CustomListAdapter;
 import net.miz_hi.smileessence.util.UiHandler;
 import android.app.Activity;
@@ -16,15 +12,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.EditText;
-import android.widget.TextView;
 
 public class TemplateOnClickListener implements OnClickListener, OnLongClickListener
 {
-	private CustomListAdapter adapter;
+	private CustomListAdapter<Template> adapter;
 	private Template template;
 	private Activity activity;
 
-	public TemplateOnClickListener(CustomListAdapter adapter, Activity activity, Template template)
+	public TemplateOnClickListener(CustomListAdapter<Template> adapter, Activity activity, Template template)
 	{
 		this.adapter = adapter;
 		this.activity = activity;
@@ -37,7 +32,7 @@ public class TemplateOnClickListener implements OnClickListener, OnLongClickList
 		final EditText editText = new EditText(activity);
 		editText.setText(template.getText());
 
-		ContentDialog dialog = new ContentDialog(activity, "ï“èW");
+		ContentDialog dialog = new ContentDialog(activity, "Á∑®ÈõÜ");
 		dialog.setContentView(editText);
 		dialog.setOnClickListener(new DialogInterface.OnClickListener()
 		{
@@ -68,7 +63,7 @@ public class TemplateOnClickListener implements OnClickListener, OnLongClickList
 	@Override
 	public boolean onLongClick(final View v)
 	{
-		ConfirmDialog.show(activity, "çÌèúÇµÇƒÇÊÇÎÇµÇ¢Ç≈Ç∑Ç©ÅH", new Runnable()
+		ConfirmDialog.show(activity, "ÂâäÈô§„Åó„Å¶„Çà„Çç„Åó„ÅÑ„Åß„Åô„ÅãÔºü", new Runnable()
 		{
 
 			@Override

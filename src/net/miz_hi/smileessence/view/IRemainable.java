@@ -1,6 +1,5 @@
 package net.miz_hi.smileessence.view;
 
-import java.util.Map;
 
 public interface IRemainable
 {

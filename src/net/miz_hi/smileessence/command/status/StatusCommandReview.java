@@ -2,8 +2,6 @@ package net.miz_hi.smileessence.command.status;
 
 import java.util.concurrent.Future;
 
-import de.keyboardsurfer.android.widget.crouton.Style;
-
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
@@ -11,7 +9,6 @@ import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.dialog.ReviewDialog;
-import net.miz_hi.smileessence.event.Event;
 import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.twitter.TwitterManager;
 import twitter4j.StatusUpdate;
@@ -33,20 +30,20 @@ public class StatusCommandReview extends StatusCommand implements IHideable
 	@Override
 	public String getName()
 	{
-		return "ƒŒƒrƒ…[‚ğ‘‚­";
+		return "ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚’æ›¸ã";
 	}
 
 	@Override
 	public void workOnUiThread()
 	{
-		final ReviewDialog reviewDialog = new ReviewDialog(activity, "ƒcƒC[ƒg‚ğ•]‰¿‚µ‚æ‚¤");
+		final ReviewDialog reviewDialog = new ReviewDialog(activity, "ãƒ„ã‚¤ãƒ¼ãƒˆã‚’è©•ä¾¡ã—ã‚ˆã†");
 
 		reviewDialog.setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(DialogInterface dialog, int which)
 			{
-				if(which == dialog.BUTTON_POSITIVE)
+				if(which == DialogInterface.BUTTON_POSITIVE)
 				{
 					int star = reviewDialog.getRates();
 					StringBuilder builder = new StringBuilder();
@@ -54,15 +51,15 @@ public class StatusCommandReview extends StatusCommand implements IHideable
 					{
 						if (i < star)
 						{
-							builder.append("š");
+							builder.append("â˜…");
 						}
 						else
 						{
-							builder.append("™");
+							builder.append("â˜†");
 						}
 					}
 					builder.append("\r\n");
-					builder.append("ƒRƒƒ“ƒg: ");
+					builder.append("ã‚³ãƒ¡ãƒ³ãƒˆ: ");
 					builder.append(reviewDialog.getText());
 					builder.append("\r\n");
 					builder.append("@");

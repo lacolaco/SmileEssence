@@ -4,7 +4,6 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.event.EventModel;
 import net.miz_hi.smileessence.menu.EventMenu;
-import net.miz_hi.smileessence.util.ColorUtils;
 import net.miz_hi.smileessence.util.UiHandler;
 import android.app.Activity;
 import android.view.View;

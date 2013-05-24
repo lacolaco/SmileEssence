@@ -65,7 +65,7 @@ public class ExpandMenuListAdapter extends BaseExpandableListAdapter
 			{
 				if(item instanceof IConfirmable && Client.<Boolean>getPreferenceValue(EnumPreferenceKey.CONFIRM_DIALOG))
 				{
-					ConfirmDialog.show(activity, "Às‚µ‚Ü‚·‚©H", new Runnable()
+					ConfirmDialog.show(activity, "å®Ÿè¡Œã—ã¾ã™ã‹ï¼Ÿ", new Runnable()
 					{
 						@Override
 						public void run()

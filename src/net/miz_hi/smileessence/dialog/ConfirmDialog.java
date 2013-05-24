@@ -4,15 +4,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.widget.FrameLayout;
 
 public class ConfirmDialog
 {
 
 	private Activity activity;
 	private String textTitle;
-	private String textPositive = "ÇÕÇ¢";
-	private String textNegative = "Ç¢Ç¢Ç¶";
+	private String textPositive = "„ÅØ„ÅÑ";
+	private String textNegative = "„ÅÑ„ÅÑ„Åà";
 	private OnClickListener listener;
 
 	public ConfirmDialog(Activity activity, String title)
@@ -59,7 +58,6 @@ public class ConfirmDialog
 	public static void show(Activity activity, String text, final Runnable onYes, final Runnable onNo)
 	{
 		ConfirmDialog helper = new ConfirmDialog(activity, text);
-		FrameLayout frame = new FrameLayout(activity);
 		OnClickListener listener = new OnClickListener()
 		{
 			

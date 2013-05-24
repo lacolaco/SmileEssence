@@ -1,7 +1,5 @@
 package net.miz_hi.smileessence.listener;
 
-import java.util.List;
-
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.util.StringUtils;
 import android.content.Context;
@@ -11,8 +9,6 @@ import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
-
-import com.twitter.Extractor;
 
 public class PostEditTextListener implements TextWatcher, OnFocusChangeListener
 {

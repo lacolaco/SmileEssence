@@ -23,7 +23,7 @@ public class StatusCommandFavAndRetweet extends StatusCommand implements IHideab
 	@Override
 	public String getName()
 	{
-		return "‚Ó‚Ÿ‚Ú‚Á‚ÄƒŠƒcƒC[ƒg‚·‚é";
+		return "ãµãã¼ã£ã¦ãƒªãƒ„ã‚¤ãƒ¼ãƒˆ";
 	}
 
 	@Override

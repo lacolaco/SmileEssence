@@ -4,17 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Future;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.async.AsyncFavoriteTask;
-import net.miz_hi.smileessence.async.AsyncRetweetTask;
-import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.CommandAddTemplate;
 import net.miz_hi.smileessence.command.CommandOpenUrl;
 import net.miz_hi.smileessence.command.ICommand;
-import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.command.post.CommandAppendHashtag;
 import net.miz_hi.smileessence.command.status.StatusCommandChaseRelation;
 import net.miz_hi.smileessence.command.status.StatusCommandClipboard;
@@ -35,17 +30,11 @@ import net.miz_hi.smileessence.command.status.StatusCommandUnOffRetweet;
 import net.miz_hi.smileessence.command.status.StatusCommandUnfavorite;
 import net.miz_hi.smileessence.command.status.StatusCommandWarotaRT;
 import net.miz_hi.smileessence.command.user.UserCommandAddReply;
-import net.miz_hi.smileessence.command.user.UserCommandFollow;
-import net.miz_hi.smileessence.command.user.UserCommandOpenFavstar;
 import net.miz_hi.smileessence.command.user.UserCommandOpenInfo;
-import net.miz_hi.smileessence.command.user.UserCommandOpenPage;
-import net.miz_hi.smileessence.command.user.UserCommandRemove;
 import net.miz_hi.smileessence.command.user.UserCommandReply;
 import net.miz_hi.smileessence.dialog.ExpandMenuDialog;
 import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusViewFactory;
-import net.miz_hi.smileessence.twitter.TwitterManager;
-import net.miz_hi.smileessence.util.UiHandler;
 import twitter4j.HashtagEntity;
 import twitter4j.MediaEntity;
 import twitter4j.URLEntity;
@@ -268,7 +257,7 @@ public class StatusMenu extends ExpandMenuDialog
 		{
 			list.add("URL");
 		}		
-		list.add("ÉRÉ}ÉìÉh");
+		list.add("„Ç≥„Éû„É≥„Éâ");
 		for (String name : getUsersList())
 		{
 			list.add("@" + name);
@@ -276,7 +265,7 @@ public class StatusMenu extends ExpandMenuDialog
 		List<ICommand> hashtag = getHashtagMenu();
 		if(!hashtag.isEmpty())
 		{
-			list.add("ÉnÉbÉVÉÖÉ^ÉO");
+			list.add("„Éè„ÉÉ„Ç∑„É•„Çø„Ç∞");
 		}	
 		return list;
 	}

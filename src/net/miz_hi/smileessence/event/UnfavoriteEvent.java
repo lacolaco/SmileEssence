@@ -15,7 +15,7 @@ public class UnfavoriteEvent extends StatusEventModel implements IAttackEvent
 	public String getHeaderText()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(source.screenName).append("‚É‚ ‚ñ‚Ó‚Ÿ‚Ú‚³‚ê‚½");
+		sb.append(source.screenName).append("ã«ã‚ã‚“ãµãã¼ã•ã‚ŒãŸ");
 		return sb.toString();
 	}
 

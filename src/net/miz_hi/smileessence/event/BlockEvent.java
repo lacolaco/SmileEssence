@@ -13,7 +13,7 @@ public class BlockEvent extends UserEvent
 	@Override
 	public String getHeaderText()
 	{
-		return source.screenName + "‚ÉƒuƒƒbƒN‚³‚ê‚½";
+		return source.screenName + "ã«ãƒ–ãƒ­ãƒƒã‚¯ã•ã‚ŒãŸ";
 	}
 
 }

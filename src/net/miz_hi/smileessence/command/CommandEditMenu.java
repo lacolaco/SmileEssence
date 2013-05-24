@@ -26,14 +26,14 @@ public class CommandEditMenu extends MenuCommand
 	@Override
 	public String getName()
 	{
-		return "ƒƒjƒ…[•\¦İ’è";
+		return "ãƒ¡ãƒ‹ãƒ¥ãƒ¼è¡¨ç¤ºè¨­å®š";
 	}
 
 	@Override
 	public void workOnUiThread()
 	{
 		final CheckBoxListDialog listDialog = new CheckBoxListDialog(activity);
-		listDialog.setTitle("•\¦‚·‚é€–Ú‚ğİ’è‚µ‚Ä‚­‚¾‚³‚¢");
+		listDialog.setTitle("è¡¨ç¤ºã™ã‚‹é …ç›®ã‚’è¨­å®šã—ã¦ãã ã•ã„");
 		
 		ArrayList<CheckBoxItem> list = new ArrayList<CheckBoxItem>();
 		final HashMap<CheckBoxItem, ICommand> map = new HashMap<CheckBoxItem, ICommand>();

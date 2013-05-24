@@ -1,12 +1,9 @@
 package net.miz_hi.smileessence.listener;
 
-import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.data.extra.ExtraWord;
 import net.miz_hi.smileessence.data.extra.ExtraWords;
 import net.miz_hi.smileessence.dialog.ConfirmDialog;
 import net.miz_hi.smileessence.dialog.ContentDialog;
-import net.miz_hi.smileessence.util.ColorUtils;
 import net.miz_hi.smileessence.util.CustomListAdapter;
 import net.miz_hi.smileessence.util.UiHandler;
 import android.app.Activity;
@@ -14,17 +11,15 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
 public class ExtraWordOnClickListener implements OnClickListener, OnLongClickListener
 {
-	private CustomListAdapter adapter;
+	private CustomListAdapter<ExtraWord> adapter;
 	private ExtraWord extraWord;
 	private Activity activity;
 
-	public ExtraWordOnClickListener(CustomListAdapter adapter, Activity activity, ExtraWord extraWord)
+	public ExtraWordOnClickListener(CustomListAdapter<ExtraWord> adapter, Activity activity, ExtraWord extraWord)
 	{
 		this.adapter = adapter;
 		this.activity = activity;
@@ -37,7 +32,7 @@ public class ExtraWordOnClickListener implements OnClickListener, OnLongClickLis
 		final EditText editText = new EditText(activity);
 		editText.setText(extraWord.getText());
 
-		ContentDialog dialog = new ContentDialog(activity, "ï“èW");
+		ContentDialog dialog = new ContentDialog(activity, "Á∑®ÈõÜ");
 		dialog.setContentView(editText);
 		dialog.setOnClickListener(new DialogInterface.OnClickListener()
 		{
@@ -68,7 +63,7 @@ public class ExtraWordOnClickListener implements OnClickListener, OnLongClickLis
 	@Override
 	public boolean onLongClick(final View v)
 	{
-		ConfirmDialog.show(activity, "çÌèúÇµÇƒÇÊÇÎÇµÇ¢Ç≈Ç∑Ç©ÅH", new Runnable()
+		ConfirmDialog.show(activity, "ÂâäÈô§„Åó„Å¶„Çà„Çç„Åó„ÅÑ„Åß„Åô„ÅãÔºü", new Runnable()
 		{
 
 			@Override

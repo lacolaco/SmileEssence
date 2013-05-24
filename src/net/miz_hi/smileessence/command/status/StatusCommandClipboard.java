@@ -18,7 +18,7 @@ public class StatusCommandClipboard extends StatusCommand implements IHideable
 	@Override
 	public String getName()
 	{
-		return "–{•¶‚ğƒNƒŠƒbƒvƒ{[ƒh‚ÖƒRƒs[";
+		return "ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã«ã‚³ãƒ”ãƒ¼";
 	}
 
 	@Override
@@ -28,11 +28,11 @@ public class StatusCommandClipboard extends StatusCommand implements IHideable
 		{
 			ClipboardManager manager = (ClipboardManager) Client.getApplication().getSystemService(Context.CLIPBOARD_SERVICE);
 			manager.setText(status.text);
-			Notifier.info("ƒRƒs[‚µ‚Ü‚µ‚½");
+			Notifier.info("ï¿½Rï¿½sï¿½[ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½");
 		}
 		catch (Exception e)
 		{
-			Notifier.alert("ƒRƒs[¸”s‚µ‚Ü‚µ‚½");
+			Notifier.alert("ï¿½Rï¿½sï¿½[ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½");
 		}
 	}
 

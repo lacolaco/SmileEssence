@@ -25,13 +25,13 @@ public class StatusCommandUnOffFav extends StatusCommand implements IHideable, I
 	@Override
 	public String getName()
 	{
-		return "”ñŒö®‚Ó‚Ÿ‚Ú";
+		return "éå…¬å¼ãµãã¼";
 	}
 
 	@Override
 	public void workOnUiThread()
 	{
-		String str = "@" + status.user.screenName + " ‚Áš";
+		String str = "@" + status.user.screenName + " ã£â˜…";
 		StatusUpdate update = new StatusUpdate(str);
 		update.setInReplyToStatusId(status.statusId);
 		new AsyncFavoriteTask(status.statusId).addToQueue();

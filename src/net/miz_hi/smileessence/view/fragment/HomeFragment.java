@@ -1,12 +1,9 @@
 package net.miz_hi.smileessence.view.fragment;
 
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.listener.TimelineScrollListener;
 import net.miz_hi.smileessence.system.MainSystem;
-import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.util.NamedFragment;
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

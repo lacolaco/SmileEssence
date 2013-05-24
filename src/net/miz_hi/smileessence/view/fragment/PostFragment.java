@@ -226,7 +226,7 @@ public class PostFragment extends NamedFragment implements OnClickListener
 					public void run()
 					{
 						Options opt = new Options();
-						opt.inPurgeable = true; // GC‰Â”\‚É‚·‚é
+						opt.inPurgeable = true; // GCå¯èƒ½ã«ã™ã‚‹
 						opt.inSampleSize = 2;
 						Bitmap bm = BitmapFactory.decodeFile(path, opt);
 						imagePict.setImageBitmap(bm);
@@ -257,7 +257,7 @@ public class PostFragment extends NamedFragment implements OnClickListener
 	{
 		if(imagePict.isShown())
 		{
-			ConfirmDialog.show(MainActivity.getInstance(), "‰æ‘œ‚Ì“Še‚ğæ‚èÁ‚µ‚Ü‚·‚©H", new Runnable()
+			ConfirmDialog.show(MainActivity.getInstance(), "ç”»åƒã®æŠ•ç¨¿ã‚’å–ã‚Šæ¶ˆã—ã¾ã™ã‹ï¼Ÿ", new Runnable()
 			{
 
 				@Override
@@ -265,7 +265,7 @@ public class PostFragment extends NamedFragment implements OnClickListener
 				{
 					PostSystem.setPicturePath(null);
 					imagePict.setVisibility(View.GONE);
-					Notifier.info("æ‚èÁ‚µ‚Ü‚µ‚½");
+					Notifier.info("å–ã‚Šæ¶ˆã—ã¾ã—ãŸ");
 				}
 			});
 		}
@@ -313,12 +313,12 @@ public class PostFragment extends NamedFragment implements OnClickListener
 	{
 		ContentValues values = new ContentValues();
 		String filename = System.currentTimeMillis() + ".jpg";
-		// •K—v‚Èî•ñ‚ğ‹l‚ß‚é
+		// å¿…è¦ãªæƒ…å ±ã‚’è©°ã‚ã‚‹
 		values.put(MediaColumns.TITLE, filename);
 		values.put(MediaColumns.MIME_TYPE, "image/jpeg");
-		// Uri‚ğæ“¾‚µ‚ÄŠo‚¦‚Ä‚¨‚­AIntent‚É‚à•Û‘¶æ‚Æ‚µ‚Ä“n‚·
+		// Uriã‚’å–å¾—ã—ã¦è¦šãˆã¦ãŠãã€Intentã«ã‚‚ä¿å­˜å…ˆã¨ã—ã¦æ¸¡ã™
 		MainSystem.getInstance().tempFilePath = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-		// ƒCƒ“ƒeƒ“ƒg‚Ìİ’è
+		// ã‚¤ãƒ³ãƒ†ãƒ³ãƒˆã®è¨­å®š
 		Intent intent = new Intent();
 		intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, MainSystem.getInstance().tempFilePath);
@@ -362,7 +362,7 @@ public class PostFragment extends NamedFragment implements OnClickListener
 			}
 			case R.id.imBtn_clean:
 			{
-				ConfirmDialog.show(getActivity(), "‘SÁ‹‚µ‚Ü‚·‚©H", new Runnable()
+				ConfirmDialog.show(getActivity(), "å…¨æ¶ˆå»ã—ã¾ã™ã‹ï¼Ÿ", new Runnable()
 				{
 					@Override
 					public void run()

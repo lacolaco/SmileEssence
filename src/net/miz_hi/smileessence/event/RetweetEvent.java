@@ -15,7 +15,7 @@ public class RetweetEvent extends StatusEventModel implements IAttackEvent
 	public String getHeaderText()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(source.screenName).append("にリツイートされた");
+		sb.append(source.screenName).append("縺ｫ繝ｪ繝�繧､繝ｼ繝医＆繧後◆");
 		return sb.toString();
 	}
 }

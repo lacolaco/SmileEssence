@@ -1,7 +1,5 @@
 package net.miz_hi.smileessence.dialog;
 
-import java.util.zip.Inflater;
-
 import net.miz_hi.smileessence.R;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,9 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RatingBar;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.TextView;
 
 public class ReviewDialog
 {

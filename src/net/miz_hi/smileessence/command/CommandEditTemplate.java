@@ -17,7 +17,7 @@ public class CommandEditTemplate extends MenuCommand
 	@Override
 	public String getName()
 	{
-		return "’èŒ^•¶‚ÌŠÇ—";
+		return "å®šå‹æ–‡ã®ç®¡ç†";
 	}
 
 	@Override

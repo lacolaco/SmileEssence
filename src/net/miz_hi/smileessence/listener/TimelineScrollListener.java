@@ -7,9 +7,9 @@ import android.widget.AbsListView.OnScrollListener;
 public class TimelineScrollListener implements OnScrollListener
 {
 
-	private CustomListAdapter adapter;
+	private CustomListAdapter<?> adapter;
 
-	public TimelineScrollListener(CustomListAdapter adapter)
+	public TimelineScrollListener(CustomListAdapter<?> adapter)
 	{
 		this.adapter = adapter;
 	}

@@ -11,6 +11,7 @@ import twitter4j.User;
 import android.app.Activity;
 import android.view.Gravity;
 import android.widget.Toast;
+import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -53,8 +54,10 @@ public class Notifier
 	
 	private static Style getStyle(Style type)
 	{
+		Configuration.Builder config = new Configuration.Builder();
+		config.setDuration(800);
 		Style.Builder builder = new Style.Builder();
-		builder.setHeight(70).setDuration(800).setGravity(Gravity.CENTER);
+		builder.setHeight(70).setConfiguration(config.build()).setGravity(Gravity.CENTER);
 		if(type == Style.INFO)
 		{
 			builder.setBackgroundColorValue(Style.holoBlueLight);
@@ -106,7 +109,7 @@ public class Notifier
 					
 					if(counterSourceUser.countUp())
 					{
-						return new Event(se.source.screenName + "‚©‚çUŒ‚‚ğó‚¯‚Ä‚¢‚Ü‚·");
+						return new Event(se.source.screenName + "ã‹ã‚‰æ”»æ’ƒã‚’å—ã‘ã¦ã„ã¾ã™");
 					}
 				}
 				
@@ -123,7 +126,7 @@ public class Notifier
 					}
 					if(counterTargetStatus.countUp())
 					{
-						return new Event("‚ ‚È‚½‚ÌƒcƒC[ƒg‚ªUŒ‚‚ğó‚¯‚Ä‚¢‚Ü‚·");
+						return new Event("ã‚ãªãŸã®ãƒ„ã‚¤ãƒ¼ãƒˆãŒæ”»æ’ƒã‚’å—ã‘ã¦ã„ã¾ã™");
 					}
 				}
 			}

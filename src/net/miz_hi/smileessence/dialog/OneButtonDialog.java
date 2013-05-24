@@ -1,19 +1,13 @@
 package net.miz_hi.smileessence.dialog;
 
-import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.auth.Consumers;
-import net.miz_hi.smileessence.auth.Consumers.Consumer;
-import net.miz_hi.smileessence.view.activity.MainActivity;
 import android.app.Activity;
 import android.app.Dialog;
-import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.TextView;
 
 public class OneButtonDialog
 {

@@ -15,7 +15,7 @@ public class CommandParseMorse extends MenuCommand
 	@Override
 	public String getName()
 	{
-		return "ƒ‚[ƒ‹ƒX‚É•ÏŠ·";
+		return "ãƒ¢ãƒ¼ãƒ«ã‚¹ã«å¤‰æ›";
 	}
 
 	@Override

@@ -5,13 +5,11 @@ import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.data.UserModel;
 import net.miz_hi.smileessence.data.UserStore;
 import net.miz_hi.smileessence.twitter.TwitterManager;
-import net.miz_hi.smileessence.util.UiHandler;
 import net.miz_hi.smileessence.view.activity.MainActivity;
 import net.miz_hi.smileessence.view.fragment.UserInfoFragment;
 import twitter4j.User;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.view.Window;
 
 public class UserCommandOpenInfo extends UserCommand
 {
@@ -27,7 +25,7 @@ public class UserCommandOpenInfo extends UserCommand
 	@Override
 	public String getName()
 	{
-		return "ƒ†[ƒU[î•ñ‚ğŒ©‚é";
+		return "ãƒ¦ãƒ¼ã‚¶ãƒ¼æƒ…å ±ã‚’è¦‹ã‚‹";
 	}
 
 	@Override

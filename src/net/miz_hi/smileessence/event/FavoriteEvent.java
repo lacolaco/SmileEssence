@@ -16,7 +16,7 @@ public class FavoriteEvent extends StatusEventModel implements IAttackEvent
 	public String getHeaderText()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(source.screenName).append("�ɂӂ��ڂ�ꂽ");
+		sb.append(source.screenName).append("にふぁぼられた");
 		return sb.toString();
 	}
 }

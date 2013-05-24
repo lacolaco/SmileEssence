@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lint>
-    <issue id="HandlerLeak" severity="ignore" />
-    <issue id="ValidFragment">
-        <ignore path="src\net\miz_hi\smileessence\view\HistoryListPageFragment.java" />
-    </issue>
-</lint>

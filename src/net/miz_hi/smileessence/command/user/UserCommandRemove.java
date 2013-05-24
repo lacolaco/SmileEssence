@@ -17,7 +17,7 @@ public class UserCommandRemove extends UserCommand implements IConfirmable
 	@Override
 	public String getName()
 	{
-		return "ƒŠƒ€[ƒ”‚·‚é";
+		return "ãƒªãƒ ãƒ¼ãƒ´ã™ã‚‹";
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class UserCommandRemove extends UserCommand implements IConfirmable
 			{
 				if (TwitterManager.remove(Client.getMainAccount(), userName))
 				{
-					Notifier.info("ƒŠƒ€[ƒ”‚µ‚Ü‚µ‚½");
+					Notifier.info("ãƒªãƒ ãƒ¼ãƒ´ã—ã¾ã—ãŸ");
 				}
 			}
 		});

@@ -17,7 +17,7 @@ public class UserCommandFollow extends UserCommand implements IConfirmable
 	@Override
 	public String getName()
 	{
-		return "フォローする";
+		return "繝輔か繝ｭ繝ｼ縺吶ｋ";
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class UserCommandFollow extends UserCommand implements IConfirmable
 			{
 				if (TwitterManager.follow(Client.getMainAccount(), userName))
 				{
-					Notifier.info("フォローしました");
+					Notifier.info("繝輔か繝ｭ繝ｼ縺励∪縺励◆");
 				}
 			}
 		});

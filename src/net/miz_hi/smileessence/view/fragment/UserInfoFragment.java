@@ -108,9 +108,9 @@ public class UserInfoFragment extends NamedFragment implements OnClickListener, 
 				{
 					locateView.setText(user.location);
 				}
-				isFollowingView.setText(user.isFriend(force) ? "ƒtƒHƒ[‚µ‚Ä‚¢‚Ü‚·" : user.isMe() ? "‚ ‚È‚½‚Å‚·" : "ƒtƒHƒ[‚µ‚Ä‚¢‚Ü‚¹‚ñ");
-				isFollowedView.setText(user.isFollower(force) ? "ƒtƒHƒ[‚³‚ê‚Ä‚¢‚Ü‚·" : user.isMe() ? "‚ ‚È‚½‚Å‚·" : "ƒtƒHƒ[‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
-				isProtectedView.setText(user.isProtected ? "”ñŒöŠJ" : "ŒöŠJ");
+				isFollowingView.setText(user.isFriend(force) ? "ãƒ•ã‚©ãƒ­ãƒ¼ã—ã¦ã„ã¾ã™" : user.isMe() ? "ã‚ãªãŸã§ã™" : "ãƒ•ã‚©ãƒ­ãƒ¼ã—ã¦ã„ã¾ã›ã‚“");
+				isFollowedView.setText(user.isFollower(force) ? "ãƒ•ã‚©ãƒ­ãƒ¼ã•ã‚Œã¦ã„ã¾ã™" : user.isMe() ? "ã‚ãªãŸã§ã™" : "ãƒ•ã‚©ãƒ­ãƒ¼ã•ã‚Œã¦ã„ã¾ã›ã‚“");
+				isProtectedView.setText(user.isProtected ? "éå…¬é–‹" : "å…¬é–‹");
 				descriptionView.setText(user.description);
 				tweetcountView.setText(Integer.toString(user.statusCount));
 				followingView.setText(Integer.toString(user.friendCount));

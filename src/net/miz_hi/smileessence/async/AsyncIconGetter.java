@@ -37,7 +37,7 @@ public class AsyncIconGetter implements Callable<Bitmap>
 			connection.connect();
 			InputStream input = connection.getInputStream();
 			Options opt = new Options();
-			opt.inPurgeable = true; // GC‰Â”\‚É‚·‚é
+			opt.inPurgeable = true; // GC
 			Bitmap bm = BitmapFactory.decodeStream(input, null, opt);
 			File file = Client.getApplicationFile(IconCaches.genIconName(user));
 			FileOutputStream fos = new FileOutputStream(file);

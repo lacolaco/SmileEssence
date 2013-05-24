@@ -2,16 +2,12 @@ package net.miz_hi.smileessence.system;
 
 import net.miz_hi.smileessence.command.status.StatusCommandChaseRelation;
 import net.miz_hi.smileessence.command.user.UserCommandOpenInfo;
-import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusUtils;
 import net.miz_hi.smileessence.util.LogHelper;
-import net.miz_hi.smileessence.util.StringUtils;
-import net.miz_hi.smileessence.util.UiHandler;
 import net.miz_hi.smileessence.view.activity.MainActivity;
 import android.content.Intent;
 import android.net.Uri;
-import android.widget.Toast;
 
 public class IntentRouter
 {

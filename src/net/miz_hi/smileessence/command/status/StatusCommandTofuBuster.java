@@ -44,7 +44,7 @@ public class StatusCommandTofuBuster extends StatusCommand implements IHideable
 		}
 		catch(ActivityNotFoundException e)
 		{
-			Notifier.alert("TofuBusterがインストールされていません");
+			Notifier.alert("TofuBuster縺後う繝ｳ繧ｹ繝医�ｼ繝ｫ縺輔ｌ縺ｦ縺�縺ｾ縺帙ｓ");
 		}
 	}
 }

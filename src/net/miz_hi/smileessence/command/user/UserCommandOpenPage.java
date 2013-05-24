@@ -18,7 +18,7 @@ public class UserCommandOpenPage extends UserCommand
 	@Override
 	public String getName()
 	{
-		return "ƒ†[ƒU[ƒy[ƒW‚ğŠJ‚­";
+		return "ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒšãƒ¼ã‚¸ã‚’é–‹ã";
 	}
 
 	@Override

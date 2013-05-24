@@ -13,7 +13,7 @@ public class DirectMessageEvent extends UserEvent
 	@Override
 	public String getHeaderText()
 	{
-		return source.screenName + "‚©‚çDM‚ğó‚¯æ‚Á‚½";
+		return source.screenName + "ã‹ã‚‰DMã‚’å—ä¿¡";
 	}
 
 }

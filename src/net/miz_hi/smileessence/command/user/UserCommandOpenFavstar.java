@@ -18,7 +18,7 @@ public class UserCommandOpenFavstar extends UserCommand
 	@Override
 	public String getName()
 	{
-		return "ƒ†[ƒU[‚ÌFavstar‚ğŠJ‚­";
+		return "Favstarã‚’é–‹ã";
 	}
 
 	@Override

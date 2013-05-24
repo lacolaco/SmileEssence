@@ -17,7 +17,7 @@ public class StatusCommandUnOffRetweet extends StatusCommand implements IHideabl
 	@Override
 	public String getName()
 	{
-		return "”ñŒö®RT";
+		return "éå…¬å¼RT";
 	}
 
 	@Override

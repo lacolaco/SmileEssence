@@ -1,13 +1,12 @@
 package net.miz_hi.smileessence.command.status;
 
-import twitter4j.StatusUpdate;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
-import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.status.StatusModel;
+import twitter4j.StatusUpdate;
 
 public class StatusCommandNanigaja extends StatusCommand implements IHideable, IConfirmable
 {

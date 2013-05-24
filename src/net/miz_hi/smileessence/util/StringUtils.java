@@ -4,11 +4,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import net.miz_hi.smileessence.core.Notifier;
+import android.net.Uri;
 
 import com.twitter.Extractor;
-
-import android.net.Uri;
 
 public class StringUtils
 {
@@ -54,7 +52,7 @@ public class StringUtils
 	    Extractor extractor = new Extractor();
 	    List<String> urls = extractor.extractURLs(text);
 	    for (String url : urls) {
-	        count -= (url.length() - 22); //面倒なのでハードコーディング
+	        count -= (url.length() - 22); 
 	        if (url.startsWith("https://")) {
 	            count += 1;
 	        }

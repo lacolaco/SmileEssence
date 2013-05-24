@@ -13,8 +13,7 @@ public class StatusOnClickListener implements OnClickListener
 {
 	private Activity activity;
 	private StatusModel model;
-	private static boolean wasTouched = false;
-
+	
 	public StatusOnClickListener(Activity activity, StatusModel model)
 	{
 		this.activity = activity;

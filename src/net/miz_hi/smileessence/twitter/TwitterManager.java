@@ -2,17 +2,11 @@ package net.miz_hi.smileessence.twitter;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
-
-import android.text.TextUtils;
 
 import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.util.CountUpInteger;
-import net.miz_hi.smileessence.util.StringUtils;
 import twitter4j.Paging;
 import twitter4j.Relationship;
 import twitter4j.ResponseList;
@@ -25,6 +19,7 @@ import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 import twitter4j.User;
 import twitter4j.conf.ConfigurationBuilder;
+import android.text.TextUtils;
 
 public class TwitterManager
 {
@@ -50,6 +45,7 @@ public class TwitterManager
 		cb.setOAuthConsumerSecret(account.getConsumerSecret());
 		cb.setOAuthAccessToken(account.getAccessToken());
 		cb.setOAuthAccessTokenSecret(account.getAccessTokenSecret());
+		cb.setUseSSL(true);
 		cb.setMediaProvider("TWITTER");
 		return cb;
 	}
@@ -110,6 +106,11 @@ public class TwitterManager
 			String message = e.getErrorMessage();
 			if (code == 403)
 			{
+				if(message == null)
+				{
+					return false;
+				}
+				
 				if(message.equals(ERROR_STATUS_DUPLICATE))
 				{
 					if(!count.countUp())

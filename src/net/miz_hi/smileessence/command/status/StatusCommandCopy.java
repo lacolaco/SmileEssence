@@ -1,16 +1,11 @@
 package net.miz_hi.smileessence.command.status;
 
-import java.util.concurrent.Future;
-
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.AsyncFavoriteTask;
 import net.miz_hi.smileessence.async.AsyncTweetTask;
-import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.command.IHideable;
-import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.status.StatusModel;
-import net.miz_hi.smileessence.twitter.TwitterManager;
 import twitter4j.StatusUpdate;
 
 public class StatusCommandCopy extends StatusCommand implements IHideable, IConfirmable
@@ -30,7 +25,7 @@ public class StatusCommandCopy extends StatusCommand implements IHideable, IConf
 	@Override
 	public String getName()
 	{
-		return "ƒpƒN‚é";
+		return "ãƒ‘ã‚¯ã‚‹";
 	}
 
 	@Override

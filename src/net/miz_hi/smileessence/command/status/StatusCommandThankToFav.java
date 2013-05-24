@@ -24,13 +24,13 @@ public class StatusCommandThankToFav extends StatusCommand implements IHideable,
 	@Override
 	public String getName()
 	{
-		return "‚Ó‚Ÿ‚Ú‚ ‚è";
+		return "ãµãã¼ã‚ã‚Š";
 	}
 
 	@Override
 	public void workOnUiThread()
 	{
-		String str = "@" + status.user.screenName + " ‚Ó‚Ÿ‚Ú‚ ‚è(o^-')b" ;
+		String str = "@" + status.user.screenName + " ãµãã¼ã‚ã‚Š(o^-')b" ;
 		StatusUpdate update = new StatusUpdate(str);
 		update.setInReplyToStatusId(status.statusId);
 		new AsyncFavoriteTask(status.statusId).addToQueue();
@@ -46,7 +46,7 @@ public class StatusCommandThankToFav extends StatusCommand implements IHideable,
 				{
 					if(f.get())
 					{
-						Notifier.info("‚Ó‚Ÿ‚Ú‚ ‚è‚µ‚Ü‚µ‚½");
+						Notifier.info("ãµãã¼ã‚ã‚Šã—ã¾ã—ãŸ");
 					}
 					else
 					{

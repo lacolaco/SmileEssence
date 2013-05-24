@@ -3,18 +3,10 @@ package net.miz_hi.smileessence.event;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.data.IconCaches;
-import net.miz_hi.smileessence.preference.EnumPreferenceKey;
-import net.miz_hi.smileessence.status.StatusViewFactory;
-import net.miz_hi.smileessence.util.ColorUtils;
-import net.miz_hi.smileessence.util.Morse;
 import net.miz_hi.smileessence.view.activity.MainActivity;
-import android.app.Activity;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class EventViewFactory

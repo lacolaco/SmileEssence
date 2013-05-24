@@ -26,7 +26,7 @@ public class StatusCommandCongrats extends StatusCommand implements IHideable, I
 	@Override
 	public String getName()
 	{
-		return "‚¨j‚¢‚·‚é";
+		return "ãŠç¥ã„ã™ã‚‹";
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class StatusCommandCongrats extends StatusCommand implements IHideable, I
 			favCount = 10000;
 		}
 
-		String str = "@" + status.user.screenName + " Congrats on your " + favCount + "š tweet! http://favstar.fm/t/" + status.statusId;
+		String str = "@" + status.user.screenName + " Congrats on your " + favCount + "â˜… tweet! http://favstar.fm/t/" + status.statusId;
 		StatusUpdate update = new StatusUpdate(str);
 		update.setInReplyToStatusId(status.statusId);
 		new AsyncFavoriteTask(status.statusId).addToQueue();
@@ -71,7 +71,7 @@ public class StatusCommandCongrats extends StatusCommand implements IHideable, I
 				{
 					if(f.get())
 					{
-						Notifier.info("‚¨j‚¢‚µ‚Ü‚µ‚½");
+						Notifier.info("ãŠç¥ã„ã—ã¾ã—ãŸ");
 					}
 					else
 					{

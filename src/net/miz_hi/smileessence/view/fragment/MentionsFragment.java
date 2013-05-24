@@ -4,13 +4,11 @@ import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.listener.TimelineScrollListener;
 import net.miz_hi.smileessence.system.MainSystem;
 import net.miz_hi.smileessence.util.NamedFragment;
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 

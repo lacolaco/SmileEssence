@@ -118,7 +118,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 		{
 			exceptionCount = 1;
 			arg0.printStackTrace();
-			Notifier.alert("Ú‘±‚ªØ‚ê‚Ü‚µ‚½");	
+			Notifier.alert("åˆ‡æ–­ãŒåˆ‡ã‚Œã¾ã—ãŸ");	
 		}
 	}
 
@@ -272,7 +272,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 	@Override
 	public void onConnect()
 	{
-		Notifier.info("Ú‘±‚µ‚Ü‚µ‚½");
+		Notifier.info("æ¥ç¶šã—ã¾ã—ãŸ");
 		exceptionCount = 0;
 	}
 

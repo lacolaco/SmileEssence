@@ -62,7 +62,7 @@ public class RelationSystem
 				StatusModel status = StatusUtils.getOrCreateStatusModel(fragment.getChasingId());	
 				adapter.addFirst(status);
 				long id = status.statusId;
-				//–¢—ˆ
+
 				for(StatusModel status1: StatusStore.getList())
 				{
 					if(status1.inReplyToStatusId == id)
@@ -73,7 +73,7 @@ public class RelationSystem
 					}
 				}
 				fragment.setChasingId(id);
-				//‰ß‹Ž
+				//ï¿½ß‹ï¿½
 				id = status.inReplyToStatusId;
 				while(id > -1)
 				{

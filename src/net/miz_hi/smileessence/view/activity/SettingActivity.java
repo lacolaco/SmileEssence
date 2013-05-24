@@ -14,14 +14,12 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.SwitchPreference;
 import android.view.ViewConfiguration;
-import android.widget.Toast;
 
 public class SettingActivity extends PreferenceActivity
 {
@@ -41,11 +39,11 @@ public class SettingActivity extends PreferenceActivity
 			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
-				final SeekBarDialog helper = new SeekBarDialog(SettingActivity.this, "ƒeƒLƒXƒgƒTƒCƒY");
+				final SeekBarDialog helper = new SeekBarDialog(SettingActivity.this, "ãƒ†ã‚­ã‚¹ãƒˆã‚µã‚¤ã‚º");
 				helper.setSeekBarMax(16);
 				helper.setSeekBarStart(Client.getTextSize() - 8);
 				helper.setLevelCorrect(8);
-				helper.setText("ƒfƒtƒHƒ‹ƒg = 10");
+				helper.setText("ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ = 10");
 				helper.setOnClickListener(new OnClickListener()
 				{
 					@Override
@@ -83,15 +81,15 @@ public class SettingActivity extends PreferenceActivity
 				{
 					footorFirstClick = false;
 					AlertDialog.Builder builder = new Builder(SettingActivity.this);
-					builder.setTitle("Œx");
+					builder.setTitle("è­¦å‘Š");
 					builder.setCancelable(false);
 					builder.setMessage(
-							"ƒtƒbƒ^[ƒo[‚ğƒIƒt‚É‚·‚é‚ÆA" +
-							"’[––‚Ìƒƒjƒ…[ƒL[ˆÈŠO‚ÅƒƒCƒ“ƒƒjƒ…[‚ğŠJ‚­‚±‚Æ‚ª‚Å‚«‚È‚­‚È‚è‚Ü‚·\r\n\r\n" +
-							"•K‚¸ƒ^ƒCƒ€ƒ‰ƒCƒ“‰æ–Ê‚Å" +
-							"’[––‚Ìƒƒjƒ…[ƒL[‚ª“®ì‚·‚é‚±‚Æ‚ğŠm”F‚µ‚½ã‚Å" +
-							"ƒIƒt‚É‚µ‚Ä‚­‚¾‚³‚¢\r\n\r\n" +
-							"ƒƒjƒ…[ƒL[‚ª‚È‚¢’[––‚Å‚Íâ‘Î‚ÉƒIƒt‚É‚µ‚È‚¢‚Å‚­‚¾‚³‚¢");
+							"ãƒ•ãƒƒã‚¿ãƒ¼ãƒãƒ¼ã‚’ã‚ªãƒ•ã«ã™ã‚‹ã¨ã€" +
+							"ç«¯æœ«ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚­ãƒ¼ä»¥å¤–ã§ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’é–‹ãã“ã¨ãŒã§ããªããªã‚Šã¾ã™\r\n\r\n" +
+							"å¿…ãšã‚¿ã‚¤ãƒ ãƒ©ã‚¤ãƒ³ç”»é¢ã§" +
+							"ç«¯æœ«ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚­ãƒ¼ãŒå‹•ä½œã™ã‚‹ã“ã¨ã‚’ç¢ºèªã—ãŸä¸Šã§" +
+							"ã‚ªãƒ•ã«ã—ã¦ãã ã•ã„\r\n\r\n" +
+							"ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚­ãƒ¼ãŒãªã„ç«¯æœ«ã§ã¯çµ¶å¯¾ã«ã‚ªãƒ•ã«ã—ãªã„ã§ãã ã•ã„");
 					builder.setPositiveButton("OK", new OnClickListener()
 					{
 
@@ -114,7 +112,7 @@ public class SettingActivity extends PreferenceActivity
 			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
-				ConfirmDialog helper = new ConfirmDialog(SettingActivity.this, "–{“–‚ÉƒŠƒZƒbƒg‚µ‚Ü‚·‚©H");
+				ConfirmDialog helper = new ConfirmDialog(SettingActivity.this, "æœ¬å½“ã«ãƒªã‚»ãƒƒãƒˆã—ã¾ã™ã‹ï¼Ÿ");
 				helper.setOnClickListener(new OnClickListener()
 				{
 					
@@ -125,7 +123,7 @@ public class SettingActivity extends PreferenceActivity
 						{
 							case DialogInterface.BUTTON_POSITIVE:
 							{
-								Notifier.toast("‘S‚Ä‚Ì”FØî•ñ‚ğƒŠƒZƒbƒg‚µ‚Ü‚·BÄ‹N“®‚µ‚Ä‚­‚¾‚³‚¢");
+								Notifier.toast("å…¨ã¦ã®èªè¨¼æƒ…å ±ã‚’ãƒªã‚»ãƒƒãƒˆã—ã¾ã™ã€‚å†èµ·å‹•ã—ã¦ãã ã•ã„");
 								AuthentificationDB.instance().deleteAll();
 								finish();
 								MainActivity.getInstance().finish();

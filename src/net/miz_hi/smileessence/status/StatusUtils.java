@@ -1,7 +1,6 @@
 package net.miz_hi.smileessence.status;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import net.miz_hi.smileessence.Client;

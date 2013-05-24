@@ -18,7 +18,7 @@ public class StatusCommandUnfavorite extends StatusCommand implements IHideable
 	@Override
 	public String getName()
 	{
-		return "‚¨‹C‚É“ü‚è‚ğíœ‚·‚é";
+		return "ãŠæ°—ã«å…¥ã‚Šã‚’å‰Šé™¤ã™ã‚‹";
 	}
 	
 	@Override
@@ -33,12 +33,12 @@ public class StatusCommandUnfavorite extends StatusCommand implements IHideable
 				try
 				{
 					TwitterManager.getTwitter().destroyFavorite(status.statusId);
-					Notifier.info("‚¨‹C‚É“ü‚è‚ğíœ‚µ‚Ü‚µ‚½");
+					Notifier.info("ãŠæ°—ã«å…¥ã‚Šã‚’å‰Šé™¤ã—ã¾ã—ãŸ");
 				}
 				catch (TwitterException e)
 				{
 					e.printStackTrace();
-					Notifier.alert("‚¨‹C‚É“ü‚è‚Ìíœ‚É¸”s‚µ‚Ü‚µ‚½");
+					Notifier.alert("ãŠæ°—ã«å…¥ã‚Šã®å‰Šé™¤ã«å¤±æ•—ã—ã¾ã—ãŸ");
 				}
 			}
 		});

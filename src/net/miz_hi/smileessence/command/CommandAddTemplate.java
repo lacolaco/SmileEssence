@@ -16,13 +16,13 @@ public class CommandAddTemplate extends MenuCommand
 	@Override
 	public String getName()
 	{
-		return "’èŒ^•¶‚É’Ç‰Á";
+		return "å®šå‹æ–‡ã«è¿½åŠ ";
 	}
 
 	@Override
 	public void workOnUiThread()
 	{
 		Templates.addTemplate(text);
-		Notifier.info("’Ç‰Á‚µ‚Ü‚µ‚½");
+		Notifier.info("è¿½åŠ ã—ã¾ã—ãŸ");
 	}
 }

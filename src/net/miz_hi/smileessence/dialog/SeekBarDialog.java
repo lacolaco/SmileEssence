@@ -1,6 +1,5 @@
 package net.miz_hi.smileessence.dialog;
 
-import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import android.app.Activity;
 import android.app.AlertDialog;

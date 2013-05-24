@@ -13,7 +13,7 @@ public class CommandReport extends MenuCommand
 	@Override
 	public String getName()
 	{
-		return "ìÒ‚ÖƒŒƒ|[ƒg‚ğ‘—‚é";
+		return "ä½œè€…ã«ãƒ¬ãƒãƒ¼ãƒˆã‚’é€ã‚‹";
 	}
 
 	@Override

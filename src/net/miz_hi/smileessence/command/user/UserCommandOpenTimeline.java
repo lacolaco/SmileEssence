@@ -21,7 +21,7 @@ public class UserCommandOpenTimeline extends UserCommand
 	@Override
 	public String getName()
 	{
-		return "ƒ^ƒCƒ€ƒ‰ƒCƒ“‚ğŠJ‚­";
+		return "ãƒ¦ãƒ¼ã‚¶ãƒ¼ã®ã‚¿ã‚¤ãƒ ãƒ©ã‚¤ãƒ³ã‚’é–‹ã";
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package net.miz_hi.smileessence.command.user;
 
 import net.miz_hi.smileessence.core.Notifier;
-import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.system.PostSystem;
 
 public class UserCommandAddReply extends UserCommand
@@ -15,13 +14,13 @@ public class UserCommandAddReply extends UserCommand
 	@Override
 	public String getName()
 	{
-		return "リプライ先に追加";
+		return "繝ｪ繝励Λ繧､蜈医↓霑ｽ蜉";
 	}
 
 	@Override
 	public void workOnUiThread()
 	{
 		PostSystem.addReply(userName);
-		Notifier.info(userName + "をリプライ先に追加しました");
+		Notifier.info(userName + "繧偵Μ繝励Λ繧､蜈医↓霑ｽ蜉縺励∪縺励◆");
 	}
 }

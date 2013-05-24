@@ -1,20 +1,8 @@
 package net.miz_hi.smileessence.view.fragment;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.listener.TimelineScrollListener;
-import net.miz_hi.smileessence.status.StatusListAdapter;
-import net.miz_hi.smileessence.status.StatusModel;
-import net.miz_hi.smileessence.status.StatusStore;
-import net.miz_hi.smileessence.status.StatusUtils;
-import net.miz_hi.smileessence.system.MainSystem;
 import net.miz_hi.smileessence.system.RelationSystem;
-import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.util.NamedFragment;
 import net.miz_hi.smileessence.view.IRemainable;
 import net.miz_hi.smileessence.view.IRemovable;
@@ -27,8 +15,6 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 @SuppressLint("ValidFragment")
 public class RelationFragment extends NamedFragment implements IRemovable, IRemainable

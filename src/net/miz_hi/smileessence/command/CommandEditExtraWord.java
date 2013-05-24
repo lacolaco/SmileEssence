@@ -1,7 +1,6 @@
 package net.miz_hi.smileessence.command;
 
 import net.miz_hi.smileessence.view.activity.ExtraWordActivity;
-import net.miz_hi.smileessence.view.activity.TemplateActivity;
 import android.app.Activity;
 import android.content.Intent;
 
@@ -18,7 +17,7 @@ public class CommandEditExtraWord extends MenuCommand
 	@Override
 	public String getName()
 	{
-		return "’Šoƒ[ƒh‚ÌŠÇ—";
+		return "æŠ½å‡ºãƒ¯ãƒ¼ãƒ‰ã®ç®¡ç†";
 	}
 
 	@Override

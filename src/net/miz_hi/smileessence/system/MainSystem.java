@@ -112,21 +112,21 @@ public class MainSystem
 						catch (Exception e)
 						{
 							e.printStackTrace();
-							Notifier.alert("ƒ^ƒCƒ€ƒ‰ƒCƒ“‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½");
+							Notifier.alert("ã‚¿ã‚¤ãƒ ãƒ©ã‚¤ãƒ³ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ");
 						}
 					}
 				});
 			}
 			else
 			{
-				Notifier.alert("Ú‘±o—ˆ‚Ü‚¹‚ñ");
+				Notifier.alert("æ¥ç¶šå‡ºæ¥ã¾ã›ã‚“");
 			}
 		}
 		else
 		{
 			authHelper = new AuthorizeHelper(activity, Consumers.getDedault());
 			//NOT AUTHOLIZED
-			OneButtonDialog.show(activity, "”FØ‚µ‚Ä‚­‚¾‚³‚¢", "”FØƒy[ƒWƒw", new Runnable()
+			OneButtonDialog.show(activity, "èªè¨¼ã—ã¦ãã ã•ã„", "èªè¨¼ãƒšãƒ¼ã‚¸ãƒ˜", new Runnable()
 			{
 				
 				@Override
@@ -202,12 +202,12 @@ public class MainSystem
 			c.moveToFirst();
 			String path = c.getString(c.getColumnIndex(MediaStore.MediaColumns.DATA));
 			PostSystem.setPicturePath(path).openPostPage();
-			Notifier.info("‰æ‘œ‚ğƒZƒbƒg‚µ‚Ü‚µ‚½");
+			Notifier.info("ç”»åƒã‚’ã‚»ãƒƒãƒˆã—ã¾ã—ãŸ");
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			Notifier.alert("¸”s‚µ‚Ü‚µ‚½");
+			Notifier.alert("å¤±æ•—ã—ã¾ã—ãŸ");
 		}
 	}
 

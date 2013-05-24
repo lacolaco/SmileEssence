@@ -1,18 +1,9 @@
 package net.miz_hi.smileessence.listener;
 
-import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.MyExecutor;
-import net.miz_hi.smileessence.core.Notifier;
-import net.miz_hi.smileessence.preference.EnumPreferenceKey;
-import net.miz_hi.smileessence.util.LogHelper;
-import net.miz_hi.smileessence.util.UiHandler;
 import net.miz_hi.smileessence.view.activity.MainActivity;
 import net.miz_hi.smileessence.view.fragment.PostFragment;
-import android.content.Context;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 public class PageChangeListener implements OnPageChangeListener
 {

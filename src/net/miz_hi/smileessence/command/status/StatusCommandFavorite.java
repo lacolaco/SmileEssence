@@ -1,12 +1,7 @@
 package net.miz_hi.smileessence.command.status;
 
-import java.util.concurrent.Future;
-
 import net.miz_hi.smileessence.async.AsyncFavoriteTask;
-import net.miz_hi.smileessence.async.MyExecutor;
-import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.status.StatusModel;
-import net.miz_hi.smileessence.twitter.TwitterManager;
 
 public class StatusCommandFavorite extends StatusCommand
 {
@@ -19,7 +14,7 @@ public class StatusCommandFavorite extends StatusCommand
 	@Override
 	public String getName()
 	{
-		return "�ӂ��ڂ�";
+		return "お気に入りに追加";
 	}
 
 	@Override

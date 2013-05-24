@@ -13,7 +13,7 @@ public class CommandReConnect extends MenuCommand
 	@Override
 	public String getName()
 	{
-		return "�Đڑ�";
+		return "再接続";
 	}
 
 	@Override

@@ -25,7 +25,7 @@ public class TemplateActivity extends Activity
 		setContentView(R.layout.listedit_layout);
 		
 		TextView titleView = (TextView)findViewById(R.id.listedit_title);
-		titleView.setText("’èŒ^•¶‚ÌŠÇ—");		
+		titleView.setText("å®šå‹æ–‡ã®ç®¡ç†");		
 		ListView listView = (ListView)findViewById(R.id.listedit_listview);
 		ImageButton buttonAdd = (ImageButton)findViewById(R.id.listedit_addbutton);
 		final TemplateListAdapter adapter = new TemplateListAdapter(this);
@@ -39,7 +39,7 @@ public class TemplateActivity extends Activity
 			public void onClick(View v)
 			{
 				final EditText editText = new EditText(TemplateActivity.this);
-				ContentDialog dialog = new ContentDialog(TemplateActivity.this, "•ÒW");
+				ContentDialog dialog = new ContentDialog(TemplateActivity.this, "ç·¨é›†");
 				dialog.setContentView(editText);
 				dialog.setOnClickListener(new DialogInterface.OnClickListener()
 				{
@@ -67,8 +67,8 @@ public class TemplateActivity extends Activity
 						}					
 					}
 				});
-				dialog.setTextPositive("Œˆ’è");
-				dialog.setTextNegative("ƒLƒƒƒ“ƒZƒ‹");
+				dialog.setTextPositive("æ±ºå®š");
+				dialog.setTextNegative("ã‚­ãƒ£ãƒ³ã‚»ãƒ«");
 				dialog.create().show();
 			}
 		});

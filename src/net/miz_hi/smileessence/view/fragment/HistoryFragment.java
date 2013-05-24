@@ -5,7 +5,6 @@ import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.listener.TimelineScrollListener;
 import net.miz_hi.smileessence.system.MainSystem;
 import net.miz_hi.smileessence.util.NamedFragment;
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class HistoryFragment extends NamedFragment
@@ -25,7 +23,7 @@ public class HistoryFragment extends NamedFragment
 		LinearLayout page = (LinearLayout) inflater.inflate(R.layout.listpage_layout, container, false);
 		ListView listView = (ListView)page.findViewById(R.id.listpage_listview);
 		TextView text = new TextView(getActivity());
-		text.setText("‚Ó‚Ÿ‚Ú‚ç‚ê‚½‚èAƒŠƒcƒC[ƒg‚³‚ê‚½‚è‚µ‚½—š—ğ‚ª•\¦‚³‚ê‚Ü‚·");
+		text.setText("ãµãã¼ã‚‰ã‚ŒãŸã‚Šã€ãƒªãƒ„ã‚¤ãƒ¼ãƒˆã•ã‚ŒãŸã‚Šã—ãŸå±¥æ­´ãŒè¡¨ç¤ºã•ã‚Œã¾ã™");
 		text.setTextColor(Client.getColor(R.color.Gray2));
 		text.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		text.setVisibility(View.GONE);

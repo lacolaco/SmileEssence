@@ -1,24 +1,15 @@
 package net.miz_hi.smileessence.dialog;
 
-import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.util.CustomListAdapter;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface.OnClickListener;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 public class CheckBoxListDialog
 {

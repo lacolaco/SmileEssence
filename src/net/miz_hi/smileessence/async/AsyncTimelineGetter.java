@@ -1,13 +1,12 @@
 package net.miz_hi.smileessence.async;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
 import net.miz_hi.smileessence.auth.Account;
-import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusChecker;
+import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusStore;
 import net.miz_hi.smileessence.twitter.TwitterManager;
 import twitter4j.Paging;

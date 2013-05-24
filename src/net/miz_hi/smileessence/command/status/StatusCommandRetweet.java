@@ -20,7 +20,7 @@ public class StatusCommandRetweet extends StatusCommand implements IConfirmable
 	@Override
 	public String getName()
 	{
-		return "ƒŠƒcƒC[ƒg";
+		return "ãƒªãƒ„ã‚¤ãƒ¼ãƒˆ";
 	}
 
 	@Override

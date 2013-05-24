@@ -13,7 +13,7 @@ public class FollowEvent extends UserEvent
 	@Override
 	public String getHeaderText()
 	{
-		return source.screenName + "‚ÉƒtƒHƒ[‚³‚ê‚½";
+		return source.screenName + "ã«ãƒ•ã‚©ãƒ­ãƒ¼ã•ã‚ŒãŸ";
 	}
 
 }

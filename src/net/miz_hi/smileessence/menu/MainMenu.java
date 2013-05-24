@@ -6,7 +6,6 @@ import java.util.List;
 import net.miz_hi.smileessence.command.CommandEditExtraWord;
 import net.miz_hi.smileessence.command.CommandEditMenu;
 import net.miz_hi.smileessence.command.CommandEditTemplate;
-import net.miz_hi.smileessence.command.CommandOpenPostPage;
 import net.miz_hi.smileessence.command.CommandReConnect;
 import net.miz_hi.smileessence.command.ICommand;
 import net.miz_hi.smileessence.command.main.CommandOpenFavstar;
@@ -21,7 +20,7 @@ public class MainMenu extends SimpleMenuDialog
 	public MainMenu(Activity activity)
 	{
 		super(activity);
-		setTitle("ƒƒCƒ“ƒƒjƒ…[");
+		setTitle("ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼");
 	}
 
 	@Override

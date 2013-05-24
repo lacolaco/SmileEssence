@@ -1,9 +1,7 @@
 package net.miz_hi.smileessence.menu;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.miz_hi.smileessence.command.ICommand;
 import net.miz_hi.smileessence.command.post.CommandAppendHashtag;
@@ -21,7 +19,7 @@ public class TweetMenu extends ExpandMenuDialog
 	public TweetMenu(Activity activity)
 	{
 		super(activity);
-		setTitle("ƒcƒC[ƒgƒƒjƒ…[");
+		setTitle("ãƒ„ã‚¤ãƒ¼ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼");
 	}
 
 	private List<ICommand> getHashtagMenu()
@@ -51,7 +49,7 @@ public class TweetMenu extends ExpandMenuDialog
 		
 		//Basic
 		List<ICommand> basic = new ArrayList<ICommand>();
-		basic.add(new CommandInsertText("ƒƒƒ^‚—"));
+		basic.add(new CommandInsertText("ãƒ¯ãƒ­ã‚¿ï½—"));
 		basic.add(new CommandParseMorse());
 		list.add(basic);
 		
@@ -74,16 +72,16 @@ public class TweetMenu extends ExpandMenuDialog
 	public List<String> getGroups()
 	{
 		List<String> list = new ArrayList<String>();
-		list.add("Šî–{");
+		list.add("åŸºæœ¬");
 		List<ICommand> template = getTemplateMenu();
 		if(!template.isEmpty())
 		{
-			list.add("’èŒ^•¶");
+			list.add("å®šå‹æ–‡");
 		}
 		List<ICommand> hashtag = getHashtagMenu();
 		if(!hashtag.isEmpty())
 		{
-			list.add("Å‹ßŒ©‚½ƒnƒbƒVƒ…ƒ^ƒO");
+			list.add("æœ€è¿‘è¦‹ãŸãƒãƒƒã‚·ãƒ¥ã‚¿ã‚°");
 		}
 		return list;
 	}

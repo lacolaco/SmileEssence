@@ -24,7 +24,7 @@ public class StatusCommandTranslate extends StatusCommand implements IHideable
 	@Override
 	public String getName()
 	{
-		return "“ú–{Œê‚É’¼‚·";
+		return "æ—¥æœ¬èªã«ç›´ã™";
 	}
 
 	@Override

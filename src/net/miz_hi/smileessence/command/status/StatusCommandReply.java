@@ -14,7 +14,7 @@ public class StatusCommandReply extends StatusCommand
 	@Override
 	public String getName()
 	{
-		return "�ԐM";
+		return "返信";
 	}
 
 	@Override

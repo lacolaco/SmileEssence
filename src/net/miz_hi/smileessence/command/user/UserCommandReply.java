@@ -13,7 +13,7 @@ public class UserCommandReply extends UserCommand
 	@Override
 	public String getName()
 	{
-		return "ƒŠƒvƒ‰ƒC‚ğ‘—‚é";
+		return "è¿”ä¿¡";
 	}
 
 	@Override

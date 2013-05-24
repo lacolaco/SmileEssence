@@ -18,7 +18,7 @@ public class CommandOpenSetting extends MenuCommand
 	@Override
 	public String getName()
 	{
-		return "İ’è";
+		return "è¨­å®š";
 	}
 
 	@Override

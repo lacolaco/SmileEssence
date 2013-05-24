@@ -17,7 +17,7 @@ public class UserCommandSpam extends UserCommand implements IConfirmable
 	@Override
 	public String getName()
 	{
-		return "ƒXƒpƒ€•ñ";
+		return "ã‚¹ãƒ‘ãƒ å ±å‘Š";
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class UserCommandSpam extends UserCommand implements IConfirmable
 			{
 				if (TwitterManager.spam(Client.getMainAccount(), userName))
 				{
-					Notifier.info("ƒXƒpƒ€•ñ‚µ‚Ü‚µ‚½");
+					Notifier.info("ã‚¹ãƒ‘ãƒ å ±å‘Šã—ã¾ã—ãŸ");
 				}
 			}
 		});

@@ -1,9 +1,7 @@
 package net.miz_hi.smileessence.dialog;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.command.ICommand;
@@ -16,7 +14,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ExpandableListView;

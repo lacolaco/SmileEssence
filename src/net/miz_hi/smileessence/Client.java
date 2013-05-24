@@ -2,8 +2,6 @@ package net.miz_hi.smileessence;
 
 import java.io.File;
 
-import com.j256.ormlite.table.TableUtils;
-
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.auth.AuthentificationDB;
@@ -14,14 +12,13 @@ import net.miz_hi.smileessence.data.template.Template;
 import net.miz_hi.smileessence.permission.IPermission;
 import net.miz_hi.smileessence.permission.PermissonChecker;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
-import net.miz_hi.smileessence.preference.EnumPreferenceKey.EnumValueType;
 import net.miz_hi.smileessence.preference.PreferenceHelper;
 import net.miz_hi.smileessence.util.LogHelper;
 import android.app.Application;
 import android.content.res.Resources;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.preference.PreferenceManager;
+
+import com.j256.ormlite.table.TableUtils;
 
 public class Client
 {

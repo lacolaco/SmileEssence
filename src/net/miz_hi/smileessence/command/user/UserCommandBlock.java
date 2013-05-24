@@ -17,7 +17,7 @@ public class UserCommandBlock extends UserCommand implements IConfirmable
 	@Override
 	public String getName()
 	{
-		return "ブロック";
+		return "繝悶Ο繝�繧ｯ";
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class UserCommandBlock extends UserCommand implements IConfirmable
 			{
 				if (TwitterManager.block(Client.getMainAccount(), userName))
 				{
-					Notifier.info(userName + "をブロックしました");
+					Notifier.info(userName + "繧偵ヶ繝ｭ繝�繧ｯ縺励∪縺励◆");
 				}
 			}
 		});

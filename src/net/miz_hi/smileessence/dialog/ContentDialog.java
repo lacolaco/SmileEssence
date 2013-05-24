@@ -11,8 +11,8 @@ public class ContentDialog
 	private Activity activity;
 	private String title;
 	private View content;
-	private String positive = "Œˆ’è";
-	private String negative = "ƒLƒƒƒ“ƒZƒ‹";
+	private String positive = "æ±ºå®š";
+	private String negative = "ã‚­ãƒ£ãƒ³ã‚»ãƒ«";
 	private OnClickListener listener;
 
 	public ContentDialog(Activity activity, String title)
