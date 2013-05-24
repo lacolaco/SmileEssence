@@ -12,6 +12,7 @@ import net.miz_hi.smileessence.util.UiHandler;
 import net.miz_hi.smileessence.view.IRemovable;
 import twitter4j.User;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -128,6 +129,7 @@ public class UserInfoFragment extends NamedFragment implements OnClickListener, 
 		{
 			case R.id.user_reload:
 			{
+				final ProgressDialog pd = ProgressDialog.show(getActivity(), null, "情報を更新中...", true);
 				MyExecutor.execute(new Runnable()
 				{
 					public void run()
@@ -135,6 +137,7 @@ public class UserInfoFragment extends NamedFragment implements OnClickListener, 
 						User u = TwitterManager.getUser(Client.getMainAccount(), user.userId);
 						user.updateData(u);
 						reload(true);
+						pd.dismiss();
 					}
 				});				
 				break;

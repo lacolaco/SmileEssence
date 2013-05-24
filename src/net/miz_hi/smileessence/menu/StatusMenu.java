@@ -31,6 +31,7 @@ import net.miz_hi.smileessence.command.status.StatusCommandUnfavorite;
 import net.miz_hi.smileessence.command.status.StatusCommandWarotaRT;
 import net.miz_hi.smileessence.command.user.UserCommandAddReply;
 import net.miz_hi.smileessence.command.user.UserCommandOpenInfo;
+import net.miz_hi.smileessence.command.user.UserCommandOpenTimeline;
 import net.miz_hi.smileessence.command.user.UserCommandReply;
 import net.miz_hi.smileessence.dialog.ExpandMenuDialog;
 import net.miz_hi.smileessence.status.StatusModel;
@@ -213,6 +214,7 @@ public class StatusMenu extends ExpandMenuDialog
 			list.add(new UserCommandReply(userName));
 			list.add(new UserCommandAddReply(userName));
 			list.add(new UserCommandOpenInfo(userName, activity));
+			list.add(new UserCommandOpenTimeline(userName));
 			map.put(userName, list);
 		}
 		return map;
