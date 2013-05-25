@@ -23,7 +23,7 @@ public class StatusCommandDelete extends StatusCommand implements IConfirmable
 	@Override
 	public String getName()
 	{
-		return "íœ";
+		return "å‰Šé™¤";
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class StatusCommandDelete extends StatusCommand implements IConfirmable
 				{
 					if(f.get())
 					{
-						Notifier.info("íœ‚µ‚Ü‚µ‚½");
+						Notifier.info("å‰Šé™¤ã—ã¾ã—ãŸ");
 					}
 					else
 					{
