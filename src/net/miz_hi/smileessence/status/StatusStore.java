@@ -18,14 +18,15 @@ public class StatusStore
 	{
 		if (statusesMap.containsKey(status.getId()))
 		{
-			statusesMap.remove(status.getId());
+//			statusesMap.remove(status.getId());
+			return statusesMap.get(status.getId());
 		}
 		StatusModel model = new StatusModel(status);
-		if(status.isRetweet())
-		{
-			statusesMap.put(status.getRetweetedStatus().getId(), model);
-		}
-		else
+//		if(status.isRetweet())
+//		{
+//			statusesMap.put(status.getRetweetedStatus().getId(), model);
+//		}
+//		else
 		{
 			statusesMap.put(status.getId(), model);
 		}

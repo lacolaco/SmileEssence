@@ -8,7 +8,9 @@ import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.core.EnumRequestCode;
 import net.miz_hi.smileessence.dialog.ConfirmDialog;
 import net.miz_hi.smileessence.listener.PageChangeListener;
+import net.miz_hi.smileessence.menu.AddPageMenu;
 import net.miz_hi.smileessence.menu.MainMenu;
+import net.miz_hi.smileessence.menu.MovePageMenu;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
 import net.miz_hi.smileessence.system.IntentRouter;
 import net.miz_hi.smileessence.system.MainSystem;
@@ -85,7 +87,6 @@ public class MainActivity extends FragmentActivity
 				instance.adapter.add(fragment);
 			}
 		}.post();
-
 	}
 
 	public static void removePage()
@@ -123,16 +124,14 @@ public class MainActivity extends FragmentActivity
 		instance = this;
 		initializeViews();
 		MainSystem.getInstance().initialize(instance);
-		if(getIntent().getData() != null)
-		{
-			IntentRouter.onNewIntent(getIntent());
-		}
+		IntentRouter.onNewIntent(getIntent());
 	}
 
 	private void initializeViews()
 	{
 		adapter = new NamedFragmentPagerAdapter(getSupportFragmentManager());
-		adapter.add((NamedFragment) PostFragment.instantiate(instance, PostFragment.class.getName()));
+//		adapter.add((NamedFragment) PostFragment.instantiate(instance, PostFragment.class.getName()));
+		adapter.add(new PostFragment());
 		adapter.add((NamedFragment) HomeFragment.instantiate(instance, HomeFragment.class.getName()));
 		adapter.add((NamedFragment) MentionsFragment.instantiate(instance, MentionsFragment.class.getName()));
 		adapter.add((NamedFragment) HistoryFragment.instantiate(instance, HistoryFragment.class.getName()));
@@ -225,10 +224,7 @@ public class MainActivity extends FragmentActivity
 	@Override
 	protected void onNewIntent(Intent intent)
 	{
-		if(intent.getData() != null)
-		{
-			IntentRouter.onNewIntent(intent);
-		}
+		IntentRouter.onNewIntent(intent);
 	}
 
 	public void onEditClick(View v)
@@ -257,29 +253,7 @@ public class MainActivity extends FragmentActivity
 		{
 			case KeyEvent.KEYCODE_BACK:
 			{
-				if(pager.getCurrentItem() != 1)
-				{
-					pager.setCurrentItem(1, true);
-				}
-				else
-				{
-					if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.CONFIRM_DIALOG))
-					{
-						ConfirmDialog.show(this, "終了しますか？", new Runnable()
-						{
-
-							@Override
-							public void run()
-							{
-								finish();
-							}
-						});
-					}
-					else
-					{
-						finish();
-					}
-				}
+				finish();
 				return false;
 			}
 			case KeyEvent.KEYCODE_MENU:
@@ -293,6 +267,36 @@ public class MainActivity extends FragmentActivity
 			}
 		}
 
+	}
+	
+	
+
+	@Override
+	public void finish()
+	{
+		if(pager.getCurrentItem() != 1)
+		{
+			pager.setCurrentItem(1, true);
+		}
+		else
+		{
+			if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.CONFIRM_DIALOG))
+			{
+				ConfirmDialog.show(this, "終了しますか？", new Runnable()
+				{
+
+					@Override
+					public void run()
+					{
+						MainActivity.super.finish();
+					}
+				});
+			}
+			else
+			{
+				super.finish();
+			}
+		}
 	}
 
 	@Override
@@ -317,14 +321,9 @@ public class MainActivity extends FragmentActivity
 	{
 		switch(item.getItemId())
 		{
-			case R.id.menu_post:
+			case R.id.menu_move:
 			{
-				PostSystem.openPostPage();
-				break;
-			}
-			case R.id.menu_home:
-			{
-				moveViewPage(1);
+				new MovePageMenu(instance).create().show();
 				break;
 			}
 			case R.id.menu_option:
@@ -344,6 +343,11 @@ public class MainActivity extends FragmentActivity
 				removePage();
 				break;
 			}
+			case R.id.menu_addpage:
+			{
+				new AddPageMenu(instance).create().show();
+				break;
+			}
 			case R.id.menu_exit:
 			{
 				finish();
@@ -358,7 +362,7 @@ public class MainActivity extends FragmentActivity
 		return pager;
 	}
 
-	public NamedFragmentPagerAdapter getFragmentAdapter()
+	public NamedFragmentPagerAdapter getPagerAdapter()
 	{
 		return adapter;
 	}

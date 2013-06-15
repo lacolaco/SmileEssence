@@ -6,7 +6,7 @@ import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.system.PostSystem;
 
-public class StatusCommandUnOffRetweet extends StatusCommand implements IHideable, IConfirmable
+public class StatusCommandUnOffRetweet extends StatusCommand implements IHideable
 {
 
 	public StatusCommandUnOffRetweet(StatusModel model)

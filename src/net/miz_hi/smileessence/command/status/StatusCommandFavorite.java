@@ -1,6 +1,6 @@
 package net.miz_hi.smileessence.command.status;
 
-import net.miz_hi.smileessence.async.AsyncFavoriteTask;
+import net.miz_hi.smileessence.async.AsyncFavorite;
 import net.miz_hi.smileessence.status.StatusModel;
 
 public class StatusCommandFavorite extends StatusCommand
@@ -20,7 +20,7 @@ public class StatusCommandFavorite extends StatusCommand
 	@Override
 	public void workOnUiThread()
 	{
-		new AsyncFavoriteTask(status.statusId).addToQueue();
+		new AsyncFavorite(status.statusId).addToQueue();
 	}
 
 }

@@ -98,16 +98,7 @@ public abstract class CustomListAdapter<T> extends BaseAdapter
 	{
 		if (canMotifyOnChange)
 		{
-			new UiHandler()
-			{
-				
-				@Override
-				public void run()
-				{
-					//setCanNotifyOnChange(false);
-					notifyDataSetChanged();
-				}
-			}.postAtFrontOfQueue();
+			forceNotifyAdapter();
 		}
 	}
 
@@ -117,6 +108,7 @@ public abstract class CustomListAdapter<T> extends BaseAdapter
 		{
 			new UiHandler()
 			{
+				
 				@Override
 				public void run()
 				{
@@ -153,17 +145,9 @@ public abstract class CustomListAdapter<T> extends BaseAdapter
 	{
 		synchronized (lock)
 		{
-			new UiHandler()
-			{
-				
-				@Override
-				public void run()
-				{
-					array = (T[]) list.toArray();
-					count = array.length;
-					CustomListAdapter.super.notifyDataSetChanged();			
-				}
-			}.post();
+			array = (T[]) list.toArray();
+			count = array.length;
+			CustomListAdapter.super.notifyDataSetChanged();			
 		}
 	}
 

@@ -6,8 +6,8 @@ import java.util.concurrent.Future;
 import twitter4j.StatusUpdate;
 
 import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.async.AsyncFavoriteTask;
-import net.miz_hi.smileessence.async.AsyncTweetTask;
+import net.miz_hi.smileessence.async.AsyncFavorite;
+import net.miz_hi.smileessence.async.AsyncTweet;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.command.IHideable;
@@ -59,8 +59,8 @@ public class StatusCommandCongrats extends StatusCommand implements IHideable, I
 		String str = "@" + status.user.screenName + " Congrats on your " + favCount + "★ tweet! http://favstar.fm/t/" + status.statusId;
 		StatusUpdate update = new StatusUpdate(str);
 		update.setInReplyToStatusId(status.statusId);
-		new AsyncFavoriteTask(status.statusId).addToQueue();
-		final Future<Boolean> f = MyExecutor.submit(new AsyncTweetTask(update));
+		new AsyncFavorite(status.statusId).addToQueue();
+		final Future<Boolean> f = MyExecutor.submit(new AsyncTweet(update));
 		MyExecutor.execute(new Runnable()
 		{
 			

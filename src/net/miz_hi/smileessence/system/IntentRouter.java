@@ -8,58 +8,72 @@ import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.view.activity.MainActivity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
+import android.text.TextUtils;
 
 public class IntentRouter
 {
-	
+
 	public static void onNewIntent(Intent intent)
 	{
 		LogHelper.d("/intent");
 		Uri uri = intent.getData();
-		LogHelper.d(uri.toString());
-		if (isOrderToPost(uri))
+		if(uri != null)
 		{
-			String text = "";
-			String url = "";
-			if(uri.getQueryParameter("text") != null)
+			LogHelper.d(uri.toString());
+			if (isOrderToPost(uri))
 			{
-				text = uri.getQueryParameter("text").replaceAll("\\+", " ");
+				String text = "";
+				String url = "";
+				if(uri.getQueryParameter("text") != null)
+				{
+					text = uri.getQueryParameter("text").replaceAll("\\+", " ");
+				}
+				else if(uri.getQueryParameter("status") != null)
+				{
+					text = uri.getQueryParameter("status").replaceAll("\\+", " ");
+				}
+
+				if(uri.getQueryParameter("url") != null)
+				{
+					url = uri.getQueryParameter("url");
+				}
+				String str = text + " " + url;
+				PostSystem.setText(str).openPostPage();
 			}
-			else if(uri.getQueryParameter("status") != null)
+			else if (isStatusUrl(uri))
 			{
-				text = uri.getQueryParameter("status").replaceAll("\\+", " ");
+				StatusModel status = StatusUtils.getOrCreateStatusModel(getStatusId(uri.toString()));
+				new StatusCommandChaseRelation(status).run();
 			}
-			
-			if(uri.getQueryParameter("url") != null)
+			else if (isUserUrl(uri))
 			{
-				url = uri.getQueryParameter("url");
+				String screenName;
+				if(uri.getQueryParameter("screen_name") != null)
+				{
+					screenName =  uri.getQueryParameter("screen_name");
+				}
+				else
+				{
+					String[] arrayOfString = uri.toString().split("/");
+					screenName =  arrayOfString[arrayOfString.length -1];
+				}
+				new UserCommandOpenInfo(screenName, MainActivity.getInstance()).run();
 			}
-			String str = text + " " + url;
-			PostSystem.setText(str).openPostPage();
 		}
-		else if (isStatusUrl(uri))
+		else if (intent.getAction().equals(Intent.ACTION_SEND))
 		{
-			StatusModel status = StatusUtils.getOrCreateStatusModel(getStatusId(uri.toString()));
-			new StatusCommandChaseRelation(status).run();
-		}
-		else if (isUserUrl(uri))
-		{
-			String screenName;
-			if(uri.getQueryParameter("screen_name") != null)
+			Bundle extra = intent.getExtras();
+			if(extra != null)
 			{
-				screenName =  uri.getQueryParameter("screen_name");
+				StringBuilder builder = new StringBuilder();
+				if(!TextUtils.isEmpty(extra.getCharSequence(Intent.EXTRA_SUBJECT)))
+				{
+					builder.append(extra.getCharSequence(Intent.EXTRA_SUBJECT)).append(" ");
+				}
+				builder.append(extra.getCharSequence(Intent.EXTRA_TEXT));
+				PostSystem.setText(builder.toString()).openPostPage();
 			}
-			else
-			{
-				String[] arrayOfString = uri.toString().split("/");
-				screenName =  arrayOfString[arrayOfString.length -1];
-			}
-			new UserCommandOpenInfo(screenName, MainActivity.getInstance()).run();
-		}
-		else if (intent.getAction().equals("android.intent.action.SEND"))
-		{
-			String str = intent.getCharSequenceExtra("android.intent.extra.TEXT").toString();
-			PostSystem.setText(str).openPostPage();
 		}		
 	}
 	

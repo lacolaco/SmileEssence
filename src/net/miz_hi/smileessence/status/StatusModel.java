@@ -39,6 +39,7 @@ public class StatusModel implements Comparable<StatusModel>
 	public boolean isRetweet;
 	public boolean isReply;
 	public boolean isMine;
+	public boolean isFavorited;
 	
 	private StatusModel(){};
 
@@ -46,7 +47,8 @@ public class StatusModel implements Comparable<StatusModel>
 	{
 		isRetweet = status.isRetweet();
 		createdAt = status.getCreatedAt();
-
+		isFavorited = status.isFavorited();
+		
 		Status shownStatus;
 		if (isRetweet)
 		{

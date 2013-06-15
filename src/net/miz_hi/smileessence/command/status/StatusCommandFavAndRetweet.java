@@ -3,7 +3,7 @@ package net.miz_hi.smileessence.command.status;
 import java.util.concurrent.Future;
 
 
-import net.miz_hi.smileessence.async.AsyncFavoriteTask;
+import net.miz_hi.smileessence.async.AsyncFavorite;
 import net.miz_hi.smileessence.async.AsyncRetweetTask;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IConfirmable;
@@ -29,7 +29,7 @@ public class StatusCommandFavAndRetweet extends StatusCommand implements IHideab
 	@Override
 	public void workOnUiThread()
 	{
-		final Future<Boolean> f1 = MyExecutor.submit(new AsyncFavoriteTask(status.statusId));
+		final Future<Boolean> f1 = MyExecutor.submit(new AsyncFavorite(status.statusId));
 		final Future<Boolean> f2 = MyExecutor.submit(new AsyncRetweetTask(status.statusId));
 		MyExecutor.execute(new Runnable()
 		{

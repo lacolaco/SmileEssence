@@ -11,7 +11,5 @@
         android:layout_height="wrap_content"
         android:divider="@color/Gray2"
         android:dividerHeight="1dp"
-        android:footerDividersEnabled="true" >
-
-    </ListView>
+        android:footerDividersEnabled="true" />
 </LinearLayout>

@@ -4,7 +4,7 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.core.Notifier;
-import net.miz_hi.smileessence.twitter.TwitterManager;
+import net.miz_hi.smileessence.twitter.User;
 
 public class UserCommandFollow extends UserCommand implements IConfirmable
 {
@@ -29,7 +29,7 @@ public class UserCommandFollow extends UserCommand implements IConfirmable
 			@Override
 			public void run()
 			{
-				if (TwitterManager.follow(Client.getMainAccount(), userName))
+				if (User.follow(Client.getMainAccount(), userName))
 				{
 					Notifier.info("フォローしました");
 				}

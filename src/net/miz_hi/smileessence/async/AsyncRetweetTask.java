@@ -2,10 +2,9 @@ package net.miz_hi.smileessence.async;
 
 import java.util.concurrent.Callable;
 
-
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.auth.Account;
-import net.miz_hi.smileessence.twitter.TwitterManager;
+import net.miz_hi.smileessence.twitter.Retweet;
 
 public class AsyncRetweetTask implements Callable<Boolean>
 {
@@ -26,7 +25,7 @@ public class AsyncRetweetTask implements Callable<Boolean>
 	@Override
 	public Boolean call()
 	{
-		return TwitterManager.retweet(account, statusId);
+		return Retweet.retweet(account, statusId);
 	}
 
 }

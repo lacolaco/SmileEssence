@@ -29,6 +29,12 @@ public abstract class SimpleMenuDialog extends MenuDialog
 		super(activity);
 	}
 	
+	public SimpleMenuDialog(Activity activity, String title)
+	{
+		super(activity);
+		this.title = title;
+	}
+	
 	public void setTitle(View view)
 	{
 		titleView = view;

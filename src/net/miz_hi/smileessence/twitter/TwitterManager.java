@@ -7,6 +7,7 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.util.CountUpInteger;
+import twitter4j.PagableResponseList;
 import twitter4j.Paging;
 import twitter4j.Relationship;
 import twitter4j.ResponseList;
@@ -71,95 +72,7 @@ public class TwitterManager
 		cb.setUserStreamRepliesAllEnabled(false);
 		return new TwitterStreamFactory(cb.build()).getInstance();
 	}
-
-	public static boolean isStatusUpdateLimit()
-	{
-		return isStatusUpdateLimit;
-	}
-
-	public static boolean tweet(Account account, String str)
-	{
-		StatusUpdate update = new StatusUpdate(str);
-		return tweet(account, update);
-	}
-
-	public static boolean tweet(Account account, String str, long l)
-	{
-		StatusUpdate update = new StatusUpdate(str);
-		update.setInReplyToStatusId(l);
-		return tweet(account, update);
-	}
-
-	public static boolean tweet(Account account, StatusUpdate update)
-	{
-		try
-		{
-			getTwitter(account).updateStatus(update);
-			isStatusUpdateLimit = false;
-			count.reset();
-			return true;
-		}
-		catch (TwitterException e)
-		{
-			e.printStackTrace();
-			int code = e.getStatusCode();
-			String message = e.getErrorMessage();
-			if (code == 403)
-			{
-				if(message == null)
-				{
-					return false;
-				}
-				
-				if(message.equals(ERROR_STATUS_DUPLICATE))
-				{
-					if(!count.countUp())
-					{
-						String str = update.getStatus() + "　";
-						long id = update.getInReplyToStatusId();
-						StatusUpdate update1 = new StatusUpdate(str);
-						update1.setInReplyToStatusId(id);
-						return tweet(account, update1);
-					}
-				}
-				else if (message.equals(ERROR_STATUS_LIMIT))
-				{
-					isStatusUpdateLimit = true;
-					Notifier.alert("規制されています");
-				}
-			}
-		}
-		return false;
-	}
-
-	public static boolean retweet(Account account, long statusId)
-	{
-		try
-		{
-			getTwitter(account).retweetStatus(statusId);
-			return true;
-		}
-		catch (TwitterException e)
-		{
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	public static boolean favorite(Account account, long statusId)
-	{
-		try
-		{
-			getTwitter(account).createFavorite(statusId);
-			return true;
-		}
-		catch (TwitterException e)
-		{
-			e.printStackTrace();
-		}
-		return false;
-	}
-
+	
 	public static boolean isOauthed(Account account)
 	{
 		return !TextUtils.isEmpty(account.getAccessToken());
@@ -223,7 +136,7 @@ public class TwitterManager
 			ResponseList<Status> resp;
 			if(page == null)
 			{
-				resp = getTwitter(account).getHomeTimeline();
+				resp = getTwitter(account).getHomeTimeline(new Paging(1));
 			}
 			else
 			{
@@ -266,7 +179,6 @@ public class TwitterManager
 		try
 		{
 			ResponseList<Status> resp = getTwitter(account).getUserTimeline(userId, page);
-
 			for (Status st : resp)
 			{
 				statuses.offer(st);
@@ -300,59 +212,5 @@ public class TwitterManager
 		}
 	}
 
-	public static boolean follow(Account account, String name)
-	{
-		try
-		{
-			getTwitter(account).createFriendship(name);
-			return true;
-		}
-		catch (TwitterException e)
-		{
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	public static boolean remove(Account account, String name)
-	{
-		try
-		{
-			getTwitter(account).destroyFriendship(name);
-			return true;
-		}
-		catch (TwitterException e)
-		{
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	public static boolean block(Account account, String name)
-	{
-		try
-		{
-			getTwitter(account).createBlock(name);
-			return true;
-		}
-		catch (TwitterException e)
-		{
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	public static boolean spam(Account account, String name)
-	{
-		try
-		{
-			getTwitter(account).reportSpam(name);
-			return true;
-		}
-		catch (TwitterException e)
-		{
-			e.printStackTrace();
-		}
-		return false;
-	}
+	
 }

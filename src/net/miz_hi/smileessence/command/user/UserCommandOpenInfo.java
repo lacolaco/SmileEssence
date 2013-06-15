@@ -31,7 +31,7 @@ public class UserCommandOpenInfo extends UserCommand
 	@Override
 	public void workOnUiThread()
 	{
-		final ProgressDialog pd = ProgressDialog.show(activity, null, "Loading...", true);
+		final ProgressDialog pd = ProgressDialog.show(activity, null, "取得中...", true);
 		MyExecutor.execute(new Runnable()
 		{
 			

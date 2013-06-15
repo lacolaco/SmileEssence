@@ -5,8 +5,8 @@ import java.util.concurrent.Future;
 import twitter4j.StatusUpdate;
 
 import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.async.AsyncFavoriteTask;
-import net.miz_hi.smileessence.async.AsyncTweetTask;
+import net.miz_hi.smileessence.async.AsyncFavorite;
+import net.miz_hi.smileessence.async.AsyncTweet;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.command.IHideable;
@@ -34,8 +34,8 @@ public class StatusCommandUnOffFav extends StatusCommand implements IHideable, I
 		String str = "@" + status.user.screenName + " っ★";
 		StatusUpdate update = new StatusUpdate(str);
 		update.setInReplyToStatusId(status.statusId);
-		new AsyncFavoriteTask(status.statusId).addToQueue();
-		new AsyncTweetTask(update).addToQueue();		
+		new AsyncFavorite(status.statusId).addToQueue();
+		new AsyncTweet(update).addToQueue();		
 	}
 	
 

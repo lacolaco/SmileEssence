@@ -1,6 +1,7 @@
 package net.miz_hi.smileessence.command.status;
 
 import twitter4j.TwitterException;
+import net.miz_hi.smileessence.async.AsyncUnFavorite;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.core.Notifier;
@@ -24,25 +25,7 @@ public class StatusCommandUnfavorite extends StatusCommand implements IHideable
 	@Override
 	public void workOnUiThread()
 	{
-		MyExecutor.execute(new Runnable()
-		{
-			
-			@Override
-			public void run()
-			{
-				try
-				{
-					TwitterManager.getTwitter().destroyFavorite(status.statusId);
-					Notifier.info("お気に入りを削除しました");
-				}
-				catch (TwitterException e)
-				{
-					e.printStackTrace();
-					Notifier.alert("お気に入りの削除に失敗しました");
-				}
-			}
-		});
-
+		new AsyncUnFavorite(status.statusId).addToQueue();
 	}
 
 }

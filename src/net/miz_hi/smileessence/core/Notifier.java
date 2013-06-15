@@ -55,9 +55,9 @@ public class Notifier
 	private static Style getStyle(Style type)
 	{
 		Configuration.Builder config = new Configuration.Builder();
-		config.setDuration(800);
+		config.setDuration(1000);
 		Style.Builder builder = new Style.Builder();
-		builder.setHeight(70).setConfiguration(config.build()).setGravity(Gravity.CENTER);
+		builder.setHeight(64).setConfiguration(config.build());
 		if(type == Style.INFO)
 		{
 			builder.setBackgroundColorValue(Style.holoBlueLight);
@@ -83,7 +83,7 @@ public class Notifier
 			@Override
 			public void run()
 			{
-				Crouton.showText(activity, event.getText(), getStyle(event.getStyle()));
+				Crouton.makeText(activity, event.getText(), getStyle(event.getStyle())).show();
 			}
 		}.post();
 	}

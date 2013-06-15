@@ -3,8 +3,8 @@ package net.miz_hi.smileessence.command.status;
 import java.util.concurrent.Future;
 
 import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.async.AsyncFavoriteTask;
-import net.miz_hi.smileessence.async.AsyncTweetTask;
+import net.miz_hi.smileessence.async.AsyncFavorite;
+import net.miz_hi.smileessence.async.AsyncTweet;
 import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.core.Notifier;
@@ -72,8 +72,8 @@ public class StatusCommandReview extends StatusCommand implements IHideable
 
 					StatusUpdate update = new StatusUpdate(builder.toString());
 					update.setInReplyToStatusId(status.statusId);
-					Future<Boolean> f1 = MyExecutor.submit(new AsyncFavoriteTask(status.statusId));
-					Future<Boolean> f2 = MyExecutor.submit(new AsyncTweetTask(update));
+					Future<Boolean> f1 = MyExecutor.submit(new AsyncFavorite(status.statusId));
+					Future<Boolean> f2 = MyExecutor.submit(new AsyncTweet(update));
 					try
 					{
 						if (f1.get() && f2.get())

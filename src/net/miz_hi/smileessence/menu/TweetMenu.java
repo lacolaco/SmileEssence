@@ -6,6 +6,7 @@ import java.util.List;
 import net.miz_hi.smileessence.command.ICommand;
 import net.miz_hi.smileessence.command.post.CommandAppendHashtag;
 import net.miz_hi.smileessence.command.post.CommandInsertText;
+import net.miz_hi.smileessence.command.post.CommandMakeAnonymous;
 import net.miz_hi.smileessence.command.post.CommandParseMorse;
 import net.miz_hi.smileessence.data.template.Template;
 import net.miz_hi.smileessence.data.template.Templates;
@@ -48,10 +49,14 @@ public class TweetMenu extends ExpandMenuDialog
 		List<List<ICommand>> list = new ArrayList<List<ICommand>>();
 		
 		//Basic
-		List<ICommand> basic = new ArrayList<ICommand>();
-		basic.add(new CommandInsertText("ワロタｗ"));
-		basic.add(new CommandParseMorse());
-		list.add(basic);
+		List<ICommand> insert = new ArrayList<ICommand>();
+		insert.add(new CommandInsertText("ワロタｗ"));
+		list.add(insert);
+		
+		List<ICommand> convert = new ArrayList<ICommand>();
+		convert.add(new CommandParseMorse());
+		convert.add(new CommandMakeAnonymous());
+		list.add(convert);
 		
 		List<ICommand> template = getTemplateMenu();
 		if(!template.isEmpty())
@@ -72,7 +77,8 @@ public class TweetMenu extends ExpandMenuDialog
 	public List<String> getGroups()
 	{
 		List<String> list = new ArrayList<String>();
-		list.add("基本");
+		list.add("挿入");
+		list.add("変換");
 		List<ICommand> template = getTemplateMenu();
 		if(!template.isEmpty())
 		{

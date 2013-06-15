@@ -1,8 +1,8 @@
 package net.miz_hi.smileessence.command.status;
 
 import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.async.AsyncFavoriteTask;
-import net.miz_hi.smileessence.async.AsyncTweetTask;
+import net.miz_hi.smileessence.async.AsyncFavorite;
+import net.miz_hi.smileessence.async.AsyncTweet;
 import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.status.StatusModel;
@@ -32,8 +32,8 @@ public class StatusCommandWarotaRT extends StatusCommand implements IHideable, I
 		builder.append(status.text);
 		StatusUpdate update = new StatusUpdate(builder.toString());
 		update.setInReplyToStatusId(status.statusId);
-		new AsyncTweetTask(update).addToQueue();
-		new AsyncFavoriteTask(status.statusId).addToQueue();
+		new AsyncTweet(update).addToQueue();
+		new AsyncFavorite(status.statusId).addToQueue();
 	}
 
 	@Override

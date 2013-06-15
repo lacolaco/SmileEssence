@@ -2,7 +2,7 @@ package net.miz_hi.smileessence.system;
 
 import java.io.File;
 
-import net.miz_hi.smileessence.async.AsyncTweetTask;
+import net.miz_hi.smileessence.async.AsyncTweet;
 import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.util.StringUtils;
 import net.miz_hi.smileessence.util.UiHandler;
@@ -181,10 +181,10 @@ public class PostSystem
 				@Override
 				public void run()
 				{
-					new AsyncTweetTask(update).addToQueue();
+					new AsyncTweet(update).addToQueue();
 					clear();
 				}
-			}.postDelayed(10);
+			}.post();
 		}
 		return true;
 	}

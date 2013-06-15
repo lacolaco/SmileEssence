@@ -44,9 +44,20 @@ public class NamedFragmentPagerAdapter extends FragmentStatePagerAdapter
 		return pageList;
 	}
 	
-	public synchronized void add(NamedFragment element)
+	public synchronized boolean add(NamedFragment element)
 	{
+		boolean frag = true;
+		for(NamedFragment fragment : pageList)
+		{
+			if(fragment.getTitle().equals(element.getTitle()))
+			{
+				pageList.remove(fragment);
+				frag = false;
+				break;
+			}
+		}
 		pageList.add(element);
+		return frag;
 	}
 	
 	public synchronized void set(NamedFragment element, int index)

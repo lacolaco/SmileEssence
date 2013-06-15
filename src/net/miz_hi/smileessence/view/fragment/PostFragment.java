@@ -75,7 +75,7 @@ public class PostFragment extends NamedFragment implements OnClickListener
 		frameInReplyTo = (FrameLayout) page.findViewById(R.id.frame_inreplyto);
 		imagePict = (ImageView)page.findViewById(R.id.image_pict);			
 		textCount = (TextView) page.findViewById(R.id.textView_count);
-		Button imageButtonSubmit = (Button) page.findViewById(R.id.btn_submit);
+		Button imageButtonSubmit = (Button) page.findViewById(R.id.listpage_refresh);
 		ImageButton imageButtonClear = (ImageButton) page.findViewById(R.id.imBtn_clean);
 		ImageButton imageButtonMenu = (ImageButton) page.findViewById(R.id.imBtn_tweetmenu);
 		ImageButton imageButtonPict = (ImageButton) page.findViewById(R.id.imBtn_pickpict);
@@ -239,7 +239,7 @@ public class PostFragment extends NamedFragment implements OnClickListener
 	
 	public void clear()
 	{
-		setText("");
+		editText.setText("");
 		setInReplyTo(PostSystem.NONE_ID);
 		PostSystem.setInReplyToStatusId(PostSystem.NONE_ID);
 		removePicture();
@@ -247,7 +247,7 @@ public class PostFragment extends NamedFragment implements OnClickListener
 	
 	public void clearBySubmit()
 	{
-		setText("");
+		editText.setText("");
 		setInReplyTo(PostSystem.NONE_ID);
 		PostSystem.setPicturePath(null);
 		imagePict.setVisibility(View.GONE);
@@ -330,7 +330,7 @@ public class PostFragment extends NamedFragment implements OnClickListener
 	{		
 		switch (v.getId())
 		{
-			case R.id.btn_submit:
+			case R.id.listpage_refresh:
 			{
 				if(PostSystem.submit(editText.getText().toString()))
 				{

@@ -26,7 +26,7 @@ public class StatusCommandChaseRelation extends StatusCommand
 		if(RelationSystem.getRelationByChasingId(status.statusId) != null)
 		{
 			Fragment fragment = RelationSystem.getRelationByChasingId(status.statusId);
-			MainActivity.moveViewPage(MainActivity.getInstance().getFragmentAdapter().getItemPosition(fragment));
+			MainActivity.moveViewPage(MainActivity.getInstance().getPagerAdapter().getItemPosition(fragment));
 			return;
 		}
 		final RelationFragment relFragment = RelationFragment.newInstance(status.statusId);

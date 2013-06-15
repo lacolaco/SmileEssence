@@ -29,6 +29,7 @@ import net.miz_hi.smileessence.util.NetworkUtils;
 import net.miz_hi.smileessence.view.IRemainable;
 import net.miz_hi.smileessence.view.activity.MainActivity;
 import net.miz_hi.smileessence.view.fragment.ExtractFragment;
+import net.miz_hi.smileessence.view.fragment.ListFragment;
 import net.miz_hi.smileessence.view.fragment.RelationFragment;
 import twitter4j.Paging;
 import twitter4j.TwitterStream;
@@ -93,7 +94,7 @@ public class MainSystem
 			if(connectUserStream(activity))
 			{
 				final Future<List<StatusModel>> resp_home = MyExecutor.submit(new AsyncTimelineGetter(Client.getMainAccount(), null));					
-				final Future<List<StatusModel>> resp_mentions = MyExecutor.submit(new AsyncMentionsGetter(Client.getMainAccount(), new Paging(1)));
+				final Future<List<StatusModel>> resp_mentions = MyExecutor.submit(new AsyncMentionsGetter(Client.getMainAccount(), new Paging(1, 200)));
 
 				MyExecutor.execute(new Runnable()
 				{
@@ -168,6 +169,11 @@ public class MainSystem
 				ExtractFragment fragment = ExtractFragment.singleton();
 				fragment.load(page.getData());
 			}
+			else if(className.equals(ListFragment.class.getSimpleName()))
+			{
+				ListFragment fragment = ListFragment.newInstance(null, -1);
+				fragment.load(page.getData());
+			}
 		}
 	}
 	
@@ -175,7 +181,7 @@ public class MainSystem
 	{
 		Pages.clear();
 		Pages.startTransaction();
-		for(Object element : MainActivity.getInstance().getFragmentAdapter().getList())
+		for(Object element : MainActivity.getInstance().getPagerAdapter().getList())
 		{
 			if(element instanceof IRemainable)
 			{

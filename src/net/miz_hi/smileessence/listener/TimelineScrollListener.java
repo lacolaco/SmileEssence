@@ -1,8 +1,10 @@
 package net.miz_hi.smileessence.listener;
 
 import net.miz_hi.smileessence.util.CustomListAdapter;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.ListView;
 
 public class TimelineScrollListener implements OnScrollListener
 {
@@ -17,7 +19,6 @@ public class TimelineScrollListener implements OnScrollListener
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
 	{
-		//adapter.setCanNotifyOnChange(false);
 	}
 
 	@Override
@@ -30,7 +31,10 @@ public class TimelineScrollListener implements OnScrollListener
 			if(scrollState == SCROLL_STATE_IDLE)
 			{
 				adapter.setCanNotifyOnChange(true);
-				adapter.notifyAdapter();
+				int before = adapter.getCount();
+				adapter.notifyDataSetChanged();
+				int after = adapter.getCount();
+				((ListView)view).setSelectionFromTop(after - before, 0);
 			}
 		}
 	}

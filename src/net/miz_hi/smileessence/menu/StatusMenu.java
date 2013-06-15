@@ -18,6 +18,8 @@ import net.miz_hi.smileessence.command.status.StatusCommandCopy;
 import net.miz_hi.smileessence.command.status.StatusCommandDelete;
 import net.miz_hi.smileessence.command.status.StatusCommandFavAndRetweet;
 import net.miz_hi.smileessence.command.status.StatusCommandFavorite;
+import net.miz_hi.smileessence.command.status.StatusCommandIntroduce;
+import net.miz_hi.smileessence.command.status.StatusCommandMakeAnonymous;
 import net.miz_hi.smileessence.command.status.StatusCommandNanigaja;
 import net.miz_hi.smileessence.command.status.StatusCommandReply;
 import net.miz_hi.smileessence.command.status.StatusCommandRetweet;
@@ -131,6 +133,8 @@ public class StatusMenu extends ExpandMenuDialog
 		list.add(new StatusCommandTofuBuster(activity, model));
 		list.add(new StatusCommandUnOffRetweet(model));
 		list.add(new StatusCommandWarotaRT(model));
+		list.add(new StatusCommandIntroduce(model));
+		list.add(new StatusCommandMakeAnonymous(model));
 		list.add(new StatusCommandNanigaja(model));
 		list.add(new StatusCommandUnOffFav(model));
 		list.add(new StatusCommandThankToFav(model));
@@ -198,7 +202,7 @@ public class StatusMenu extends ExpandMenuDialog
 				}
 			}
 		}
-		if(model.retweeter != null && !list.contains(model.retweeter))
+		if(model.retweeter != null && !list.contains(model.retweeter.screenName))
 		{
 			list.add(model.retweeter.screenName);
 		}
