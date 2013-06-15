@@ -7,6 +7,7 @@ import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.command.ICommand;
 import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.menu.ExpandMenuListAdapter;
+import net.miz_hi.smileessence.menu.MenuElement;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey.EnumValueType;
 import net.miz_hi.smileessence.preference.PreferenceHelper;
 import android.app.Activity;
@@ -45,9 +46,7 @@ public abstract class ExpandMenuDialog extends MenuDialog
 		this.title = title;
 	}
 
-	public abstract List<List<ICommand>> getLists();
-	
-	public abstract List<String> getGroups();
+	public abstract List<MenuElement> getElements(List<MenuElement> list);
 	
 	public Dialog create()
 	{
@@ -64,32 +63,58 @@ public abstract class ExpandMenuDialog extends MenuDialog
 			builder.setCustomTitle(titleView);
 		}
 		
-		List<List<ICommand>> list1 = getLists();
-		List<List<ICommand>> list2 = new ArrayList<List<ICommand>>();
-		
-		for(int i = 0; i < list1.size(); i++)
+		List<MenuElement> list3 = getElements(new ArrayList<MenuElement>());
+		List stub = new ArrayList();
+		for (MenuElement menuElement : list3)
 		{
-			List<ICommand> list = list1.get(i);
-			List<ICommand> newList = new ArrayList<ICommand>();
-			for(ICommand command : list)
+			if(menuElement.isParent())
 			{
-				boolean isEnabled = true;
-				
-				if(command instanceof IHideable)
+				List<MenuElement> children = menuElement.getChildren();
+				List stub1 = new ArrayList();
+				for (MenuElement menuElement2 : children)
 				{
-					PreferenceHelper pref = Client.getPreferenceHelper();
-					isEnabled = pref.getPreferenceValue(command.getClass().getSimpleName(), EnumValueType.BOOLEAN, false);
+					boolean isEnabled = true;
+					ICommand command = menuElement2.getCommand();
+					if(command != null)
+					{
+						if(command instanceof IHideable)
+						{
+							PreferenceHelper pref = Client.getPreferenceHelper();
+							isEnabled = pref.getPreferenceValue(command.getClass().getSimpleName(), EnumValueType.BOOLEAN, false);
+						}
+
+						if(!command.getDefaultVisibility() || !isEnabled)
+						{
+							stub1.add(menuElement2);
+						}
+					}
 				}
+				children.removeAll(stub1);
+			}
+			else
+			{
 				
-				if(command.getDefaultVisibility() && isEnabled)
+				boolean isEnabled = true;
+				ICommand command = menuElement.getCommand();
+				if(command != null)
 				{
-					newList.add(command);
+					if(command instanceof IHideable)
+					{
+						PreferenceHelper pref = Client.getPreferenceHelper();
+						isEnabled = pref.getPreferenceValue(command.getClass().getSimpleName(), EnumValueType.BOOLEAN, false);
+					}
+
+					if(!command.getDefaultVisibility() || !isEnabled)
+					{
+						stub.add(menuElement);
+					}
 				}
 			}
-			list2.add(i, newList);
 		}
+		list3.removeAll(stub);
 		
 		ExpandableListView listview = new ExpandableListView(activity);
+		listview.setGroupIndicator(Client.getResource().getDrawable(android.R.color.transparent));
 		listview.setOnGroupClickListener(new OnGroupClickListener()
 		{
 			
@@ -101,7 +126,7 @@ public abstract class ExpandMenuDialog extends MenuDialog
 			}
 		});
 		
-		ExpandMenuListAdapter adapter = new ExpandMenuListAdapter(activity, getGroups(), list2);
+		ExpandMenuListAdapter adapter = new ExpandMenuListAdapter(activity, list3);
 		listview.setAdapter(adapter);
 		builder.setView(listview);
 		dialog = builder.create();

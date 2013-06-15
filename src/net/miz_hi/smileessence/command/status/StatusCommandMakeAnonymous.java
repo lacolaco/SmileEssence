@@ -16,7 +16,7 @@ public class StatusCommandMakeAnonymous extends StatusCommand implements IHideab
 	@Override
 	public String getName()
 	{
-		return "匿名にしてあげる";
+		return "匿名にする";
 	}
 
 	@Override

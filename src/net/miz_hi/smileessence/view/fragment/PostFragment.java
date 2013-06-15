@@ -54,11 +54,15 @@ public class PostFragment extends NamedFragment implements OnClickListener
 		return singleton;
 	}	
 
+	public PostFragment()
+	{
+		singleton = this;
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		singleton = this;
 	}
 
 	@Override

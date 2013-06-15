@@ -89,11 +89,11 @@ public class ListFragment extends NamedFragment implements IRemovable, IRemainab
 					if(adapter.getCount() > 0)
 					{
 						long lastId = ((StatusModel)adapter.getItem(0)).statusId;
-						resp = TwitterManager.getTwitter().getUserListStatuses(id, new Paging(1, 100, lastId));
+						resp = TwitterManager.getTwitter().getUserListStatuses(id, new Paging(1, 50, lastId));
 					}
 					else
 					{
-						resp = TwitterManager.getTwitter().getUserListStatuses(id, new Paging(1, 100));
+						resp = TwitterManager.getTwitter().getUserListStatuses(id, new Paging(1, 50));
 					}			
 					Collections.reverse(resp);
 					for(Status status : resp)

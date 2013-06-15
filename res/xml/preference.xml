@@ -28,6 +28,7 @@
             android:key="@string/key_setting_namestyle"
             android:summary="お好きなものを選んでください"
             android:title="名前の形式" />
+        <SwitchPreference android:key="@string/key_setting_read_retweet" android:summaryOn="表示する" android:title="同じツイートのRT" android:summaryOff="表示しない" android:defaultValue="true"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="動作設定" >
         <SwitchPreference
@@ -61,9 +62,10 @@
             android:key="@string/key_setting_delete_accounts"
             android:summary="再起動後に認証してね"
             android:title="認証情報を削除" />
-        <Preference
+        <Preference android:summary="@string/app_version" android:title="@string/app_name" android:key="@string/prefrence_app"/><Preference
             android:key="@string/key_setting_t4j"
             android:title="Powered by twitter4j" />
+        
         <Preference android:summary="このアプリケーションはApache Licenseで保護されたライブラリを使用しています" android:selectable="false"/>
     </PreferenceCategory>
 

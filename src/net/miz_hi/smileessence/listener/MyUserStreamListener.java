@@ -88,6 +88,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 		if (model.isRetweet && model.isMine)
 		{
 			historyListAdapter.addFirst(new RetweetEvent(model.retweeter, model));
+			historyListAdapter.notifyAdapter();
 		}
 		else if (!model.isRetweet && model.isReply)
 		{
@@ -99,9 +100,12 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 			mentionsListAdapter.addFirst(model);
 			mentionsListAdapter.notifyAdapter();
 		}
-		
-		MainSystem.getInstance().homeListAdapter.addFirst(model);				
-		MainSystem.getInstance().homeListAdapter.notifyAdapter();
+
+		if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.SHOW_READ_RETWEET) || !StatusStore.isRead(model.statusId))
+		{
+			MainSystem.getInstance().homeListAdapter.addFirst(model);		
+			MainSystem.getInstance().homeListAdapter.notifyAdapter();
+		}
 
 		StatusChecker.check(model);
 	}

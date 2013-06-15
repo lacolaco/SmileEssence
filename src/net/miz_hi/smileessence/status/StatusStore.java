@@ -1,6 +1,7 @@
 package net.miz_hi.smileessence.status;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -13,23 +14,22 @@ public class StatusStore
 	private static ConcurrentHashMap<Long, StatusModel> statusesMap = new ConcurrentHashMap<Long, StatusModel>();
 	private static CopyOnWriteArrayList<Long> favoriteList = new CopyOnWriteArrayList<Long>();
 	private static CopyOnWriteArrayList<String> hashtagList = new CopyOnWriteArrayList<String>();
+	private static CopyOnWriteArrayList<Long> readRetweetList = new CopyOnWriteArrayList<Long>();
 
 	public static StatusModel put(Status status)
 	{
 		if (statusesMap.containsKey(status.getId()))
 		{
-//			statusesMap.remove(status.getId());
 			return statusesMap.get(status.getId());
 		}
 		StatusModel model = new StatusModel(status);
-//		if(status.isRetweet())
-//		{
-//			statusesMap.put(status.getRetweetedStatus().getId(), model);
-//		}
-//		else
+		if(status.isRetweet())
 		{
-			statusesMap.put(status.getId(), model);
+			readRetweetList.add(model.statusId);
 		}
+
+		statusesMap.put(status.getId(), model);
+
 		return model;
 	}
 	
@@ -63,6 +63,19 @@ public class StatusStore
 		return favoriteList.contains(id);
 	}
 	
+	public static boolean isRead(long id)
+	{
+		int count = 0;
+		for (Long l : readRetweetList)
+		{
+			if(id == l)
+			{
+				count++;
+			}
+		}
+		return count > 1;
+	}
+	
 	public static void putHashtag(String tag)
 	{
 		if(hashtagList.contains(tag))
@@ -80,5 +93,8 @@ public class StatusStore
 	public static void clearCache()
 	{
 		statusesMap.clear();
+		favoriteList.clear();
+		hashtagList.clear();
+		readRetweetList.clear();
 	}
 }

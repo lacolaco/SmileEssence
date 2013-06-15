@@ -38,9 +38,8 @@ public class IconCaches
 	{
 		final String fileName = genIconName(user);
 		final File latestIconFile = Client.getApplicationFile(fileName);
-		/*
-		 * URL‚©‚çƒAƒCƒRƒ“‚ªXV‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ÌŠm”F
-		 */
+
+		
 		boolean needsCacheUpdate = true;
 		if (iconCache.containsKey(user.userId))
 		{
@@ -51,15 +50,12 @@ public class IconCaches
 			needsCacheUpdate = !latestIconFile.exists();
 		}
 
-		/*
-		 * XV‚ª•s—v
-		 */
 		if (!needsCacheUpdate)
 		{
 			if (!iconCache.containsKey(user.userId) && !futureMap.containsKey(user.userId))
 			{
 				Options opt = new Options();
-				opt.inPurgeable = true; // GC‰Â”\‚É‚·‚é
+				opt.inPurgeable = true; // GCï¿½Â”\ï¿½É‚ï¿½ï¿½ï¿½
 				Bitmap bm = BitmapFactory.decodeFile(latestIconFile.getPath(), opt);
 				Icon icon = new Icon(bm, fileName);
 				IconCaches.putIconToMap(user.userId, icon);	
@@ -172,7 +168,7 @@ public class IconCaches
 	public static Bitmap getEmptyIcon()
 	{
 		Options opt = new Options();
-		opt.inPurgeable = true; // GC‰Â”\‚É‚·‚é
+		opt.inPurgeable = true; // GCï¿½Â”\ï¿½É‚ï¿½ï¿½ï¿½
 		Bitmap bm = BitmapFactory.decodeResource(Client.getResource(), R.drawable.icon_reflesh, opt);
 		return bm;
 	}

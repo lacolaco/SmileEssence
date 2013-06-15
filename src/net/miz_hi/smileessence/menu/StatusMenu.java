@@ -225,54 +225,47 @@ public class StatusMenu extends ExpandMenuDialog
 	}
 
 	@Override
-	public List<List<ICommand>> getLists()
+	public List<MenuElement> getElements(List<MenuElement> list)
 	{
-		
-		List<List<ICommand>> list = new ArrayList<List<ICommand>>();
-					
 		List<ICommand> url = getURLMenu();
 		if (!url.isEmpty())
 		{
-			list.add(url);
+			for (ICommand iCommand : url)
+			{
+				list.add(new MenuElement(iCommand));
+			}			
 		}
 		
+		MenuElement command = new MenuElement("コマンド");
 		List<ICommand> commands = getStatusMenu();
-		list.add(commands);
+		for (ICommand iCommand : commands)
+		{
+			command.addChild(new MenuElement(iCommand));
+		}
+		list.add(command);
 		
 		for (String name : getUsersList())
 		{
-			List<ICommand> user = getUserMenu(getUsersList()).get(name);
+			MenuElement user = new MenuElement("@" + name);
+			List<ICommand> usermenu = getUserMenu(getUsersList()).get(name);
+			for (ICommand iCommand : usermenu)
+			{
+				user.addChild(new MenuElement(iCommand));
+			}
 			list.add(user);
 		}
 		
-		List<ICommand> hashtag = getHashtagMenu();
-		if(!hashtag.isEmpty())
+		MenuElement hashtag = new MenuElement("ハッシュタグ");
+		List<ICommand> hashtags = getHashtagMenu();
+		if(!hashtags.isEmpty())
 		{
+			for (ICommand iCommand : hashtags)
+			{
+				hashtag.addChild(new MenuElement(iCommand));
+			}
 			list.add(hashtag);
 		}	
-
-		return list;
-	}
-
-	@Override
-	public List<String> getGroups()
-	{
-		List<String> list = new ArrayList<String>();
-		List<ICommand> url = getURLMenu();
-		if (!url.isEmpty())
-		{
-			list.add("URL");
-		}		
-		list.add("コマンド");
-		for (String name : getUsersList())
-		{
-			list.add("@" + name);
-		}
-		List<ICommand> hashtag = getHashtagMenu();
-		if(!hashtag.isEmpty())
-		{
-			list.add("ハッシュタグ");
-		}	
+		
 		return list;
 	}
 }

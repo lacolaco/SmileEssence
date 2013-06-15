@@ -1,5 +1,6 @@
 package net.miz_hi.smileessence.listener;
 
+import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.util.CustomListAdapter;
 import android.view.View;
 import android.widget.AbsListView;
@@ -34,7 +35,12 @@ public class TimelineScrollListener implements OnScrollListener
 				int before = adapter.getCount();
 				adapter.notifyDataSetChanged();
 				int after = adapter.getCount();
-				((ListView)view).setSelectionFromTop(after - before, 0);
+				int addCount = after - before;
+				((ListView)view).setSelectionFromTop(addCount, 0);
+				if(addCount > 0)
+				{
+					Notifier.info(addCount + "件の新着ツイートがあります");
+				}
 			}
 		}
 	}

@@ -32,6 +32,7 @@ public class SettingActivity extends PreferenceActivity
 	{
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preference);
+	
 		footorFirstClick = true;
 		Preference textSize = findPreference(getResources().getString(R.string.key_setting_textSize));
 		textSize.setOnPreferenceClickListener(new OnPreferenceClickListener()
@@ -65,6 +66,17 @@ public class SettingActivity extends PreferenceActivity
 			public boolean onPreferenceClick(Preference preference)
 			{
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(T4J_URL)));
+				return true;
+			}
+		});
+		
+		Preference app = findPreference(getResources().getString(R.string.prefrence_app));
+		app.setOnPreferenceClickListener(new OnPreferenceClickListener()
+		{
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Client.HOMEPAGE_URL)));
 				return true;
 			}
 		});

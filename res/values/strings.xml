@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">SmileEssence Lite</string>
+    <string name="app_version">β1.4.3</string>
     <string name="key_setting_textSize">text_size</string>
     <string name="key_setting_t4j">t4j_info</string>
     <string name="key_setting_aftersubmit">after_submit</string>
@@ -17,5 +18,7 @@
     <string name="namestyle_s">ScreenName</string>
     <string name="namestyle_n">Name</string>
     <string name="key_setting_extract_to">extract_to</string>
+    <string name="key_setting_read_retweet">show_read_retweet</string>
+    <string name="prefrence_app">pref_app</string>
 
 </resources>

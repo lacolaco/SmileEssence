@@ -16,28 +16,28 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ExpandMenuListAdapter extends BaseExpandableListAdapter
 {
 	
-	private List<String> groups;
-	private List<List<ICommand>> children;
+	private List<MenuElement> elements;
 	private Activity activity;
 	private LayoutInflater inflater;
 	
-	public ExpandMenuListAdapter(Activity activity, Collection<String> groups, Collection<List<ICommand>> children)
+	public ExpandMenuListAdapter(Activity activity, Collection<MenuElement> elements)
 	{
 		this.activity = activity;
-		this.groups = new ArrayList<String>(groups);
-		this.children = new ArrayList<List<ICommand>>(children);
+		this.elements = new ArrayList<MenuElement>(elements);
 		this.inflater = activity.getLayoutInflater();
 	}
 
 	@Override
 	public Object getChild(int arg0, int arg1)
 	{
-		return children.get(arg0).get(arg1);
+		return elements.get(arg0).getChildren().get(arg1);
 	}
 
 	@Override
@@ -49,13 +49,11 @@ public class ExpandMenuListAdapter extends BaseExpandableListAdapter
 	@Override
 	public View getChildView(int arg0, int arg1, boolean arg2, View view, ViewGroup arg4)
 	{
-		if(view == null)
-		{
-			view = inflater.inflate(R.layout.menuitem_white, null);
-		}
+
+		view = inflater.inflate(R.layout.menuitem_white, null);
 		
-		final ICommand item = (ICommand) getChild(arg0, arg1);
-		
+		final ICommand item = ((MenuElement) getChild(arg0, arg1)).getCommand();
+
 		TextView textView = (TextView) view.findViewById(R.id.textView_menuItem);
 		textView.setText(item.getName());
 		view.setOnClickListener(new OnClickListener()
@@ -86,19 +84,19 @@ public class ExpandMenuListAdapter extends BaseExpandableListAdapter
 	@Override
 	public int getChildrenCount(int arg0)
 	{
-		return children.get(arg0).size();
+		return elements.get(arg0).getChildren().size();
 	}
 
 	@Override
 	public Object getGroup(int arg0)
 	{
-		return groups.get(arg0);
+		return elements.get(arg0);
 	}
 
 	@Override
 	public int getGroupCount()
 	{
-		return children.size();
+		return elements.size();
 	}
 
 	@Override
@@ -108,15 +106,51 @@ public class ExpandMenuListAdapter extends BaseExpandableListAdapter
 	}
 
 	@Override
-	public View getGroupView(int arg0, boolean arg1, View arg2, ViewGroup arg3)
+	public View getGroupView(int arg0, boolean isExpanded, View view, ViewGroup parent)
 	{
-		if(arg2 == null)
+		MenuElement element = elements.get(arg0);
+		if(element.isParent())
 		{
-			arg2 = inflater.inflate(R.layout.menuparent_white, null);
+			view = inflater.inflate(R.layout.menuparent_white, null);
+			TextView textView = (TextView) view.findViewById(R.id.textView_menuItem);
+			textView.setText(element.getName());
+			ImageView indicator = (ImageView) view.findViewById(R.id.menuparent_indicator);
+			indicator.setImageResource(isExpanded ? R.drawable.expand_open : R.drawable.expand_close);
 		}
-		TextView textView = (TextView) arg2.findViewById(R.id.textView_menuItem);
-		textView.setText(groups.get(arg0).toString());
-		return arg2;
+		else
+		{
+			view = inflater.inflate(R.layout.menuitem_white, null);
+
+			final ICommand item = element.getCommand();
+
+			TextView textView = (TextView) view.findViewById(R.id.textView_menuItem);
+			textView.setText(item.getName());
+		
+			view.setOnClickListener(new OnClickListener()
+			{
+				@Override
+				public void onClick(View view)
+				{
+					if(item instanceof IConfirmable && Client.<Boolean>getPreferenceValue(EnumPreferenceKey.CONFIRM_DIALOG))
+					{
+						ConfirmDialog.show(activity, "実行しますか？", new Runnable()
+						{
+							@Override
+							public void run()
+							{
+								item.run();
+							}
+						});
+					}
+					else
+					{
+						item.run();
+					}
+				}
+			});
+		}
+		
+		return view;
 	}
 
 	@Override

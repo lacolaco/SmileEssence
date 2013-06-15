@@ -350,7 +350,22 @@ public class MainActivity extends FragmentActivity
 			}
 			case R.id.menu_exit:
 			{
-				finish();
+				if(Client.<Boolean>getPreferenceValue(EnumPreferenceKey.CONFIRM_DIALOG))
+				{
+					ConfirmDialog.show(this, "終了しますか？", new Runnable()
+					{
+
+						@Override
+						public void run()
+						{
+							MainActivity.super.finish();
+						}
+					});
+				}
+				else
+				{
+					super.finish();
+				}
 				break;
 			}
 		}

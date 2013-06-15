@@ -20,7 +20,7 @@ public class TweetMenu extends ExpandMenuDialog
 	public TweetMenu(Activity activity)
 	{
 		super(activity);
-		setTitle("ツイートメニュー");
+		setTitle("投稿メニュー");
 	}
 
 	private List<ICommand> getHashtagMenu()
@@ -44,52 +44,40 @@ public class TweetMenu extends ExpandMenuDialog
 	}
 
 	@Override
-	public List<List<ICommand>> getLists()
+	public List<MenuElement> getElements(List<MenuElement> list)
 	{
-		List<List<ICommand>> list = new ArrayList<List<ICommand>>();
+		MenuElement warota = new MenuElement(new CommandInsertText("ワロタｗ"));
+		MenuElement morse = new MenuElement(new CommandParseMorse());
+		MenuElement anonymous = new MenuElement(new CommandMakeAnonymous());
+		list.add(warota);
+		list.add(morse);
+		list.add(anonymous);
 		
-		//Basic
-		List<ICommand> insert = new ArrayList<ICommand>();
-		insert.add(new CommandInsertText("ワロタｗ"));
-		list.add(insert);
-		
-		List<ICommand> convert = new ArrayList<ICommand>();
-		convert.add(new CommandParseMorse());
-		convert.add(new CommandMakeAnonymous());
-		list.add(convert);
-		
-		List<ICommand> template = getTemplateMenu();
-		if(!template.isEmpty())
+		MenuElement template = new MenuElement("定型文");
+		List<ICommand> templates = getTemplateMenu();
+		if(!templates.isEmpty())
 		{
+			for (ICommand iCommand : templates)
+			{
+				template.addChild(new MenuElement(iCommand));
+			}
 			list.add(template);
 		}
 		
-		List<ICommand> hashtag = getHashtagMenu();
-		if(!hashtag.isEmpty())
+		MenuElement hashtag = new MenuElement("最近見たハッシュタグ");
+		List<ICommand> hashtags = getHashtagMenu();
+		if(!hashtags.isEmpty())
 		{
+			for (ICommand iCommand : hashtags)
+			{
+				hashtag.addChild(new MenuElement(iCommand));
+			}
 			list.add(hashtag);
 		}
-
+		
+		
 		return list;
 	}
 
-	@Override
-	public List<String> getGroups()
-	{
-		List<String> list = new ArrayList<String>();
-		list.add("挿入");
-		list.add("変換");
-		List<ICommand> template = getTemplateMenu();
-		if(!template.isEmpty())
-		{
-			list.add("定型文");
-		}
-		List<ICommand> hashtag = getHashtagMenu();
-		if(!hashtag.isEmpty())
-		{
-			list.add("最近見たハッシュタグ");
-		}
-		return list;
-	}
 
 }
