@@ -43,6 +43,7 @@ public class ListFragment extends NamedFragment implements IRemovable, IRemainab
 		ListFragment fragment = new ListFragment();
 		fragment.name = fullName;
 		fragment.id = id;
+		fragment.adapter = new StatusListAdapter(MainActivity.getInstance());
 		return fragment;
 	}
 	
@@ -64,21 +65,16 @@ public class ListFragment extends NamedFragment implements IRemovable, IRemainab
 		((ViewGroup)listView.getParent()).addView(progress);
 		listView.setEmptyView(progress);
 		listView.setFastScrollEnabled(true);
-		if(adapter == null)
-		{
-			adapter = new StatusListAdapter(getActivity());
-			refresh();
-		}
 		listView.setAdapter(adapter);
 		listView.setOnScrollListener(new TimelineScrollListener(adapter));
 		Button refresh = (Button)page.findViewById(R.id.listpage_refresh);
 		refresh.setOnClickListener(this);
 		return page;
 	}
-	
+
 	public void refresh()
 	{
-		final ProgressDialog pd = ProgressDialog.show(getActivity(), "", "取得中...");
+		final ProgressDialog pd = ProgressDialog.show(MainActivity.getInstance(), "", name + "を取得中...");
 		MyExecutor.execute(new Runnable()
 		{
 			public void run()
@@ -127,7 +123,8 @@ public class ListFragment extends NamedFragment implements IRemovable, IRemainab
 	{
 		String[] array = data.split(",");
 		name = array[0];
-		id = Integer.parseInt(array[1]);
+		id = Integer.parseInt(array[1]);		
+		refresh();
 		MainActivity.addPage(this);
 	}
 

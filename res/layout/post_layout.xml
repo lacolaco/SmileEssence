@@ -146,7 +146,7 @@
             android:padding="1dp" >
 
             <Button
-                android:id="@+id/listpage_refresh"
+                android:id="@+id/imBtn_tweet"
                 style="@style/whiteBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

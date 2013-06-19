@@ -79,7 +79,7 @@ public class PostFragment extends NamedFragment implements OnClickListener
 		frameInReplyTo = (FrameLayout) page.findViewById(R.id.frame_inreplyto);
 		imagePict = (ImageView)page.findViewById(R.id.image_pict);			
 		textCount = (TextView) page.findViewById(R.id.textView_count);
-		Button imageButtonSubmit = (Button) page.findViewById(R.id.listpage_refresh);
+		Button imageButtonSubmit = (Button) page.findViewById(R.id.imBtn_tweet);
 		ImageButton imageButtonClear = (ImageButton) page.findViewById(R.id.imBtn_clean);
 		ImageButton imageButtonMenu = (ImageButton) page.findViewById(R.id.imBtn_tweetmenu);
 		ImageButton imageButtonPict = (ImageButton) page.findViewById(R.id.imBtn_pickpict);
@@ -150,7 +150,11 @@ public class PostFragment extends NamedFragment implements OnClickListener
 			@Override
 			public void run()
 			{
-				if(i > editText.getText().length())
+				if(i < 0)
+				{
+					editText.setSelection(0);
+				}
+				else if(i > editText.getText().length())
 				{
 					editText.setSelection(editText.getText().length());
 				}
@@ -334,7 +338,7 @@ public class PostFragment extends NamedFragment implements OnClickListener
 	{		
 		switch (v.getId())
 		{
-			case R.id.listpage_refresh:
+			case R.id.imBtn_tweet:
 			{
 				if(PostSystem.submit(editText.getText().toString()))
 				{

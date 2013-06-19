@@ -40,7 +40,7 @@ public class PostSystem
 	
 	public static PostSystem clearText()
 	{
-		return setText("");
+		return setText("").setCursor(0);
 	}
 	
 	public static PostSystem setCursor(int index)
@@ -184,7 +184,7 @@ public class PostSystem
 					new AsyncTweet(update).addToQueue();
 					clear();
 				}
-			}.post();
+			}.postAtFrontOfQueue();			
 		}
 		return true;
 	}
