@@ -56,6 +56,7 @@
             android:summaryOn="有効"
             android:title="確認ダイアログ" />
         <SwitchPreference android:switchTextOn="専用タブ" android:switchTextOff="Mentions" android:title="抽出先" android:key="@string/key_setting_extract_to"/>
+        <SwitchPreference android:title="リストTL自動読み込み" android:key="@string/key_setting_listload" android:summaryOff="無効" android:summaryOn="有効" android:defaultValue="false"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="その他" >
         <Preference

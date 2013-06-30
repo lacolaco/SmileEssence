@@ -131,6 +131,11 @@ public class PostFragment extends NamedFragment implements OnClickListener
 	
 	public void setText(final String s)
 	{
+		if(editText == null)
+		{
+			return;
+		}
+		
 		new UiHandler()
 		{
 			
@@ -144,6 +149,11 @@ public class PostFragment extends NamedFragment implements OnClickListener
 	
 	public void setCursor(final int i)
 	{
+		if(editText == null)
+		{
+			return;
+		}
+		
 		new UiHandler()
 		{
 			
@@ -169,6 +179,11 @@ public class PostFragment extends NamedFragment implements OnClickListener
 
 	public void setInReplyTo(final long l)
 	{
+		if(frameInReplyTo == null)
+		{
+			return;
+		}
+		
 		if(l == PostSystem.NONE_ID)
 		{
 			new UiHandler()
@@ -218,6 +233,10 @@ public class PostFragment extends NamedFragment implements OnClickListener
 	
 	public void setPicturePath(final String path)
 	{
+		if(imagePict == null)
+		{
+			return;
+		}
 		if(path == null)
 		{
 			imagePict.setVisibility(View.GONE);
@@ -281,6 +300,11 @@ public class PostFragment extends NamedFragment implements OnClickListener
 	
 	public void openIme()
 	{
+		if(editText == null)
+		{
+			return;
+		}
+		
 		new UiHandler()
 		{
 			
@@ -298,6 +322,11 @@ public class PostFragment extends NamedFragment implements OnClickListener
 	
 	public void hideIme()
 	{
+		if(editText == null)
+		{
+			return;
+		}
+		
 		new UiHandler()
 		{
 			

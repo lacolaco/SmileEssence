@@ -37,6 +37,7 @@ public class ListFragment extends NamedFragment implements IRemovable, IRemainab
 	String name;
 	int id;
 	StatusListAdapter adapter;
+	boolean inited;
 
 	public static ListFragment newInstance(String fullName, int id)
 	{
@@ -44,6 +45,7 @@ public class ListFragment extends NamedFragment implements IRemovable, IRemainab
 		fragment.name = fullName;
 		fragment.id = id;
 		fragment.adapter = new StatusListAdapter(MainActivity.getInstance());
+		fragment.inited = false;
 		return fragment;
 	}
 	
@@ -59,11 +61,11 @@ public class ListFragment extends NamedFragment implements IRemovable, IRemainab
 	{
 		View page = inflater.inflate(R.layout.listpage_refresh_layout, container, false);
 		ListView listView = (ListView)page.findViewById(R.id.listpage_listview);
-		ProgressBar progress = new ProgressBar(getActivity());
-		progress.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-		progress.setVisibility(View.GONE);
-		((ViewGroup)listView.getParent()).addView(progress);
-		listView.setEmptyView(progress);
+//		ProgressBar progress = new ProgressBar(getActivity());
+//		progress.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+//		progress.setVisibility(View.GONE);
+//		((ViewGroup)listView.getParent()).addView(progress);
+//		listView.setEmptyView(progress);
 		listView.setFastScrollEnabled(true);
 		listView.setAdapter(adapter);
 		listView.setOnScrollListener(new TimelineScrollListener(adapter));
@@ -74,6 +76,7 @@ public class ListFragment extends NamedFragment implements IRemovable, IRemainab
 
 	public void refresh()
 	{
+		inited = true;
 		final ProgressDialog pd = ProgressDialog.show(MainActivity.getInstance(), "", name + "を取得中...");
 		MyExecutor.execute(new Runnable()
 		{
@@ -123,8 +126,7 @@ public class ListFragment extends NamedFragment implements IRemovable, IRemainab
 	{
 		String[] array = data.split(",");
 		name = array[0];
-		id = Integer.parseInt(array[1]);		
-		refresh();
+		id = Integer.parseInt(array[1]);
 		MainActivity.addPage(this);
 	}
 
@@ -142,6 +144,11 @@ public class ListFragment extends NamedFragment implements IRemovable, IRemainab
 		{
 			refresh();
 		}
+	}
+	
+	public boolean isInited()
+	{
+		return inited;
 	}
 
 }

@@ -15,7 +15,8 @@ public enum EnumPreferenceKey
 	READ_MORSE(EnumValueType.BOOLEAN, Client.getString(R.string.key_setting_morse), true),
 	NAME_STYLE(EnumValueType.STRING, Client.getString(R.string.key_setting_namestyle), Client.getString(R.string.namestyle_s_n)),
 	EXTRACT_TO(EnumValueType.BOOLEAN, Client.getString(R.string.key_setting_extract_to), true),
-	SHOW_READ_RETWEET(EnumValueType.BOOLEAN, Client.getString(R.string.key_setting_read_retweet), true);
+	SHOW_READ_RETWEET(EnumValueType.BOOLEAN, Client.getString(R.string.key_setting_read_retweet), true),
+	LIST_LOAD(EnumValueType.BOOLEAN, Client.getString(R.string.key_setting_listload), false),
 	;
 
 	private final EnumValueType type;
