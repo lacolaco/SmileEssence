@@ -61,11 +61,6 @@ public class ListFragment extends NamedFragment implements IRemovable, IRemainab
 	{
 		View page = inflater.inflate(R.layout.listpage_refresh_layout, container, false);
 		ListView listView = (ListView)page.findViewById(R.id.listpage_listview);
-//		ProgressBar progress = new ProgressBar(getActivity());
-//		progress.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-//		progress.setVisibility(View.GONE);
-//		((ViewGroup)listView.getParent()).addView(progress);
-//		listView.setEmptyView(progress);
 		listView.setFastScrollEnabled(true);
 		listView.setAdapter(adapter);
 		listView.setOnScrollListener(new TimelineScrollListener(adapter));

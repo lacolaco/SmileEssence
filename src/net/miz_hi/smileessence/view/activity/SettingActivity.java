@@ -81,43 +81,6 @@ public class SettingActivity extends PreferenceActivity
 			}
 		});
 		
-		SwitchPreference footer = (SwitchPreference) findPreference(getResources().getString(R.string.key_setting_footer));
-		footer.setOnPreferenceChangeListener(new OnPreferenceChangeListener()
-		{
-			
-			@Override
-			public boolean onPreferenceChange(Preference preference, Object newValue)
-			{
-				boolean hasMenuKey = ViewConfiguration.get(SettingActivity.this).hasPermanentMenuKey();
-				if(footorFirstClick && !hasMenuKey)
-				{
-					footorFirstClick = false;
-					AlertDialog.Builder builder = new Builder(SettingActivity.this);
-					builder.setTitle("警告");
-					builder.setCancelable(false);
-					builder.setMessage(
-							"フッターバーをオフにすると、" +
-							"端末のメニューキー以外でメインメニューを開くことができなくなります\r\n\r\n" +
-							"必ずタイムライン画面で" +
-							"端末のメニューキーが動作することを確認した上で" +
-							"オフにしてください\r\n\r\n" +
-							"メニューキーがない端末では絶対にオフにしないでください");
-					builder.setPositiveButton("OK", new OnClickListener()
-					{
-
-						@Override
-						public void onClick(DialogInterface dialog, int which)
-						{
-
-						}
-					});
-					builder.create().show();
-				}
-				return true;
-				
-			}
-		});
-		
 		Preference deleteAccounts = findPreference(getResources().getString(R.string.key_setting_delete_accounts));
 		deleteAccounts.setOnPreferenceClickListener(new OnPreferenceClickListener()
 		{

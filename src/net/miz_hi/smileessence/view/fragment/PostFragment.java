@@ -94,6 +94,7 @@ public class PostFragment extends NamedFragment implements OnClickListener
 		imageButtonMenu.setOnClickListener(this);
 		imageButtonPict.setOnClickListener(this);
 		imageButtonCamera.setOnClickListener(this);	
+		imagePict.setOnClickListener(this);
 		
 		return page;
 	}
@@ -122,10 +123,13 @@ public class PostFragment extends NamedFragment implements OnClickListener
 
 	public void save()
 	{
-		String text = editText.getText().toString();
-		PostSystem.setText(text);
-		int cursor = editText.getSelectionEnd();
-		PostSystem.setCursor(cursor);
+		if(editText != null)
+		{
+			String text = editText.getText().toString();
+			PostSystem.setText(text);
+			int cursor = editText.getSelectionEnd();
+			PostSystem.setCursor(cursor);
+		}
 		hideIme();		
 	}
 	

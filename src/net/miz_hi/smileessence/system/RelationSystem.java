@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import net.miz_hi.smileessence.async.MyExecutor;
+import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.status.StatusListAdapter;
 import net.miz_hi.smileessence.status.StatusModel;
 import net.miz_hi.smileessence.status.StatusStore;
@@ -60,6 +61,11 @@ public class RelationSystem
 				StatusListAdapter adapter = RelationSystem.getAdapter(fragment);
 				adapter.clear();
 				StatusModel status = StatusUtils.getOrCreateStatusModel(fragment.getChasingId());	
+				if(status == null)
+				{
+					Notifier.alert("ツイートの取得に失敗しました");
+					return;
+				}
 				adapter.addFirst(status);
 				long id = status.statusId;
 
@@ -73,7 +79,6 @@ public class RelationSystem
 					}
 				}
 				fragment.setChasingId(id);
-				//�ߋ�
 				id = status.inReplyToStatusId;
 				while(id > -1)
 				{

@@ -29,13 +29,12 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="5dp"
-            android:freezesText="true"
             android:gravity="top"
             android:inputType="text|textMultiLine"
             android:maxHeight="160dp"
             android:minLines="2" >
 
-            <requestFocus />
+<!--             <requestFocus /> -->
         </EditText>
 
         <LinearLayout

@@ -7,13 +7,6 @@
             android:key="@string/key_setting_textSize"
             android:summary="文字のサイズだよ"
             android:title="文字サイズ" />
-
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="@string/key_setting_footer"
-            android:summaryOff="表示しない"
-            android:summaryOn="表示する"
-            android:title="フッターバー" />
         <SwitchPreference
             android:defaultValue="true"
             android:key="@string/key_setting_morse"

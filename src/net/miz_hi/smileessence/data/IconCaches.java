@@ -153,11 +153,11 @@ public class IconCaches
 				}
 			});
 
-			Icon removed = iconCache.remove(entries.poll().getKey());
-			if(removed != null)
-			{
-				removed.bitmap.recycle();
-			}
+			iconCache.remove(entries.poll().getKey());
+//			if(removed != null)
+//			{
+//				removed.bitmap.recycle();
+//			}
 			counter.reset();
 		}
 
