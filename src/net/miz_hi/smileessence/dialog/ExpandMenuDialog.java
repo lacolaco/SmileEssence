@@ -46,7 +46,7 @@ public abstract class ExpandMenuDialog extends MenuDialog
 		this.title = title;
 	}
 
-	public abstract List<MenuElement> getElements(List<MenuElement> list);
+	public abstract List<MenuElement> getElements();
 	
 	public Dialog create()
 	{
@@ -63,7 +63,7 @@ public abstract class ExpandMenuDialog extends MenuDialog
 			builder.setCustomTitle(titleView);
 		}
 		
-		List<MenuElement> list3 = getElements(new ArrayList<MenuElement>());
+		List<MenuElement> list3 = getElements();
 		List stub = new ArrayList();
 		for (MenuElement menuElement : list3)
 		{

@@ -5,49 +5,33 @@ import java.util.List;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.command.ICommand;
-import net.miz_hi.smileessence.command.IHideable;
-import net.miz_hi.smileessence.command.MenuCommand;
 import net.miz_hi.smileessence.core.EnumRequestCode;
 import net.miz_hi.smileessence.dialog.ConfirmDialog;
 import net.miz_hi.smileessence.listener.PageChangeListener;
-import net.miz_hi.smileessence.menu.AddPageMenu;
 import net.miz_hi.smileessence.menu.MainMenu;
-import net.miz_hi.smileessence.menu.MenuListAdapter;
-import net.miz_hi.smileessence.menu.MovePageMenu;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
-import net.miz_hi.smileessence.preference.PreferenceHelper;
-import net.miz_hi.smileessence.preference.EnumPreferenceKey.EnumValueType;
 import net.miz_hi.smileessence.system.IntentRouter;
 import net.miz_hi.smileessence.system.MainSystem;
 import net.miz_hi.smileessence.util.LogHelper;
 import net.miz_hi.smileessence.util.NamedFragment;
 import net.miz_hi.smileessence.util.NamedFragmentPagerAdapter;
 import net.miz_hi.smileessence.util.UiHandler;
-import net.miz_hi.smileessence.view.IRemovable;
-import net.miz_hi.smileessence.view.fragment.ExtractFragment;
 import net.miz_hi.smileessence.view.fragment.HistoryFragment;
 import net.miz_hi.smileessence.view.fragment.HomeFragment;
 import net.miz_hi.smileessence.view.fragment.MentionsFragment;
 import net.miz_hi.smileessence.view.fragment.PostFragment;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ListView;
 
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 import com.viewpagerindicator.TitlePageIndicator;
+import com.viewpagerindicator.TitlePageIndicator.OnCenterItemClickListener;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
@@ -59,8 +43,6 @@ public class MainActivity extends FragmentActivity
 	NamedFragmentPagerAdapter adapter;
 	ViewPager pager;
 	TitlePageIndicator indicator;
-	SlidingMenu menu;
-	MenuListAdapter menuAdapter;
 	
 	public static MainActivity getInstance()
 	{
@@ -148,57 +130,19 @@ public class MainActivity extends FragmentActivity
 		pager.setAdapter(adapter);
 		pager.destroyDrawingCache();
 		
-		menu = new SlidingMenu(instance, SlidingMenu.SLIDING_CONTENT);
-		menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-		menu.setTouchModeBehind(SlidingMenu.TOUCHMODE_MARGIN);
-		DisplayMetrics metrics = getResources().getDisplayMetrics();
-		menu.setBehindOffset(metrics.widthPixels * 3 / 5);	
-
-		menu.setFadeDegree(0.35f);
-		
-		ListView listview = new ListView(instance);
-		listview.setBackgroundColor(Client.getColor(R.color.White));
-		listview.setDivider(new ColorDrawable(Client.getColor(R.color.Gray)));
-		listview.setDividerHeight(1);
-		menuAdapter = new MenuListAdapter(instance);
-		listview.setAdapter(menuAdapter);
-		menuAdapter.addAll(getMenuList());
-		menu.setMenu(listview);
-		menu.setOnOpenListener(new OnOpenListener()
-		{
-			
-			@Override
-			public void onOpen()
-			{
-				List<ICommand> list1 = getMenuList();
-				List<ICommand> list2 = new ArrayList<ICommand>();
-				
-				for(ICommand command : list1)
-				{
-					boolean isEnabled = true;
-
-					if(command instanceof IHideable)
-					{
-						PreferenceHelper pref = Client.getPreferenceHelper();
-						isEnabled = pref.getPreferenceValue(command.getClass().getSimpleName(), EnumValueType.BOOLEAN, false);
-					}
-
-					if(command.getDefaultVisibility() && isEnabled)
-					{
-						list2.add(command);
-					}
-				}
-				
-				menuAdapter.clear();
-				menuAdapter.addAll(list2);
-				menuAdapter.forceNotifyAdapter();
-			}
-		});
-		
 		indicator = (TitlePageIndicator)findViewById(R.id.indicator);
 		indicator.setTextSize(21);
 		indicator.setViewPager(pager);
 		indicator.setOnPageChangeListener(new PageChangeListener());
+		indicator.setOnCenterItemClickListener(new OnCenterItemClickListener()
+		{
+			
+			@Override
+			public void onCenterItemClick(int position)
+			{
+				new MainMenu(instance).create().show();
+			}
+		});
 		
 		new UiHandler()
 		{
@@ -279,19 +223,12 @@ public class MainActivity extends FragmentActivity
 		{
 			case KeyEvent.KEYCODE_BACK:
 			{
-				if(menu.isMenuShowing())
-				{
-					menu.showContent(true);
-				}
-				else
-				{
-					finish();
-				}
+				finish();
 				return false;
 			}
 			case KeyEvent.KEYCODE_MENU:
 			{				
-				menu.toggle(true);
+				openMenu();
 				return true;
 			}
 			default:
@@ -329,126 +266,10 @@ public class MainActivity extends FragmentActivity
 			}
 		}
 	}
-
-	public List<ICommand> getMenuList()
+	
+	public void openMenu()
 	{
-		List<ICommand> list = new ArrayList<ICommand>();
-		
-		list.add(new MenuCommand()
-		{
-			
-			@Override
-			public String getName()
-			{
-				return "メインメニュー";
-			}
-			
-			@Override
-			public void workOnUiThread()
-			{
-				new MainMenu(instance).create().show();
-			}
-		});
-		list.add(new MenuCommand()
-		{
-			
-			@Override
-			public String getName()
-			{
-				return "抽出タブを開く";
-			}
-			
-			@Override
-			public void workOnUiThread()
-			{
-				ExtractFragment fragment = ExtractFragment.singleton();
-				addPage(fragment);
-				moveViewPage(getPagerCount());
-			}
-			
-			@Override
-			public boolean getDefaultVisibility()
-			{
-				return Client.<Boolean>getPreferenceValue(EnumPreferenceKey.EXTRACT_TO) && !ExtractFragment.isShowing;
-			}
-		});
-		list.add(new MenuCommand()
-		{
-			
-			@Override
-			public String getName()
-			{
-				return "タブを移動";
-			}
-			
-			@Override
-			public void workOnUiThread()
-			{
-				new MovePageMenu(instance).create().show();
-			}
-		});
-				
-		list.add(new MenuCommand()
-		{
-			
-			@Override
-			public String getName()
-			{				
-				return "タブを閉じる";
-			}
-			
-			@Override
-			public void workOnUiThread()
-			{
-				removePage();
-			}
-			@Override
-			public boolean getDefaultVisibility()
-			{
-				Fragment fragment = adapter.getItem(getCurrentPage());
-				if(fragment != null && fragment instanceof IRemovable)
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
-		});
-		
-		list.add(new MenuCommand()
-		{
-			
-			@Override
-			public String getName()
-			{				
-				return "タブを追加";
-			}
-			
-			@Override
-			public void workOnUiThread()
-			{
-				new AddPageMenu(instance).create().show();
-			}
-		});
-
-		list.add(new MenuCommand()
-		{
-			
-			@Override
-			public String getName()
-			{
-				return "アプリを終了する";
-			}
-			
-			@Override
-			public void workOnUiThread()
-			{
-				instance.finish();
-			}
-		});
-		return list;
+		new MainMenu(instance).create().show();
 	}
 
 	public ViewPager getViewPager()

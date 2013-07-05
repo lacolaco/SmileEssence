@@ -44,8 +44,9 @@ public class TweetMenu extends ExpandMenuDialog
 	}
 
 	@Override
-	public List<MenuElement> getElements(List<MenuElement> list)
+	public List<MenuElement> getElements()
 	{
+		List<MenuElement> list = new ArrayList<MenuElement>();
 		MenuElement warota = new MenuElement(new CommandInsertText("ワロタｗ"));
 		MenuElement morse = new MenuElement(new CommandParseMorse());
 		MenuElement anonymous = new MenuElement(new CommandMakeAnonymous());

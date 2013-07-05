@@ -225,8 +225,9 @@ public class StatusMenu extends ExpandMenuDialog
 	}
 
 	@Override
-	public List<MenuElement> getElements(List<MenuElement> list)
+	public List<MenuElement> getElements()
 	{
+		List<MenuElement> list = new ArrayList<MenuElement>();
 		List<ICommand> url = getURLMenu();
 		if (!url.isEmpty())
 		{
