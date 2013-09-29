@@ -2,7 +2,14 @@ package net.miz_hi.smileessence.status;
 
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.data.IconCaches;
+import net.miz_hi.smileessence.cache.IconCache;
+import net.miz_hi.smileessence.cache.TweetCache;
+import net.miz_hi.smileessence.model.status.IStatusModel;
+import net.miz_hi.smileessence.model.status.event.EventModel;
+import net.miz_hi.smileessence.model.status.event.StatusEvent;
+import net.miz_hi.smileessence.model.status.tweet.EnumTweetType;
+import net.miz_hi.smileessence.model.status.tweet.TweetModel;
+import net.miz_hi.smileessence.model.status.user.UserModel;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
 import net.miz_hi.smileessence.util.Morse;
 import android.view.LayoutInflater;
@@ -13,75 +20,115 @@ import android.widget.TextView;
 public class StatusViewFactory
 {
 	
-	public static View getView(LayoutInflater layoutInflater, StatusModel model, View baseView)
+	LayoutInflater inflater;
+	View baseView;
+	ImageView icon;
+	TextView textTop;
+	TextView textContent;
+	TextView textBottom;
+	ImageView favorited;
+	int colorTop;
+	int colorContent;
+	int colorBottom;
+	
+	private StatusViewFactory(){}
+	
+	public static StatusViewFactory newInstance(LayoutInflater inflater, View baseView)
 	{
+		StatusViewFactory factory = new StatusViewFactory();
+		factory.inflater = inflater;
 		if(baseView == null)
 		{
-			baseView = layoutInflater.inflate(R.layout.status_layout, null);
-		}
-		ImageView viewIcon = (ImageView) baseView.findViewById(R.id.imageView_icon);
-		TextView viewHeader = (TextView) baseView.findViewById(R.id.textView_header);
-		TextView viewText = (TextView) baseView.findViewById(R.id.textView_text);
-		TextView viewFooter = (TextView) baseView.findViewById(R.id.textView_footer);
-		ImageView viewFavorited = (ImageView)baseView.findViewById(R.id.imageView_favorited);
-
-		if (model.isRetweet)
-		{
-			model.backgroundColor = Client.getColor(R.color.LightBlue);
-		}
-		else if (model.isReply)
-		{
-			model.backgroundColor = Client.getColor(R.color.LightRed);
+			factory.baseView = factory.inflater.inflate(R.layout.status_layout, null);
 		}
 		else
 		{
-			model.backgroundColor = Client.getColor(R.color.White);
+			factory.baseView = baseView;
 		}
-		
-		baseView.setBackgroundColor(model.backgroundColor);
-		
-		if (model.isMine)
-		{
-			model.nameColor = Client.getColor(R.color.DarkBlue);
-		}
-		else
-		{
-			model.nameColor = Client.getColor(R.color.ThickGreen);
-		}
-		
-		model.textColor = Client.getColor(R.color.Gray);
-
-		viewIcon.setTag(model.user.userId);
-		IconCaches.setIconBitmapToView(model.user, viewIcon);
-		
-		viewFavorited.setVisibility(StatusStore.isFavorited(model.statusId) ? View.VISIBLE : View.GONE);
-		
+		factory.icon = (ImageView) factory.baseView.findViewById(R.id.imageView_icon);
+		factory.textTop = (TextView) factory.baseView.findViewById(R.id.textView_header);
+		factory.textContent = (TextView) factory.baseView.findViewById(R.id.textView_text);
+		factory.textBottom = (TextView) factory.baseView.findViewById(R.id.textView_footer);
+		factory.favorited = (ImageView) factory.baseView.findViewById(R.id.imageView_favorited);
+		return factory;
+	}
+	
+	public View getStatusView(IStatusModel model)
+	{
+		// initialize
+		favorited.setVisibility(View.GONE);
 		int textSize = Client.getTextSize();
-		model.updateHeaderText();
-		viewHeader.setText(model.headerText);
-		viewHeader.setTextColor(model.nameColor);
-		viewHeader.setTextSize(textSize);
-		String text;
-		if(Morse.isMorse(model.text) && Client.<Boolean>getPreferenceValue(EnumPreferenceKey.READ_MORSE))
+		textTop.setTextSize(textSize);
+		textContent.setTextSize(textSize);
+		textBottom.setTextSize(textSize - 2);
+		colorTop = Client.getColor(R.color.ThickGreen);
+		colorContent = Client.getColor(R.color.Gray);
+		colorBottom = Client.getColor(R.color.Gray2);
+		//adjust to model
+		if(model instanceof TweetModel)
 		{
-			text = model.text + "\n(" + Morse.mcToJa(model.text) + ")";
+			adjustToTweetView((TweetModel) model);
+		}
+		else if(model instanceof EventModel)
+		{
+			adjustToEventView((EventModel) model);
+		}
+		else if(model instanceof UserModel)
+		{
+			adjustToUserModel((UserModel) model);
+		}
+		//coloring
+		textTop.setTextColor(colorTop);
+		textContent.setTextColor(colorContent);
+		textBottom.setTextColor(colorBottom);		
+		//set value
+		icon.setTag(model.getUser().userId);
+		IconCache.setIconBitmapToView(model.getUser(), icon);				
+		textTop.setText(model.getTextTop());		
+		String text;
+		if(Morse.isMorse(model.getTextContent()) && Client.<Boolean>getPreferenceValue(EnumPreferenceKey.READ_MORSE))
+		{
+			text = model.getTextContent() + "\n(" + Morse.mcToJa(model.getTextContent()) + ")";
 		}
 		else
 		{
-			text = model.text;
+			text = model.getTextContent();
 		}
-		viewText.setText(text);
-		viewText.setTextColor(model.textColor);
-		viewText.setTextSize(textSize);
-		viewFooter.setText(model.footerText);
-		viewFooter.setTextColor(Client.getColor(R.color.Gray2));
-		viewFooter.setTextSize(textSize - 2);
+		textContent.setText(text);		
+		textBottom.setText(model.getTextBottom());	
 		
 		return baseView;
 	}
 
-	public static View getView(LayoutInflater layoutInflater, StatusModel model)
+	private void adjustToTweetView(TweetModel model)
 	{
-		return getView(layoutInflater, model, null);
+		if (model.type == EnumTweetType.RETWEET)
+		{
+			baseView.setBackgroundColor(Client.getColor(R.color.LightBlue));
+		}
+		else if (model.type == EnumTweetType.REPLY)
+		{
+			baseView.setBackgroundColor(Client.getColor(R.color.LightRed));
+		}
+		
+		if (model.user.isMe())
+		{
+			colorTop = Client.getColor(R.color.DarkBlue);
+		}		
+		favorited.setVisibility(TweetCache.isFavorited(model.statusId) ? View.VISIBLE : View.GONE);
 	}
+	
+	private void adjustToEventView(EventModel model)
+	{
+		if(model instanceof StatusEvent)
+		{
+			colorTop = Client.getColor(R.color.DarkBlue);
+		}
+	}	
+	
+	private void adjustToUserModel(UserModel model)
+	{
+
+	}
+
 }

@@ -6,11 +6,11 @@ import java.util.List;
 import net.miz_hi.smileessence.command.ICommand;
 import net.miz_hi.smileessence.command.user.UserCommandFollow;
 import net.miz_hi.smileessence.command.user.UserCommandOpenInfo;
-import net.miz_hi.smileessence.command.user.UserCommandRemove;
+import net.miz_hi.smileessence.command.user.UserCommandUnfollow;
 import net.miz_hi.smileessence.command.user.UserCommandReply;
-import net.miz_hi.smileessence.data.UserModel;
 import net.miz_hi.smileessence.dialog.SimpleMenuDialog;
-import net.miz_hi.smileessence.event.EventModel;
+import net.miz_hi.smileessence.model.status.event.EventModel;
+import net.miz_hi.smileessence.model.status.user.UserModel;
 import android.app.Activity;
 
 public class EventMenu extends SimpleMenuDialog
@@ -32,9 +32,9 @@ public class EventMenu extends SimpleMenuDialog
 	{
 		List<ICommand> items = new ArrayList<ICommand>();
 		items.add(new UserCommandReply(user.screenName));
-		items.add(new UserCommandOpenInfo(user.screenName, activity));
+		items.add(new UserCommandOpenInfo(activity, user.screenName));
 		items.add(new UserCommandFollow(user.screenName));
-		items.add(new UserCommandRemove(user.screenName));
+		items.add(new UserCommandUnfollow(user.screenName));
 		return items;
 	}
 }

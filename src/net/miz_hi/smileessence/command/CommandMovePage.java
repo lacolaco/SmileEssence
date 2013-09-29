@@ -1,5 +1,6 @@
 package net.miz_hi.smileessence.command;
 
+import net.miz_hi.smileessence.system.PageControler;
 import net.miz_hi.smileessence.view.activity.MainActivity;
 
 public class CommandMovePage extends MenuCommand
@@ -23,7 +24,7 @@ public class CommandMovePage extends MenuCommand
 	@Override
 	public void workOnUiThread()
 	{
-		MainActivity.moveViewPage(position);
+		PageControler.getInstance().move(position);
 	}
 
 }

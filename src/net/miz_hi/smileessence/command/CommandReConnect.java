@@ -1,6 +1,6 @@
 package net.miz_hi.smileessence.command;
 
-import net.miz_hi.smileessence.system.MainSystem;
+import net.miz_hi.smileessence.twitter.TwitterManager;
 import net.miz_hi.smileessence.view.activity.MainActivity;
 
 public class CommandReConnect extends MenuCommand
@@ -19,7 +19,7 @@ public class CommandReConnect extends MenuCommand
 	@Override
 	public void workOnUiThread()
 	{
-		MainSystem.getInstance().connectUserStream(MainActivity.getInstance());
+		TwitterManager.openTwitterStream(MainActivity.getInstance());
 	}
 
 }

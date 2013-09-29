@@ -9,10 +9,10 @@ import net.miz_hi.smileessence.command.user.UserCommandFollow;
 import net.miz_hi.smileessence.command.user.UserCommandOpenFavstar;
 import net.miz_hi.smileessence.command.user.UserCommandOpenPage;
 import net.miz_hi.smileessence.command.user.UserCommandOpenTimeline;
-import net.miz_hi.smileessence.command.user.UserCommandRemove;
+import net.miz_hi.smileessence.command.user.UserCommandUnfollow;
 import net.miz_hi.smileessence.command.user.UserCommandSpam;
-import net.miz_hi.smileessence.data.UserModel;
 import net.miz_hi.smileessence.dialog.SimpleMenuDialog;
+import net.miz_hi.smileessence.model.status.user.UserModel;
 import android.app.Activity;
 
 public class UserMenu extends SimpleMenuDialog
@@ -33,11 +33,11 @@ public class UserMenu extends SimpleMenuDialog
 	{
 		List<ICommand> items = new ArrayList<ICommand>();
 		
-		items.add(new UserCommandOpenTimeline(userName));
+		items.add(new UserCommandOpenTimeline(activity, userName));
 		items.add(new UserCommandOpenPage(activity, userName));
 		items.add(new UserCommandOpenFavstar(activity, userName));
 		items.add(new UserCommandFollow(userName));
-		items.add(new UserCommandRemove(userName));
+		items.add(new UserCommandUnfollow(userName));
 		items.add(new UserCommandBlock(userName));
 		items.add(new UserCommandSpam(userName));		
 		return items;

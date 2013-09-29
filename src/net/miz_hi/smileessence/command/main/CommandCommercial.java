@@ -16,7 +16,8 @@ public class CommandCommercial extends MenuCommand
 	public void workOnUiThread()
 	{
 		String str = "Android用Twitterクライアント「SmileEssence Lite」をチェック！\r\n http://smileessence.miz-hi.net/";
-		PostSystem.setText(str).openPostPage();
+		PostSystem.setText(str);
+		PostSystem.openPostPage();
 	}
 
 }

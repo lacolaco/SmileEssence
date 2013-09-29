@@ -1,10 +1,11 @@
 package net.miz_hi.smileessence.command.user;
 
 import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.command.IConfirmable;
-import net.miz_hi.smileessence.core.Notifier;
-import net.miz_hi.smileessence.twitter.User;
+import net.miz_hi.smileessence.notification.Notificator;
+import net.miz_hi.smileessence.task.Task;
+import net.miz_hi.smileessence.twitter.API;
+import twitter4j.TwitterException;
 
 public class UserCommandSpam extends UserCommand implements IConfirmable
 {
@@ -23,17 +24,42 @@ public class UserCommandSpam extends UserCommand implements IConfirmable
 	@Override
 	public void workOnUiThread()
 	{
-		MyExecutor.execute(new Runnable()
+		new Task<Boolean>()
 		{
+
 			@Override
-			public void run()
+			public Boolean call()
 			{
-				if (User.spam(Client.getMainAccount(), userName))
+				try
 				{
-					Notifier.info("スパム報告しました");
+					API.spam(Client.getMainAccount(), userName);
+				} 
+				catch (TwitterException e)
+				{
+					e.printStackTrace();
+					return false;
+				}
+				return true;
+			}
+
+			@Override
+			public void onPreExecute()
+			{	
+			}
+
+			@Override
+			public void onPostExecute(Boolean result)
+			{
+				if(result)
+				{
+					Notificator.info("スパム報告しました");
+				}
+				else
+				{
+					Notificator.alert("スパム報告失敗しました");
 				}
 			}
-		});
+		}.callAsync();
 	}
 
 	@Override

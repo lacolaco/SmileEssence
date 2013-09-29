@@ -22,6 +22,7 @@ public class CommandAppendHashtag extends MenuCommand
 	@Override
 	public void workOnUiThread()
 	{
-		PostSystem.appendText(" #" + hashtag).openPostPage();
+		PostSystem.appendText(" #" + hashtag);
+		PostSystem.openPostPage();
 	}
 }

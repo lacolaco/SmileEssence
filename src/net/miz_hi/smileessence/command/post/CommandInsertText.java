@@ -2,7 +2,7 @@ package net.miz_hi.smileessence.command.post;
 
 import net.miz_hi.smileessence.command.MenuCommand;
 import net.miz_hi.smileessence.system.PostSystem;
-import net.miz_hi.smileessence.view.fragment.PostFragment;
+import net.miz_hi.smileessence.view.fragment.impl.PostFragment;
 
 public class CommandInsertText extends MenuCommand
 {
@@ -23,7 +23,8 @@ public class CommandInsertText extends MenuCommand
 	@Override
 	public void workOnUiThread()
 	{
-		PostSystem.insertText(text).openPostPage();
+		PostSystem.insertText(text);
+		PostSystem.openPostPage();
 	}
 
 }

@@ -1,13 +1,12 @@
 package net.miz_hi.smileessence.command.user;
 
-import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.async.MyExecutor;
-import net.miz_hi.smileessence.data.UserModel;
-import net.miz_hi.smileessence.data.UserStore;
-import net.miz_hi.smileessence.twitter.TwitterManager;
-import net.miz_hi.smileessence.view.activity.MainActivity;
-import net.miz_hi.smileessence.view.fragment.UserInfoFragment;
-import twitter4j.User;
+import net.miz_hi.smileessence.core.MyExecutor;
+import net.miz_hi.smileessence.model.status.ResponseConverter;
+import net.miz_hi.smileessence.model.status.user.UserModel;
+import net.miz_hi.smileessence.notification.Notificator;
+import net.miz_hi.smileessence.system.PageControler;
+import net.miz_hi.smileessence.task.impl.GetUserTask;
+import net.miz_hi.smileessence.view.fragment.impl.UserInfoFragment;
 import android.app.Activity;
 import android.app.ProgressDialog;
 
@@ -16,7 +15,7 @@ public class UserCommandOpenInfo extends UserCommand
 
 	Activity activity;
 	
-	public UserCommandOpenInfo(String userName, Activity activity)
+	public UserCommandOpenInfo(Activity activity, String userName)
 	{
 		super(userName);
 		this.activity = activity;
@@ -38,12 +37,10 @@ public class UserCommandOpenInfo extends UserCommand
 			@Override
 			public void run()
 			{
-				User user = TwitterManager.getUser(Client.getMainAccount(), userName);
-				UserModel model = UserStore.put(user);
+				UserModel model = ResponseConverter.convert(new GetUserTask(userName).call());
 				final UserInfoFragment fragment = UserInfoFragment.newInstance(model);
-
-				MainActivity.addPage(fragment);
-				MainActivity.moveViewPage(MainActivity.getPagerCount());
+				PageControler.getInstance().addPage(fragment);
+				PageControler.getInstance().moveToLast();
 				pd.dismiss();
 			}
 		});

@@ -1,12 +1,13 @@
 package net.miz_hi.smileessence.listener;
 
 import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.async.MyExecutor;
+import net.miz_hi.smileessence.core.MyExecutor;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
+import net.miz_hi.smileessence.system.PageControler;
 import net.miz_hi.smileessence.util.UiHandler;
 import net.miz_hi.smileessence.view.activity.MainActivity;
-import net.miz_hi.smileessence.view.fragment.ListFragment;
-import net.miz_hi.smileessence.view.fragment.PostFragment;
+import net.miz_hi.smileessence.view.fragment.impl.ListFragment;
+import net.miz_hi.smileessence.view.fragment.impl.PostFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 
@@ -34,7 +35,7 @@ public class PageChangeListener implements OnPageChangeListener
 			@Override
 			public void run()
 			{
-				if(position == MainActivity.PAGE_POST)
+				if(position == PageControler.PAGE_POST)
 				{
 					PostFragment.singleton().load();
 					isOpening = true;
@@ -47,7 +48,7 @@ public class PageChangeListener implements OnPageChangeListener
 					}
 					isOpening = false;
 
-					Fragment fragment = MainActivity.getInstance().getPagerAdapter().getItem(position);
+					Fragment fragment = PageControler.getInstance().getAdapter().getItem(position);
 
 					if(fragment instanceof ListFragment)
 					{

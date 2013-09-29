@@ -2,10 +2,10 @@ package net.miz_hi.smileessence;
 
 import java.io.File;
 
-import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.auth.AuthentificationDB;
-import net.miz_hi.smileessence.core.DBHelper;
+import net.miz_hi.smileessence.core.MyExecutor;
+import net.miz_hi.smileessence.data.DBHelper;
 import net.miz_hi.smileessence.data.extra.ExtraWord;
 import net.miz_hi.smileessence.data.page.Page;
 import net.miz_hi.smileessence.data.template.Template;

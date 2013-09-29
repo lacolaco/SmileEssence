@@ -14,9 +14,9 @@ public enum EnumPreferenceKey
 	CONFIRM_DIALOG(EnumValueType.BOOLEAN, Client.getString(R.string.key_setting_confirm_dialog),true),
 	READ_MORSE(EnumValueType.BOOLEAN, Client.getString(R.string.key_setting_morse), true),
 	NAME_STYLE(EnumValueType.STRING, Client.getString(R.string.key_setting_namestyle), Client.getString(R.string.namestyle_s_n)),
-	EXTRACT_TO(EnumValueType.BOOLEAN, Client.getString(R.string.key_setting_extract_to), true),
 	SHOW_READ_RETWEET(EnumValueType.BOOLEAN, Client.getString(R.string.key_setting_read_retweet), true),
 	LIST_LOAD(EnumValueType.BOOLEAN, Client.getString(R.string.key_setting_listload), false),
+	LAST_PRODUCE_DATE(EnumValueType.STRING, "last_produce_date", ""),
 	;
 
 	private final EnumValueType type;

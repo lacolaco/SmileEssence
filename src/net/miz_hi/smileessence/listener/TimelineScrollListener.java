@@ -1,6 +1,6 @@
 package net.miz_hi.smileessence.listener;
 
-import net.miz_hi.smileessence.core.Notifier;
+import net.miz_hi.smileessence.notification.Notificator;
 import net.miz_hi.smileessence.util.CustomListAdapter;
 import android.view.View;
 import android.widget.AbsListView;
@@ -39,7 +39,7 @@ public class TimelineScrollListener implements OnScrollListener
 				((ListView)view).setSelectionFromTop(addCount, 0);
 				if(addCount > 0)
 				{
-					Notifier.info(addCount + "件の新着ツイートがあります");
+					Notificator.info(addCount + "件の新着があります");
 				}
 			}
 		}

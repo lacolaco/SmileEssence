@@ -2,117 +2,84 @@ package net.miz_hi.smileessence.system;
 
 import java.io.File;
 
-import net.miz_hi.smileessence.async.AsyncTweet;
-import net.miz_hi.smileessence.core.Notifier;
+import net.miz_hi.smileessence.notification.Notificator;
+import net.miz_hi.smileessence.task.impl.TweetTask;
 import net.miz_hi.smileessence.util.StringUtils;
 import net.miz_hi.smileessence.util.UiHandler;
 import net.miz_hi.smileessence.view.activity.MainActivity;
-import net.miz_hi.smileessence.view.fragment.PostFragment;
+import net.miz_hi.smileessence.view.fragment.impl.PostFragment;
 import twitter4j.StatusUpdate;
 import android.text.TextUtils;
 
 public class PostSystem
 {
-	public static PostSystem instance;
-	public String text = "";
-	public int cursor = 0;
-	private long inReplyTo = NONE_ID;
-	private String pictPath;
-	public static final long NONE_ID = -1;
-	
-	static
-	{
-		instance = new PostSystem();
-	}
+
+	public static final long NONE_ID = -1;	
+	private static PostPageState state = new PostPageState();
 	
 	private PostSystem(){}
 	
-	public static String getText()
+	public static PostPageState getState()
 	{
-		return instance.text;
-	}
-
-	public static PostSystem setText(String text)
-	{
-		instance.text = text;
-		return instance;
+		return state;
 	}
 	
-	public static PostSystem clearText()
+	public static void clear(boolean keepPicture)
 	{
-		return setText("").setCursor(0);
+		state.setText("");
+		state.setCursor(0);
+		state.clearReply();
+		if(!keepPicture)
+		{
+			state.clearPicturePath();
+		}
 	}
 	
-	public static PostSystem setCursor(int index)
+	public static void setText(String str)
 	{
-		instance.cursor = index;
-		return instance;
+		state.setText(str);
 	}
 	
-	public static int getCursor()
+	public static void appendText(String str)
 	{
-		return instance.cursor;
+		state.setText(state.getText() + str);
 	}
 	
-	public static PostSystem appendText(String str)
+	public static void insertText(String str)
 	{
-		setText(instance.text + str);
-		return instance;
-	}
-	
-	public static PostSystem insertText(String str)
-	{
-		int cursor = instance.cursor;
-		StringBuilder sb = new StringBuilder(getText());
+		int cursor = state.cursor;
+		StringBuilder sb = new StringBuilder(state.getText());
 		sb.insert(cursor, str);
 		cursor = cursor + sb.length();
 		if (cursor > sb.length())
 		{
 			cursor = sb.length();
 		}
-		setText(sb.toString());
-		setCursor(cursor);
-		return instance;
+		state.setText(sb.toString());
+		state.setCursor(cursor);
 	}
 	
-	public static long getInReplyToStatusId()
+	public static void setReply(String userName)
 	{
-		return instance.inReplyTo;
+		setReply(userName, NONE_ID);
 	}
 	
-	public static PostSystem setInReplyToStatusId(long statusId)
+	public static void setReply(String userName, long statusId)
 	{
-		instance.inReplyTo = statusId;
-		return instance;
+		state.setText("@" + userName + " ");
+		state.setCursor(state.getText().length());
+		state.setInReplyToStatusId(statusId);
+		PostFragment.singleton().update();
 	}
 	
-	public static PostSystem setReply(String userName)
+	public static void addReply(String userName)
 	{
-		return setReply(userName, NONE_ID);
-	}
-	
-	public static PostSystem setReply(String userName, long statusId)
-	{
-		setText("@" + userName + " ");
-		setCursor(getText().length());
-		setInReplyToStatusId(statusId);
-		return instance;
-	}
-	
-	public static PostSystem clearReply()
-	{
-		setInReplyToStatusId(NONE_ID);
-		return instance;
-	}
-	
-	public static PostSystem addReply(String userName)
-	{
-		clearReply();
-		StringBuilder sb = new StringBuilder(getText());
+		state.clearReply();
+		StringBuilder sb = new StringBuilder(state.getText());
 
 		if((sb.indexOf("@" + userName) != -1))
 		{
-			return instance;
+			return;
 		}
 		else
 		{
@@ -123,57 +90,35 @@ public class PostSystem
 		{
 			sb.insert(0, ".");
 		}		
+		state.setText(sb.toString());
+		state.setCursor(state.getText().length());
+		PostFragment.singleton().update();
+	}
 
-		setText(sb.toString());
-		return instance;
-	}
-	
-	public static PostSystem setPicturePath(String path)
-	{
-		instance.pictPath = path;
-		return instance;
-	}
-	
-	public static String getPicturePath()
-	{
-		return instance.pictPath;
-	}
-	
-	public static PostSystem clearPicturePath()
-	{
-		return setPicturePath(null);
-	}
-	
-	public static PostSystem clear()
-	{
-		clearText();
-		clearReply();
-		clearPicturePath();
-		return instance;
-	}
-	
+
 	public static boolean submit(String text)
 	{
-		if (TextUtils.isEmpty(text) && getPicturePath() == null)
+		if (TextUtils.isEmpty(text) && state.getPicturePath() == null)
 		{
-			Notifier.alert("何か入力してください");
+			Notificator.alert("何か入力してください");
 			return false;
 		}
 		else if(StringUtils.countTweetCharacters(text) > 140)
 		{
-			Notifier.alert("文字数が多すぎます");
+			Notificator.alert("文字数が多すぎます");
 			return false;
 		}
 		else
 		{
 			final StatusUpdate update = new StatusUpdate(text);
-			if (getInReplyToStatusId() >= 0)
+			if (state.getInReplyToStatusId() >= 0)
 			{
-				update.setInReplyToStatusId(getInReplyToStatusId());
+				update.setInReplyToStatusId(state.getInReplyToStatusId());
 			}
-			if(getPicturePath() != null)
+			if(state.getPicturePath() != null)
 			{
-				update.setMedia(new File(getPicturePath()));
+				File file = new File(state.getPicturePath());
+				update.setMedia(new File(state.getPicturePath()));
 			}
 			new UiHandler()
 			{
@@ -181,8 +126,8 @@ public class PostSystem
 				@Override
 				public void run()
 				{
-					new AsyncTweet(update).addToQueue();
-					clear();
+					new TweetTask(update).callAsync();
+					clear(false);
 				}
 			}.postAtFrontOfQueue();			
 		}
@@ -191,15 +136,75 @@ public class PostSystem
 	
 	public static void openPostPage()
 	{
-		new UiHandler()
-		{
-			
-			@Override
-			public void run()
-			{
-				MainActivity.moveViewPage(MainActivity.PAGE_POST);
+//		new UiHandler()
+//		{
+//			
+//			@Override
+//			public void run()
+//			{
+				PageControler.getInstance().move(PageControler.PAGE_POST);
 				PostFragment.singleton().load();
-			}
-		}.post();
+//			}
+//		}.post();
+	}
+	
+	
+	public static class PostPageState
+	{
+		
+		private String text = "";
+		private int cursor = 0;
+		private long inReplyTo = NONE_ID;
+		private String pictPath;
+		
+		public String getText()
+		{
+			return text;
+		}
+
+		public void setText(String text)
+		{
+			this.text = text;
+		}
+		
+		public void setCursor(int index)
+		{
+			this.cursor = index;
+		}
+		
+		public int getCursor()
+		{
+			return cursor;
+		}
+		
+		public long getInReplyToStatusId()
+		{
+			return inReplyTo;
+		}
+		
+		public void setInReplyToStatusId(long statusId)
+		{
+			inReplyTo = statusId;
+		}
+		
+		public void clearReply()
+		{
+			setInReplyToStatusId(NONE_ID);
+		}
+		
+		public String getPicturePath()
+		{
+			return pictPath;
+		}
+		
+		public void setPicturePath(String path)
+		{
+			pictPath = path;
+		}
+		
+		public void clearPicturePath()
+		{
+			setPicturePath(null);
+		}		
 	}
 }

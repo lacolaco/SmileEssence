@@ -1,71 +1,266 @@
 package net.miz_hi.smileessence.menu;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import net.miz_hi.smileessence.Client;
+import net.miz_hi.smileessence.R;
+import net.miz_hi.smileessence.command.CommandAddTemplate;
+import net.miz_hi.smileessence.command.CommandOpenUrl;
 import net.miz_hi.smileessence.command.ICommand;
 import net.miz_hi.smileessence.command.post.CommandAppendHashtag;
-import net.miz_hi.smileessence.command.post.CommandInsertText;
-import net.miz_hi.smileessence.command.post.CommandMakeAnonymous;
-import net.miz_hi.smileessence.command.post.CommandParseMorse;
-import net.miz_hi.smileessence.data.template.Template;
-import net.miz_hi.smileessence.data.template.Templates;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandChaseTalk;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandClipboard;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandCongrats;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandCopy;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandDelete;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandFavAndRetweet;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandFavorite;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandIntroduce;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandMakeAnonymous;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandNanigaja;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandProduce;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandReply;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandReplyToAll;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandRetweet;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandReview;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandThankToFav;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandTofuBuster;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandTranslate;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandUnOffFav;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandUnOffRetweet;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandUnfavorite;
+import net.miz_hi.smileessence.command.status.impl.StatusCommandWarotaRT;
+import net.miz_hi.smileessence.command.user.UserCommandAddReply;
+import net.miz_hi.smileessence.command.user.UserCommandOpenInfo;
+import net.miz_hi.smileessence.command.user.UserCommandOpenTimeline;
+import net.miz_hi.smileessence.command.user.UserCommandReply;
 import net.miz_hi.smileessence.dialog.ExpandMenuDialog;
-import net.miz_hi.smileessence.status.StatusStore;
+import net.miz_hi.smileessence.model.status.tweet.TweetModel;
+import net.miz_hi.smileessence.status.StatusViewFactory;
+import twitter4j.HashtagEntity;
+import twitter4j.MediaEntity;
+import twitter4j.URLEntity;
+import twitter4j.UserMentionEntity;
 import android.app.Activity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 
 public class TweetMenu extends ExpandMenuDialog
 {
+	private TweetModel status;
 
-	public TweetMenu(Activity activity)
+	public TweetMenu(Activity activity, TweetModel model)
 	{
 		super(activity);
-		setTitle("投稿メニュー");
+		this.status = model;
+		setTitle(getHeaderView());
+	}
+	
+	private View getHeaderView()
+	{
+		View viewStatus = StatusViewFactory.newInstance(inflater, null).getStatusView(status);
+		LayoutParams p = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		p.setMargins(5, 5, 5, 0);
+		viewStatus.setLayoutParams(p);
+		
+		View commands = inflater.inflate(R.layout.statusmenu_header, null);
+		View reply = commands.findViewById(R.id.statusmenu_reply);
+		View retweet = commands.findViewById(R.id.statusmenu_retweet);
+		View favorite = commands.findViewById(R.id.statusmenu_favorite);
+		
+		final StatusCommandReply commandReply = new StatusCommandReply(status);
+		final StatusCommandRetweet commandRetweet = new StatusCommandRetweet(status);
+		final StatusCommandFavorite commandFavorite = new StatusCommandFavorite(status);
+		
+		if(!commandRetweet.getDefaultVisibility())
+		{
+			retweet.setVisibility(View.INVISIBLE);
+		}
+		
+		reply.setOnClickListener(new OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View arg0)
+			{
+				commandReply.run();
+				dispose();
+			}
+		});
+		retweet.setOnClickListener(new OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View v)
+			{
+				commandRetweet.run();
+				dispose();
+			}
+		});
+		favorite.setOnClickListener(new OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View v)
+			{
+				commandFavorite.run();
+				dispose();
+			}
+		});
+		
+		commands.setLayoutParams(p);
+		
+		LinearLayout header = new LinearLayout(activity);
+		header.setOrientation(LinearLayout.VERTICAL);
+		
+		header.setBackgroundColor(Client.getColor(R.color.White));
+		header.addView(viewStatus);
+		header.addView(commands);
+		return header;
 	}
 
-	private List<ICommand> getHashtagMenu()
+	public List<ICommand> getStatusMenu()
 	{
 		List<ICommand> list = new ArrayList<ICommand>();
-		for(String hashtag : StatusStore.getHashtagList())
+		list.add(new StatusCommandDelete(status));
+		list.add(new StatusCommandReplyToAll(status));
+		list.add(new StatusCommandFavAndRetweet(status));
+		list.add(new StatusCommandChaseTalk(activity, status));
+		list.add(new StatusCommandUnfavorite(status));
+		list.add(new StatusCommandCopy(status));
+		list.add(new StatusCommandTofuBuster(activity, status));
+		list.add(new StatusCommandUnOffRetweet(status));
+		list.add(new StatusCommandWarotaRT(status));
+		list.add(new StatusCommandIntroduce(status));
+		list.add(new StatusCommandMakeAnonymous(status));
+		list.add(new StatusCommandNanigaja(status));
+		list.add(new StatusCommandUnOffFav(status));
+		list.add(new StatusCommandThankToFav(status));
+		list.add(new StatusCommandCongrats(status));
+		list.add(new StatusCommandReview(activity, status));
+		list.add(new StatusCommandProduce(status));
+		list.add(new StatusCommandTranslate(activity, status));
+		list.add(new CommandAddTemplate(status.text));
+		list.add(new StatusCommandClipboard(status));
+		
+		return list;
+	}
+
+	private List<ICommand> getURLMenu()
+	{
+		List<ICommand> list = new ArrayList<ICommand>();
+		if (status.urls != null)
 		{
-			list.add(new CommandAppendHashtag(hashtag));
+			for (URLEntity urlEntity : status.urls)
+			{
+				String url = urlEntity.getExpandedURL();
+				if (url != null)
+				{
+					list.add(new CommandOpenUrl(activity, url));
+				}
+			}
+		}
+		if (status.medias != null)
+		{
+			for (MediaEntity mediaEntity : status.medias)
+			{
+				String url = mediaEntity.getMediaURL();
+				if (url != null)
+				{
+					list.add(new CommandOpenUrl(activity, url));
+				}
+			}
 		}
 		return list;
 	}
 	
-	private List<ICommand> getTemplateMenu()
+	private List<ICommand> getHashtagMenu()
 	{
 		List<ICommand> list = new ArrayList<ICommand>();
-		for(Template template : Templates.getTemplates())
+		if (status.hashtags != null)
 		{
-			list.add(new CommandInsertText(template.getText()));
+			for (HashtagEntity hashtag : status.hashtags)
+			{
+				list.add(new CommandAppendHashtag(hashtag.getText()));
+			}
 		}
 		return list;
+	}
+
+	private List<String> getUsersList()
+	{
+		List<String> list = new ArrayList<String>();
+		list.add(status.user.screenName);
+		if (status.userMentions != null)
+		{
+			for (UserMentionEntity e : status.userMentions)
+			{
+				if (!list.contains(e.getScreenName()))
+				{
+					list.add(e.getScreenName());
+				}
+			}
+		}
+		if(status.retweetedStatus != null && !list.contains(status.retweetedStatus.user.screenName))
+		{
+			list.add(status.retweetedStatus.user.screenName);
+		}
+		return list;
+	}
+
+	private Map<String, List<ICommand>> getUserMenu(List<String> userList)
+	{
+		Map<String, List<ICommand>> map = new HashMap<String, List<ICommand>>();
+		for (String userName : userList)
+		{
+			ArrayList<ICommand> list = new ArrayList<ICommand>();
+			list.add(new UserCommandReply(userName));
+			list.add(new UserCommandAddReply(userName));
+			list.add(new UserCommandOpenInfo(activity, userName));
+			list.add(new UserCommandOpenTimeline(activity, userName));
+			map.put(userName, list);
+		}
+		return map;
 	}
 
 	@Override
 	public List<MenuElement> getElements()
 	{
 		List<MenuElement> list = new ArrayList<MenuElement>();
-		MenuElement warota = new MenuElement(new CommandInsertText("ワロタｗ"));
-		MenuElement morse = new MenuElement(new CommandParseMorse());
-		MenuElement anonymous = new MenuElement(new CommandMakeAnonymous());
-		list.add(warota);
-		list.add(morse);
-		list.add(anonymous);
-		
-		MenuElement template = new MenuElement("定型文");
-		List<ICommand> templates = getTemplateMenu();
-		if(!templates.isEmpty())
+		List<ICommand> url = getURLMenu();
+		if (!url.isEmpty())
 		{
-			for (ICommand iCommand : templates)
+			for (ICommand iCommand : url)
 			{
-				template.addChild(new MenuElement(iCommand));
-			}
-			list.add(template);
+				list.add(new MenuElement(iCommand));
+			}			
 		}
 		
-		MenuElement hashtag = new MenuElement("最近見たハッシュタグ");
+		MenuElement command = new MenuElement("コマンド");
+		List<ICommand> commands = getStatusMenu();
+		for (ICommand iCommand : commands)
+		{
+			command.addChild(new MenuElement(iCommand));
+		}
+		list.add(command);
+		
+		for (String name : getUsersList())
+		{
+			MenuElement user = new MenuElement("@" + name);
+			List<ICommand> usermenu = getUserMenu(getUsersList()).get(name);
+			for (ICommand iCommand : usermenu)
+			{
+				user.addChild(new MenuElement(iCommand));
+			}
+			list.add(user);
+		}
+		
+		MenuElement hashtag = new MenuElement("ハッシュタグ");
 		List<ICommand> hashtags = getHashtagMenu();
 		if(!hashtags.isEmpty())
 		{
@@ -74,11 +269,8 @@ public class TweetMenu extends ExpandMenuDialog
 				hashtag.addChild(new MenuElement(iCommand));
 			}
 			list.add(hashtag);
-		}
-		
+		}	
 		
 		return list;
 	}
-
-
 }

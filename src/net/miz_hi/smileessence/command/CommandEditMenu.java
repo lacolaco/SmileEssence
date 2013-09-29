@@ -6,9 +6,9 @@ import java.util.HashMap;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.dialog.CheckBoxListDialog;
 import net.miz_hi.smileessence.dialog.CheckBoxListDialog.CheckBoxItem;
-import net.miz_hi.smileessence.menu.StatusMenu;
+import net.miz_hi.smileessence.menu.TweetMenu;
+import net.miz_hi.smileessence.model.status.tweet.TweetModel;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey.EnumValueType;
-import net.miz_hi.smileessence.status.StatusModel;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -37,8 +37,8 @@ public class CommandEditMenu extends MenuCommand
 		
 		ArrayList<CheckBoxItem> list = new ArrayList<CheckBoxItem>();
 		final HashMap<CheckBoxItem, ICommand> map = new HashMap<CheckBoxItem, ICommand>();
-		StatusModel nullModel = StatusModel.getNullStatusModel();
-		StatusMenu adapter = new StatusMenu(activity, nullModel);
+		TweetModel nullModel = TweetModel.getNullStatusModel();
+		TweetMenu adapter = new TweetMenu(activity, nullModel);
 		for(ICommand item : adapter.getStatusMenu())
 		{
 			if(item instanceof IHideable && item.getDefaultVisibility())

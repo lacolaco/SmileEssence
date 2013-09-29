@@ -12,7 +12,7 @@ public class PermissionBeginner implements IPermission
 	@Override
 	public boolean canWarotaRT()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

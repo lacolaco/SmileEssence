@@ -18,7 +18,7 @@ public class PermissionIntermediate implements IPermission
 	@Override
 	public boolean canCopyTweet()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

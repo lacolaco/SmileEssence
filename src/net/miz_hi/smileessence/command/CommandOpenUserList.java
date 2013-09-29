@@ -1,19 +1,24 @@
 package net.miz_hi.smileessence.command;
 
 import android.app.Activity;
-import net.miz_hi.smileessence.twitter.TwitterManager;
-import net.miz_hi.smileessence.view.activity.MainActivity;
-import net.miz_hi.smileessence.view.fragment.ListFragment;
+import net.miz_hi.smileessence.model.statuslist.StatusList;
+import net.miz_hi.smileessence.model.statuslist.timeline.Timeline;
+import net.miz_hi.smileessence.model.statuslist.timeline.impl.ListTimeline;
+import net.miz_hi.smileessence.statuslist.StatusListAdapter;
+import net.miz_hi.smileessence.statuslist.StatusListManager;
+import net.miz_hi.smileessence.system.PageControler;
+import net.miz_hi.smileessence.view.fragment.impl.ListFragment;
 import twitter4j.UserList;
-import twitter4j.api.ListsResources;
 
 public class CommandOpenUserList extends MenuCommand
 {
 
+	Activity activity;
 	UserList userList;
 	
-	public CommandOpenUserList(UserList userList)
+	public CommandOpenUserList(Activity activity, UserList userList)
 	{
+		this.activity = activity;
 		this.userList = userList;
 	}
 	
@@ -26,9 +31,11 @@ public class CommandOpenUserList extends MenuCommand
 	@Override
 	public void workOnUiThread()
 	{
+		Timeline timeline = new ListTimeline();
+		StatusListManager.registerListTimeline(userList.getId(), timeline, new StatusListAdapter(activity, timeline));
 		ListFragment fragment = ListFragment.newInstance(userList.getFullName(), userList.getId());
-		MainActivity.addPage(fragment);
-		MainActivity.moveViewPage(MainActivity.getPagerCount());
+		PageControler.getInstance().addPage(fragment);
+		PageControler.getInstance().moveToLast();
 	}
 
 }

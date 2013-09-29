@@ -1,21 +1,25 @@
 package net.miz_hi.smileessence.command.user;
 
-import twitter4j.User;
-import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.async.MyExecutor;
-import net.miz_hi.smileessence.data.UserModel;
-import net.miz_hi.smileessence.data.UserStore;
-import net.miz_hi.smileessence.twitter.TwitterManager;
-import net.miz_hi.smileessence.util.UiHandler;
-import net.miz_hi.smileessence.view.activity.MainActivity;
-import net.miz_hi.smileessence.view.fragment.UserTimelineFragment;
+import android.app.Activity;
+import net.miz_hi.smileessence.core.MyExecutor;
+import net.miz_hi.smileessence.model.status.ResponseConverter;
+import net.miz_hi.smileessence.model.status.user.UserModel;
+import net.miz_hi.smileessence.model.statuslist.timeline.impl.UserTimeline;
+import net.miz_hi.smileessence.statuslist.StatusListAdapter;
+import net.miz_hi.smileessence.statuslist.StatusListManager;
+import net.miz_hi.smileessence.system.PageControler;
+import net.miz_hi.smileessence.task.impl.GetUserTask;
+import net.miz_hi.smileessence.view.fragment.impl.UserTimelineFragment;
 
 public class UserCommandOpenTimeline extends UserCommand
 {
 
-	public UserCommandOpenTimeline(String userName)
+	Activity activity;
+	
+	public UserCommandOpenTimeline(Activity activity, String userName)
 	{
 		super(userName);
+		this.activity = activity;
 	}
 
 	@Override
@@ -33,20 +37,12 @@ public class UserCommandOpenTimeline extends UserCommand
 			@Override
 			public void run()
 			{
-				User user = TwitterManager.getUser(Client.getMainAccount(), userName);
-				final UserModel model = UserStore.put(user);
-				new UiHandler()
-				{
-					
-					@Override
-					public void run()
-					{
-						UserTimelineFragment fragment = UserTimelineFragment.newInstance(model);
-						MainActivity.addPage(fragment);
-						MainActivity.moveViewPage(MainActivity.getPagerCount());
-					}
-				}.post();
-
+				final UserModel model = ResponseConverter.convert(new GetUserTask(userName).call());
+				UserTimeline timeline = new UserTimeline();
+				StatusListManager.registerUserTimeline(model.userId, timeline, new StatusListAdapter(activity, timeline));
+				UserTimelineFragment fragment = UserTimelineFragment.newInstance(model);
+				PageControler.getInstance().addPage(fragment);
+				PageControler.getInstance().moveToLast();
 			}
 		});
 	}

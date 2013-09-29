@@ -1,7 +1,7 @@
 package net.miz_hi.smileessence.command;
 
-import net.miz_hi.smileessence.core.Notifier;
 import net.miz_hi.smileessence.data.template.Templates;
+import net.miz_hi.smileessence.notification.Notificator;
 
 public class CommandAddTemplate extends MenuCommand
 {
@@ -23,6 +23,6 @@ public class CommandAddTemplate extends MenuCommand
 	public void workOnUiThread()
 	{
 		Templates.addTemplate(text);
-		Notifier.info("追加しました");
+		Notificator.info("追加しました");
 	}
 }

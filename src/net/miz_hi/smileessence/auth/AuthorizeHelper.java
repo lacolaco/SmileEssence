@@ -5,9 +5,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import net.miz_hi.smileessence.async.MyExecutor;
 import net.miz_hi.smileessence.auth.Consumers.Consumer;
 import net.miz_hi.smileessence.core.EnumRequestCode;
+import net.miz_hi.smileessence.core.MyExecutor;
 import net.miz_hi.smileessence.view.activity.WebViewActivity;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;

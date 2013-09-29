@@ -1,6 +1,6 @@
 package net.miz_hi.smileessence.command.user;
 
-import net.miz_hi.smileessence.core.Notifier;
+import net.miz_hi.smileessence.notification.Notificator;
 import net.miz_hi.smileessence.system.PostSystem;
 
 public class UserCommandAddReply extends UserCommand
@@ -21,6 +21,6 @@ public class UserCommandAddReply extends UserCommand
 	public void workOnUiThread()
 	{
 		PostSystem.addReply(userName);
-		Notifier.info(userName + "をリプライ先に追加しました");
+		Notificator.info(userName + "をリプライ先に追加しました");
 	}
 }

@@ -3,7 +3,7 @@ package net.miz_hi.smileessence.data.template;
 import java.util.List;
 
 import net.miz_hi.smileessence.Client;
-import net.miz_hi.smileessence.core.DBHelper;
+import net.miz_hi.smileessence.data.DBHelper;
 import android.content.Context;
 import android.util.Log;
 

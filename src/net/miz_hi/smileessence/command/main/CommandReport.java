@@ -19,7 +19,8 @@ public class CommandReport extends MenuCommand
 	@Override
 	public void workOnUiThread()
 	{
-		PostSystem.setText("#SmileEssence @laco0416 ").openPostPage();
+		PostSystem.setText("#SmileEssence @laco0416 ");
+		PostSystem.openPostPage();
 	}
 
 }
