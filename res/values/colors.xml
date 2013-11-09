@@ -5,7 +5,7 @@
     <color name="LightBlue">#a0e5ff</color>
     <color name="MetroBlue">#0bd1ff</color>
     <color name="White">#FFF</color>
-    <color name="Gray">#202020</color>
+    <color name="Gray">#535353</color>
     <color name="Gray2">#808080</color>
     <color name="LightGreen">#91FF91</color>
     <color name="LightRed">#FFbfba</color>
@@ -14,5 +14,5 @@
     <color name="DarkBlue">#231493</color>
     <color name="ThickGreen">#317C09</color>
     <color name="LightGray">#f5f5f5</color>
-
+    <color name="Transparent">#00000000</color>
 </resources>

@@ -1,179 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/White" >
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/White">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingBottom="10dp"
-        android:scrollbars="vertical" >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:scrollbars="vertical">
 
         <TextView
-            android:id="@+id/textView_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/MetroBlue" />
+                android:id="@+id/textView_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/MetroBlue"/>
 
-        <EditText
-            android:id="@+id/editText_tweet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
-            android:gravity="top"
-            android:inputType="text|textMultiLine"
-            android:maxHeight="160dp"
-            android:minLines="2" >
+        <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
-<!--             <requestFocus /> -->
-        </EditText>
+            <EditText
+                    android:id="@+id/editText_tweet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="top"
+                    android:inputType="text|textMultiLine"
+                    android:minLines="2"
+                    android:maxLines="8"
+                    >
+
+            </EditText>
+
+            <ImageButton
+                    android:id="@+id/imBtn_delete"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/icon_delete"
+                    android:scaleType="fitXY"
+                    style="@style/transBtn"
+                    android:layout_gravity="right|top"
+                    android:layout_marginRight="15dp"
+                    android:contentDescription="delete"/>
+        </FrameLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill_horizontal"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp" >
-
-            <FrameLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/linearLayout1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@color/Gray"
-                android:padding="1dp" >
+                android:layout_gravity="fill_horizontal"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/imBtn_clean"
-                    style="@style/whiteBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:padding="0dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/icon_clean" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="2dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent" />
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@color/Gray"
-                android:padding="1dp" >
-
-                <ImageButton
-                    android:id="@+id/imBtn_pickpict"
-                    style="@style/whiteBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:padding="0dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/icon_pict" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="2dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent" />
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@color/Gray"
-                android:padding="1dp" >
-
-                <ImageButton
-                    android:id="@+id/imBtn_camera"
-                    style="@style/whiteBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
+            <LinearLayout
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:padding="0dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/icon_camera" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="2dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent" />
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@color/Gray"
-                android:padding="1dp" >
+                    android:background="@color/Gray"
+                    android:orientation="horizontal"
+                    android:padding="1dp">
 
                 <ImageButton
-                    android:id="@+id/imBtn_tweetmenu"
-                    style="@style/whiteBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:padding="0dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/icon_menu" />
+                        android:id="@+id/imBtn_pickpict"
+                        style="@style/whiteBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:padding="0dp"
+                        android:layout_weight="1"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/icon_pict"
+                        android:contentDescription="image"/>
+
+                <FrameLayout
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"/>
+
+                <ImageButton
+                        android:id="@+id/imBtn_tweetmenu"
+                        style="@style/whiteBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:padding="0dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/icon_menu"
+                        android:contentDescription="menu"/>
+            </LinearLayout>
+
+            <FrameLayout
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"/>
+
+            <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="10"
+                    android:background="@color/Gray"
+                    android:padding="1dp">
+
+                <Button
+                        android:id="@+id/imBtn_tweet"
+                        style="@style/whiteBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:textColor="#535353"
+                        android:text="TWEET"
+                        android:textStyle="bold"/>
             </FrameLayout>
         </LinearLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="6dp"
-            android:background="@color/Gray"
-            android:padding="1dp" >
 
-            <Button
-                android:id="@+id/imBtn_tweet"
-                style="@style/whiteBtn"
+        <FrameLayout
+                android:id="@+id/frame_inreplyto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="TWEET"
-                android:textStyle="bold" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/frame_inreplyto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="10dp"
-            android:visibility="gone" >
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
         </FrameLayout>
 
         <ImageView
-            android:id="@+id/image_pict"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="left"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="10dp"
-            android:clickable="true"
-            android:visibility="gone" />
+                android:id="@+id/image_pict"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:visibility="gone"/>
     </LinearLayout>
 
 </ScrollView>
