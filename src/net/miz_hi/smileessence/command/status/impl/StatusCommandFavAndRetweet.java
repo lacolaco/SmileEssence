@@ -31,6 +31,6 @@ public class StatusCommandFavAndRetweet extends StatusCommand implements IHideab
     @Override
     public boolean getDefaultVisibility()
     {
-        return !status.user.isProtected;
+        return (!status.user.isMe() || (status.retweeter != null && !status.retweeter.isMe())) && !status.user.isProtected;
     }
 }
