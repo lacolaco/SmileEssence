@@ -43,13 +43,9 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
     @Override
     public void onDeletionNotice(StatusDeletionNotice arg0)
     {
-        LogHelper.d("on status detete");
+        LogHelper.d("on status delete");
         final TweetModel model = TweetCache.get(arg0.getStatusId());
-        if (model == null)
-        {
-            return;
-        }
-        else
+        if (model != null)
         {
             for (StatusList list : StatusListManager.getTweetLists())
             {
@@ -91,7 +87,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
             mentionsAdapter.notifyAdapter();
             Notificator.buildEvent(new ReplyEvent(model.user, model)).raise();
         }
-        if (Client.<Boolean>getPreferenceValue(EnumPreferenceKey.SHOW_READ_RETWEET) || !TweetCache.isRead(model.statusId))
+        if (Client.<Boolean>getPreferenceValue(EnumPreferenceKey.SHOW_READ_RETWEET) || TweetCache.isNotRead(model.statusId))
         {
             home.addToTop(model);
             homeAdapter.notifyAdapter();
@@ -99,7 +95,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 
         TalkManager.filter(model);
         /*
-		 * Process to Check Relation and Extraction 
+         * Process to Check Relation and Extraction
 		 */
     }
 

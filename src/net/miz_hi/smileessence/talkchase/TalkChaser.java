@@ -37,8 +37,6 @@ public class TalkChaser
 
     /**
      * Call on Network Thread
-     *
-     * @param statusId
      */
     public void startRelation(long statusId)
     {
@@ -83,9 +81,8 @@ public class TalkChaser
         StatusListManager.getAdapter(talkList).forceNotifyAdapter();
     }
 
-    public void stopRelation(TalkFragment fragment)
+    public void stopRelation()
     {
-        fragment = null;
         TalkManager.removeTalkChaser(this);
     }
 }

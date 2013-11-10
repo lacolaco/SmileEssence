@@ -54,7 +54,7 @@ public class PageChangeListener implements OnPageChangeListener
                         if (Client.<Boolean>getPreferenceValue(EnumPreferenceKey.LIST_LOAD))
                         {
                             final ListFragment page = (ListFragment) fragment;
-                            if (!page.isInited())
+                            if (page.isNotInited())
                             {
                                 new UiHandler()
                                 {

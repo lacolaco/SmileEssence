@@ -40,7 +40,6 @@ public class StatusCommandTranslate extends StatusCommand implements IHideable
         catch (UnsupportedEncodingException e)
         {
             e.printStackTrace();
-            return;
         }
 
     }

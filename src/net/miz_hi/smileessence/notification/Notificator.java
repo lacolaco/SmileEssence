@@ -11,12 +11,10 @@ import net.miz_hi.smileessence.model.status.event.StatusEvent;
 import net.miz_hi.smileessence.util.CountUpInteger;
 import net.miz_hi.smileessence.util.UiHandler;
 import net.miz_hi.smileessence.view.activity.MainActivity;
-import twitter4j.User;
 
 public class Notificator
 {
 
-    private static User enemyUser;
     private static long lastUserId = -1;
     private static long lastStatusId = -1;
     private static CountUpInteger counterSourceUser = new CountUpInteger(5);

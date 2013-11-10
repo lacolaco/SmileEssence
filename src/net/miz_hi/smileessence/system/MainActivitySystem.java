@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.auth.Account;
-import net.miz_hi.smileessence.auth.AuthentificationDB;
+import net.miz_hi.smileessence.auth.AuthenticationDB;
 import net.miz_hi.smileessence.auth.AuthorizeHelper;
 import net.miz_hi.smileessence.auth.Consumers;
 import net.miz_hi.smileessence.cache.IconCache;
@@ -49,9 +49,9 @@ public class MainActivitySystem
 
     public void checkAccount(Activity activity)
     {
-        if (Client.hasAuthedAccount())
+        if (Client.hasAuthorizedAccount())
         {
-            accountSetup(activity);
+            accountSetup();
         }
         else
         {
@@ -71,16 +71,16 @@ public class MainActivitySystem
 
     public void authorize(Activity activity, Uri data)
     {
-        Account account = authHelper.oauthRecieve(data);
+        Account account = authHelper.oauthReceive(data);
         Client.setMainAccount(account);
         checkAccount(activity);
     }
 
-    public void accountSetup(Activity activity)
+    public void accountSetup()
     {
-        long lastUsedId = (Long) Client.getPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID);
+        long lastUsedId = Client.getPreferenceValue(EnumPreferenceKey.LAST_USED_USER_ID);
 
-        for (Account account : AuthentificationDB.instance().findAll())
+        for (Account account : AuthenticationDB.instance().findAll())
         {
             if (account.getUserId() == lastUsedId)
             {
@@ -90,7 +90,7 @@ public class MainActivitySystem
         }
         if (Client.getMainAccount() == null)
         {
-            Client.setMainAccount(AuthentificationDB.instance().findAll().get(0));
+            Client.setMainAccount(AuthenticationDB.instance().findAll().get(0));
         }
     }
 

@@ -39,8 +39,6 @@ public class UserTimelineFragment extends NamedFragment implements IRemovable, O
     {
     }
 
-    ;
-
     public static UserTimelineFragment newInstance(UserModel user)
     {
         UserTimelineFragment fragment = new UserTimelineFragment();

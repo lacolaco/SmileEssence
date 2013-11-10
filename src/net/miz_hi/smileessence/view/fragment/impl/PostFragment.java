@@ -62,12 +62,6 @@ public class PostFragment extends NamedFragment implements OnClickListener
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public String getTitle()
     {
         return "Post";

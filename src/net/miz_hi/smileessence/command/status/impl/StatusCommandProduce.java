@@ -57,6 +57,7 @@ public class StatusCommandProduce extends StatusCommand implements IHideable, IC
                     }
                     catch (InterruptedException e)
                     {
+                        e.printStackTrace();
                     }
                     new RetweetTask(status.statusId).call();
                     try
@@ -65,6 +66,7 @@ public class StatusCommandProduce extends StatusCommand implements IHideable, IC
                     }
                     catch (InterruptedException e)
                     {
+                        e.printStackTrace();
                     }
                     new TweetTask(new StatusUpdate(finish)).call();
                     new FavoriteTask(status.statusId).callAsync();

@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import net.miz_hi.smileessence.auth.Account;
-import net.miz_hi.smileessence.auth.AuthentificationDB;
+import net.miz_hi.smileessence.auth.AuthenticationDB;
 import net.miz_hi.smileessence.core.MyExecutor;
 import net.miz_hi.smileessence.data.DBHelper;
 import net.miz_hi.smileessence.permission.IPermission;
@@ -42,13 +42,9 @@ public class Client
         return prefHelper.getPreferenceValue(key);
     }
 
-    public static boolean hasAuthedAccount()
+    public static boolean hasAuthorizedAccount()
     {
-        if (AuthentificationDB.instance().findAll() == null)
-        {
-            return false;
-        }
-        return !AuthentificationDB.instance().findAll().isEmpty();
+        return AuthenticationDB.instance().findAll() != null && !AuthenticationDB.instance().findAll().isEmpty();
     }
 
     public static Application getApplication()
@@ -88,8 +84,7 @@ public class Client
 
     public static File getApplicationFile(String fileName)
     {
-        File file = new File(app.getExternalCacheDir(), fileName);
-        return file;
+        return new File(app.getExternalCacheDir(), fileName);
     }
 
     public static Resources getResource()

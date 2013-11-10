@@ -61,7 +61,7 @@ public class TweetCache
         return instance.favoriteList.contains(id);
     }
 
-    public static boolean isRead(long id)
+    public static boolean isNotRead(long id)
     {
         int count = 0;
         for (Long l : instance.readRetweetList)
@@ -71,7 +71,7 @@ public class TweetCache
                 count++;
             }
         }
-        return count > 1;
+        return count <= 1;
     }
 
     public static void putHashtag(String tag)

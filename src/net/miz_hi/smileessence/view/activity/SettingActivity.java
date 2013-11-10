@@ -10,7 +10,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.auth.AuthentificationDB;
+import net.miz_hi.smileessence.auth.AuthenticationDB;
 import net.miz_hi.smileessence.dialog.ConfirmDialog;
 import net.miz_hi.smileessence.dialog.SeekBarDialog;
 import net.miz_hi.smileessence.notification.Notificator;
@@ -92,7 +92,7 @@ public class SettingActivity extends PreferenceActivity
                             case DialogInterface.BUTTON_POSITIVE:
                             {
                                 Notificator.toast("全ての認証情報をリセットします。再起動してください");
-                                AuthentificationDB.instance().deleteAll();
+                                AuthenticationDB.instance().deleteAll();
                                 finish();
                                 MainActivity.getInstance().finish(true);
                                 break;
@@ -109,12 +109,6 @@ public class SettingActivity extends PreferenceActivity
                 return true;
             }
         });
-    }
-
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
     }
 
 }

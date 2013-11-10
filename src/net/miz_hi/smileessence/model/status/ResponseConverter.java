@@ -27,28 +27,28 @@ public final class ResponseConverter
         this.response = response;
     }
 
-    private boolean convert()
+    private void convert()
     {
         if (response instanceof Status)
         {
             model = new TweetModel((Status) response);
             TweetCache.put((TweetModel) model);
-            return true;
+            return;
         }
         else if (response instanceof DirectMessage)
         {
 
-            return true;
+            return;
         }
         else if (response instanceof User)
         {
             model = new UserModel((User) response);
             UserCache.put((UserModel) model);
-            return true;
+            return;
         }
         else
         {
-            return false;
+            return;
         }
     }
 

@@ -6,17 +6,11 @@ import android.net.NetworkInfo;
 
 public class NetworkUtils
 {
-	public static boolean canConnect(Activity activity)
-	{
-		ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Activity.CONNECTIVITY_SERVICE);
-		NetworkInfo info = cm.getActiveNetworkInfo();
-		if(info != null && info.isConnected())
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
+
+    public static boolean cannotConnect(Activity activity)
+    {
+        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        return info == null || !info.isConnected();
+    }
 }

@@ -9,7 +9,7 @@ public class API
 {
 
 	/*
-	 * TWEET
+     * TWEET
 	 */
 
     public static Status getStatus(Account account, long id) throws TwitterException
@@ -24,7 +24,7 @@ public class API
 
     public static void unfavorite(Account account, long statusId) throws TwitterException
     {
-        TwitterManager.getTwitter().destroyFavorite(statusId);
+        TwitterManager.getTwitter(account).destroyFavorite(statusId);
     }
 
     public static void retweet(Account account, long statusId) throws TwitterException
@@ -51,9 +51,9 @@ public class API
     {
         return Tweet.isStatusUpdateLimit();
     }
-	
+
 	/*
-	 * USER
+     * USER
 	 */
 
     public static User getUser(Account account, long id) throws TwitterException
@@ -90,7 +90,7 @@ public class API
     {
         TwitterManager.getTwitter(account).reportSpam(screenName);
     }
-	
+
 	/*
 	 * RELATIONSHIP
 	 */

@@ -25,14 +25,7 @@ public class CommandClosePage extends MenuCommand
     public boolean getDefaultVisibility()
     {
         Fragment fragment = PageController.getInstance().getAdapter().getItem(PageController.getInstance().getCurrentPage());
-        if (fragment != null && fragment instanceof IRemovable)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return fragment != null && fragment instanceof IRemovable;
     }
 
 }

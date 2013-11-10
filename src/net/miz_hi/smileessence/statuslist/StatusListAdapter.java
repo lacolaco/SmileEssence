@@ -1,7 +1,6 @@
 package net.miz_hi.smileessence.statuslist;
 
 import android.app.Activity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import net.miz_hi.smileessence.Client;
@@ -18,16 +17,12 @@ public class StatusListAdapter extends CustomListAdapter<IStatusModel>
 {
 
     private StatusList statusList;
-    private boolean canMotifyOnChange = true;
-    private Activity activity;
-    private LayoutInflater inflater;
     private IStatusModel[] statusArray;
     private int count;
 
     public StatusListAdapter(Activity activity, StatusList statusList)
     {
         super(activity, 0);
-        this.inflater = LayoutInflater.from(activity);
         this.statusList = statusList;
     }
 

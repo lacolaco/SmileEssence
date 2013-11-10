@@ -75,6 +75,6 @@ public class TalkFragment extends NamedFragment implements IRemovable
     public void onRemoved()
     {
         TalkChaser chaser = TalkManager.getChaser(talkId);
-        chaser.stopRelation(this);
+        chaser.stopRelation();
     }
 }

@@ -110,9 +110,9 @@ public class ListFragment extends NamedFragment implements IRemovable, OnClickLi
         }
     }
 
-    public boolean isInited()
+    public boolean isNotInited()
     {
-        return inited;
+        return !inited;
     }
 
 }

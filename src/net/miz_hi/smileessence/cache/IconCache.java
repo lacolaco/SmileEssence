@@ -170,8 +170,7 @@ public class IconCache
     {
         Options opt = new Options();
         opt.inPurgeable = true; // GC�\�ɂ���
-        Bitmap bm = BitmapFactory.decodeResource(Client.getResource(), R.drawable.icon_reflesh, opt);
-        return bm;
+        return BitmapFactory.decodeResource(Client.getResource(), R.drawable.icon_reflesh, opt);
     }
 
     public static class Icon implements Comparable<Icon>
