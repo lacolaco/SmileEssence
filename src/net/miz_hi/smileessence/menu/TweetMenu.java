@@ -186,9 +186,9 @@ public class TweetMenu extends ExpandMenuDialog
                 }
             }
         }
-        if (status.retweetedStatus != null && !list.contains(status.retweetedStatus.user.screenName))
+        if (status.retweeter != null && !list.contains(status.retweeter.screenName))
         {
-            list.add(status.retweetedStatus.user.screenName);
+            list.add(status.retweeter.screenName);
         }
         return list;
     }

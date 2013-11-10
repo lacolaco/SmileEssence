@@ -30,7 +30,7 @@ public class TweetModel implements Comparable<TweetModel>, IStatusModel
     public HashtagEntity[] hashtags;
     public UserMentionEntity[] userMentions;
     public String source;
-    public TweetModel retweetedStatus;
+    public UserModel retweeter;
     public EnumTweetType type = EnumTweetType.NORMAL;
 
     public TweetModel(Status status)
@@ -38,7 +38,7 @@ public class TweetModel implements Comparable<TweetModel>, IStatusModel
         Status shownStatus;
         if (status.isRetweet())
         {
-            retweetedStatus = ResponseConverter.convert(status.getRetweetedStatus());
+            retweeter = ResponseConverter.convert(status.getUser());
             shownStatus = status.getRetweetedStatus();
         }
         else
@@ -136,17 +136,17 @@ public class TweetModel implements Comparable<TweetModel>, IStatusModel
         if (type == EnumTweetType.RETWEET)
         {
             builder.append("(RT: ");
-            builder.append(retweetedStatus.user.screenName);
+            builder.append(retweeter.screenName);
             builder.append(") ");
             builder.append(StringUtils.dateToString(createdAt));
             builder.append(" via ");
-            builder.append(retweetedStatus.source);
+            builder.append(source);
         }
         else
         {
             builder.append(StringUtils.dateToString(createdAt));
             builder.append(" via ");
-            builder.append(Html.fromHtml(source));
+            builder.append(source);
         }
         return builder.toString();
     }

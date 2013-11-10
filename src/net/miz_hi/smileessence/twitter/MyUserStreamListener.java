@@ -76,7 +76,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
 
         if (model.type == EnumTweetType.RETWEET && model.user.isMe())
         {
-            EventModel event = new RetweetEvent(model.retweetedStatus.user, model);
+            EventModel event = new RetweetEvent(model.retweeter, model);
             history.addToTop(event);
             historyAdapter.notifyAdapter();
             event.raise();
