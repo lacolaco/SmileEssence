@@ -29,7 +29,6 @@ public class MainActivity extends FragmentActivity
     private static MainActivity instance;
     public MainActivitySystem system;
     private ViewPager pager;
-    private TitlePageIndicator indicator;
 
     public static MainActivity getInstance()
     {
@@ -56,7 +55,7 @@ public class MainActivity extends FragmentActivity
         pager.setAdapter(PageController.getInstance().getAdapter());
         pager.destroyDrawingCache();
 
-        indicator = (TitlePageIndicator) findViewById(R.id.indicator);
+        TitlePageIndicator indicator = (TitlePageIndicator) findViewById(R.id.indicator);
         indicator.setTextSize(21);
         indicator.setViewPager(pager);
         indicator.setOnPageChangeListener(new PageChangeListener());
@@ -156,11 +155,6 @@ public class MainActivity extends FragmentActivity
         }
     }
 
-    public void forceFinish()
-    {
-        super.finish();
-    }
-
     @Override
     public void finish()
     {
@@ -170,22 +164,32 @@ public class MainActivity extends FragmentActivity
         }
         else
         {
-            if (Client.<Boolean>getPreferenceValue(EnumPreferenceKey.CONFIRM_DIALOG))
-            {
-                ConfirmDialog.show(this, "終了しますか？", new Runnable()
-                {
+            finish(!Client.<Boolean>getPreferenceValue(EnumPreferenceKey.CONFIRM_DIALOG));
+        }
+    }
 
-                    @Override
-                    public void run()
-                    {
-                        MainActivity.super.finish();
-                    }
-                });
-            }
-            else
+    private void forceFinish()
+    {
+        super.finish();
+    }
+
+    public void finish(boolean force)
+    {
+        if (!force)
+        {
+            ConfirmDialog.show(this, "終了しますか？", new Runnable()
             {
-                super.finish();
-            }
+
+                @Override
+                public void run()
+                {
+                    forceFinish();
+                }
+            });
+        }
+        else
+        {
+            forceFinish();
         }
     }
 
