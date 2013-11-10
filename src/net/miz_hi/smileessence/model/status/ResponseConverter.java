@@ -18,8 +18,8 @@ public final class ResponseConverter
 
     public static <T> T convert(TwitterResponse response)
     {
-        ResponseConverter conv = new ResponseConverter(response);
-        return (T) conv.build();
+        ResponseConverter converter = new ResponseConverter(response);
+        return (T) converter.build();
     }
 
     private ResponseConverter(TwitterResponse response)

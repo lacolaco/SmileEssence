@@ -34,7 +34,7 @@ public class StatusCommandDelete extends StatusCommand implements IConfirmable
             {
                 try
                 {
-                    TwitterManager.getTwitter(Client.getMainAccount()).destroyStatus(status.statusId);
+                    TwitterManager.getTwitter(Client.getMainAccount()).destroyStatus(status.parentStatusId);
                 }
                 catch (TwitterException e)
                 {
@@ -67,7 +67,7 @@ public class StatusCommandDelete extends StatusCommand implements IConfirmable
     @Override
     public boolean getDefaultVisibility()
     {
-        return status.user.isMe();
+        return status.user.isMe() || (status.retweeter != null && status.retweeter.isMe());
     }
 
 }

@@ -50,7 +50,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
             for (StatusList list : StatusListManager.getTweetLists())
             {
                 list.remove(model);
-                StatusListManager.getAdapter(list).notifyAdapter();
+                StatusListManager.getAdapter(list).forceNotifyAdapter();
             }
         }
     }

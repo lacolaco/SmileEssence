@@ -28,7 +28,7 @@ public class TweetCache
         {
             instance.readRetweetList.add(tweet.statusId);
         }
-        instance.statusesMap.put(tweet.statusId, tweet);
+        instance.statusesMap.put(tweet.parentStatusId, tweet);
     }
 
     public static List<TweetModel> getList()

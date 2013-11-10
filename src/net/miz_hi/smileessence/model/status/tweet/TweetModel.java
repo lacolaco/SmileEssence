@@ -30,6 +30,7 @@ public class TweetModel implements Comparable<TweetModel>, IStatusModel
     public HashtagEntity[] hashtags;
     public UserMentionEntity[] userMentions;
     public String source;
+    public long parentStatusId;
     public UserModel retweeter;
     public EnumTweetType type = EnumTweetType.NORMAL;
 
@@ -47,6 +48,7 @@ public class TweetModel implements Comparable<TweetModel>, IStatusModel
         }
 
         createdAt = status.getCreatedAt();
+        parentStatusId = status.getId();
 
         statusId = shownStatus.getId();
         inReplyToStatusId = shownStatus.getInReplyToStatusId();
