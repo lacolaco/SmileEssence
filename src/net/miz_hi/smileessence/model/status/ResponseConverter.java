@@ -16,7 +16,7 @@ public final class ResponseConverter
     private final TwitterResponse response;
     private IStatusModel model;
 
-    public static <T> T convert(TwitterResponse response)
+    public static <T extends IStatusModel> T convert(TwitterResponse response)
     {
         ResponseConverter converter = new ResponseConverter(response);
         return (T) converter.build();
@@ -33,22 +33,18 @@ public final class ResponseConverter
         {
             model = new TweetModel((Status) response);
             TweetCache.put((TweetModel) model);
-            return;
         }
         else if (response instanceof DirectMessage)
         {
-
-            return;
+            //TODO
         }
         else if (response instanceof User)
         {
             model = new UserModel((User) response);
             UserCache.put((UserModel) model);
-            return;
         }
         else
         {
-            return;
         }
     }
 
