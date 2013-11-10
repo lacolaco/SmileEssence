@@ -75,6 +75,7 @@ public class MainActivity extends FragmentActivity
     {
         super.onPostCreate(savedInstanceState);
         system.checkAccount(instance);
+        system.startTwitter(instance);
         system.loadListPage(instance);
         PageController.getInstance().move(1);
     }
@@ -84,8 +85,6 @@ public class MainActivity extends FragmentActivity
     {
         super.onResume();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        system.startTwitter(instance);
-
     }
 
     @Override
