@@ -75,7 +75,7 @@ public class MainActivity extends FragmentActivity
     {
         super.onPostCreate(savedInstanceState);
         system.checkAccount(instance);
-        system.loadPages();
+        system.loadListPage(instance);
         PageController.getInstance().move(1);
     }
 
@@ -92,7 +92,6 @@ public class MainActivity extends FragmentActivity
     protected void onPause()
     {
         super.onPause();
-        system.savePages();
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Crouton.cancelAllCroutons();
     }

@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import net.miz_hi.smileessence.auth.Account;
 import net.miz_hi.smileessence.auth.AuthentificationDB;
 import net.miz_hi.smileessence.core.MyExecutor;
+import net.miz_hi.smileessence.data.DBHelper;
 import net.miz_hi.smileessence.permission.IPermission;
 import net.miz_hi.smileessence.permission.PermissonChecker;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
@@ -126,21 +127,7 @@ public class Client
         Client.prefHelper = new PreferenceHelper(PreferenceManager.getDefaultSharedPreferences(app));
         Client.app = app;
         loadPreferences();
-
-        //		DBHelper helper = new DBHelper(app);
-        //		try
-        //		{
-        //			TableUtils.createTableIfNotExists(helper.getConnectionSource(), Account.class);
-        //			TableUtils.createTableIfNotExists(helper.getConnectionSource(), Template.class);
-        //			TableUtils.createTableIfNotExists(helper.getConnectionSource(), ExtraWord.class);
-        //			TableUtils.createTableIfNotExists(helper.getConnectionSource(), Page.class);
-        //		}
-        //		catch (Exception e)
-        //		{
-        //			e.printStackTrace();
-        //			LogHelper.d("error ontable created");
-        //		}
-
+        new DBHelper(app).initialize();
         MyExecutor.init();
     }
 

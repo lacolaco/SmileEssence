@@ -2,6 +2,7 @@ package net.miz_hi.smileessence.statuslist;
 
 import android.app.Activity;
 import android.util.SparseArray;
+import net.miz_hi.smileessence.data.list.ListManager;
 import net.miz_hi.smileessence.model.statuslist.StatusList;
 import net.miz_hi.smileessence.model.statuslist.impl.HistoryList;
 import net.miz_hi.smileessence.model.statuslist.timeline.Timeline;
@@ -101,17 +102,19 @@ public class StatusListManager
         return instance.userTimelineMap.get(userId);
     }
 
-    public static void registerListTimeline(int id, Timeline timeline, StatusListAdapter adapter)
+    public static void registerListTimeline(int listId, String name, Timeline timeline, StatusListAdapter adapter)
     {
-        instance.listTimelineMap.put(id, timeline);
+        instance.listTimelineMap.put(listId, timeline);
         registerTweetList(timeline, adapter);
+        ListManager.addList(new net.miz_hi.smileessence.data.list.List(listId, name));
     }
 
-    public static void removeUserTimeline(int id)
+    public static void removeListTimeline(int id)
     {
         Timeline timeline = instance.listTimelineMap.get(id);
         instance.adapterMap.remove(timeline);
         instance.listTimelineMap.remove(id);
+        ListManager.deleteList(id);
     }
 
     public static Timeline getListTimeline(int id)

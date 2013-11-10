@@ -15,19 +15,19 @@ import net.miz_hi.smileessence.cache.TweetCache;
 import net.miz_hi.smileessence.cache.UserCache;
 import net.miz_hi.smileessence.core.EnumRequestCode;
 import net.miz_hi.smileessence.core.MyExecutor;
-import net.miz_hi.smileessence.data.page.Page;
-import net.miz_hi.smileessence.data.page.Pages;
+import net.miz_hi.smileessence.data.list.ListManager;
 import net.miz_hi.smileessence.dialog.SingleButtonDialog;
 import net.miz_hi.smileessence.model.status.tweet.TweetModel;
+import net.miz_hi.smileessence.model.statuslist.timeline.Timeline;
+import net.miz_hi.smileessence.model.statuslist.timeline.impl.ListTimeline;
 import net.miz_hi.smileessence.notification.Notificator;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
+import net.miz_hi.smileessence.statuslist.StatusListAdapter;
 import net.miz_hi.smileessence.statuslist.StatusListManager;
 import net.miz_hi.smileessence.task.impl.GetHomeTimelineTask;
 import net.miz_hi.smileessence.task.impl.GetMentionsTask;
 import net.miz_hi.smileessence.twitter.TwitterManager;
-import net.miz_hi.smileessence.view.IRemainable;
 import net.miz_hi.smileessence.view.fragment.impl.ListFragment;
-import net.miz_hi.smileessence.view.fragment.impl.TalkFragment;
 import twitter4j.Paging;
 
 import java.util.List;
@@ -56,7 +56,7 @@ public class MainActivitySystem
         else
         {
             authHelper = new AuthorizeHelper(activity, Consumers.getDedault());
-            //NOT AUTHOLIZED
+            //NOT AUTHORIZED
             SingleButtonDialog.show(activity, "認証してください", "認証ページヘ", new Runnable()
             {
 
@@ -91,6 +91,18 @@ public class MainActivitySystem
         if (Client.getMainAccount() == null)
         {
             Client.setMainAccount(AuthentificationDB.instance().findAll().get(0));
+        }
+    }
+
+    public void loadListPage(Activity activity)
+    {
+        List<net.miz_hi.smileessence.data.list.List> lists = ListManager.getLists();
+        for (net.miz_hi.smileessence.data.list.List list : lists)
+        {
+            Timeline timeline = new ListTimeline();
+            StatusListManager.registerListTimeline(list.getListId(), list.getName(), timeline, new StatusListAdapter(activity, timeline));
+            ListFragment fragment = ListFragment.newInstance(list.getListId(), list.getName());
+            PageController.getInstance().addPage(fragment);
         }
     }
 
@@ -138,39 +150,6 @@ public class MainActivitySystem
         {
             Notificator.alert("接続出来ません");
         }
-    }
-
-    public void loadPages()
-    {
-        Pages.update();
-        for (Page page : Pages.getPages())
-        {
-            String className = page.getClassName();
-            if (className.equals(TalkFragment.class.getSimpleName()))
-            {
-                TalkFragment fragment = TalkFragment.newInstance(-1, -1);
-                fragment.load(page.getData());
-            }
-            else if (className.equals(ListFragment.class.getSimpleName()))
-            {
-                ListFragment fragment = ListFragment.newInstance(null, -1);
-                fragment.load(page.getData());
-            }
-        }
-    }
-
-    public void savePages()
-    {
-        Pages.clear();
-        Pages.startTransaction();
-        for (Object element : PageController.getInstance().getAdapter().getList())
-        {
-            if (element instanceof IRemainable)
-            {
-                Pages.addPage(new Page(element.getClass().getSimpleName(), ((IRemainable) element).save()));
-            }
-        }
-        Pages.stopTransaction();
     }
 
     public void receivePicture(Activity activity, Intent data, int reqCode)

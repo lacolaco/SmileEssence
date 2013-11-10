@@ -31,8 +31,8 @@ public class CommandOpenUserList extends MenuCommand
     public void workOnUiThread()
     {
         Timeline timeline = new ListTimeline();
-        StatusListManager.registerListTimeline(userList.getId(), timeline, new StatusListAdapter(activity, timeline));
-        ListFragment fragment = ListFragment.newInstance(userList.getFullName(), userList.getId());
+        StatusListManager.registerListTimeline(userList.getId(), userList.getFullName(), timeline, new StatusListAdapter(activity, timeline));
+        ListFragment fragment = ListFragment.newInstance(userList.getId(), userList.getFullName());
         PageController.getInstance().addPage(fragment);
         PageController.getInstance().moveToLast();
     }

@@ -14,12 +14,9 @@ import net.miz_hi.smileessence.core.MyExecutor;
 import net.miz_hi.smileessence.listener.TimelineScrollListener;
 import net.miz_hi.smileessence.model.status.tweet.TweetModel;
 import net.miz_hi.smileessence.model.statuslist.timeline.Timeline;
-import net.miz_hi.smileessence.model.statuslist.timeline.impl.ListTimeline;
 import net.miz_hi.smileessence.statuslist.StatusListAdapter;
 import net.miz_hi.smileessence.statuslist.StatusListManager;
-import net.miz_hi.smileessence.system.PageController;
 import net.miz_hi.smileessence.task.impl.GetListTimelineTask;
-import net.miz_hi.smileessence.view.IRemainable;
 import net.miz_hi.smileessence.view.IRemovable;
 import net.miz_hi.smileessence.view.activity.MainActivity;
 import net.miz_hi.smileessence.view.fragment.NamedFragment;
@@ -28,14 +25,14 @@ import twitter4j.Paging;
 import java.util.Collections;
 import java.util.List;
 
-public class ListFragment extends NamedFragment implements IRemovable, IRemainable, OnClickListener
+public class ListFragment extends NamedFragment implements IRemovable, OnClickListener
 {
 
     String name;
     int id;
     boolean inited;
 
-    public static ListFragment newInstance(String fullName, int id)
+    public static ListFragment newInstance(int id, String fullName)
     {
         ListFragment fragment = new ListFragment();
         fragment.name = fullName;
@@ -99,31 +96,10 @@ public class ListFragment extends NamedFragment implements IRemovable, IRemainab
     }
 
     @Override
-    public String save()
-    {
-        StringBuilder builder = new StringBuilder();
-        builder.append(name).append(",").append(id);
-        return builder.toString();
-    }
-
-
-    @Override
-    public void load(String data)
-    {
-        String[] array = data.split(",");
-        name = array[0];
-        id = Integer.parseInt(array[1]);
-        ListTimeline timeline = new ListTimeline();
-        StatusListManager.registerListTimeline(id, timeline, new StatusListAdapter(MainActivity.getInstance(), timeline));
-        PageController.getInstance().addPage(this);
-    }
-
-
-    @Override
     public void onRemoved()
     {
+        StatusListManager.removeListTimeline(id);
     }
-
 
     @Override
     public void onClick(View v)

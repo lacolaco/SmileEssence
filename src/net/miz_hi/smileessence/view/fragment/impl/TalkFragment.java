@@ -9,20 +9,16 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import net.miz_hi.smileessence.R;
-import net.miz_hi.smileessence.core.MyExecutor;
 import net.miz_hi.smileessence.listener.TimelineScrollListener;
 import net.miz_hi.smileessence.statuslist.StatusListAdapter;
 import net.miz_hi.smileessence.statuslist.StatusListManager;
-import net.miz_hi.smileessence.system.PageController;
 import net.miz_hi.smileessence.talkchase.TalkChaser;
 import net.miz_hi.smileessence.talkchase.TalkManager;
-import net.miz_hi.smileessence.view.IRemainable;
 import net.miz_hi.smileessence.view.IRemovable;
-import net.miz_hi.smileessence.view.activity.MainActivity;
 import net.miz_hi.smileessence.view.fragment.NamedFragment;
 
 @SuppressLint("ValidFragment")
-public class TalkFragment extends NamedFragment implements IRemovable, IRemainable
+public class TalkFragment extends NamedFragment implements IRemovable
 {
 
     long chasingId = -1;
@@ -33,13 +29,11 @@ public class TalkFragment extends NamedFragment implements IRemovable, IRemainab
     {
     }
 
-    ;
-
-    public static TalkFragment newInstance(int talkId, long chansingId)
+    public static TalkFragment newInstance(int talkId, long chasingId)
     {
         TalkFragment relFragment = new TalkFragment();
         relFragment.talkId = talkId;
-        relFragment.chasingId = chansingId;
+        relFragment.chasingId = chasingId;
         return relFragment;
     }
 
@@ -82,33 +76,5 @@ public class TalkFragment extends NamedFragment implements IRemovable, IRemainab
     {
         TalkChaser chaser = TalkManager.getChaser(talkId);
         chaser.stopRelation(this);
-    }
-
-    @Override
-    public String save()
-    {
-        StringBuilder builder = new StringBuilder();
-        builder.append(chasingId);
-        return builder.toString();
-    }
-
-    @Override
-    public void load(String data)
-    {
-        String[] ar = data.split(" ");
-        chasingId = Long.parseLong(ar[0]);
-        talkId = TalkManager.getNextTalkId();
-        final TalkChaser chaser = new TalkChaser(this);
-        TalkManager.addTalkChaser(chaser);
-        StatusListManager.registerTweetList(chaser.talkList, new StatusListAdapter(MainActivity.getInstance(), chaser.talkList));
-        MyExecutor.execute(new Runnable()
-        {
-
-            public void run()
-            {
-                chaser.startRelation(chasingId);
-            }
-        });
-        PageController.getInstance().addPage(this);
     }
 }
