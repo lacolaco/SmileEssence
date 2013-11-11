@@ -1,4 +1,10 @@
-SmileEssence Lite
-=========
+# SmileEssence Lite
 
-新しいワロッター、新しい日常
+# Advanced.
+
+----
+
+Beautiful, cool, and funny.
+You'll have a better twitter life.
+
+[http://smileessence.miz-hi.net](http://smileessence.miz-hi.net)
