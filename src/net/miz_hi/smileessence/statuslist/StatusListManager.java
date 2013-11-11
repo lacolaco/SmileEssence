@@ -102,11 +102,10 @@ public class StatusListManager
         return instance.userTimelineMap.get(userId);
     }
 
-    public static void registerListTimeline(int listId, String name, Timeline timeline, StatusListAdapter adapter)
+    public static void registerListTimeline(int listId, Timeline timeline, StatusListAdapter adapter)
     {
         instance.listTimelineMap.put(listId, timeline);
         registerTweetList(timeline, adapter);
-        ListManager.addList(new net.miz_hi.smileessence.data.list.List(listId, name));
     }
 
     public static void removeListTimeline(int id)

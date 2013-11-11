@@ -9,6 +9,7 @@ import net.miz_hi.smileessence.command.MenuCommand;
 import net.miz_hi.smileessence.core.MyExecutor;
 import net.miz_hi.smileessence.dialog.SimpleMenuDialog;
 import net.miz_hi.smileessence.notification.Notificator;
+import net.miz_hi.smileessence.statuslist.StatusListManager;
 import net.miz_hi.smileessence.twitter.API;
 import net.miz_hi.smileessence.util.UiHandler;
 import twitter4j.UserList;
@@ -29,7 +30,7 @@ public class CommandShowUserLists extends MenuCommand
     @Override
     public String getName()
     {
-        return "リスト";
+        return "リストのタブを追加";
     }
 
     @Override
@@ -40,13 +41,21 @@ public class CommandShowUserLists extends MenuCommand
         {
             public void run()
             {
-                long cursor = -1;
                 try
                 {
                     final List<UserList> lists = API.getReadableLists(Client.getMainAccount());
-                    if (lists.isEmpty())
+                    final List<ICommand> commands = new ArrayList<ICommand>();
+                    for (UserList list : lists)
                     {
-                        Notificator.alert("リストがありません");
+                        if (StatusListManager.getListTimeline(list.getId()) == null)
+                        {
+                            commands.add(new CommandOpenUserList(activity, list));
+                        }
+                    }
+
+                    if (commands.isEmpty())
+                    {
+                        Notificator.alert("追加できるリストがありません");
                     }
                     else
                     {
@@ -55,11 +64,6 @@ public class CommandShowUserLists extends MenuCommand
                             @Override
                             public List<ICommand> getMenuList()
                             {
-                                List<ICommand> commands = new ArrayList<ICommand>();
-                                for (UserList list : lists)
-                                {
-                                    commands.add(new CommandOpenUserList(activity, list));
-                                }
                                 return commands;
                             }
                         };

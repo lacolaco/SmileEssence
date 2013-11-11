@@ -1,6 +1,7 @@
 package net.miz_hi.smileessence.command;
 
 import android.app.Activity;
+import net.miz_hi.smileessence.data.list.ListManager;
 import net.miz_hi.smileessence.model.statuslist.timeline.Timeline;
 import net.miz_hi.smileessence.model.statuslist.timeline.impl.ListTimeline;
 import net.miz_hi.smileessence.statuslist.StatusListAdapter;
@@ -31,7 +32,8 @@ public class CommandOpenUserList extends MenuCommand
     public void workOnUiThread()
     {
         Timeline timeline = new ListTimeline();
-        StatusListManager.registerListTimeline(userList.getId(), userList.getFullName(), timeline, new StatusListAdapter(activity, timeline));
+        StatusListManager.registerListTimeline(userList.getId(), timeline, new StatusListAdapter(activity, timeline));
+        ListManager.addList(new net.miz_hi.smileessence.data.list.List(userList.getId(), userList.getFullName()));
         ListFragment fragment = ListFragment.newInstance(userList.getId(), userList.getFullName());
         PageController.getInstance().addPage(fragment);
         PageController.getInstance().moveToLast();

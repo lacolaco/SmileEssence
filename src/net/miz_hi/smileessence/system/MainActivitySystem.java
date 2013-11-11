@@ -96,11 +96,10 @@ public class MainActivitySystem
 
     public void loadListPage(Activity activity)
     {
-        List<net.miz_hi.smileessence.data.list.List> lists = ListManager.getLists();
-        for (net.miz_hi.smileessence.data.list.List list : lists)
+        for (net.miz_hi.smileessence.data.list.List list : ListManager.getLists())
         {
             Timeline timeline = new ListTimeline();
-            StatusListManager.registerListTimeline(list.getListId(), list.getName(), timeline, new StatusListAdapter(activity, timeline));
+            StatusListManager.registerListTimeline(list.getListId(), timeline, new StatusListAdapter(activity, timeline));
             ListFragment fragment = ListFragment.newInstance(list.getListId(), list.getName());
             PageController.getInstance().addPage(fragment);
         }

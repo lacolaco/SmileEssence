@@ -7,9 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class List
 {
 
-    @DatabaseField(generatedId = true)
-    private Integer id;
-    @DatabaseField
+    @DatabaseField(id = true)
     private int listId;
     @DatabaseField
     private String name;
@@ -22,16 +20,6 @@ public class List
     {
         this.listId = id;
         this.name = name;
-    }
-
-    public Integer getId()
-    {
-        return id;
-    }
-
-    public void setId(Integer id)
-    {
-        this.id = id;
     }
 
     public int getListId()
