@@ -40,6 +40,12 @@ public class MainMenu extends ExpandMenuDialog
         tabMenu.addChild(new MenuElement(new CommandToAddPage()));
         list.add(tabMenu);
 
+        MenuElement serviceMenu = new MenuElement("外部サービス");
+        serviceMenu.addChild(new MenuElement(new CommandOpenFavstar(activity)));
+        serviceMenu.addChild(new MenuElement(new CommandOpenAclog(activity)));
+        serviceMenu.addChild(new MenuElement(new CommandOpenTwilog(activity)));
+        list.add(serviceMenu);
+
         MenuElement otherMenu = new MenuElement("その他");
         otherMenu.addChild(new MenuElement(new CommandReConnect()));
         otherMenu.addChild(new MenuElement(new CommandCommercial()));
