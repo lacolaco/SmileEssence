@@ -3,14 +3,14 @@ package net.miz_hi.smileessence.command.main;
 import android.app.Activity;
 import android.content.Intent;
 import net.miz_hi.smileessence.command.MenuCommand;
-import net.miz_hi.smileessence.view.activity.SettingActivity;
+import net.miz_hi.smileessence.view.activity.LicenseActivity;
 
-public class CommandOpenSetting extends MenuCommand
+public class CommandOpenLicense extends MenuCommand
 {
 
     private Activity activity;
 
-    public CommandOpenSetting(Activity activity)
+    public CommandOpenLicense(Activity activity)
     {
         this.activity = activity;
     }
@@ -18,13 +18,13 @@ public class CommandOpenSetting extends MenuCommand
     @Override
     public String getName()
     {
-        return "詳細設定";
+        return "オープンソースライセンス";
     }
 
     @Override
     public void workOnUiThread()
     {
-        activity.startActivity(new Intent(activity, SettingActivity.class));
+        activity.startActivity(new Intent(activity, LicenseActivity.class));
     }
 
 }

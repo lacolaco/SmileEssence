@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="net.miz_hi.smileessence"
-          android:versionCode="40"
+          android:versionCode="41"
           android:versionName="@string/app_version">
 
     <uses-sdk
@@ -88,6 +88,7 @@
                 android:name="net.miz_hi.smileessence.view.activity.ExtraWordActivity"
                 android:configChanges="orientation">
         </activity>
+        <activity android:name=".view.activity.LicenseActivity"/>
     </application>
 
 </manifest>
