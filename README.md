@@ -2,7 +2,6 @@
 
 # Advanced.
 
-----
 
 Beautiful, cool, and funny.
 You'll have a better twitter life.
