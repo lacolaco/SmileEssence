@@ -47,12 +47,8 @@ public class PostingMenu extends ExpandMenuDialog
     public List<MenuElement> getElements()
     {
         List<MenuElement> list = new ArrayList<MenuElement>();
-        MenuElement warota = new MenuElement(new CommandInsertText("ワロタｗ"));
-        MenuElement morse = new MenuElement(new CommandParseMorse());
-        MenuElement anonymous = new MenuElement(new CommandMakeAnonymous());
-        list.add(warota);
-        list.add(morse);
-        list.add(anonymous);
+        list.add(new MenuElement(new CommandParseMorse()));
+        list.add(new MenuElement(new CommandMakeAnonymous()));
 
         MenuElement template = new MenuElement("定型文");
         List<ICommand> templates = getTemplateMenu();
