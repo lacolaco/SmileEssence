@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/White"
-    android:gravity="center_horizontal" >
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/White"
+              android:gravity="center_horizontal">
 
     <ListView
-        android:id="@+id/listpage_listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@color/Gray2"
-        android:dividerHeight="1dp"
-        android:footerDividersEnabled="true" />
+            android:id="@+id/listpage_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/Gray3"
+            android:dividerHeight="1dp"
+            android:footerDividersEnabled="true"/>
 </LinearLayout>

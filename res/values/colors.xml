@@ -2,13 +2,14 @@
 <resources>
 
     <color name="Black">#000</color>
-    <color name="LightBlue">#a0e5ff</color>
+    <color name="LightBlue">#ffb4ecff</color>
     <color name="MetroBlue">#0bd1ff</color>
     <color name="White">#FFF</color>
     <color name="Gray">#535353</color>
     <color name="Gray2">#808080</color>
+    <color name="Gray3">#ffb7c2cc</color>
     <color name="LightGreen">#91FF91</color>
-    <color name="LightRed">#FFbfba</color>
+    <color name="LightRed">#ffffcfce</color>
     <color name="Red">#FF1E00</color>
     <color name="BrownYellow">#FFB100</color>
     <color name="DarkBlue">#231493</color>
