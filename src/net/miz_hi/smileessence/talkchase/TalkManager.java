@@ -60,7 +60,7 @@ public class TalkManager
         return null;
     }
 
-    public static void filter(TweetModel tweet)
+    public static void check(TweetModel tweet)
     {
         for (int i = 0; i < chaserList.size(); i++)
         {

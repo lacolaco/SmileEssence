@@ -2,7 +2,7 @@ package net.miz_hi.smileessence.data.extra;
 
 import java.util.List;
 
-public class ExtractManager
+public class ExtraWordManager
 {
 
     public static void addExtractWord(String extractWord)

@@ -17,6 +17,7 @@ import net.miz_hi.smileessence.core.EnumRequestCode;
 import net.miz_hi.smileessence.core.MyExecutor;
 import net.miz_hi.smileessence.data.list.ListManager;
 import net.miz_hi.smileessence.dialog.SingleButtonDialog;
+import net.miz_hi.smileessence.extraction.ExtractManager;
 import net.miz_hi.smileessence.model.status.tweet.TweetModel;
 import net.miz_hi.smileessence.model.statuslist.timeline.Timeline;
 import net.miz_hi.smileessence.model.statuslist.timeline.impl.ListTimeline;
@@ -130,6 +131,7 @@ public class MainActivitySystem
                         for (TweetModel tweetModel : home)
                         {
                             StatusListManager.getHomeTimeline().addToBottom(tweetModel);
+                            ExtractManager.check(tweetModel);
                         }
                         for (TweetModel tweetModel : mentions)
                         {

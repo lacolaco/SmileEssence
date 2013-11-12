@@ -12,7 +12,7 @@ import android.widget.TextView;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.data.extra.ExtraWord;
 import net.miz_hi.smileessence.data.extra.ExtraWordListAdapter;
-import net.miz_hi.smileessence.data.extra.ExtractManager;
+import net.miz_hi.smileessence.data.extra.ExtraWordManager;
 import net.miz_hi.smileessence.dialog.ContentDialog;
 
 public class ExtraWordActivity extends Activity
@@ -30,7 +30,7 @@ public class ExtraWordActivity extends Activity
         ImageButton buttonAdd = (ImageButton) findViewById(R.id.listedit_addbutton);
         final ExtraWordListAdapter adapter = new ExtraWordListAdapter(this);
         listView.setAdapter(adapter);
-        adapter.addAll(ExtractManager.getExtraWords());
+        adapter.addAll(ExtraWordManager.getExtraWords());
         adapter.forceNotifyAdapter();
         buttonAdd.setOnClickListener(new OnClickListener()
         {
@@ -58,9 +58,9 @@ public class ExtraWordActivity extends Activity
                                 String newText = editText.getText().toString();
 
                                 ExtraWord extraWord = new ExtraWord(newText);
-                                ExtractManager.addExtractWord(extraWord);
+                                ExtraWordManager.addExtractWord(extraWord);
                                 adapter.clear();
-                                adapter.addAll(ExtractManager.getExtraWords());
+                                adapter.addAll(ExtraWordManager.getExtraWords());
                                 adapter.forceNotifyAdapter();
                                 break;
                             }

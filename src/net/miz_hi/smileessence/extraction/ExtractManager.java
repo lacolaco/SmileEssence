@@ -1,25 +1,34 @@
 package net.miz_hi.smileessence.extraction;
 
 import net.miz_hi.smileessence.data.extra.ExtraWord;
+import net.miz_hi.smileessence.data.extra.ExtraWordManager;
 import net.miz_hi.smileessence.model.status.tweet.EnumTweetType;
 import net.miz_hi.smileessence.model.status.tweet.TweetModel;
+import net.miz_hi.smileessence.model.statuslist.StatusList;
+import net.miz_hi.smileessence.statuslist.StatusListManager;
 
 
 public class ExtractManager
 {
 
-    public static boolean matches(TweetModel status)
+    public static void check(TweetModel status)
     {
-        if (status.type != EnumTweetType.RETWEET && !net.miz_hi.smileessence.data.extra.ExtractManager.getExtraWords().isEmpty())
+        if (status.type != EnumTweetType.RETWEET)
         {
-            for (ExtraWord word : net.miz_hi.smileessence.data.extra.ExtractManager.getExtraWords())
+            StatusList mentions = StatusListManager.getMentionsTimeline();
+            if (mentions.getStatusIndex(status) != -1)
+            {
+                return;
+            }
+            for (ExtraWord word : ExtraWordManager.getExtraWords())
             {
                 if (status.text.contains(word.getText()))
                 {
-                    return true;
+                    mentions.addToTop(status);
+                    mentions.apply();
+                    return;
                 }
             }
         }
-        return false;
     }
 }

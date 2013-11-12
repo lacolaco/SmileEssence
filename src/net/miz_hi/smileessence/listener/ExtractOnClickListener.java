@@ -7,7 +7,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.EditText;
 import net.miz_hi.smileessence.data.extra.ExtraWord;
-import net.miz_hi.smileessence.data.extra.ExtractManager;
+import net.miz_hi.smileessence.data.extra.ExtraWordManager;
 import net.miz_hi.smileessence.dialog.ConfirmDialog;
 import net.miz_hi.smileessence.dialog.ContentDialog;
 import net.miz_hi.smileessence.util.CustomListAdapter;
@@ -51,9 +51,9 @@ public class ExtractOnClickListener implements OnClickListener, OnLongClickListe
                     {
                         String newText = editText.getText().toString();
                         extraWord.setText(newText);
-                        ExtractManager.addExtractWord(extraWord);
+                        ExtraWordManager.addExtractWord(extraWord);
                         adapter.clear();
-                        adapter.addAll(ExtractManager.getExtraWords());
+                        adapter.addAll(ExtraWordManager.getExtraWords());
                         adapter.forceNotifyAdapter();
                         break;
                     }
@@ -78,9 +78,9 @@ public class ExtractOnClickListener implements OnClickListener, OnLongClickListe
                     @Override
                     public void run()
                     {
-                        ExtractManager.deleteExtraWord(extraWord);
+                        ExtraWordManager.deleteExtraWord(extraWord);
                         adapter.clear();
-                        adapter.addAll(ExtractManager.getExtraWords());
+                        adapter.addAll(ExtraWordManager.getExtraWords());
                         adapter.forceNotifyAdapter();
                     }
                 }.post();
