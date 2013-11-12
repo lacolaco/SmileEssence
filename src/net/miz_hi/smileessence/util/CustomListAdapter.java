@@ -16,7 +16,7 @@ public abstract class CustomListAdapter<T> extends BaseAdapter
     private ArrayList<T> list;
     private int count;
     private final Object lock = new Object();
-    private boolean canMotifyOnChange = true;
+    private boolean canNotifyOnChange = true;
     private Activity activity;
     private LayoutInflater inflater;
     private int capacity;
@@ -95,7 +95,7 @@ public abstract class CustomListAdapter<T> extends BaseAdapter
 
     public void notifyAdapter()
     {
-        if (canMotifyOnChange)
+        if (canNotifyOnChange)
         {
             forceNotifyAdapter();
         }
@@ -121,7 +121,7 @@ public abstract class CustomListAdapter<T> extends BaseAdapter
     {
         synchronized (lock)
         {
-            this.canMotifyOnChange = notifyOnChange;
+            this.canNotifyOnChange = notifyOnChange;
         }
     }
 
@@ -129,7 +129,7 @@ public abstract class CustomListAdapter<T> extends BaseAdapter
     {
         synchronized (lock)
         {
-            return canMotifyOnChange;
+            return canNotifyOnChange;
         }
     }
 
