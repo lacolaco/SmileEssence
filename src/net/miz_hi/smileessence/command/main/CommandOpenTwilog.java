@@ -19,7 +19,7 @@ public class CommandOpenTwilog extends MenuCommand
     @Override
     public String getName()
     {
-        return "Twilogを開く(web)";
+        return "Twilogを開く";
     }
 
     @Override

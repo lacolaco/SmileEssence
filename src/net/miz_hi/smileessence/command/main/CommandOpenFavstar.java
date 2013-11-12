@@ -19,7 +19,7 @@ public class CommandOpenFavstar extends MenuCommand
     @Override
     public String getName()
     {
-        return "Favstarを開く(web)";
+        return "Favstarを開く";
     }
 
     @Override

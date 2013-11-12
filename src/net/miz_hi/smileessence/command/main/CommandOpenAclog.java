@@ -19,7 +19,7 @@ public class CommandOpenAclog extends MenuCommand
     @Override
     public String getName()
     {
-        return "Aclogを開く(web)";
+        return "Aclogを開く";
     }
 
     @Override
