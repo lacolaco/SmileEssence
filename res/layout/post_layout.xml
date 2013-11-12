@@ -11,48 +11,61 @@
             android:paddingBottom="10dp"
             android:scrollbars="vertical">
 
-        <TextView
-                android:id="@+id/textView_count"
-                android:layout_width="wrap_content"
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/MetroBlue"/>
-
-        <FrameLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp">
 
             <EditText
                     android:id="@+id/editText_tweet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="35dp"
                     android:layout_marginTop="5dp"
                     android:gravity="top"
                     android:inputType="text|textMultiLine"
                     android:minLines="2"
                     android:maxLines="8"
                     android:scrollbars="vertical"
-                    >
+                    android:layout_weight="1"
+                    android:autoText="false">
 
             </EditText>
 
-            <ImageButton
-                    android:id="@+id/imBtn_delete"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/icon_delete"
-                    android:scaleType="fitXY"
-                    style="@style/transBtn"
-                    android:layout_gravity="right|top"
-                    android:layout_marginRight="15dp"
-                    android:contentDescription="delete"/>
-        </FrameLayout>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    >
+
+                <ImageButton
+                        android:id="@+id/imBtn_delete"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/icon_delete"
+                        android:scaleType="fitCenter"
+                        style="@style/transBtn"
+                        android:contentDescription="delete"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_horizontal"/>
+
+                <TextView
+                        android:id="@+id/textView_count"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/Gray2"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal|bottom"
+                        android:text="140"/>
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
                 android:id="@+id/linearLayout1"
