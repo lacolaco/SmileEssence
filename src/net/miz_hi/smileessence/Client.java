@@ -121,12 +121,12 @@ public class Client
     {
         Client.prefHelper = new PreferenceHelper(PreferenceManager.getDefaultSharedPreferences(app));
         Client.app = app;
+        Client.mainAccount = null;
         loadPreferences();
         new DBHelper(app).initialize();
         MyExecutor.init();
     }
 
-    public static final String HOMEPAGE_URL = "http://smileessence.miz-hi.net/";
     public static final String CALLBACK_OAUTH = "oauth://smileessence";
 
 }

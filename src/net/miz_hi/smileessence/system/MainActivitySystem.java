@@ -48,11 +48,12 @@ public class MainActivitySystem
         MyExecutor.shutdown();
     }
 
-    public void checkAccount(Activity activity)
+    public boolean checkAccount(Activity activity)
     {
         if (Client.hasAuthorizedAccount())
         {
             accountSetup();
+            return true;
         }
         else
         {
@@ -67,6 +68,7 @@ public class MainActivitySystem
                     authHelper.oauthSend();
                 }
             });
+            return false;
         }
     }
 
@@ -74,7 +76,11 @@ public class MainActivitySystem
     {
         Account account = authHelper.oauthReceive(data);
         Client.setMainAccount(account);
-        checkAccount(activity);
+        if (checkAccount(activity))
+        {
+            startTwitter(activity);
+            loadListPage(activity);
+        }
     }
 
     public void accountSetup()

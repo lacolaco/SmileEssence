@@ -74,9 +74,11 @@ public class MainActivity extends FragmentActivity
     protected void onPostCreate(Bundle savedInstanceState)
     {
         super.onPostCreate(savedInstanceState);
-        system.checkAccount(instance);
-        system.startTwitter(instance);
-        system.loadListPage(instance);
+        if (system.checkAccount(instance))
+        {
+            system.startTwitter(instance);
+            system.loadListPage(instance);
+        }
         PageController.getInstance().move(1);
     }
 
