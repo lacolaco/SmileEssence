@@ -99,7 +99,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
         {
             exceptionCount = 1;
             arg0.printStackTrace();
-            Notificator.alert("切断が切れました");
+            Notificator.alert("切断されました");
         }
     }
 
