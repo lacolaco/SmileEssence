@@ -1,5 +1,6 @@
 package net.miz_hi.smileessence.view.activity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.preference.PreferenceActivity;
 import net.miz_hi.smileessence.Client;
 import net.miz_hi.smileessence.R;
 import net.miz_hi.smileessence.auth.AuthenticationDB;
+import net.miz_hi.smileessence.command.main.CommandInformation;
+import net.miz_hi.smileessence.command.main.CommandOpenLicense;
 import net.miz_hi.smileessence.dialog.ConfirmDialog;
 import net.miz_hi.smileessence.dialog.SeekBarDialog;
 import net.miz_hi.smileessence.notification.Notificator;
@@ -80,6 +83,28 @@ public class SettingActivity extends PreferenceActivity
                     }
                 });
                 helper.createYesNoAlert().show();
+                return true;
+            }
+        });
+
+        Preference appInfo = findPreference(getResources().getString(R.string.app_info));
+        appInfo.setOnPreferenceClickListener(new OnPreferenceClickListener()
+        {
+            @Override
+            public boolean onPreferenceClick(Preference preference)
+            {
+                new CommandInformation((Activity) preference.getContext()).run();
+                return true;
+            }
+        });
+
+        Preference licenseNotice = findPreference(getResources().getString(R.string.license_notices));
+        licenseNotice.setOnPreferenceClickListener(new OnPreferenceClickListener()
+        {
+            @Override
+            public boolean onPreferenceClick(Preference preference)
+            {
+                new CommandOpenLicense((Activity) preference.getContext()).run();
                 return true;
             }
         });

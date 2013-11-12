@@ -65,6 +65,14 @@
                 android:key="@string/key_setting_delete_accounts"
                 android:summary="再起動後に認証してね"
                 android:title="認証情報を削除"/>
+        <Preference
+                android:key="@string/app_info"
+                android:title="このアプリについて"
+                />
+        <Preference
+                android:key="@string/license_notices"
+                android:title="オープンソースライセンス"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

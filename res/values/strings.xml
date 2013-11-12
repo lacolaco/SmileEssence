@@ -20,4 +20,6 @@
     <string name="key_setting_read_retweet">show_read_retweet</string>
     <string name="key_setting_listload">list_load</string>
     <string name="thanks_to">miz_hi, yaplus</string>
+    <string name="app_info">appInfo</string>
+    <string name="license_notices">licenseNotice</string>
 </resources>
