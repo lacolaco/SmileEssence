@@ -30,8 +30,6 @@ public class MainMenu extends ExpandMenuDialog
         settingMenu.addChild(new MenuElement(new CommandEditTemplate(activity)));
         settingMenu.addChild(new MenuElement(new CommandEditExtraWord(activity)));
         settingMenu.addChild(new MenuElement(new CommandEditMenu(activity)));
-        settingMenu.addChild(new MenuElement(new CommandInformation(activity)));
-        settingMenu.addChild(new MenuElement(new CommandOpenLicense(activity)));
         list.add(settingMenu);
 
         MenuElement tabMenu = new MenuElement("タブ操作");
@@ -50,6 +48,7 @@ public class MainMenu extends ExpandMenuDialog
         otherMenu.addChild(new MenuElement(new CommandReConnect()));
         otherMenu.addChild(new MenuElement(new CommandCommercial()));
         otherMenu.addChild(new MenuElement(new CommandReport()));
+        otherMenu.addChild(new MenuElement(new CommandFinish()));
         list.add(otherMenu);
 
         return list;
