@@ -47,8 +47,11 @@ public class PostingMenu extends ExpandMenuDialog
     public List<MenuElement> getElements()
     {
         List<MenuElement> list = new ArrayList<MenuElement>();
-        list.add(new MenuElement(new CommandParseMorse()));
-        list.add(new MenuElement(new CommandMakeAnonymous()));
+
+        MenuElement convert = new MenuElement("変換");
+        convert.addChild(new MenuElement(new CommandParseMorse()));
+        convert.addChild(new MenuElement(new CommandMakeAnonymous()));
+        list.add(convert);
 
         MenuElement template = new MenuElement("定型文");
         List<ICommand> templates = getTemplateMenu();
@@ -71,8 +74,6 @@ public class PostingMenu extends ExpandMenuDialog
             }
             list.add(hashtag);
         }
-
-
         return list;
     }
 
