@@ -11,7 +11,6 @@ import net.miz_hi.smileessence.model.status.user.UserModel;
 import net.miz_hi.smileessence.model.statuslist.StatusList;
 import net.miz_hi.smileessence.notification.Notificator;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
-import net.miz_hi.smileessence.statuslist.StatusListAdapter;
 import net.miz_hi.smileessence.statuslist.StatusListManager;
 import net.miz_hi.smileessence.talkchase.TalkManager;
 import net.miz_hi.smileessence.util.LogHelper;
@@ -21,23 +20,10 @@ import twitter4j.*;
 public class MyUserStreamListener implements UserStreamListener, ConnectionLifeCycleListener
 {
 
-    StatusList home;
-    StatusList mentions;
-    StatusList history;
-    StatusListAdapter homeAdapter;
-    StatusListAdapter mentionsAdapter;
-    StatusListAdapter historyAdapter;
-
     private int exceptionCount;
 
     public MyUserStreamListener()
     {
-        home = StatusListManager.getHomeTimeline();
-        mentions = StatusListManager.getMentionsTimeline();
-        history = StatusListManager.getHistoryTimeline();
-        homeAdapter = StatusListManager.getAdapter(home);
-        mentionsAdapter = StatusListManager.getAdapter(mentions);
-        historyAdapter = StatusListManager.getAdapter(history);
     }
 
     @Override
@@ -77,20 +63,23 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
         if (model.type == EnumTweetType.RETWEET && model.user.isMe())
         {
             EventModel event = new RetweetEvent(model.retweeter, model);
+            StatusList history = StatusListManager.getHistoryTimeline();
             history.addToTop(event);
-            historyAdapter.notifyAdapter();
+            history.apply();
             event.raise();
         }
         else if (model.type == EnumTweetType.REPLY)
         {
+            StatusList mentions = StatusListManager.getMentionsTimeline();
             mentions.addToTop(model);
-            mentionsAdapter.notifyAdapter();
+            mentions.apply();
             Notificator.buildEvent(new ReplyEvent(model.user, model)).raise();
         }
         if (Client.<Boolean>getPreferenceValue(EnumPreferenceKey.SHOW_READ_RETWEET) || TweetCache.isNotRead(model.statusId))
         {
+            StatusList home = StatusListManager.getHomeTimeline();
             home.addToTop(model);
-            homeAdapter.notifyAdapter();
+            home.apply();
         }
 
         TalkManager.filter(model);
@@ -121,8 +110,9 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
         if (targetUser.getId() == Client.getMainAccount().getUserId())
         {
             EventModel event = new BlockEvent(ResponseConverter.<UserModel>convert(sourceUser));
+            StatusList history = StatusListManager.getHistoryTimeline();
             history.addToTop(event);
-            historyAdapter.notifyAdapter();
+            history.apply();
             event.raise();
         }
     }
@@ -138,8 +128,9 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
         if (message.getRecipientId() == Client.getMainAccount().getUserId())
         {
             EventModel event = new DirectMessageEvent(ResponseConverter.<UserModel>convert(message.getSender()));
+            StatusList history = StatusListManager.getHistoryTimeline();
             history.addToTop(event);
-            historyAdapter.notifyAdapter();
+            history.apply();
             event.raise();
         }
     }
@@ -157,14 +148,17 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
             {
                 TweetCache.putFavoritedStatus(targetStatus.getId());
             }
-            homeAdapter.notifyAdapter();
-            mentionsAdapter.notifyAdapter();
+            StatusList home = StatusListManager.getHomeTimeline();
+            StatusList mentions = StatusListManager.getMentionsTimeline();
+            home.apply();
+            mentions.apply();
         }
         if (targetUser.getId() == Client.getMainAccount().getUserId())
         {
             EventModel event = new FavoriteEvent(ResponseConverter.<UserModel>convert(sourceUser), ResponseConverter.<TweetModel>convert(targetStatus));
+            StatusList history = StatusListManager.getHistoryTimeline();
             history.addToTop(event);
-            historyAdapter.notifyAdapter();
+            history.apply();
             event.raise();
         }
     }
@@ -175,8 +169,9 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
         if (sourceUser.getId() != Client.getMainAccount().getUserId())
         {
             EventModel event = new FollowEvent(ResponseConverter.<UserModel>convert(sourceUser));
+            StatusList history = StatusListManager.getHistoryTimeline();
             history.addToTop(event);
-            historyAdapter.notifyAdapter();
+            history.apply();
             event.raise();
         }
     }
@@ -192,8 +187,9 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
         if (targetUser.getId() == Client.getMainAccount().getUserId())
         {
             EventModel event = new UnblockEvent(ResponseConverter.<UserModel>convert(sourceUser));
+            StatusList history = StatusListManager.getHistoryTimeline();
             history.addToTop(event);
-            historyAdapter.notifyAdapter();
+            history.apply();
             event.raise();
         }
     }
@@ -211,8 +207,10 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
             {
                 TweetCache.removeFavoritedStatus(targetStatus.getId());
             }
-            homeAdapter.notifyAdapter();
-            mentionsAdapter.notifyAdapter();
+            StatusList home = StatusListManager.getHomeTimeline();
+            StatusList mentions = StatusListManager.getMentionsTimeline();
+            home.apply();
+            mentions.apply();
         }
 
         if (Client.<Boolean>getPreferenceValue(EnumPreferenceKey.NOTICE_UNFAV))
@@ -220,8 +218,9 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
             if (targetUser.getId() == Client.getMainAccount().getUserId())
             {
                 EventModel event = new UnfavoriteEvent(ResponseConverter.<UserModel>convert(sourceUser), ResponseConverter.<TweetModel>convert(targetStatus));
+                StatusList history = StatusListManager.getHistoryTimeline();
                 history.addToTop(event);
-                historyAdapter.notifyAdapter();
+                history.apply();
                 event.raise();
             }
         }

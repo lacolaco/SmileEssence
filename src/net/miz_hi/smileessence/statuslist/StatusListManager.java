@@ -24,10 +24,11 @@ public class StatusListManager
     private HashMap<Long, Timeline> userTimelineMap = new HashMap<Long, Timeline>();
     private SparseArray<Timeline> listTimelineMap = new SparseArray<Timeline>();
     private HashMap<StatusList, StatusListAdapter> adapterMap = new HashMap<StatusList, StatusListAdapter>();
-    private static final StatusListManager instance = new StatusListManager();
+    private static StatusListManager instance;
 
     public static void initStatusLists(Activity activity)
     {
+        instance = new StatusListManager();
         Timeline ho = new HomeTimeline();
         MentionsTimeline m = new MentionsTimeline();
         StatusList hi = new HistoryList();
@@ -36,79 +37,80 @@ public class StatusListManager
         setHistoryTimeline(hi, new StatusListAdapter(activity, hi));
     }
 
-    public static void registerTweetList(StatusList timeline, StatusListAdapter adapter)
+    public synchronized static void registerTweetList(StatusList timeline, StatusListAdapter adapter)
     {
         instance.tweetLists.add(timeline);
         instance.adapterMap.put(timeline, adapter);
+        adapter.forceNotifyAdapter();
     }
 
-    public static void removeTweetList(StatusList timeline)
+    public synchronized static void removeTweetList(StatusList timeline)
     {
         instance.tweetLists.remove(timeline);
         instance.adapterMap.remove(timeline);
     }
 
-    public static List<StatusList> getTweetLists()
+    public synchronized static List<StatusList> getTweetLists()
     {
         return instance.tweetLists;
     }
 
-    public static void setHomeTimeline(Timeline timeline, StatusListAdapter adapter)
+    public synchronized static void setHomeTimeline(Timeline timeline, StatusListAdapter adapter)
     {
         instance.home = timeline;
         registerTweetList(timeline, adapter);
     }
 
-    public static Timeline getHomeTimeline()
+    public synchronized static Timeline getHomeTimeline()
     {
         return instance.home;
     }
 
-    public static void setMentionsTimeline(Timeline timeline, StatusListAdapter adapter)
+    public synchronized static void setMentionsTimeline(Timeline timeline, StatusListAdapter adapter)
     {
         instance.mentions = timeline;
         registerTweetList(timeline, adapter);
     }
 
-    public static Timeline getMentionsTimeline()
+    public synchronized static Timeline getMentionsTimeline()
     {
         return instance.mentions;
     }
 
-    public static void setHistoryTimeline(StatusList timeline, StatusListAdapter adapter)
+    public synchronized static void setHistoryTimeline(StatusList timeline, StatusListAdapter adapter)
     {
         instance.history = timeline;
         instance.adapterMap.put(timeline, adapter);
     }
 
-    public static StatusList getHistoryTimeline()
+    public synchronized static StatusList getHistoryTimeline()
     {
         return instance.history;
     }
 
-    public static void registerUserTimeline(long userId, Timeline timeline, StatusListAdapter adapter)
+    public synchronized static void registerUserTimeline(long userId, Timeline timeline, StatusListAdapter adapter)
     {
         instance.userTimelineMap.put(userId, timeline);
         registerTweetList(timeline, adapter);
     }
 
-    public static void removeUserTimeline(long userId)
+    public synchronized static void removeUserTimeline(long userId)
     {
         instance.adapterMap.remove(instance.userTimelineMap.remove(userId));
     }
 
-    public static Timeline getUserTimeline(long userId)
+    public synchronized static Timeline getUserTimeline(long userId)
     {
         return instance.userTimelineMap.get(userId);
     }
 
-    public static void registerListTimeline(int listId, Timeline timeline, StatusListAdapter adapter)
+    public synchronized static void registerListTimeline(int listId, Timeline timeline, StatusListAdapter adapter)
     {
         instance.listTimelineMap.put(listId, timeline);
         registerTweetList(timeline, adapter);
     }
 
-    public static void removeListTimeline(int id)
+    public synchronized static void removeListTimeline(int id)
     {
         Timeline timeline = instance.listTimelineMap.get(id);
         instance.adapterMap.remove(timeline);
@@ -116,12 +118,12 @@ public class StatusListManager
         ListManager.deleteList(id);
     }
 
-    public static Timeline getListTimeline(int id)
+    public synchronized static Timeline getListTimeline(int id)
     {
         return instance.listTimelineMap.get(id);
     }
 
-    public static StatusListAdapter getAdapter(StatusList key)
+    public synchronized static StatusListAdapter getAdapter(StatusList key)
     {
         return instance.adapterMap.get(key);
     }
