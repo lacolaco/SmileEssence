@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">SmileEssence Lite</string>
-    <string name="app_version">β1.4.4</string>
+    <string name="app_version">β1.4.4.44</string>
     <string name="app_url">http://smileessence.miz-hi.net/</string>
     <string name="key_setting_textSize">text_size</string>
     <string name="key_setting_aftersubmit">after_submit</string>
