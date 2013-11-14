@@ -19,7 +19,7 @@ public class StatusCommandOpenUrl extends StatusCommand
     @Override
     public void workOnUiThread()
     {
-        new CommandOpenUrl(activity, String.format("https://twitter.com/%s/status/%s", status.user.screenName, status.statusId)).run();
+        new CommandOpenUrl(activity, String.format("https://twitter.com/%s/status/%s", status.getOriginal().user.screenName, status.getOriginal().statusId)).run();
     }
 
     @Override

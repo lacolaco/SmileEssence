@@ -12,10 +12,7 @@ import net.miz_hi.smileessence.command.CommandOpenUrl;
 import net.miz_hi.smileessence.command.ICommand;
 import net.miz_hi.smileessence.command.post.CommandAppendHashtag;
 import net.miz_hi.smileessence.command.status.impl.*;
-import net.miz_hi.smileessence.command.user.UserCommandAddReply;
-import net.miz_hi.smileessence.command.user.UserCommandOpenInfo;
-import net.miz_hi.smileessence.command.user.UserCommandOpenTimeline;
-import net.miz_hi.smileessence.command.user.UserCommandReply;
+import net.miz_hi.smileessence.command.user.*;
 import net.miz_hi.smileessence.dialog.ExpandMenuDialog;
 import net.miz_hi.smileessence.model.status.tweet.TweetModel;
 import net.miz_hi.smileessence.status.StatusViewFactory;
@@ -116,16 +113,16 @@ public class TweetMenu extends ExpandMenuDialog
         list.add(new StatusCommandTofuBuster(activity, status));
         list.add(new StatusCommandUnOffRetweet(status));
         list.add(new StatusCommandWarotaRT(status));
-        list.add(new StatusCommandIntroduce(status));
         list.add(new StatusCommandMakeAnonymous(status));
         list.add(new StatusCommandNanigaja(status));
         list.add(new StatusCommandUnOffFav(status));
         list.add(new StatusCommandThankToFav(status));
         list.add(new StatusCommandCongrats(status));
+        list.add(new UserCommandIntroduce(status.getOriginal().user.screenName));
         list.add(new StatusCommandReview(activity, status));
         list.add(new StatusCommandProduce(status));
         list.add(new StatusCommandTranslate(activity, status));
-        list.add(new CommandAddTemplate(status.text));
+        list.add(new CommandAddTemplate(status.getText()));
         list.add(new StatusCommandClipboard(status));
         list.add(new StatusCommandOpenUrl(status, activity));
         return list;
@@ -134,9 +131,9 @@ public class TweetMenu extends ExpandMenuDialog
     private List<ICommand> getURLMenu()
     {
         List<ICommand> list = new ArrayList<ICommand>();
-        if (status.urls != null)
+        if (status.getUrls() != null)
         {
-            for (URLEntity urlEntity : status.urls)
+            for (URLEntity urlEntity : status.getUrls())
             {
                 String url = urlEntity.getExpandedURL();
                 if (url != null)
@@ -145,9 +142,9 @@ public class TweetMenu extends ExpandMenuDialog
                 }
             }
         }
-        if (status.medias != null)
+        if (status.getMedias() != null)
         {
-            for (MediaEntity mediaEntity : status.medias)
+            for (MediaEntity mediaEntity : status.getMedias())
             {
                 String url = mediaEntity.getMediaURL();
                 if (url != null)
@@ -162,9 +159,9 @@ public class TweetMenu extends ExpandMenuDialog
     private List<ICommand> getHashtagMenu()
     {
         List<ICommand> list = new ArrayList<ICommand>();
-        if (status.hashtags != null)
+        if (status.getHashtags() != null)
         {
-            for (HashtagEntity hashtag : status.hashtags)
+            for (HashtagEntity hashtag : status.getHashtags())
             {
                 list.add(new CommandAppendHashtag(hashtag.getText()));
             }
@@ -176,9 +173,9 @@ public class TweetMenu extends ExpandMenuDialog
     {
         List<String> list = new ArrayList<String>();
         list.add(status.user.screenName);
-        if (status.userMentions != null)
+        if (status.getUserMentions() != null)
         {
-            for (UserMentionEntity e : status.userMentions)
+            for (UserMentionEntity e : status.getUserMentions())
             {
                 if (!list.contains(e.getScreenName()))
                 {
@@ -186,9 +183,9 @@ public class TweetMenu extends ExpandMenuDialog
                 }
             }
         }
-        if (status.retweeter != null && !list.contains(status.retweeter.screenName))
+        if (!list.contains(status.getOriginal().user.screenName))
         {
-            list.add(status.retweeter.screenName);
+            list.add(status.getOriginal().user.screenName);
         }
         return list;
     }
@@ -203,6 +200,7 @@ public class TweetMenu extends ExpandMenuDialog
             list.add(new UserCommandAddReply(userName));
             list.add(new UserCommandOpenInfo(activity, userName));
             list.add(new UserCommandOpenTimeline(activity, userName));
+            list.add(new UserCommandSpam(userName));
             map.put(userName, list);
         }
         return map;
@@ -232,8 +230,8 @@ public class TweetMenu extends ExpandMenuDialog
         for (String name : getUsersList())
         {
             MenuElement user = new MenuElement("@" + name);
-            List<ICommand> usermenu = getUserMenu(getUsersList()).get(name);
-            for (ICommand iCommand : usermenu)
+            List<ICommand> userMenu = getUserMenu(getUsersList()).get(name);
+            for (ICommand iCommand : userMenu)
             {
                 user.addChild(new MenuElement(iCommand));
             }

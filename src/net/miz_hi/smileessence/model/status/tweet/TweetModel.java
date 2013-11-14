@@ -9,10 +9,16 @@ import net.miz_hi.smileessence.model.status.user.UserModel;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
 import net.miz_hi.smileessence.status.EnumNameStyle;
 import net.miz_hi.smileessence.status.TweetUtils;
+import net.miz_hi.smileessence.task.impl.DestroyTask;
+import net.miz_hi.smileessence.task.impl.FavoriteTask;
+import net.miz_hi.smileessence.task.impl.RetweetTask;
+import net.miz_hi.smileessence.task.impl.UnFavoriteTask;
 import net.miz_hi.smileessence.util.StringUtils;
 import twitter4j.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * data model for view and menu
@@ -22,43 +28,49 @@ public class TweetModel implements Comparable<TweetModel>, IStatusModel
 
     public Date createdAt;
     public long statusId;
-    public long inReplyToStatusId;
     public UserModel user;
-    public String text;
-    public URLEntity[] urls;
-    public MediaEntity[] medias;
-    public HashtagEntity[] hashtags;
-    public UserMentionEntity[] userMentions;
-    public String source;
-    public long parentStatusId;
-    public UserModel retweeter;
+    private long inReplyToStatusId;
+    private String text;
+    private URLEntity[] urls;
+    private MediaEntity[] medias;
+    private HashtagEntity[] hashtags;
+    private UserMentionEntity[] userMentions;
+    private String source;
+    /**
+     * ツイートの種類
+     */
     public EnumTweetType type = EnumTweetType.NORMAL;
+    /**
+     * 子ツイート(RTでない場合は自分自身)
+     */
+    private TweetModel original;
+    /**
+     * 親ツイート
+     */
+    private List<TweetModel> parents = new ArrayList<TweetModel>();
 
     public TweetModel(Status status)
     {
-        Status shownStatus;
         if (status.isRetweet())
         {
-            retweeter = ResponseConverter.convert(status.getUser());
-            shownStatus = status.getRetweetedStatus();
+            original = ResponseConverter.convert(status.getRetweetedStatus());
+            original.addParent(this);
         }
         else
         {
-            shownStatus = status;
+            original = this;
         }
 
         createdAt = status.getCreatedAt();
-        parentStatusId = status.getId();
-
-        statusId = shownStatus.getId();
-        inReplyToStatusId = shownStatus.getInReplyToStatusId();
-        user = ResponseConverter.convert(shownStatus.getUser());
-        text = shownStatus.getText();
-        urls = shownStatus.getURLEntities();
-        medias = shownStatus.getMediaEntities();
-        hashtags = shownStatus.getHashtagEntities();
-        userMentions = shownStatus.getUserMentionEntities();
-        source = Html.fromHtml(shownStatus.getSource()).toString();
+        statusId = status.getId();
+        inReplyToStatusId = status.getInReplyToStatusId();
+        user = ResponseConverter.convert(status.getUser());
+        text = status.getText();
+        urls = status.getURLEntities();
+        medias = status.getMediaEntities();
+        hashtags = status.getHashtagEntities();
+        userMentions = status.getUserMentionEntities();
+        source = Html.fromHtml(status.getSource()).toString();
 
         if (hashtags != null)
         {
@@ -81,46 +93,147 @@ public class TweetModel implements Comparable<TweetModel>, IStatusModel
     {
     }
 
-    public static TweetModel getNullStatusModel()
+    public static TweetModel getSampleModel()
     {
         TweetModel status = new TweetModel();
+        status.original = status;
         status.createdAt = new Date();
         status.statusId = 0;
         status.inReplyToStatusId = 0;
         status.user = UserModel.getNullUserModel();
         status.text = "";
+        status.urls = new URLEntity[0];
+        status.medias = new MediaEntity[0];
+        status.hashtags = new HashtagEntity[0];
+        status.userMentions = new UserMentionEntity[0];
         status.source = "";
+        status.type = EnumTweetType.NORMAL;
         return status;
+    }
+
+    public TweetModel getOriginal()
+    {
+        return original;
+    }
+
+    public List<TweetModel> getParents()
+    {
+        return parents;
+    }
+
+    public void addParent(TweetModel parent)
+    {
+        parents.add(parent);
+    }
+
+    public void deleteParent(TweetModel parent)
+    {
+        parents.remove(parent);
+    }
+
+    public long getInReplyToStatusId()
+    {
+        return original.inReplyToStatusId;
+    }
+
+    public String getText()
+    {
+        return original.text;
+    }
+
+    public URLEntity[] getUrls()
+    {
+        return original.urls;
+    }
+
+    public MediaEntity[] getMedias()
+    {
+        return original.medias;
+    }
+
+    public HashtagEntity[] getHashtags()
+    {
+        return original.hashtags;
+    }
+
+    public UserMentionEntity[] getUserMentions()
+    {
+        return original.userMentions;
+    }
+
+    public String getSource()
+    {
+        return original.source;
+    }
+
+    /**
+     * do destroy async
+     */
+    public void destroy()
+    {
+        if (user.isMe())
+        {
+            new DestroyTask(statusId).callAsync();
+        }
+        else
+        {
+            new DestroyTask(original.statusId).callAsync();
+        }
+    }
+
+    /**
+     * do favorite async
+     */
+    public void favorite()
+    {
+        new FavoriteTask(original.statusId).callAsync();
+    }
+
+    /**
+     * do unfavorite async
+     */
+    public void unfavorite()
+    {
+        new UnFavoriteTask(original.statusId).callAsync();
+    }
+
+    /**
+     * do retweet async
+     */
+    public void retweet()
+    {
+        new RetweetTask(original.statusId).callAsync();
     }
 
     @Override
     public UserModel getUser()
     {
-        return user;
+        return original.user;
     }
 
     @Override
     public String getTextTop()
     {
+        UserModel shownUser = original.user;
         StringBuilder builder = new StringBuilder();
         String style = Client.getPreferenceValue(EnumPreferenceKey.NAME_STYLE);
         if (style.equals(EnumNameStyle.S_N.get()) || style.equals(EnumNameStyle.S.get()))
         {
-            builder.append(user.screenName);
+            builder.append(shownUser.screenName);
         }
         else if (style.equals(EnumNameStyle.N_S.get()) || style.equals(EnumNameStyle.N.get()))
         {
-            builder.append(user.name);
+            builder.append(shownUser.name);
         }
         if (style.equals(EnumNameStyle.S_N.get()))
         {
             builder.append(" / ");
-            builder.append(user.name);
+            builder.append(shownUser.name);
         }
         else if (style.equals(EnumNameStyle.N_S.get()))
         {
             builder.append(" / ");
-            builder.append(user.screenName);
+            builder.append(shownUser.screenName);
         }
         return builder.toString();
     }
@@ -128,7 +241,7 @@ public class TweetModel implements Comparable<TweetModel>, IStatusModel
     @Override
     public String getTextContent()
     {
-        return text;
+        return getText();
     }
 
     @Override
@@ -138,11 +251,11 @@ public class TweetModel implements Comparable<TweetModel>, IStatusModel
         if (type == EnumTweetType.RETWEET)
         {
             builder.append("(RT: ");
-            builder.append(retweeter.screenName);
+            builder.append(user.screenName);
             builder.append(") ");
-            builder.append(StringUtils.dateToString(createdAt));
+            builder.append(StringUtils.dateToString(original.createdAt));
             builder.append(" via ");
-            builder.append(source);
+            builder.append(original.source);
         }
         else
         {

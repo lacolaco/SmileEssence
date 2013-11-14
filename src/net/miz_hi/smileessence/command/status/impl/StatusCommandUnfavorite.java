@@ -3,7 +3,6 @@ package net.miz_hi.smileessence.command.status.impl;
 import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.command.status.StatusCommand;
 import net.miz_hi.smileessence.model.status.tweet.TweetModel;
-import net.miz_hi.smileessence.task.impl.UnFavoriteTask;
 
 public class StatusCommandUnfavorite extends StatusCommand implements IHideable
 {
@@ -22,7 +21,13 @@ public class StatusCommandUnfavorite extends StatusCommand implements IHideable
     @Override
     public void workOnUiThread()
     {
-        new UnFavoriteTask(status.statusId).callAsync();
+        status.unfavorite();
+    }
+
+    @Override
+    public boolean getDefaultVisibility()
+    {
+        return true; //todo ふぁぼっている時だけ
     }
 
 }

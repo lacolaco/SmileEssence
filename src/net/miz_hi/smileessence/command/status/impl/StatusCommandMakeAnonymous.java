@@ -22,7 +22,7 @@ public class StatusCommandMakeAnonymous extends StatusCommand implements IHideab
     @Override
     public void workOnUiThread()
     {
-        String str = "？？？「" + status.text + "」";
+        String str = "？？？「" + status.getText() + "」";
         PostSystem.setText(str);
         PostSystem.openPostPage();
     }

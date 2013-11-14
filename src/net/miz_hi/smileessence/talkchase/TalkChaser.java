@@ -20,13 +20,12 @@ public class TalkChaser
     {
         this.talkList = new TalkList();
         this.fragment = fragment;
-
     }
 
     public void hitNewTweet(TweetModel tweet)
     {
-        this.talkList.addToTop(tweet);
-        updateChasingId(tweet.statusId);
+        this.talkList.addToTop(tweet.getOriginal());
+        updateChasingId(tweet.getOriginal().statusId);
     }
 
     private void updateChasingId(long id)
@@ -49,12 +48,12 @@ public class TalkChaser
         talkList.addToTop(start);
 
         //Load older
-        long inReplyTo = start.inReplyToStatusId;
+        long inReplyTo = start.getInReplyToStatusId();
         while (inReplyTo > 0)
         {
             TweetModel older = TweetUtils.getOrCreateStatusModel(inReplyTo);
             talkList.addToBottom(older);
-            inReplyTo = older.inReplyToStatusId;
+            inReplyTo = older.getInReplyToStatusId();
         }
 
         //Load newer
@@ -64,7 +63,7 @@ public class TalkChaser
             long before = inReplyTo;
             for (TweetModel newer : TweetCache.getList())
             {
-                if (newer.inReplyToStatusId == inReplyTo)
+                if (newer.getInReplyToStatusId() == inReplyTo)
                 {
                     talkList.addToTop(newer);
                     inReplyTo = newer.statusId;

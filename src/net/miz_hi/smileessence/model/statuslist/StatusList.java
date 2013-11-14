@@ -51,6 +51,11 @@ public abstract class StatusList
         StatusListManager.getAdapter(this).notifyAdapter();
     }
 
+    public synchronized void applyForce()
+    {
+        StatusListManager.getAdapter(this).forceNotifyAdapter();
+    }
+
     public abstract boolean checkStatus(IStatusModel status);
 
 }

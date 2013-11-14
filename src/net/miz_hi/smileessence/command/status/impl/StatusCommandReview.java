@@ -8,7 +8,6 @@ import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.command.status.StatusCommand;
 import net.miz_hi.smileessence.dialog.ReviewDialog;
 import net.miz_hi.smileessence.model.status.tweet.TweetModel;
-import net.miz_hi.smileessence.task.impl.FavoriteTask;
 import net.miz_hi.smileessence.task.impl.TweetTask;
 import twitter4j.StatusUpdate;
 
@@ -59,17 +58,17 @@ public class StatusCommandReview extends StatusCommand implements IHideable
                     builder.append(reviewDialog.getText());
                     builder.append("\r\n");
                     builder.append("@");
-                    builder.append(status.user.screenName);
+                    builder.append(status.getOriginal().user.screenName);
                     builder.append(" ( http://twitter.com/");
-                    builder.append(status.user.screenName);
+                    builder.append(status.getOriginal().user.screenName);
                     builder.append("/status/");
-                    builder.append(status.statusId);
+                    builder.append(status.getOriginal().statusId);
                     builder.append(" )");
 
                     StatusUpdate update = new StatusUpdate(builder.toString());
-                    update.setInReplyToStatusId(status.statusId);
-                    new FavoriteTask(status.statusId).callAsync();
+                    update.setInReplyToStatusId(status.getOriginal().statusId);
                     new TweetTask(update).callAsync();
+                    status.getOriginal().favorite();
                 }
             }
         });
@@ -79,7 +78,7 @@ public class StatusCommandReview extends StatusCommand implements IHideable
     @Override
     public boolean getDefaultVisibility()
     {
-        return !status.user.isProtected && Client.getPermission().canWarotaRT();
+        return !status.getOriginal().user.isProtected && Client.getPermission().canWarotaRT();
     }
 
 

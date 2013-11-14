@@ -52,7 +52,7 @@ public class TemplateModel
         }
         catch (Exception e)
         {
-            Log.e(TemplateModel.class.getSimpleName(), "error on delete");
+            Log.e(TemplateModel.class.getSimpleName(), "error on removeByLists");
         }
         finally
         {
@@ -73,7 +73,7 @@ public class TemplateModel
         }
         catch (Exception e)
         {
-            Log.e(TemplateModel.class.getSimpleName(), "error on delete");
+            Log.e(TemplateModel.class.getSimpleName(), "error on removeByLists");
         }
         finally
         {

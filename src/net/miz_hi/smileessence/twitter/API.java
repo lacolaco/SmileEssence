@@ -32,6 +32,11 @@ public class API
         TwitterManager.getTwitter(account).retweetStatus(statusId);
     }
 
+    public static void destroyTweet(Account account, long statusId) throws TwitterException
+    {
+        TwitterManager.getTwitter(account).destroyStatus(statusId);
+    }
+
     public static void tweet(Account account, String str) throws TwitterException
     {
         Tweet.update(account, str);
@@ -92,7 +97,7 @@ public class API
     }
 
 	/*
-	 * RELATIONSHIP
+     * RELATIONSHIP
 	 */
 
     public static Relationship getRelationship(Account account, long id) throws TwitterException

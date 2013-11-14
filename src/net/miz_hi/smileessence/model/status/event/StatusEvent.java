@@ -17,6 +17,6 @@ public abstract class StatusEvent extends EventModel
     @Override
     public String getTextContent()
     {
-        return tweet.text;
+        return tweet.getText();
     }
 }

@@ -36,8 +36,16 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
         {
             for (StatusList list : StatusListManager.getTweetLists())
             {
+                //ツイートを削除
                 list.remove(model);
-                StatusListManager.getAdapter(list).forceNotifyAdapter();
+                //RTなら子のリストから削除
+                model.getOriginal().deleteParent(model);
+                //このツイートのRTも削除する
+                for (TweetModel parent : model.getParents())
+                {
+                    list.remove(parent);
+                }
+                list.applyForce();
             }
         }
     }
@@ -60,15 +68,16 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
             return;
         }
         TweetModel model = ResponseConverter.convert(status);
-
-        if (model.type == EnumTweetType.RETWEET && model.user.isMe())
+        //自分へのRT
+        if (model.type == EnumTweetType.RETWEET && model.getOriginal().user.isMe())
         {
-            EventModel event = new RetweetEvent(model.retweeter, model);
+            EventModel event = new RetweetEvent(model.user, model);
             StatusList history = StatusListManager.getHistoryTimeline();
             history.addToTop(event);
             history.apply();
             event.raise();
         }
+        //RTではないリプライ
         else if (model.type == EnumTweetType.REPLY)
         {
             StatusList mentions = StatusListManager.getMentionsTimeline();
@@ -76,6 +85,7 @@ public class MyUserStreamListener implements UserStreamListener, ConnectionLifeC
             mentions.apply();
             Notificator.buildEvent(new ReplyEvent(model.user, model)).raise();
         }
+        //一度見たツイートを弾く
         if (Client.<Boolean>getPreferenceValue(EnumPreferenceKey.SHOW_READ_RETWEET) || TweetCache.isNotRead(model.statusId))
         {
             StatusList home = StatusListManager.getHomeTimeline();

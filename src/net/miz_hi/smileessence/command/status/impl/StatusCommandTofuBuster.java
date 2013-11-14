@@ -30,7 +30,7 @@ public class StatusCommandTofuBuster extends StatusCommand implements IHideable
     public void workOnUiThread()
     {
         String ACTION_SHOW_TEXT = "com.product.kanzmrsw.tofubuster.ACTION_SHOW_TEXT";
-        String text = status.text;
+        String text = status.getText();
         if (Morse.isMorse(text))
         {
             text = Morse.mcToJa(text);

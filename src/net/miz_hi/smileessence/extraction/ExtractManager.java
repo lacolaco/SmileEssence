@@ -22,7 +22,7 @@ public class ExtractManager
             }
             for (ExtraWord word : ExtraWordManager.getExtraWords())
             {
-                if (status.text.contains(word.getText()))
+                if (status.getText().contains(word.getText()))
                 {
                     mentions.addToTop(status);
                     mentions.apply();

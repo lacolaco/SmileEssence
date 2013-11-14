@@ -32,7 +32,7 @@ public class StatusCommandTranslate extends StatusCommand implements IHideable
     {
         try
         {
-            String query = URLEncoder.encode(status.text, "UTF-8");
+            String query = URLEncoder.encode(status.getText(), "UTF-8");
             String url = "http://translate.google.co.jp/m/translate?q=" + query;
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             activity.startActivity(intent);

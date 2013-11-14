@@ -52,7 +52,7 @@ public class ExtractModel
         }
         catch (Exception e)
         {
-            Log.e(ExtractModel.class.getSimpleName(), "error on delete");
+            Log.e(ExtractModel.class.getSimpleName(), "error on removeByLists");
         }
         finally
         {
@@ -73,7 +73,7 @@ public class ExtractModel
         }
         catch (Exception e)
         {
-            Log.e(ExtractModel.class.getSimpleName(), "error on delete");
+            Log.e(ExtractModel.class.getSimpleName(), "error on removeByLists");
         }
         finally
         {

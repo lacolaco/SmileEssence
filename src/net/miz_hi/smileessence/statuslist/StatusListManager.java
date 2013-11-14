@@ -29,6 +29,10 @@ public class StatusListManager
     public static void initStatusLists(Activity activity)
     {
         instance = new StatusListManager();
+        instance.tweetLists.clear();
+        instance.userTimelineMap.clear();
+        instance.listTimelineMap.clear();
+        instance.adapterMap.clear();
         Timeline ho = new HomeTimeline();
         MentionsTimeline m = new MentionsTimeline();
         StatusList hi = new HistoryList();

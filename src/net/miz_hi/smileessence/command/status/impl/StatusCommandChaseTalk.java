@@ -31,15 +31,16 @@ public class StatusCommandChaseTalk extends StatusCommand
     @Override
     public void workOnUiThread()
     {
+        final TweetModel origin = status.getOriginal();
         //すでにTalkが存在していればページを移動
-        TalkChaser chaser = TalkManager.searchTalk(status);
+        TalkChaser chaser = TalkManager.searchTalk(origin);
         if (chaser != null)
         {
             PageController.getInstance().move(PageController.getInstance().getAdapter().getItemPosition(chaser.fragment));
         }
         else
         {
-            TalkFragment fragment = TalkFragment.newInstance(TalkManager.getNextTalkId(), status.statusId);
+            TalkFragment fragment = TalkFragment.newInstance(TalkManager.getNextTalkId(), origin.statusId);
             final TalkChaser chaser2 = new TalkChaser(fragment);
             TalkManager.addTalkChaser(chaser2);
             //StatusList管理に追加
@@ -49,7 +50,7 @@ public class StatusCommandChaseTalk extends StatusCommand
 
                 public void run()
                 {
-                    chaser2.startRelation(status.statusId);
+                    chaser2.startRelation(origin.statusId);
                 }
             });
 
@@ -61,7 +62,7 @@ public class StatusCommandChaseTalk extends StatusCommand
     @Override
     public boolean getDefaultVisibility()
     {
-        return status.inReplyToStatusId > -1;
+        return status.getInReplyToStatusId() > -1;
     }
 
 

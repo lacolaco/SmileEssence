@@ -23,7 +23,7 @@ public class StatusCommandUnOffRetweet extends StatusCommand implements IHideabl
     @Override
     public void workOnUiThread()
     {
-        String text = " RT @" + status.user.screenName + ": " + status.text;
+        String text = " RT @" + status.getOriginal().user.screenName + ": " + status.getText();
         PostSystem.clear(true);
         PostSystem.setText(text);
         PostSystem.getState().setCursor(0);
@@ -33,6 +33,6 @@ public class StatusCommandUnOffRetweet extends StatusCommand implements IHideabl
     @Override
     public boolean getDefaultVisibility()
     {
-        return Client.getPermission().canUnOffRetweet() && !status.user.isProtected;
+        return Client.getPermission().canUnOffRetweet() && !status.getOriginal().user.isProtected;
     }
 }

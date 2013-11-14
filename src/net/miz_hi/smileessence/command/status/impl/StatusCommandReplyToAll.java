@@ -25,7 +25,7 @@ public class StatusCommandReplyToAll extends StatusCommand
     {
         StringBuilder builder = new StringBuilder();
         builder.append(".");
-        for (UserMentionEntity entity : status.userMentions)
+        for (UserMentionEntity entity : status.getUserMentions())
         {
             if (entity.getScreenName().equals(Client.getMainAccount().getScreenName()))
             {
@@ -35,14 +35,13 @@ public class StatusCommandReplyToAll extends StatusCommand
         }
 
         PostSystem.setText(builder.toString());
+        PostSystem.getState().setCursor(builder.length());
         PostSystem.openPostPage();
     }
 
     @Override
     public boolean getDefaultVisibility()
     {
-        return status.userMentions != null && status.userMentions.length > 1;
+        return status.getUserMentions() != null && status.getUserMentions().length > 1;
     }
-
-
 }

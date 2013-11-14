@@ -28,7 +28,7 @@ public class StatusCommandClipboard extends StatusCommand implements IHideable
         try
         {
             ClipboardManager manager = (ClipboardManager) Client.getApplication().getSystemService(Context.CLIPBOARD_SERVICE);
-            manager.setText(status.text);
+            manager.setText(status.getText());
             Notificator.info("クリップボードにコピーしました");
         }
         catch (Exception e)

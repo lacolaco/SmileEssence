@@ -2,7 +2,6 @@ package net.miz_hi.smileessence.command.status.impl;
 
 import net.miz_hi.smileessence.command.status.StatusCommand;
 import net.miz_hi.smileessence.model.status.tweet.TweetModel;
-import net.miz_hi.smileessence.task.impl.FavoriteTask;
 
 public class StatusCommandFavorite extends StatusCommand
 {
@@ -21,7 +20,7 @@ public class StatusCommandFavorite extends StatusCommand
     @Override
     public void workOnUiThread()
     {
-        new FavoriteTask(status.statusId).callAsync();
+        status.favorite();
     }
 
 }

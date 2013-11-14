@@ -9,8 +9,6 @@ import net.miz_hi.smileessence.core.MyExecutor;
 import net.miz_hi.smileessence.model.status.tweet.TweetModel;
 import net.miz_hi.smileessence.notification.Notificator;
 import net.miz_hi.smileessence.preference.EnumPreferenceKey;
-import net.miz_hi.smileessence.task.impl.FavoriteTask;
-import net.miz_hi.smileessence.task.impl.RetweetTask;
 import net.miz_hi.smileessence.task.impl.TweetTask;
 import twitter4j.StatusUpdate;
 
@@ -59,7 +57,7 @@ public class StatusCommandProduce extends StatusCommand implements IHideable, IC
                     {
                         e.printStackTrace();
                     }
-                    new RetweetTask(status.statusId).call();
+                    status.retweet();
                     try
                     {
                         Thread.sleep(100);
@@ -69,7 +67,7 @@ public class StatusCommandProduce extends StatusCommand implements IHideable, IC
                         e.printStackTrace();
                     }
                     new TweetTask(new StatusUpdate(finish)).call();
-                    new FavoriteTask(status.statusId).callAsync();
+                    status.favorite();
                 }
             });
         }
@@ -82,6 +80,6 @@ public class StatusCommandProduce extends StatusCommand implements IHideable, IC
     @Override
     public boolean getDefaultVisibility()
     {
-        return !status.user.isProtected;
+        return !status.getOriginal().user.isProtected;
     }
 }

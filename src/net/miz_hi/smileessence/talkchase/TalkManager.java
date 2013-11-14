@@ -65,7 +65,7 @@ public class TalkManager
         for (int i = 0; i < chaserList.size(); i++)
         {
             TalkChaser chaser = chaserList.valueAt(i);
-            if (tweet.inReplyToStatusId == chaser.chasingId)
+            if (tweet.getInReplyToStatusId() == chaser.chasingId)
             {
                 chaser.hitNewTweet(tweet);
                 break;

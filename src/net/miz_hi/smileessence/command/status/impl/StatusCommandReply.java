@@ -21,7 +21,7 @@ public class StatusCommandReply extends StatusCommand
     @Override
     public void workOnUiThread()
     {
-        PostSystem.setReply(status.user.screenName, status.statusId);
+        PostSystem.setReply(status.getOriginal().user.screenName, status.getOriginal().statusId);
         PostSystem.openPostPage();
     }
 

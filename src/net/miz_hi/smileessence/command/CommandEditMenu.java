@@ -37,7 +37,7 @@ public class CommandEditMenu extends MenuCommand
 
         ArrayList<CheckBoxItem> list = new ArrayList<CheckBoxItem>();
         final HashMap<CheckBoxItem, ICommand> map = new HashMap<CheckBoxItem, ICommand>();
-        TweetModel nullModel = TweetModel.getNullStatusModel();
+        TweetModel nullModel = TweetModel.getSampleModel();
         TweetMenu adapter = new TweetMenu(activity, nullModel);
         for (ICommand item : adapter.getStatusMenu())
         {

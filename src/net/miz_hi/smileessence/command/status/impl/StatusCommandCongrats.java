@@ -5,7 +5,6 @@ import net.miz_hi.smileessence.command.IConfirmable;
 import net.miz_hi.smileessence.command.IHideable;
 import net.miz_hi.smileessence.command.status.StatusCommand;
 import net.miz_hi.smileessence.model.status.tweet.TweetModel;
-import net.miz_hi.smileessence.task.impl.FavoriteTask;
 import net.miz_hi.smileessence.task.impl.TweetTask;
 import twitter4j.StatusUpdate;
 
@@ -52,10 +51,10 @@ public class StatusCommandCongrats extends StatusCommand implements IHideable, I
             favCount = 10000;
         }
 
-        String str = "@" + status.user.screenName + " Congrats on your " + favCount + "★ tweet! http://favstar.fm/t/" + status.statusId;
+        String str = String.format("@%s Congrats on your %s ★ tweet! http://favstar.fm/t/%s", status.getOriginal().user.screenName, favCount, status.getOriginal().statusId);
         StatusUpdate update = new StatusUpdate(str);
-        update.setInReplyToStatusId(status.statusId);
-        new FavoriteTask(status.statusId).callAsync();
+        update.setInReplyToStatusId(status.getOriginal().statusId);
+        status.getOriginal().favorite();
         new TweetTask(update).callAsync();
     }
 
