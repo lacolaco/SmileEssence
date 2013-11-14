@@ -41,6 +41,7 @@ public class MainActivitySystem
 
     public void onDestroyed()
     {
+        TwitterManager.closeTwitterStream();
         PostSystem.clear(false);
         IconCache.clearCache();
         TweetCache.clearCache();
