@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="key_test_preference">testPreference</string>
+    <string name="key_text_size">textSize</string>
+    <string name="key_on_submit">onSubmit</string>
+    <string name="key_clear_accounts">clearAccounts</string>
+    <string name="key_unfav_notify">unfavNotify</string>
+    <string name="key_open_ime">openIME</string>
+    <string name="key_confirm">confirm</string>
+    <string name="key_morse">morse</string>
+    <string name="key_namestyle">nameStyle</string>
+    <string name="key_retweet_visibility">retweetVisibility</string>
+    <string name="key_search_retweet">searchRetweet</string>
+    <string name="key_request_count">requestCount</string>
+    <string name="key_theme">theme</string>
+    <string name="key_app_info">appInfo</string>
+    <string name="key_license_notices">licenseNotice</string>
+</resources>

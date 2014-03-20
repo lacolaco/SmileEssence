@@ -1,25 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">SmileEssence Lite</string>
-    <string name="app_version">β1.4.4.44</string>
-    <string name="app_url">http://smileessence.miz-hi.net/</string>
-    <string name="key_setting_textSize">text_size</string>
-    <string name="key_setting_aftersubmit">after_submit</string>
-    <string name="key_setting_delete_accounts">deleteAccounts</string>
-    <string name="key_setting_notice_unfav">notice_unfav</string>
-    <string name="key_setting_open_ime">open_ime</string>
-    <string name="key_setting_confirm_dialog">confirm_dialog</string>
-    <string name="key_setting_footer">footer_visible</string>
-    <string name="key_setting_morse">morse_enabled</string>
-    <string name="key_setting_namestyle">namestyle</string>
+    <string name="app_name">SmileEssence</string>
+    <string name="app_version">0.1.0</string>
+    <string name="app_url">http://smileessence.lacolaco.net</string>
     <string name="namestyle_s_n">ScreenName / Name</string>
     <string name="namestyle_n_s">Name / ScreenName</string>
     <string name="namestyle_s">ScreenName</string>
     <string name="namestyle_n">Name</string>
-    <string name="key_setting_read_retweet">show_read_retweet</string>
-    <string name="key_setting_listload">list_load</string>
     <string name="thanks_to">miz_hi, yaplus</string>
-    <string name="app_info">appInfo</string>
-    <string name="license_notices">licenseNotice</string>
 </resources>
