@@ -64,9 +64,8 @@ public class TwitterMock
         return DataObjectFactory.createStatus(getJson("retweet.json"));
     }
 
-    private User getUserMock() throws IOException, TwitterException
+    public User getUserMock() throws IOException, TwitterException
     {
         return DataObjectFactory.createUser(getJson("user.json"));
     }
-
 }

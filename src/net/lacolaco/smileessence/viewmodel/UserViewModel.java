@@ -21,8 +21,106 @@ import twitter4j.User;
 public class UserViewModel
 {
 
+    private long id;
+    private String screenName;
+    private String name;
+    private String description;
+    private String location;
+    private String url;
+    private String iconURL;
+    private String bannerURL;
+    private int statusesCount;
+    private int friendsCount;
+    private int followersCount;
+    private int favoritesCount;
+    private boolean isProtected;
+    private boolean isVerified;
+
     public UserViewModel(User user)
     {
+        id = user.getId();
+        screenName = user.getScreenName();
+        name = user.getName();
+        description = user.getDescription();
+        location = user.getLocation();
+        url = user.getURL();
+        iconURL = user.getBiggerProfileImageURL();
+        bannerURL = user.getProfileBannerURL();
+        statusesCount = user.getStatusesCount();
+        friendsCount = user.getFriendsCount();
+        followersCount = user.getFollowersCount();
+        favoritesCount = user.getFavouritesCount();
+        isProtected = user.isProtected();
+        isVerified = user.isVerified();
+    }
 
+    public long getID()
+    {
+        return id;
+    }
+
+    public String getScreenName()
+    {
+        return screenName;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public String getLocation()
+    {
+        return location;
+    }
+
+    public String getURL()
+    {
+        return url;
+    }
+
+    public String getIconURL()
+    {
+        return iconURL;
+    }
+
+    public String getBannerURL()
+    {
+        return bannerURL;
+    }
+
+    public int getStatusesCount()
+    {
+        return statusesCount;
+    }
+
+    public int getFriendsCount()
+    {
+        return friendsCount;
+    }
+
+    public int getFollowersCount()
+    {
+        return followersCount;
+    }
+
+    public int getFavoritesCount()
+    {
+        return favoritesCount;
+    }
+
+    public boolean isProtected()
+    {
+        return isProtected;
+    }
+
+    public boolean isVerified()
+    {
+        return isVerified;
     }
 }
