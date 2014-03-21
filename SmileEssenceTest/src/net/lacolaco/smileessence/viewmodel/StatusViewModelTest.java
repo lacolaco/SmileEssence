@@ -33,66 +33,96 @@ public class StatusViewModelTest extends InstrumentationTestCase
     public void testID() throws Exception
     {
         StatusViewModel status = new StatusViewModel(mock.getStatusMock());
-        assertNotSame(0L, status.id);
+        assertNotSame(0L, status.getID());
     }
 
-    public void testUser() throws Exception
+    public void testUserID() throws Exception
     {
         StatusViewModel status = new StatusViewModel(mock.getStatusMock());
-        assertNotNull(status.user);
+        assertNotSame(0L, status.getUserID());
+    }
+
+    public void testScreenName() throws Exception
+    {
+        StatusViewModel status = new StatusViewModel(mock.getStatusMock());
+        assertNotNull(status.getScreenName());
+    }
+
+    public void testName() throws Exception
+    {
+        StatusViewModel status = new StatusViewModel(mock.getStatusMock());
+        assertNotNull(status.getName());
+    }
+
+    public void testIconURL() throws Exception
+    {
+        StatusViewModel status = new StatusViewModel(mock.getStatusMock());
+        assertNotNull(status.getIconURL());
     }
 
     public void testText() throws Exception
     {
         StatusViewModel status = new StatusViewModel(mock.getStatusMock());
-        assertNotNull(status.text);
+        assertNotNull(status.getText());
     }
 
     public void testCreatedAt() throws Exception
     {
         StatusViewModel status = new StatusViewModel(mock.getStatusMock());
-        assertNotNull(status.createdAt);
+        assertNotNull(status.getCreatedAt());
     }
 
     public void testSource() throws Exception
     {
         StatusViewModel status = new StatusViewModel(mock.getStatusMock());
-        assertNotNull(status.source);
+        assertNotNull(status.getSource());
     }
 
     public void testFavorited() throws Exception
     {
         StatusViewModel status = new StatusViewModel(mock.getStatusMock());
-        assertFalse(status.favorited);
+        assertFalse(status.isFavorited());
+    }
+
+    public void testProtected() throws Exception
+    {
+        StatusViewModel status = new StatusViewModel(mock.getStatusMock());
+        assertFalse(status.isProtected());
     }
 
     public void testIsRetweet() throws Exception
     {
         StatusViewModel status = new StatusViewModel(mock.getRetweetMock());
-        assertNotNull(status.retweetedStatus);
+        assertNotNull(status.getRetweetedStatus());
     }
 
     public void testMentions() throws Exception
     {
         StatusViewModel status = new StatusViewModel(mock.getStatusMock());
-        assertNotNull(status.mentions);
+        assertNotNull(status.getMentions());
     }
 
     public void testHashtags() throws Exception
     {
         StatusViewModel status = new StatusViewModel(mock.getStatusMock());
-        assertNotNull(status.hashtags);
+        assertNotNull(status.getHashtags());
     }
 
     public void testMedia() throws Exception
     {
         StatusViewModel status = new StatusViewModel(mock.getStatusMock());
-        assertNotNull(status.media);
+        assertNotNull(status.getMedia());
     }
 
     public void testURLs() throws Exception
     {
         StatusViewModel status = new StatusViewModel(mock.getStatusMock());
-        assertNotNull(status.urls);
+        assertNotNull(status.getURLs());
+    }
+
+    public void testSymbol() throws Exception
+    {
+        StatusViewModel status = new StatusViewModel(mock.getStatusMock());
+        assertNotNull(status.getSymbols());
     }
 }
