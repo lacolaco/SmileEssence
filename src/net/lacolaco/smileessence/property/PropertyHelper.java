@@ -24,41 +24,34 @@
 
 package net.lacolaco.smileessence.property;
 
-import android.test.InstrumentationTestCase;
+import android.content.res.AssetManager;
 
-public class PropertyHelperTest extends InstrumentationTestCase
+import java.io.IOException;
+import java.util.Properties;
+
+public class PropertyHelper
 {
 
-    PropertyHelper helper;
+    private Properties properties;
 
-    @Override
-    public void setUp() throws Exception
+    public PropertyHelper(AssetManager asset, String filePath) throws IOException
     {
-        helper = new PropertyHelper(getInstrumentation().getContext().getAssets(), "test.properties");
+        properties = new Properties();
+        properties.load(asset.open(filePath));
     }
 
-    public void testGetProperty() throws Exception
+    public String getValue(String key)
     {
-        String sample = helper.getValue("test.sample");
-        assertEquals("test", sample);
+        return properties.getProperty(key);
     }
 
-    public void testSetProperty() throws Exception
+    public String getValue(String key, String defaultValue)
     {
-        Object old = helper.setValue("test.sample", "test1");
-        assertEquals("test", old);
-        assertEquals("test1", helper.getValue("test.sample"));
+        return properties.getProperty(key, defaultValue);
     }
 
-    public void testGetEmptyValue() throws Exception
+    public Object setValue(String key, String newValue)
     {
-        String empty = helper.getValue("test.empty");
-        assertEquals("", empty);
-    }
-
-    public void testNotExists() throws Exception
-    {
-        String notExists = helper.getValue("test.null");
-        assertNull(notExists);
+        return properties.setProperty(key, newValue);
     }
 }
