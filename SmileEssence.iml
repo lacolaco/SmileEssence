@@ -18,6 +18,7 @@
     <orderEntry type="library" exported="" name="twitter4j-core-3.0.5" level="application" />
     <orderEntry type="library" exported="" name="android-support-v13" level="application" />
     <orderEntry type="library" exported="" name="ActiveAndroid" level="application" />
+    <orderEntry type="library" exported="" name="twitter-text-1.9.1-SNAPSHOT" level="application" />
     <orderEntry type="module" module-name="Crouton" exported="" />
     <orderEntry type="module" module-name="ViewPagerIndicator" exported="" />
   </component>
