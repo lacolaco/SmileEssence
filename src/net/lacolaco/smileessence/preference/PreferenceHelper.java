@@ -30,12 +30,12 @@ import android.preference.PreferenceManager;
 
 import java.util.Set;
 
-public class Pref
+public class PreferenceHelper
 {
 
     private Context context;
 
-    public Pref(Context context)
+    public PreferenceHelper(Context context)
     {
         this.context = context;
     }

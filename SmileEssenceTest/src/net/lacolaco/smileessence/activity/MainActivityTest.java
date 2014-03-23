@@ -69,4 +69,24 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         });
 
     }
+
+    public void testIsFirstLaunchByVersion() throws Exception
+    {
+        assertTrue(getActivity().IsFirstLaunchByVersion());
+    }
+
+    public void testGetResourceHelper() throws Exception
+    {
+        assertNotNull(getActivity().getResourceHelper());
+    }
+
+    public void testGetPreferenceHelper() throws Exception
+    {
+        assertNotNull(getActivity().getPreferenceHelper());
+    }
+
+    public void testGetPropertyHelper() throws Exception
+    {
+        assertNotNull(getActivity().getPropertyHelper());
+    }
 }

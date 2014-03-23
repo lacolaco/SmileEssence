@@ -30,12 +30,12 @@ import net.lacolaco.smileessence.R;
 public class PreferenceHelperTest extends AndroidTestCase
 {
 
-    private Pref pref;
+    private PreferenceHelper pref;
 
     @Override
     public void setUp() throws Exception
     {
-        pref = new Pref(getContext());
+        pref = new PreferenceHelper(getContext());
     }
 
     public void testNotFound() throws Exception

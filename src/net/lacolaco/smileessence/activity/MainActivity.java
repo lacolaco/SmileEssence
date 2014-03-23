@@ -29,9 +29,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.preference.PreferenceHelper;
+import net.lacolaco.smileessence.property.PropertyHelper;
+import net.lacolaco.smileessence.resource.ResourceHelper;
+
+import java.io.IOException;
 
 public class MainActivity extends Activity
 {
+
+    private ResourceHelper resourceHelper;
+    private PreferenceHelper preferenceHelper;
+    private PropertyHelper propertyHelper;
 
     /**
      * Called when the activity is first created.
@@ -42,6 +51,15 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
+        try
+        {
+            setupHelpers();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+            finish();
+        }
     }
 
     @Override
@@ -72,5 +90,42 @@ public class MainActivity extends Activity
     protected void onNewIntent(Intent intent)
     {
         super.onNewIntent(intent);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    private String getVersion()
+    {
+        return resourceHelper.getString(R.string.app_version);
+    }
+
+    private String getLastLaunchVersion()
+    {
+        return propertyHelper.getValue("app.version");
+    }
+
+    public boolean IsFirstLaunchByVersion()
+    {
+        return !getVersion().contentEquals(getLastLaunchVersion());
+    }
+
+    private void setupHelpers() throws IOException
+    {
+        resourceHelper = new ResourceHelper(this);
+        preferenceHelper = new PreferenceHelper(this);
+        propertyHelper = new PropertyHelper(this.getAssets(), "app.properties");
+    }
+
+    public ResourceHelper getResourceHelper()
+    {
+        return resourceHelper;
+    }
+
+    public PreferenceHelper getPreferenceHelper()
+    {
+        return preferenceHelper;
+    }
+
+    public PropertyHelper getPropertyHelper()
+    {
+        return propertyHelper;
     }
 }
