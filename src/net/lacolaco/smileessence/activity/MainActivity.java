@@ -30,10 +30,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.preference.PreferenceHelper;
 import net.lacolaco.smileessence.property.PropertyHelper;
 import net.lacolaco.smileessence.resource.ResourceHelper;
+import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.view.adapter.TextFragment;
 import net.lacolaco.smileessence.viewmodel.PageListAdapter;
 
@@ -78,12 +80,19 @@ public class MainActivity extends Activity
         pagerAdapter = new PageListAdapter(this, viewPager);
         Bundle args = new Bundle();
         args.putString(TextFragment.ARG_TEXT, "test");
-        pagerAdapter.addTab("Passion", TextFragment.class, args);
-        pagerAdapter.addTab("Star", TextFragment.class, args);
-        pagerAdapter.addTab("Stream", TextFragment.class, args);
+        pagerAdapter.addTabWithoutNotify("Post", TextFragment.class, args);
+        pagerAdapter.addTabWithoutNotify("Home", TextFragment.class, args);
+        pagerAdapter.addTabWithoutNotify("Mentions", TextFragment.class, args);
+        pagerAdapter.addTabWithoutNotify("Messages", TextFragment.class, args);
+        pagerAdapter.addTabWithoutNotify("History", TextFragment.class, args);
+        pagerAdapter.notifyDataSetChanged();
         if(savedInstanceState != null)
         {
-            bar.setSelectedNavigationItem(savedInstanceState.getInt(STATE_PAGE, 0));
+            bar.setSelectedNavigationItem(savedInstanceState.getInt(STATE_PAGE, 1));
+        }
+        else
+        {
+            bar.setSelectedNavigationItem(1); //Home
         }
     }
 
@@ -97,7 +106,31 @@ public class MainActivity extends Activity
     @Override
     protected void onResume()
     {
-        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
+        super.onResume();
+        //account check
+        TwitterApi api = getLastUsedAccount();
+        if(api == null)
+        {
+            //Authorize
+        }
+        else
+        {
+            //Login and initialize
+        }
+    }
+
+    private TwitterApi getLastUsedAccount()
+    {
+        String token = propertyHelper.getValue("oauth.accessToken");
+        String secret = propertyHelper.getValue("oauth.accessSecret");
+        if(TextUtils.isEmpty(token) || TextUtils.isEmpty(secret))
+        {
+            return null;
+        }
+        else
+        {
+            return new TwitterApi(token, secret);
+        }
     }
 
     @Override

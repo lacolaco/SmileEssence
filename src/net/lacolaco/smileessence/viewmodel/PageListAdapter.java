@@ -83,6 +83,21 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
         notifyDataSetChanged();
     }
 
+    /**
+     * Add new tab and new page without notify.
+     * You must call notifyDataSetChanged after adding tab.
+     *
+     * @param name Page name
+     * @param clss Fragment class
+     * @param args Bundle for Fragment instantiate
+     */
+    public void addTabWithoutNotify(String name, Class<?> clss, Bundle args)
+    {
+        PageInfo info = new PageInfo(name, clss, args);
+        pages.add(info);
+        refreshListNavigation();
+    }
+
     private void refreshListNavigation()
     {
         ArrayList<String> itemList = new ArrayList<>();
