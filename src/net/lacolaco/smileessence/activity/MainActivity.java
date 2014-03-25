@@ -60,7 +60,6 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        initializeViewPager(savedInstanceState);
         try
         {
             setupHelpers();
@@ -70,37 +69,25 @@ public class MainActivity extends Activity
             e.printStackTrace();
             finish();
         }
+        initializeView();
     }
 
-    private void initializeViewPager(Bundle savedInstanceState)
+    private void initializeView()
     {
         ActionBar bar = getActionBar();
-        bar.setTitle(null);
+        bar.setDisplayShowHomeEnabled(false);
+        bar.setDisplayShowTitleEnabled(false);
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         pagerAdapter = new PageListAdapter(this, viewPager);
         Bundle args = new Bundle();
         args.putString(TextFragment.ARG_TEXT, "test");
-        pagerAdapter.addTabWithoutNotify("Post", TextFragment.class, args);
-        pagerAdapter.addTabWithoutNotify("Home", TextFragment.class, args);
-        pagerAdapter.addTabWithoutNotify("Mentions", TextFragment.class, args);
-        pagerAdapter.addTabWithoutNotify("Messages", TextFragment.class, args);
-        pagerAdapter.addTabWithoutNotify("History", TextFragment.class, args);
+        pagerAdapter.addTabWithoutNotify(resourceHelper.getString(R.string.page_name_post), TextFragment.class, args);
+        pagerAdapter.addTabWithoutNotify(resourceHelper.getString(R.string.page_name_home), TextFragment.class, args);
+        pagerAdapter.addTabWithoutNotify(resourceHelper.getString(R.string.page_name_mentions), TextFragment.class, args);
+        pagerAdapter.addTabWithoutNotify(resourceHelper.getString(R.string.page_name_message), TextFragment.class, args);
+        pagerAdapter.addTabWithoutNotify(resourceHelper.getString(R.string.page_name_history), TextFragment.class, args);
         pagerAdapter.notifyDataSetChanged();
-        if(savedInstanceState != null)
-        {
-            bar.setSelectedNavigationItem(savedInstanceState.getInt(STATE_PAGE, 1));
-        }
-        else
-        {
-            bar.setSelectedNavigationItem(1); //Home
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-        outState.putInt(STATE_PAGE, getActionBar().getSelectedNavigationIndex());
+        getActionBar().setSelectedNavigationItem(1); //Home
     }
 
     @Override
@@ -116,7 +103,13 @@ public class MainActivity extends Activity
         else
         {
             //Login and initialize
+
+            if(isFirstLaunchThisVersion())
+            {
+                //show change log
+            }
         }
+
     }
 
     private TwitterApi getLastUsedAccount()
@@ -167,7 +160,7 @@ public class MainActivity extends Activity
         return propertyHelper.getValue("app.version");
     }
 
-    public boolean IsFirstLaunchByVersion()
+    public boolean isFirstLaunchThisVersion()
     {
         return !getVersion().contentEquals(getLastLaunchVersion());
     }

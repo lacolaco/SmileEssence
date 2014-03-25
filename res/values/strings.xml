@@ -32,4 +32,9 @@
     <string name="namestyle_s">ScreenName</string>
     <string name="namestyle_n">Name</string>
     <string name="thanks_to">miz_hi, yaplus</string>
+    <string name="page_name_post">Post</string>
+    <string name="page_name_home">Home</string>
+    <string name="page_name_mentions">Mentions</string>
+    <string name="page_name_message">Message</string>
+    <string name="page_name_history">History</string>
 </resources>

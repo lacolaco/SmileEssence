@@ -72,7 +72,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     public void testIsFirstLaunchByVersion() throws Exception
     {
-        assertTrue(getActivity().IsFirstLaunchByVersion());
+        assertTrue(getActivity().isFirstLaunchThisVersion());
     }
 
     public void testGetResourceHelper() throws Exception
