@@ -82,12 +82,12 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     public void testGetPreferenceHelper() throws Exception
     {
-        assertNotNull(getActivity().getPreferenceHelper());
+        assertNotNull(getActivity().getUserPref());
     }
 
     public void testGetPropertyHelper() throws Exception
     {
-        assertNotNull(getActivity().getPropertyHelper());
+        assertNotNull(getActivity().getAppPref());
     }
 
     public void testGetActionBar() throws Exception
@@ -103,5 +103,10 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     public void testGetPagerAdapter() throws Exception
     {
         assertNotNull(getActivity().getPagerAdapter());
+    }
+
+    public void testGetLastUsedAccount() throws Exception
+    {
+        assertNull(getActivity().getLastUsedAccount());
     }
 }

@@ -22,43 +22,45 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.property;
+package net.lacolaco.smileessence.preference;
 
 import android.test.InstrumentationTestCase;
 
-public class PropertyHelperTest extends InstrumentationTestCase
+public class SharedPreferenceHelperTest extends InstrumentationTestCase
 {
 
-    PropertyHelper helper;
+    SharedPreferenceHelper helper;
 
     @Override
     public void setUp() throws Exception
     {
-        helper = new PropertyHelper(getInstrumentation().getContext().getAssets(), "test.properties");
+        //can't create on test context.
+        helper = new SharedPreferenceHelper(getInstrumentation().getTargetContext(), "TestPreference");
+        assertTrue(helper.putValue("test.sample", "test"));
+        assertTrue(helper.putValue("test.empty", ""));
     }
 
     public void testGetProperty() throws Exception
     {
-        String sample = helper.getValue("test.sample");
+        String sample = helper.getValue("test.sample", "");
         assertEquals("test", sample);
     }
 
     public void testSetProperty() throws Exception
     {
-        Object old = helper.setValue("test.sample", "test1");
-        assertEquals("test", old);
-        assertEquals("test1", helper.getValue("test.sample"));
+        assertTrue(helper.putValue("test.sample", "test1"));
+        assertEquals("test1", helper.getValue("test.sample", ""));
     }
 
     public void testGetEmptyValue() throws Exception
     {
-        String empty = helper.getValue("test.empty");
+        String empty = helper.getValue("test.empty", "");
         assertEquals("", empty);
     }
 
     public void testNotExists() throws Exception
     {
-        String notExists = helper.getValue("test.null");
-        assertNull(notExists);
+        String notExists = helper.getValue("test.null", "");
+        assertEquals("", notExists);
     }
 }

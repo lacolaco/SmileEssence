@@ -22,36 +22,17 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.property;
+package net.lacolaco.smileessence.preference;
 
-import android.content.res.AssetManager;
+import android.content.Context;
 
-import java.io.IOException;
-import java.util.Properties;
-
-public class PropertyHelper
+public class AppPreferenceHelper extends SharedPreferenceHelper
 {
 
-    private Properties properties;
+    private static final String FILE_NAME = "AppPreference";
 
-    public PropertyHelper(AssetManager asset, String filePath) throws IOException
+    public AppPreferenceHelper(Context context)
     {
-        properties = new Properties();
-        properties.load(asset.open(filePath));
-    }
-
-    public String getValue(String key)
-    {
-        return properties.getProperty(key);
-    }
-
-    public String getValue(String key, String defaultValue)
-    {
-        return properties.getProperty(key, defaultValue);
-    }
-
-    public Object setValue(String key, String newValue)
-    {
-        return properties.setProperty(key, newValue);
+        super(context, FILE_NAME);
     }
 }

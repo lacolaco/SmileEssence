@@ -30,22 +30,21 @@ import android.preference.PreferenceManager;
 
 import java.util.Set;
 
-public class PreferenceHelper
+public class UserPreferenceHelper extends SharedPreferenceHelper
 {
 
-    private Context context;
-
-    public PreferenceHelper(Context context)
+    public UserPreferenceHelper(Context context)
     {
-        this.context = context;
+        super(context, null);
     }
 
-    private SharedPreferences getPref()
+    @Override
+    protected SharedPreferences getPref()
     {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    private String getString(int resID)
+    protected String getString(int resID)
     {
         try
         {
@@ -59,32 +58,32 @@ public class PreferenceHelper
 
     public boolean getValue(int keyID, boolean defaultValue)
     {
-        return getString(keyID) != null ? getPref().getBoolean(getString(keyID), defaultValue) : defaultValue;
+        return getString(keyID) != null ? super.getValue(getString(keyID), defaultValue) : defaultValue;
     }
 
     public int getValue(int keyID, int defaultValue)
     {
-        return getString(keyID) != null ? getPref().getInt(getString(keyID), defaultValue) : defaultValue;
+        return getString(keyID) != null ? super.getValue(getString(keyID), defaultValue) : defaultValue;
     }
 
     public float getValue(int keyID, float defaultValue)
     {
-        return getString(keyID) != null ? getPref().getFloat(getString(keyID), defaultValue) : defaultValue;
+        return getString(keyID) != null ? super.getValue(getString(keyID), defaultValue) : defaultValue;
     }
 
     public long getValue(int keyID, long defaultValue)
     {
-        return getString(keyID) != null ? getPref().getLong(getString(keyID), defaultValue) : defaultValue;
+        return getString(keyID) != null ? super.getValue(getString(keyID), defaultValue) : defaultValue;
     }
 
     public String getValue(int keyID, String defaultValue)
     {
-        return getString(keyID) != null ? getPref().getString(getString(keyID), defaultValue) : defaultValue;
+        return getString(keyID) != null ? super.getValue(getString(keyID), defaultValue) : defaultValue;
     }
 
     public Set<String> getValue(int keyID, Set<String> defaultValue)
     {
-        return getString(keyID) != null ? getPref().getStringSet(getString(keyID), defaultValue) : defaultValue;
+        return getString(keyID) != null ? super.getValue(getString(keyID), defaultValue) : defaultValue;
     }
 
     public boolean putValue(int keyID, boolean value)
@@ -93,9 +92,7 @@ public class PreferenceHelper
         {
             return false;
         }
-        SharedPreferences.Editor editor = getPref().edit();
-        editor.putBoolean(getString(keyID), value);
-        return editor.commit();
+        return super.putValue(getString(keyID), value);
     }
 
     public boolean putValue(int keyID, int value)
@@ -104,9 +101,7 @@ public class PreferenceHelper
         {
             return false;
         }
-        SharedPreferences.Editor editor = getPref().edit();
-        editor.putInt(getString(keyID), value);
-        return editor.commit();
+        return super.putValue(getString(keyID), value);
     }
 
     public boolean putValue(int keyID, float value)
@@ -115,9 +110,7 @@ public class PreferenceHelper
         {
             return false;
         }
-        SharedPreferences.Editor editor = getPref().edit();
-        editor.putFloat(getString(keyID), value);
-        return editor.commit();
+        return super.putValue(getString(keyID), value);
     }
 
     public boolean putValue(int keyID, long value)
@@ -126,9 +119,7 @@ public class PreferenceHelper
         {
             return false;
         }
-        SharedPreferences.Editor editor = getPref().edit();
-        editor.putLong(getString(keyID), value);
-        return editor.commit();
+        return super.putValue(getString(keyID), value);
     }
 
     public boolean putValue(int keyID, String value)
@@ -137,9 +128,7 @@ public class PreferenceHelper
         {
             return false;
         }
-        SharedPreferences.Editor editor = getPref().edit();
-        editor.putString(getString(keyID), value);
-        return editor.commit();
+        return super.putValue(getString(keyID), value);
     }
 
     public boolean putValue(int keyID, Set<String> value)
@@ -148,8 +137,6 @@ public class PreferenceHelper
         {
             return false;
         }
-        SharedPreferences.Editor editor = getPref().edit();
-        editor.putStringSet(getString(keyID), value);
-        return editor.commit();
+        return super.putValue(getString(keyID), value);
     }
 }

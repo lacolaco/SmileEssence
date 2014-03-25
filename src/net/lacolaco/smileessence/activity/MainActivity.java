@@ -32,8 +32,8 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import net.lacolaco.smileessence.R;
-import net.lacolaco.smileessence.preference.PreferenceHelper;
-import net.lacolaco.smileessence.property.PropertyHelper;
+import net.lacolaco.smileessence.preference.AppPreferenceHelper;
+import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.resource.ResourceHelper;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.view.adapter.TextFragment;
@@ -46,8 +46,8 @@ public class MainActivity extends Activity
 
     private static final String STATE_PAGE = "page";
     private ResourceHelper resourceHelper;
-    private PreferenceHelper preferenceHelper;
-    private PropertyHelper propertyHelper;
+    private UserPreferenceHelper userPref;
+    private AppPreferenceHelper appPref;
     private ViewPager viewPager;
     private PageListAdapter pagerAdapter;
 
@@ -112,10 +112,10 @@ public class MainActivity extends Activity
 
     }
 
-    private TwitterApi getLastUsedAccount()
+    public TwitterApi getLastUsedAccount()
     {
-        String token = propertyHelper.getValue("oauth.accessToken");
-        String secret = propertyHelper.getValue("oauth.accessSecret");
+        String token = appPref.getValue("oauth.accessToken", "");
+        String secret = appPref.getValue("oauth.accessSecret", "");
         if(TextUtils.isEmpty(token) || TextUtils.isEmpty(secret))
         {
             return null;
@@ -157,7 +157,7 @@ public class MainActivity extends Activity
 
     private String getLastLaunchVersion()
     {
-        return propertyHelper.getValue("app.version");
+        return appPref.getValue("app.version", "");
     }
 
     public boolean isFirstLaunchThisVersion()
@@ -168,8 +168,8 @@ public class MainActivity extends Activity
     private void setupHelpers() throws IOException
     {
         resourceHelper = new ResourceHelper(this);
-        preferenceHelper = new PreferenceHelper(this);
-        propertyHelper = new PropertyHelper(this.getAssets(), "app.properties");
+        userPref = new UserPreferenceHelper(this);
+        appPref = new AppPreferenceHelper(this);
     }
 
     public ResourceHelper getResourceHelper()
@@ -177,14 +177,14 @@ public class MainActivity extends Activity
         return resourceHelper;
     }
 
-    public PreferenceHelper getPreferenceHelper()
+    public UserPreferenceHelper getUserPref()
     {
-        return preferenceHelper;
+        return userPref;
     }
 
-    public PropertyHelper getPropertyHelper()
+    public AppPreferenceHelper getAppPref()
     {
-        return propertyHelper;
+        return appPref;
     }
 
     public ViewPager getViewPager()

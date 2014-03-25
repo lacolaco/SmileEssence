@@ -27,15 +27,15 @@ package net.lacolaco.smileessence.preference;
 import android.test.AndroidTestCase;
 import net.lacolaco.smileessence.R;
 
-public class PreferenceHelperTest extends AndroidTestCase
+public class UserPreferenceHelperTest extends AndroidTestCase
 {
 
-    private PreferenceHelper pref;
+    private UserPreferenceHelper pref;
 
     @Override
     public void setUp() throws Exception
     {
-        pref = new PreferenceHelper(getContext());
+        pref = new UserPreferenceHelper(getContext());
     }
 
     public void testNotFound() throws Exception
