@@ -24,18 +24,12 @@
 
 package net.lacolaco.smileessence.twitter;
 
-import android.test.ApplicationTestCase;
-import net.lacolaco.smileessence.Application;
+import junit.framework.TestCase;
 
-public class OAuthSessionTest extends ApplicationTestCase<Application>
+public class OAuthSessionTest extends TestCase
 {
 
     OAuthSession session;
-
-    public OAuthSessionTest()
-    {
-        super(Application.class);
-    }
 
     @Override
     public void setUp() throws Exception
