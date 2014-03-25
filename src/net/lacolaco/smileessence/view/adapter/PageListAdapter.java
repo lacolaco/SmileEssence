@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.viewmodel;
+package net.lacolaco.smileessence.view.adapter;
 
 import android.app.ActionBar;
 import android.app.Activity;

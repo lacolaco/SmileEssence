@@ -37,8 +37,8 @@ import net.lacolaco.smileessence.preference.AppPreferenceHelper;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.resource.ResourceHelper;
 import net.lacolaco.smileessence.twitter.OAuthSession;
+import net.lacolaco.smileessence.view.adapter.PageListAdapter;
 import net.lacolaco.smileessence.view.adapter.TextFragment;
-import net.lacolaco.smileessence.viewmodel.PageListAdapter;
 import twitter4j.auth.AccessToken;
 
 import java.io.IOException;
