@@ -27,7 +27,6 @@ package net.lacolaco.smileessence.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Window;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.preference.PreferenceHelper;
 import net.lacolaco.smileessence.property.PropertyHelper;
@@ -49,7 +48,6 @@ public class MainActivity extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
         try
         {

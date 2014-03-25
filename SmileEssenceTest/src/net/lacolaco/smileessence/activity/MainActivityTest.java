@@ -89,4 +89,9 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     {
         assertNotNull(getActivity().getPropertyHelper());
     }
+
+    public void testGetActionBar() throws Exception
+    {
+        assertNotNull(getActivity().getActionBar());
+    }
 }
