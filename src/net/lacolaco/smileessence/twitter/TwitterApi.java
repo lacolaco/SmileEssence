@@ -24,7 +24,6 @@
 
 package net.lacolaco.smileessence.twitter;
 
-import net.lacolaco.smileessence.entity.Account;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.TwitterStream;
@@ -34,24 +33,26 @@ import twitter4j.auth.AccessToken;
 public class TwitterApi
 {
 
-    private Account account;
+    private final String token;
+    private final String tokenSecret;
 
     public TwitterApi(String token, String tokenSecret)
     {
-        this.account = new Account(token, tokenSecret);
+        this.token = token;
+        this.tokenSecret = tokenSecret;
     }
 
     public Twitter getTwitter()
     {
-        Twitter twitter = TwitterFactory.getSingleton();
-        twitter.setOAuthAccessToken(new AccessToken(account.accessToken, account.accessSecret));
+        Twitter twitter = new TwitterFactory().getInstance();
+        twitter.setOAuthAccessToken(new AccessToken(token, tokenSecret));
         return twitter;
     }
 
     public TwitterStream getTwitterStream()
     {
-        TwitterStream stream = TwitterStreamFactory.getSingleton();
-        stream.setOAuthAccessToken(new AccessToken(account.accessToken, account.accessSecret));
+        TwitterStream stream = new TwitterStreamFactory().getInstance();
+        stream.setOAuthAccessToken(new AccessToken(token, tokenSecret));
         return stream;
     }
 }

@@ -25,6 +25,7 @@
 package net.lacolaco.smileessence.twitter.task;
 
 import android.os.AsyncTask;
+import net.lacolaco.smileessence.logging.Logger;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.auth.RequestToken;
@@ -51,6 +52,7 @@ public class RequestTokenTask extends AsyncTask<Void, Void, RequestToken>
         catch(TwitterException e)
         {
             e.printStackTrace();
+            Logger.error(e.toString());
             return null;
         }
     }

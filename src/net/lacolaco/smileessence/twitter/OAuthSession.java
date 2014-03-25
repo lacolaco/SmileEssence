@@ -25,8 +25,10 @@
 package net.lacolaco.smileessence.twitter;
 
 import android.net.Uri;
+import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.twitter.task.AccessTokenTask;
 import net.lacolaco.smileessence.twitter.task.RequestTokenTask;
+import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
@@ -38,17 +40,13 @@ public class OAuthSession
 
     public static final String CALLBACK_OAUTH = "oauth://smileessence";
     private static final String OAUTH_VERIFIER = "oauth_verifier";
-    private RequestTokenTask task;
     private RequestToken requestToken;
-
-    public OAuthSession()
-    {
-        this.task = new RequestTokenTask(TwitterFactory.getSingleton(), CALLBACK_OAUTH);
-        task.execute();
-    }
 
     public String getAuthorizationURL()
     {
+        Twitter twitter = new TwitterFactory().getInstance();
+        RequestTokenTask task = new RequestTokenTask(twitter, CALLBACK_OAUTH);
+        task.execute();
         try
         {
             requestToken = task.get();
@@ -56,6 +54,7 @@ public class OAuthSession
         catch(InterruptedException | ExecutionException e)
         {
             e.printStackTrace();
+            Logger.error(e.getMessage());
             return null;
         }
         return requestToken.getAuthorizationURL();
@@ -63,16 +62,18 @@ public class OAuthSession
 
     public AccessToken getAccessToken(Uri uri)
     {
+        Twitter twitter = new TwitterFactory().getInstance();
         String verifier = uri.getQueryParameter(OAUTH_VERIFIER);
-        AccessTokenTask accessTokenTask = new AccessTokenTask(TwitterFactory.getSingleton(), requestToken, verifier);
-        accessTokenTask.execute();
+        AccessTokenTask task = new AccessTokenTask(twitter, requestToken, verifier);
+        task.execute();
         try
         {
-            return accessTokenTask.get();
+            return task.get();
         }
         catch(InterruptedException | ExecutionException e)
         {
             e.printStackTrace();
+            Logger.error(e.toString());
             return null;
         }
     }

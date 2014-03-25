@@ -53,7 +53,7 @@ public class MainActivity extends Activity
     private AppPreferenceHelper appPref;
     private ViewPager viewPager;
     private PageListAdapter pagerAdapter;
-    private OAuthSession oAuthSession;
+    private OAuthSession oauthSession;
     private Account currentAccount;
 
     /**
@@ -103,13 +103,17 @@ public class MainActivity extends Activity
         long id = getLastUsedAccountID();
         if(id < 0)
         {
-            oAuthSession = new OAuthSession();
-            String url = oAuthSession.getAuthorizationURL();
+            oauthSession = new OAuthSession();
+            String url = oauthSession.getAuthorizationURL();
             if(!TextUtils.isEmpty(url))
             {
                 Intent intent = new Intent(this, WebViewActivity.class);
                 intent.setData(Uri.parse(url));
                 startActivityForResult(intent, REQUEST_OAUTH);
+            }
+            else
+            {
+                //TODO Notify auth error
             }
         }
         else
@@ -156,7 +160,7 @@ public class MainActivity extends Activity
                 }
                 else
                 {
-                    AccessToken token = oAuthSession.getAccessToken(data.getData());
+                    AccessToken token = oauthSession.getAccessToken(data.getData());
                     Account account = new Account(token.getToken(), token.getTokenSecret());
                     account.save();
                     setCurrentAccount(account);
