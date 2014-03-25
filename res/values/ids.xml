@@ -24,24 +24,11 @@
   -->
 
 <resources>
-    <string name="app_name">SmileEssence</string>
-    <string name="app_version">0.1.0</string>
-    <string name="app_url">http://smileessence.lacolaco.net</string>
-    <string name="namestyle_s_n">ScreenName / Name</string>
-    <string name="namestyle_n_s">Name / ScreenName</string>
-    <string name="namestyle_s">ScreenName</string>
-    <string name="namestyle_n">Name</string>
-    <string name="thanks_to">miz_hi, yaplus</string>
-    <string name="page_name_post">Post</string>
-    <string name="page_name_home">Home</string>
-    <string name="page_name_mentions">Mentions</string>
-    <string name="page_name_message">Message</string>
-    <string name="page_name_history">History</string>
-    <string name="actionbar_add">Add page</string>
-    <string name="actionbar_setting">Setting</string>
-    <string name="actionbar_services">Web sites</string>
-    <string name="actionbar_report">Report to author</string>
-    <string name="actionbar_favstar">Favstar</string>
-    <string name="actionbar_aclog">Aclog</string>
-    <string name="actionbar_twilog">Twilog</string>
+    <item name="actionbar_add" type="id"/>
+    <item name="actionbar_setting" type="id"/>
+    <item name="actionbar_services" type="id"/>
+    <item name="actionbar_report" type="id"/>
+    <item name="actionbar_favstar" type="id"/>
+    <item name="actionbar_aclog" type="id"/>
+    <item name="actionbar_twilog" type="id"/>
 </resources>

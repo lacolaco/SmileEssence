@@ -31,14 +31,16 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.view.Menu;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.preference.AppPreferenceHelper;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.resource.ResourceHelper;
 import net.lacolaco.smileessence.twitter.OAuthSession;
+import net.lacolaco.smileessence.view.TextFragment;
 import net.lacolaco.smileessence.view.adapter.PageListAdapter;
-import net.lacolaco.smileessence.view.adapter.TextFragment;
+import net.lacolaco.smileessence.viewmodel.menu.MainActivityMenuFactory;
 import twitter4j.auth.AccessToken;
 
 import java.io.IOException;
@@ -191,6 +193,14 @@ public class MainActivity extends Activity
     protected void onNewIntent(Intent intent)
     {
         super.onNewIntent(intent);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MainActivityMenuFactory factory = new MainActivityMenuFactory(resourceHelper);
+        factory.addItemsToMenu(menu);
+        return true;
     }
 
     private String getVersion()
