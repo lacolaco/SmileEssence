@@ -27,7 +27,6 @@ package net.lacolaco.smileessence.activity;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -99,34 +98,34 @@ public class MainActivity extends Activity
     protected void onResume()
     {
         super.onResume();
-        //account check
-        long id = getLastUsedAccountID();
-        if(id < 0)
-        {
-            oauthSession = new OAuthSession();
-            String url = oauthSession.getAuthorizationURL();
-            if(!TextUtils.isEmpty(url))
-            {
-                Intent intent = new Intent(this, WebViewActivity.class);
-                intent.setData(Uri.parse(url));
-                startActivityForResult(intent, REQUEST_OAUTH);
-            }
-            else
-            {
-                //TODO Notify auth error
-            }
-        }
-        else
-        {
-            //Login and initialize
-            Account account = Account.load(Account.class, id);
-            setCurrentAccount(account);
-            if(isFirstLaunchThisVersion())
-            {
-                //TODO Show change log
-            }
-            initializeTimelines();
-        }
+        //        //account check
+        //        long id = getLastUsedAccountID();
+        //        if(id < 0)
+        //        {
+        //            oauthSession = new OAuthSession();
+        //            String url = oauthSession.getAuthorizationURL();
+        //            if(!TextUtils.isEmpty(url))
+        //            {
+        //                Intent intent = new Intent(this, WebViewActivity.class);
+        //                intent.setData(Uri.parse(url));
+        //                startActivityForResult(intent, REQUEST_OAUTH);
+        //            }
+        //            else
+        //            {
+        //                //TODO Notify auth error
+        //            }
+        //        }
+        //        else
+        //        {
+        //            //Login and initialize
+        //            Account account = Account.load(Account.class, id);
+        //            setCurrentAccount(account);
+        //            if(isFirstLaunchThisVersion())
+        //            {
+        //                //TODO Show change log
+        //            }
+        //            initializeTimelines();
+        //        }
     }
 
     private void initializeTimelines()
