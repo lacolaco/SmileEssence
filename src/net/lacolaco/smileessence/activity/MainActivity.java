@@ -24,22 +24,30 @@
 
 package net.lacolaco.smileessence.activity;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.preference.PreferenceHelper;
 import net.lacolaco.smileessence.property.PropertyHelper;
 import net.lacolaco.smileessence.resource.ResourceHelper;
+import net.lacolaco.smileessence.view.adapter.TextFragment;
+import net.lacolaco.smileessence.viewmodel.PageListAdapter;
 
 import java.io.IOException;
 
 public class MainActivity extends Activity
 {
 
+    private static final String STATE_PAGE = "page";
     private ResourceHelper resourceHelper;
     private PreferenceHelper preferenceHelper;
     private PropertyHelper propertyHelper;
+    private ViewPager viewPager;
+    private PageListAdapter pagerAdapter;
 
     /**
      * Called when the activity is first created.
@@ -49,6 +57,8 @@ public class MainActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        initializeViewPager(savedInstanceState);
         try
         {
             setupHelpers();
@@ -58,6 +68,30 @@ public class MainActivity extends Activity
             e.printStackTrace();
             finish();
         }
+    }
+
+    private void initializeViewPager(Bundle savedInstanceState)
+    {
+        ActionBar bar = getActionBar();
+        bar.setTitle(null);
+        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        pagerAdapter = new PageListAdapter(this, viewPager);
+        Bundle args = new Bundle();
+        args.putString(TextFragment.ARG_TEXT, "test");
+        pagerAdapter.addTab("Passion", TextFragment.class, args);
+        pagerAdapter.addTab("Star", TextFragment.class, args);
+        pagerAdapter.addTab("Stream", TextFragment.class, args);
+        if(savedInstanceState != null)
+        {
+            bar.setSelectedNavigationItem(savedInstanceState.getInt(STATE_PAGE, 0));
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_PAGE, getActionBar().getSelectedNavigationIndex());
     }
 
     @Override
@@ -125,5 +159,15 @@ public class MainActivity extends Activity
     public PropertyHelper getPropertyHelper()
     {
         return propertyHelper;
+    }
+
+    public ViewPager getViewPager()
+    {
+        return viewPager;
+    }
+
+    public PagerAdapter getPagerAdapter()
+    {
+        return pagerAdapter;
     }
 }

@@ -94,4 +94,14 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     {
         assertNotNull(getActivity().getActionBar());
     }
+
+    public void testGetViewPager() throws Exception
+    {
+        assertNotNull(getActivity().getViewPager());
+    }
+
+    public void testGetPagerAdapter() throws Exception
+    {
+        assertNotNull(getActivity().getPagerAdapter());
+    }
 }
