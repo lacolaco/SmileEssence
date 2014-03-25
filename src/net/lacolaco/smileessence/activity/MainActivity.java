@@ -27,17 +27,20 @@ package net.lacolaco.smileessence.activity;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.preference.AppPreferenceHelper;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.resource.ResourceHelper;
-import net.lacolaco.smileessence.twitter.TwitterApi;
+import net.lacolaco.smileessence.twitter.OAuthSession;
 import net.lacolaco.smileessence.view.adapter.TextFragment;
 import net.lacolaco.smileessence.viewmodel.PageListAdapter;
+import twitter4j.auth.AccessToken;
 
 import java.io.IOException;
 
@@ -45,11 +48,14 @@ public class MainActivity extends Activity
 {
 
     private static final String STATE_PAGE = "page";
+    public static final int REQUEST_OAUTH = 10;
     private ResourceHelper resourceHelper;
     private UserPreferenceHelper userPref;
     private AppPreferenceHelper appPref;
     private ViewPager viewPager;
     private PageListAdapter pagerAdapter;
+    private OAuthSession oAuthSession;
+    private Account currentAccount;
 
     /**
      * Called when the activity is first created.
@@ -95,34 +101,69 @@ public class MainActivity extends Activity
     {
         super.onResume();
         //account check
-        TwitterApi api = getLastUsedAccount();
-        if(api == null)
+        long id = getLastUsedAccountID();
+        if(id < 0)
         {
-            //Authorize
+            oAuthSession = new OAuthSession();
+            String url = oAuthSession.getAuthorizationURL();
+            if(!TextUtils.isEmpty(url))
+            {
+                Intent intent = new Intent(this, WebViewActivity.class);
+                intent.setData(Uri.parse(url));
+                startActivityForResult(intent, REQUEST_OAUTH);
+            }
         }
         else
         {
             //Login and initialize
-
+            Account account = Account.load(Account.class, id);
+            setCurrentAccount(account);
             if(isFirstLaunchThisVersion())
             {
                 //show change log
             }
+            initializeTimelines();
         }
-
     }
 
-    public TwitterApi getLastUsedAccount()
+    private void initializeTimelines()
     {
-        String token = appPref.getValue("oauth.accessToken", "");
-        String secret = appPref.getValue("oauth.accessSecret", "");
-        if(TextUtils.isEmpty(token) || TextUtils.isEmpty(secret))
+    }
+
+    public long getLastUsedAccountID()
+    {
+        String id = appPref.getValue("lastUsedAccountID", "");
+        if(TextUtils.isEmpty(id))
         {
-            return null;
+            return -1;
         }
         else
         {
-            return new TwitterApi(token, secret);
+            return Long.getLong(id);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        switch(requestCode)
+        {
+            case REQUEST_OAUTH:
+            {
+                if(resultCode != RESULT_OK)
+                {
+                    //TODO notify error
+                    finish();
+                }
+                else
+                {
+                    AccessToken token = oAuthSession.getAccessToken(data.getData());
+                    Account account = new Account(token.getToken(), token.getTokenSecret());
+                    account.save();
+                    setCurrentAccount(account);
+                    initializeTimelines();
+                }
+            }
         }
     }
 
@@ -195,5 +236,15 @@ public class MainActivity extends Activity
     public PagerAdapter getPagerAdapter()
     {
         return pagerAdapter;
+    }
+
+    public void setCurrentAccount(Account currentAccount)
+    {
+        this.currentAccount = currentAccount;
+    }
+
+    public Account getCurrentAccount()
+    {
+        return currentAccount;
     }
 }

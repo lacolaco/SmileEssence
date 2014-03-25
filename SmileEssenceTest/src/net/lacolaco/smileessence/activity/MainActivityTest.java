@@ -107,6 +107,6 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     public void testGetLastUsedAccount() throws Exception
     {
-        assertNull(getActivity().getLastUsedAccount());
+        assertEquals(-1, getActivity().getLastUsedAccountID());
     }
 }
