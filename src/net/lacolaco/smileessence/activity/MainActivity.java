@@ -47,7 +47,6 @@ import java.io.IOException;
 public class MainActivity extends Activity
 {
 
-    private static final String STATE_PAGE = "page";
     public static final int REQUEST_OAUTH = 10;
     private ResourceHelper resourceHelper;
     private UserPreferenceHelper userPref;
@@ -120,7 +119,7 @@ public class MainActivity extends Activity
             setCurrentAccount(account);
             if(isFirstLaunchThisVersion())
             {
-                //show change log
+                //TODO Show change log
             }
             initializeTimelines();
         }
@@ -152,7 +151,7 @@ public class MainActivity extends Activity
             {
                 if(resultCode != RESULT_OK)
                 {
-                    //TODO notify error
+                    //TODO Notify error
                     finish();
                 }
                 else
@@ -170,19 +169,19 @@ public class MainActivity extends Activity
     @Override
     protected void onPause()
     {
-        super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
+        super.onPause();
     }
 
     @Override
     protected void onDestroy()
     {
-        super.onDestroy();    //To change body of overridden methods use File | Settings | File Templates.
+        super.onDestroy();
     }
 
     @Override
     protected void onStop()
     {
-        super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
+        super.onStop();
     }
 
     @Override
