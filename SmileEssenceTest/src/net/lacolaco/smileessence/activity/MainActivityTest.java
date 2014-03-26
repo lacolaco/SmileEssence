@@ -24,11 +24,14 @@
 
 package net.lacolaco.smileessence.activity;
 
+import android.app.ListFragment;
 import android.test.ActivityInstrumentationTestCase2;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.util.TwitterMock;
 import net.lacolaco.smileessence.view.TestFragment;
+import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
+import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 
 /**
  * This is a simple framework for a test of an Application.  See
@@ -103,11 +106,6 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         assertNotNull(getActivity().getPagerAdapter());
     }
 
-    public void testGetLastUsedAccount() throws Exception
-    {
-        assertEquals(-1, getActivity().getLastUsedAccountID());
-    }
-
     public void testAddPageTest() throws Exception
     {
         getActivity().runOnUiThread(new Runnable()
@@ -174,6 +172,20 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
                 Account account = new Account(token, secret);
                 getActivity().setCurrentAccount(account);
                 assertTrue(getActivity().startTwitter());
+            }
+        });
+    }
+
+    public void testRegisterListPage() throws Exception
+    {
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                CustomListAdapter<StatusViewModel> adapter = new CustomListAdapter<>(getActivity(), StatusViewModel.class);
+                assertTrue(getActivity().registerListFragment("", ListFragment.class, adapter));
+                assertEquals(adapter, getActivity().getListAdapter(getActivity().getPageCount() - 1));
             }
         });
     }

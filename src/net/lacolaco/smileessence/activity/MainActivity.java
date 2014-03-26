@@ -27,10 +27,12 @@ package net.lacolaco.smileessence.activity;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.SparseArray;
 import android.view.Menu;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
@@ -42,6 +44,7 @@ import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.UserStreamListener;
 import net.lacolaco.smileessence.util.NetworkHelper;
 import net.lacolaco.smileessence.view.TextFragment;
+import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.view.adapter.PageListAdapter;
 import net.lacolaco.smileessence.viewmodel.menu.MainActivityMenuFactory;
 import twitter4j.TwitterStream;
@@ -53,6 +56,7 @@ public class MainActivity extends Activity
 {
 
     public static final int REQUEST_OAUTH = 10;
+    private static final String FRAGMENT_INDEX = "fragmentIndex";
     private ResourceHelper resourceHelper;
     private UserPreferenceHelper userPref;
     private AppPreferenceHelper appPref;
@@ -61,6 +65,7 @@ public class MainActivity extends Activity
     private OAuthSession oauthSession;
     private Account currentAccount;
     private TwitterStream stream;
+    private SparseArray<CustomListAdapter<?>> adapterSparseArray = new SparseArray<>();
 
     /**
      * Called when the activity is first created.
@@ -81,24 +86,6 @@ public class MainActivity extends Activity
             finish();
         }
         initializeView();
-    }
-
-    private void initializeView()
-    {
-        ActionBar bar = getActionBar();
-        bar.setDisplayShowHomeEnabled(false);
-        bar.setDisplayShowTitleEnabled(false);
-        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        pagerAdapter = new PageListAdapter(this, viewPager);
-        Bundle args = new Bundle();
-        args.putString(TextFragment.ARG_TEXT, "test");
-        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_post), TextFragment.class, args);
-        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_home), TextFragment.class, args);
-        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_mentions), TextFragment.class, args);
-        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_message), TextFragment.class, args);
-        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_history), TextFragment.class, args);
-        pagerAdapter.notifyDataSetChanged();
-        getActionBar().setSelectedNavigationItem(1); //Home
     }
 
     @Override
@@ -135,23 +122,6 @@ public class MainActivity extends Activity
         //        }
     }
 
-    private void initializeTimelines()
-    {
-    }
-
-    public long getLastUsedAccountID()
-    {
-        String id = appPref.getValue("lastUsedAccountID", "");
-        if(TextUtils.isEmpty(id))
-        {
-            return -1;
-        }
-        else
-        {
-            return Long.getLong(id);
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -170,7 +140,7 @@ public class MainActivity extends Activity
                     Account account = new Account(token.getToken(), token.getTokenSecret());
                     account.save();
                     setCurrentAccount(account);
-                    initializeTimelines();
+                    //                    initializeTimelines();
                 }
             }
         }
@@ -212,26 +182,52 @@ public class MainActivity extends Activity
         return true;
     }
 
-    private String getVersion()
-    {
-        return resourceHelper.getString(R.string.app_version);
-    }
-
-    private String getLastLaunchVersion()
-    {
-        return appPref.getValue("app.version", "");
-    }
-
-    private boolean isFirstLaunchThisVersion()
-    {
-        return !getVersion().contentEquals(getLastLaunchVersion());
-    }
-
     private void setupHelpers() throws IOException
     {
         resourceHelper = new ResourceHelper(this);
         userPref = new UserPreferenceHelper(this);
         appPref = new AppPreferenceHelper(this);
+    }
+
+    private void initializeView()
+    {
+        ActionBar bar = getActionBar();
+        bar.setDisplayShowHomeEnabled(false);
+        bar.setDisplayShowTitleEnabled(false);
+        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        pagerAdapter = new PageListAdapter(this, viewPager);
+        Bundle args = new Bundle();
+        args.putString(TextFragment.ARG_TEXT, "test");
+        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_post), TextFragment.class, args);
+        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_home), TextFragment.class, args);
+        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_mentions), TextFragment.class, args);
+        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_message), TextFragment.class, args);
+        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_history), TextFragment.class, args);
+        pagerAdapter.notifyDataSetChanged();
+        getActionBar().setSelectedNavigationItem(1); //Home
+    }
+
+    private long getLastUsedAccountID()
+    {
+        String id = appPref.getValue("lastUsedAccountID", "");
+        if(TextUtils.isEmpty(id))
+        {
+            return -1;
+        }
+        else
+        {
+            return Long.getLong(id);
+        }
+    }
+
+    private String getVersion()
+    {
+        return resourceHelper.getString(R.string.app_version);
+    }
+
+    private boolean isFirstLaunchThisVersion()
+    {
+        return !getVersion().contentEquals(appPref.getValue("app.version", ""));
     }
 
     public ResourceHelper getResourceHelper()
@@ -307,6 +303,29 @@ public class MainActivity extends Activity
     public int getCurrentPageIndex()
     {
         return this.viewPager.getCurrentItem();
+    }
+
+    public int getPageCount()
+    {
+        return pagerAdapter.getCount();
+    }
+
+    public boolean registerListFragment(String name, Class<? extends ListFragment> fragmentClass, CustomListAdapter<?> adapter)
+    {
+        int nextPosition = pagerAdapter.getCount();
+        Bundle args = new Bundle();
+        args.putInt(FRAGMENT_INDEX, nextPosition);
+        if(addPage(name, fragmentClass, args))
+        {
+            adapterSparseArray.append(nextPosition, adapter);
+            return true;
+        }
+        return false;
+    }
+
+    public CustomListAdapter<?> getListAdapter(int i)
+    {
+        return adapterSparseArray.get(i);
     }
 
     public boolean startTwitter()
