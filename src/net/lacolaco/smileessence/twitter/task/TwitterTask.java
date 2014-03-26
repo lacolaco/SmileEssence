@@ -24,34 +24,16 @@
 
 package net.lacolaco.smileessence.twitter.task;
 
-import net.lacolaco.smileessence.logging.Logger;
+import android.os.AsyncTask;
 import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.auth.RequestToken;
 
-public class RequestTokenTask extends TwitterTask<RequestToken>
+public abstract class TwitterTask<T> extends AsyncTask<Void, Void, T>
 {
 
-    private final String callback;
+    protected Twitter twitter;
 
-    public RequestTokenTask(Twitter twitter, String callback)
+    protected TwitterTask(Twitter twitter)
     {
-        super(twitter);
-        this.callback = callback;
-    }
-
-    @Override
-    protected RequestToken doInBackground(Void... params)
-    {
-        try
-        {
-            return twitter.getOAuthRequestToken(callback);
-        }
-        catch(TwitterException e)
-        {
-            e.printStackTrace();
-            Logger.error(e.toString());
-            return null;
-        }
+        this.twitter = twitter;
     }
 }

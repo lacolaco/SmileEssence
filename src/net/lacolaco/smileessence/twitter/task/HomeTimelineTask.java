@@ -24,16 +24,14 @@
 
 package net.lacolaco.smileessence.twitter.task;
 
-import android.os.AsyncTask;
 import net.lacolaco.smileessence.logging.Logger;
 import twitter4j.*;
 
 import java.util.Collections;
 
-public class HomeTimelineTask extends AsyncTask<Void, Void, Status[]>
+public class HomeTimelineTask extends TwitterTask<Status[]>
 {
 
-    private final Twitter twitter;
     private final Paging paging;
 
     public HomeTimelineTask(Twitter twitter)
@@ -43,7 +41,7 @@ public class HomeTimelineTask extends AsyncTask<Void, Void, Status[]>
 
     public HomeTimelineTask(Twitter twitter, Paging paging)
     {
-        this.twitter = twitter;
+        super(twitter);
         this.paging = paging;
     }
 

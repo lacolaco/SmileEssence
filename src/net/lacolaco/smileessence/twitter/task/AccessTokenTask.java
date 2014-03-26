@@ -24,22 +24,20 @@
 
 package net.lacolaco.smileessence.twitter.task;
 
-import android.os.AsyncTask;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
-public class AccessTokenTask extends AsyncTask<Void, Void, AccessToken>
+public class AccessTokenTask extends TwitterTask<AccessToken>
 {
 
-    private final Twitter twitter;
     private final RequestToken requestToken;
     private final String verifier;
 
     public AccessTokenTask(Twitter twitter, RequestToken requestToken, String verifier)
     {
-        this.twitter = twitter;
+        super(twitter);
         this.requestToken = requestToken;
         this.verifier = verifier;
     }
