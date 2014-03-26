@@ -29,7 +29,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -214,7 +213,7 @@ public class MainActivity extends Activity
         return appPref.getValue("app.version", "");
     }
 
-    public boolean isFirstLaunchThisVersion()
+    private boolean isFirstLaunchThisVersion()
     {
         return !getVersion().contentEquals(getLastLaunchVersion());
     }
@@ -246,19 +245,19 @@ public class MainActivity extends Activity
         return viewPager;
     }
 
-    public PagerAdapter getPagerAdapter()
+    public PageListAdapter getPagerAdapter()
     {
         return pagerAdapter;
-    }
-
-    public void setCurrentAccount(Account currentAccount)
-    {
-        this.currentAccount = currentAccount;
     }
 
     public Account getCurrentAccount()
     {
         return currentAccount;
+    }
+
+    public void setCurrentAccount(Account currentAccount)
+    {
+        this.currentAccount = currentAccount;
     }
 
     /**
