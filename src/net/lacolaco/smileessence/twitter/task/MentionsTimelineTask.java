@@ -24,36 +24,49 @@
 
 package net.lacolaco.smileessence.twitter.task;
 
-import android.test.InstrumentationTestCase;
-import net.lacolaco.smileessence.twitter.TwitterApi;
-import net.lacolaco.smileessence.util.TwitterMock;
-import twitter4j.Paging;
-import twitter4j.Twitter;
+import net.lacolaco.smileessence.logging.Logger;
+import twitter4j.*;
 
-public class MentionsTaskTest extends InstrumentationTestCase
+import java.util.Collections;
+
+public class MentionsTimelineTask extends TwitterTask<Status[]>
 {
 
-    Twitter twitter;
+    private final Paging paging;
+
+    protected MentionsTimelineTask(Twitter twitter)
+    {
+        this(twitter, null);
+    }
+
+    public MentionsTimelineTask(Twitter twitter, Paging paging)
+    {
+        super(twitter);
+        this.paging = paging;
+    }
 
     @Override
-    public void setUp() throws Exception
+    protected twitter4j.Status[] doInBackground(Void... params)
     {
-        TwitterMock mock = new TwitterMock(getInstrumentation().getContext());
-        twitter = new TwitterApi(mock.getAccessToken(), mock.getAccessTokenSecret()).getTwitter();
-    }
-
-    public void testGetDefaultMentions() throws Exception
-    {
-        MentionsTask task = new MentionsTask(twitter);
-        task.execute();
-        assertNotNull(task.get());
-    }
-
-    public void testPagingMentions() throws Exception
-    {
-        int count = 50;
-        MentionsTask task = new MentionsTask(twitter, new Paging(1).count(count));
-        task.execute();
-        assertNotSame(20, task.get().length);
+        ResponseList<twitter4j.Status> responseList;
+        try
+        {
+            if(paging == null)
+            {
+                responseList = twitter.timelines().getMentionsTimeline();
+            }
+            else
+            {
+                responseList = twitter.timelines().getMentionsTimeline(paging);
+            }
+        }
+        catch(TwitterException e)
+        {
+            e.printStackTrace();
+            Logger.error(e.toString());
+            return null;
+        }
+        Collections.reverse(responseList);
+        return responseList.toArray(new twitter4j.Status[0]);
     }
 }

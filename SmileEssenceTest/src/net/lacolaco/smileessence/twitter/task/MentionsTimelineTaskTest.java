@@ -24,49 +24,36 @@
 
 package net.lacolaco.smileessence.twitter.task;
 
-import net.lacolaco.smileessence.logging.Logger;
-import twitter4j.*;
+import android.test.InstrumentationTestCase;
+import net.lacolaco.smileessence.twitter.TwitterApi;
+import net.lacolaco.smileessence.util.TwitterMock;
+import twitter4j.Paging;
+import twitter4j.Twitter;
 
-import java.util.Collections;
-
-public class MentionsTask extends TwitterTask<Status[]>
+public class MentionsTimelineTaskTest extends InstrumentationTestCase
 {
 
-    private final Paging paging;
-
-    protected MentionsTask(Twitter twitter)
-    {
-        this(twitter, null);
-    }
-
-    public MentionsTask(Twitter twitter, Paging paging)
-    {
-        super(twitter);
-        this.paging = paging;
-    }
+    Twitter twitter;
 
     @Override
-    protected twitter4j.Status[] doInBackground(Void... params)
+    public void setUp() throws Exception
     {
-        ResponseList<twitter4j.Status> responseList;
-        try
-        {
-            if(paging == null)
-            {
-                responseList = twitter.timelines().getMentionsTimeline();
-            }
-            else
-            {
-                responseList = twitter.timelines().getMentionsTimeline(paging);
-            }
-        }
-        catch(TwitterException e)
-        {
-            e.printStackTrace();
-            Logger.error(e.toString());
-            return null;
-        }
-        Collections.reverse(responseList);
-        return responseList.toArray(new twitter4j.Status[0]);
+        TwitterMock mock = new TwitterMock(getInstrumentation().getContext());
+        twitter = new TwitterApi(mock.getAccessToken(), mock.getAccessTokenSecret()).getTwitter();
+    }
+
+    public void testGetDefaultMentions() throws Exception
+    {
+        MentionsTimelineTask task = new MentionsTimelineTask(twitter);
+        task.execute();
+        assertNotNull(task.get());
+    }
+
+    public void testPagingMentions() throws Exception
+    {
+        int count = 50;
+        MentionsTimelineTask task = new MentionsTimelineTask(twitter, new Paging(1).count(count));
+        task.execute();
+        assertNotSame(20, task.get().length);
     }
 }
