@@ -24,56 +24,39 @@
 
 package net.lacolaco.smileessence.data;
 
+import android.test.InstrumentationTestCase;
+import net.lacolaco.smileessence.util.TwitterMock;
 import twitter4j.Status;
 
-import java.util.concurrent.ConcurrentHashMap;
-
-public class StatusCache
+public class StatusCacheTest extends InstrumentationTestCase
 {
 
-    private static StatusCache instance = new StatusCache();
+    TwitterMock mock;
 
-    private ConcurrentHashMap<Long, Status> cache = new ConcurrentHashMap<>();
-
-    private StatusCache()
+    @Override
+    public void setUp() throws Exception
     {
+        mock = new TwitterMock(getInstrumentation().getContext());
     }
 
-    public static StatusCache getInstance()
+    public void testPutStatus() throws Exception
     {
-        return instance;
+        Status status = mock.getStatusMock();
+        assertNull(StatusCache.getInstance().put(status));
     }
 
-    /**
-     * Put status into cache
-     *
-     * @param status
-     * @return the previous value associated with key, or null if there was no mapping for key
-     */
-    public Status put(Status status)
+    public void testGetStatus() throws Exception
     {
-        return cache.put(status.getId(), status);
+        Status status = mock.getStatusMock();
+        assertNull(StatusCache.getInstance().put(status));
+        assertSame(status, StatusCache.getInstance().get(status.getId()));
     }
 
-    /**
-     * Get status by id
-     *
-     * @param id status id
-     * @return cached value
-     */
-    public Status get(long id)
+    public void testRemoveStatus() throws Exception
     {
-        return cache.get(id);
-    }
-
-    /**
-     * Remove status by id
-     *
-     * @param id status id
-     * @return removed status
-     */
-    public Status remove(long id)
-    {
-        return cache.remove(id);
+        Status status = mock.getStatusMock();
+        assertNull(StatusCache.getInstance().put(status));
+        assertSame(status, StatusCache.getInstance().remove(status.getId()));
+        assertNull(StatusCache.getInstance().get(status.getId()));
     }
 }
