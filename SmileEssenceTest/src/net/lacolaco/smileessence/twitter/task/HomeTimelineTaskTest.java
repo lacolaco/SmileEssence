@@ -49,11 +49,11 @@ public class HomeTimelineTaskTest extends InstrumentationTestCase
         assertNotNull(task.get());
     }
 
-    public void testGetCountedHome() throws Exception
+    public void testPagingHome() throws Exception
     {
         Paging paging = new Paging(1).count(50);
         HomeTimelineTask task = new HomeTimelineTask(twitter, paging);
         task.execute();
-        assertEquals(50, task.get().length);
+        assertNotSame(20, task.get().length);
     }
 }
