@@ -38,9 +38,13 @@ import net.lacolaco.smileessence.preference.AppPreferenceHelper;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.resource.ResourceHelper;
 import net.lacolaco.smileessence.twitter.OAuthSession;
+import net.lacolaco.smileessence.twitter.TwitterApi;
+import net.lacolaco.smileessence.twitter.UserStreamListener;
+import net.lacolaco.smileessence.util.NetworkHelper;
 import net.lacolaco.smileessence.view.TextFragment;
 import net.lacolaco.smileessence.view.adapter.PageListAdapter;
 import net.lacolaco.smileessence.viewmodel.menu.MainActivityMenuFactory;
+import twitter4j.TwitterStream;
 import twitter4j.auth.AccessToken;
 
 import java.io.IOException;
@@ -56,6 +60,7 @@ public class MainActivity extends Activity
     private PageListAdapter pagerAdapter;
     private OAuthSession oauthSession;
     private Account currentAccount;
+    private TwitterStream stream;
 
     /**
      * Called when the activity is first created.
@@ -181,6 +186,10 @@ public class MainActivity extends Activity
     protected void onDestroy()
     {
         super.onDestroy();
+        if(stream != null)
+        {
+            stream.shutdown();
+        }
     }
 
     @Override
@@ -298,5 +307,34 @@ public class MainActivity extends Activity
     public int getCurrentPageIndex()
     {
         return this.viewPager.getCurrentItem();
+    }
+
+    public boolean startTwitter()
+    {
+        if(!startStream())
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean startStream()
+    {
+        if(!new NetworkHelper(this).canConnect())
+        {
+            return false;
+        }
+        if(stream != null)
+        {
+            stream.shutdown();
+        }
+        stream = new TwitterApi(currentAccount).getTwitterStream();
+        UserStreamListener listener = new UserStreamListener();
+        stream.addListener(listener);
+        stream.addConnectionLifeCycleListener(listener);
+        stream.addRateLimitStatusListener(listener);
+        stream.user();
+        return true;
     }
 }

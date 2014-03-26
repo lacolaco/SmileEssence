@@ -24,6 +24,7 @@
 
 package net.lacolaco.smileessence.twitter;
 
+import net.lacolaco.smileessence.entity.Account;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.TwitterStream;
@@ -40,6 +41,12 @@ public class TwitterApi
     {
         this.token = token;
         this.tokenSecret = tokenSecret;
+    }
+
+    public TwitterApi(Account account)
+    {
+        this.token = account.accessToken;
+        this.tokenSecret = account.accessSecret;
     }
 
     public Twitter getTwitter()

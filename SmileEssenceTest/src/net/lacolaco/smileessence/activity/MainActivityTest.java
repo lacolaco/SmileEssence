@@ -25,7 +25,9 @@
 package net.lacolaco.smileessence.activity;
 
 import android.test.ActivityInstrumentationTestCase2;
+import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.notification.Notificator;
+import net.lacolaco.smileessence.util.TwitterMock;
 import net.lacolaco.smileessence.view.TestFragment;
 
 /**
@@ -138,6 +140,40 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
             public void run()
             {
                 assertTrue(getActivity().removeCurrentPage());
+            }
+        });
+    }
+
+    public void testStartStream() throws Exception
+    {
+        TwitterMock mock = new TwitterMock(getInstrumentation().getContext());
+        final String token = mock.getAccessToken();
+        final String secret = mock.getAccessTokenSecret();
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Account account = new Account(token, secret);
+                getActivity().setCurrentAccount(account);
+                assertTrue(getActivity().startStream());
+            }
+        });
+    }
+
+    public void testStartTwitter() throws Exception
+    {
+        TwitterMock mock = new TwitterMock(getInstrumentation().getContext());
+        final String token = mock.getAccessToken();
+        final String secret = mock.getAccessTokenSecret();
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Account account = new Account(token, secret);
+                getActivity().setCurrentAccount(account);
+                assertTrue(getActivity().startTwitter());
             }
         });
     }
