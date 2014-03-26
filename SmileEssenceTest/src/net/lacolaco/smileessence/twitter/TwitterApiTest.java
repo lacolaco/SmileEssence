@@ -24,15 +24,14 @@
 
 package net.lacolaco.smileessence.twitter;
 
-import junit.framework.TestCase;
+import android.test.InstrumentationTestCase;
+import net.lacolaco.smileessence.util.TwitterMock;
 
-public class TwitterApiTest extends TestCase
+public class TwitterApiTest extends InstrumentationTestCase
 {
 
     private static final String CONSUMER_KEY = "SIt6h4O6qmBB2URSKsF1Q";
     private static final String CONSUMER_SECRET = "Uil1dyrqiodLLqXIB6B0rVwVxFfFCxTf8ggAcszWc";
-    private static final String TOKEN = "498602690-IF2Ht1Q4yn2FfDitTQsuP0LMUKN5rzPCWpHBy72t";
-    private static final String TOKEN_SECRET = "xSukt39B6f8DZXVyagCgZsaaml8NObyIQIdtYiFqsI";
     private static final String SCREEN_NAME = "laco0416";
     private static final long USER_ID = 498602690;
     private TwitterApi api;
@@ -40,7 +39,8 @@ public class TwitterApiTest extends TestCase
     @Override
     public void setUp() throws Exception
     {
-        api = new TwitterApi(TOKEN, TOKEN_SECRET);
+        TwitterMock mock = new TwitterMock(getInstrumentation().getContext());
+        api = new TwitterApi(mock.getAccessToken(), mock.getAccessTokenSecret());
     }
 
     public void testReadProperties() throws Exception

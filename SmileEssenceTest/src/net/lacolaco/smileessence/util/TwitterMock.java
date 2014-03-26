@@ -26,10 +26,7 @@ package net.lacolaco.smileessence.util;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import twitter4j.Status;
-import twitter4j.TwitterException;
-import twitter4j.User;
-import twitter4j.json.DataObjectFactory;
+import twitter4j.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -64,16 +61,26 @@ public class TwitterMock
 
     public Status getStatusMock() throws IOException, TwitterException
     {
-        return DataObjectFactory.createStatus(getJson("status.json"));
+        return TwitterObjectFactory.createStatus(getJson("status.json"));
     }
 
     public Status getRetweetMock() throws IOException, TwitterException
     {
-        return DataObjectFactory.createStatus(getJson("retweet.json"));
+        return TwitterObjectFactory.createStatus(getJson("retweet.json"));
     }
 
     public User getUserMock() throws IOException, TwitterException
     {
-        return DataObjectFactory.createUser(getJson("user.json"));
+        return TwitterObjectFactory.createUser(getJson("user.json"));
+    }
+
+    public String getAccessToken() throws IOException, JSONException
+    {
+        return new JSONObject(getJson("tokens.json")).getString("token");
+    }
+
+    public String getAccessTokenSecret() throws IOException, JSONException
+    {
+        return new JSONObject(getJson("tokens.json")).getString("token_secret");
     }
 }
