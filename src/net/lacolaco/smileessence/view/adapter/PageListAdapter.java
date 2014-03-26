@@ -47,10 +47,10 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
     {
 
         private final String name;
-        private final Class<?> fragmentClass;
+        private final Class<? extends Fragment> fragmentClass;
         private final Bundle args;
 
-        PageInfo(String name, Class<?> clss, Bundle args)
+        PageInfo(String name, Class<? extends Fragment> clss, Bundle args)
         {
             this.name = name;
             this.fragmentClass = clss;
@@ -68,19 +68,29 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
         viewPager.setOnPageChangeListener(this);
     }
 
+    @Override
+    public void notifyDataSetChanged()
+    {
+        refreshListNavigation();
+        super.notifyDataSetChanged();
+    }
+
     /**
      * Add new tab and new page
      *
      * @param name Page name
      * @param clss Fragment class
      * @param args Bundle for Fragment instantiate
+     * @return if adding is complete successfully
      */
-    public void addTab(String name, Class<?> clss, Bundle args)
+    public boolean addPage(String name, Class<? extends Fragment> clss, Bundle args)
     {
-        PageInfo info = new PageInfo(name, clss, args);
-        pages.add(info);
-        refreshListNavigation();
-        notifyDataSetChanged();
+        if(addPageWithoutNotify(name, clss, args))
+        {
+            notifyDataSetChanged();
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -91,11 +101,10 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
      * @param clss Fragment class
      * @param args Bundle for Fragment instantiate
      */
-    public void addTabWithoutNotify(String name, Class<?> clss, Bundle args)
+    public boolean addPageWithoutNotify(String name, Class<? extends Fragment> clss, Bundle args)
     {
         PageInfo info = new PageInfo(name, clss, args);
-        pages.add(info);
-        refreshListNavigation();
+        return pages.add(info);
     }
 
     private void refreshListNavigation()

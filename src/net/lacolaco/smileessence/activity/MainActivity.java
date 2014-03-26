@@ -26,6 +26,7 @@ package net.lacolaco.smileessence.activity;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -87,11 +88,11 @@ public class MainActivity extends Activity
         pagerAdapter = new PageListAdapter(this, viewPager);
         Bundle args = new Bundle();
         args.putString(TextFragment.ARG_TEXT, "test");
-        pagerAdapter.addTabWithoutNotify(resourceHelper.getString(R.string.page_name_post), TextFragment.class, args);
-        pagerAdapter.addTabWithoutNotify(resourceHelper.getString(R.string.page_name_home), TextFragment.class, args);
-        pagerAdapter.addTabWithoutNotify(resourceHelper.getString(R.string.page_name_mentions), TextFragment.class, args);
-        pagerAdapter.addTabWithoutNotify(resourceHelper.getString(R.string.page_name_message), TextFragment.class, args);
-        pagerAdapter.addTabWithoutNotify(resourceHelper.getString(R.string.page_name_history), TextFragment.class, args);
+        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_post), TextFragment.class, args);
+        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_home), TextFragment.class, args);
+        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_mentions), TextFragment.class, args);
+        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_message), TextFragment.class, args);
+        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_history), TextFragment.class, args);
         pagerAdapter.notifyDataSetChanged();
         getActionBar().setSelectedNavigationItem(1); //Home
     }
@@ -258,5 +259,13 @@ public class MainActivity extends Activity
     public Account getCurrentAccount()
     {
         return currentAccount;
+    }
+
+    /**
+     * @see PageListAdapter#addPage(String, Class, android.os.Bundle)
+     */
+    public boolean addPage(String name, Class<? extends Fragment> fragmentClass, Bundle args)
+    {
+        return this.pagerAdapter.addPage(name, fragmentClass, args);
     }
 }

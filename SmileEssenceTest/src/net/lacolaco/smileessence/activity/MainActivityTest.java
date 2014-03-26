@@ -26,6 +26,7 @@ package net.lacolaco.smileessence.activity;
 
 import android.test.ActivityInstrumentationTestCase2;
 import net.lacolaco.smileessence.notification.Notificator;
+import net.lacolaco.smileessence.view.TestFragment;
 
 /**
  * This is a simple framework for a test of an Application.  See
@@ -109,4 +110,18 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     {
         assertEquals(-1, getActivity().getLastUsedAccountID());
     }
+
+    public void testAddPageTest() throws Exception
+    {
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                assertTrue(getActivity().addPage("test", TestFragment.class, null));
+            }
+        });
+    }
+
+
 }
