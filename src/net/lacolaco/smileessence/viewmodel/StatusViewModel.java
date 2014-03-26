@@ -24,11 +24,15 @@
 
 package net.lacolaco.smileessence.viewmodel;
 
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 import twitter4j.*;
 
 import java.util.Date;
 
-public class StatusViewModel
+public class StatusViewModel implements IViewModel
 {
 
     private long id;
@@ -155,5 +159,11 @@ public class StatusViewModel
     public boolean isProtected()
     {
         return isProtected;
+    }
+
+    @Override
+    public View getView(Context context, LayoutInflater inflater, View convertedView)
+    {
+        return new TextView(context);
     }
 }
