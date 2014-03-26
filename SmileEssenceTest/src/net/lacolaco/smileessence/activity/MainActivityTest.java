@@ -123,5 +123,27 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         });
     }
 
+    public void testRemovePageTest() throws Exception
+    {
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                assertTrue(getActivity().removePage(0));
+            }
+        });
+    }
 
+    public void testRemoveCurrentPageTest() throws Exception
+    {
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                assertTrue(getActivity().removeCurrentPage());
+            }
+        });
+    }
 }

@@ -81,7 +81,7 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
      * @param name Page name
      * @param clss Fragment class
      * @param args Bundle for Fragment instantiate
-     * @return if adding is complete successfully
+     * @return True if adding is complete successfully
      */
     public boolean addPage(String name, Class<? extends Fragment> clss, Bundle args)
     {
@@ -100,11 +100,39 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
      * @param name Page name
      * @param clss Fragment class
      * @param args Bundle for Fragment instantiate
+     * @return True if adding is complete successfully
      */
     public boolean addPageWithoutNotify(String name, Class<? extends Fragment> clss, Bundle args)
     {
         PageInfo info = new PageInfo(name, clss, args);
         return pages.add(info);
+    }
+
+    /**
+     * Remove page by position.
+     *
+     * @param position
+     * @return True if removing is complete successfully
+     */
+    public boolean removePage(int position)
+    {
+        if(removePageWithoutNotify(position))
+        {
+            notifyDataSetChanged();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Remove page by position without notify.
+     *
+     * @param position
+     * @return True if removing is complete successfully
+     */
+    private boolean removePageWithoutNotify(int position)
+    {
+        return pages.remove(position) != null;
     }
 
     private void refreshListNavigation()

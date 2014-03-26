@@ -262,10 +262,42 @@ public class MainActivity extends Activity
     }
 
     /**
+     * Add page.
+     *
      * @see PageListAdapter#addPage(String, Class, android.os.Bundle)
      */
     public boolean addPage(String name, Class<? extends Fragment> fragmentClass, Bundle args)
     {
         return this.pagerAdapter.addPage(name, fragmentClass, args);
+    }
+
+    /**
+     * Remove page.
+     *
+     * @see PageListAdapter#removePage(int)
+     */
+    public boolean removePage(int position)
+    {
+        return this.pagerAdapter.removePage(position);
+    }
+
+    /**
+     * Remove current page.
+     *
+     * @return successfully
+     */
+    public boolean removeCurrentPage()
+    {
+        return this.pagerAdapter.removePage(getCurrentPageIndex());
+    }
+
+    /**
+     * Get current page index.
+     *
+     * @return page index
+     */
+    public int getCurrentPageIndex()
+    {
+        return this.viewPager.getCurrentItem();
     }
 }
