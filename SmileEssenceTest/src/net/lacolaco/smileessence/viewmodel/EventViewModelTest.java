@@ -24,10 +24,14 @@
 
 package net.lacolaco.smileessence.viewmodel;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.test.InstrumentationTestCase;
 import net.lacolaco.smileessence.util.TwitterMock;
 import twitter4j.Status;
 import twitter4j.User;
+
+import java.util.Locale;
 
 public class EventViewModelTest extends InstrumentationTestCase
 {
@@ -49,6 +53,13 @@ public class EventViewModelTest extends InstrumentationTestCase
         assertEquals(status.getId(), history.getTargetStatusID());
         assertEquals(String.format("Favorited by %s", source.getScreenName()), history.getFormatString(getInstrumentation().getTargetContext()));
         history = new EventViewModel(EnumEvent.RECEIVE_MESSAGE, source);
-        assertEquals(String.format("Received %s's message", source.getScreenName()), history.getFormatString(getInstrumentation().getTargetContext()));
+        Context context = getInstrumentation().getTargetContext();
+        Configuration config = context.getResources().getConfiguration();
+        config.locale = Locale.ENGLISH;
+        context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+        assertEquals(String.format("Received %s's message", source.getScreenName()), history.getFormatString(context));
+        config.locale = Locale.JAPANESE;
+        context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+        assertEquals(String.format("%sからDMを受信", source.getScreenName()), history.getFormatString(context));
     }
 }

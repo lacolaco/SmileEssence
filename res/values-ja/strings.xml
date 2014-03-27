@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ The MIT License (MIT)
+  ~
+  ~ Copyright (c) 2012-2014 lacolaco.net
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+<resources>
+    <string name="app_name">SmileEssence</string>
+    <string name="app_version">0.1.0</string>
+    <string name="app_url">http://smileessence.lacolaco.net</string>
+    <string name="namestyle_s_n">ScreenName / Name</string>
+    <string name="namestyle_n_s">Name / ScreenName</string>
+    <string name="namestyle_s">ScreenName</string>
+    <string name="namestyle_n">Name</string>
+    <string name="thanks_to">miz_hi, yaplus</string>
+    <string name="page_name_post">Post</string>
+    <string name="page_name_home">Home</string>
+    <string name="page_name_mentions">Mentions</string>
+    <string name="page_name_messages">Messages</string>
+    <string name="page_name_history">History</string>
+    <string name="actionbar_add">Add page</string>
+    <string name="actionbar_setting">Setting</string>
+    <string name="actionbar_services">Web sites</string>
+    <string name="actionbar_report">Report to author</string>
+    <string name="actionbar_favstar">Favstar</string>
+    <string name="actionbar_aclog">Aclog</string>
+    <string name="actionbar_twilog">Twilog</string>
+    <string name="format_event_favorited">%sからふぁぼられた</string>
+    <string name="format_event_unfavorited">%sからあんふぁぼされた</string>
+    <string name="format_event_retweeted">%sからリツイートされた</string>
+    <string name="format_event_mentioned">%sからの返信</string>
+    <string name="format_event_followed">%sからフォローされた</string>
+    <string name="format_event_blocked">%sからブロックされた</string>
+    <string name="format_event_unblocked">%sからブロック解除された</string>
+    <string name="format_event_message">%sからのDMを受信</string>
+</resources>
