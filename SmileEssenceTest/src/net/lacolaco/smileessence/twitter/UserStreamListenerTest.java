@@ -29,6 +29,7 @@ import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.util.TwitterMock;
+import twitter4j.DirectMessage;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
 import twitter4j.User;
@@ -207,5 +208,33 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
         });
         Thread.sleep(1000);
         assertEquals(2, getActivity().getListAdapter(MainActivity.PAGE_HISTORY).getCount());
+    }
+
+    public void testOnDirectMessage() throws Exception
+    {
+        final DirectMessage message = mock.getDirectMessageMock();
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Account account = new Account(token, secret, user.getId(), user.getScreenName());
+                getActivity().setCurrentAccount(account);
+                getActivity().initializePages();
+                listener.onDirectMessage(message);
+            }
+        });
+        Thread.sleep(1000);
+        assertEquals(1, getActivity().getListAdapter(MainActivity.PAGE_MESSAGES).getCount());
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                listener.onDeletionNotice(message.getId(), message.getSenderId());
+            }
+        });
+        Thread.sleep(1000);
+        assertEquals(0, getActivity().getListAdapter(MainActivity.PAGE_MESSAGES).getCount());
     }
 }

@@ -46,6 +46,7 @@ import net.lacolaco.smileessence.util.NetworkHelper;
 import net.lacolaco.smileessence.view.CustomListFragment;
 import net.lacolaco.smileessence.view.TextFragment;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
+import net.lacolaco.smileessence.view.adapter.MessageListAdapter;
 import net.lacolaco.smileessence.view.adapter.PageListAdapter;
 import net.lacolaco.smileessence.view.adapter.StatusListAdapter;
 import net.lacolaco.smileessence.viewmodel.EventViewModel;
@@ -379,7 +380,7 @@ public class MainActivity extends Activity
         addPage(resourceHelper.getString(R.string.page_name_post), TextFragment.class, null, false);
         StatusListAdapter homeAdapter = new StatusListAdapter(this);
         StatusListAdapter mentionsAdapter = new StatusListAdapter(this);
-        StatusListAdapter messagesAdapter = new StatusListAdapter(this);
+        MessageListAdapter messagesAdapter = new MessageListAdapter(this);
         CustomListAdapter<EventViewModel> historyAdapter = new CustomListAdapter<>(this, EventViewModel.class);
         addListPage(resourceHelper.getString(R.string.page_name_home), CustomListFragment.class, homeAdapter, false);
         addListPage(resourceHelper.getString(R.string.page_name_mentions), CustomListFragment.class, mentionsAdapter, false);

@@ -28,9 +28,11 @@ import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
+import net.lacolaco.smileessence.view.adapter.MessageListAdapter;
 import net.lacolaco.smileessence.view.adapter.StatusListAdapter;
 import net.lacolaco.smileessence.viewmodel.EnumEvent;
 import net.lacolaco.smileessence.viewmodel.EventViewModel;
+import net.lacolaco.smileessence.viewmodel.MessageViewModel;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 import twitter4j.*;
 
@@ -64,7 +66,8 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onDeletionNotice(long directMessageId, long userId)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        MessageListAdapter messages = (MessageListAdapter) activity.getListAdapter(MainActivity.PAGE_MESSAGES);
+        messages.removeByStatusID(directMessageId);
     }
 
     @Override
@@ -116,7 +119,13 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onDirectMessage(DirectMessage directMessage)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        EventViewModel event = new EventViewModel(EnumEvent.RECEIVE_MESSAGE, directMessage.getSender());
+        CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
+        new Notificator(activity, event.getFormattedString(activity)).publish();
+        history.addToTop(event);
+        MessageViewModel message = new MessageViewModel(directMessage);
+        CustomListAdapter<?> messages = activity.getListAdapter(MainActivity.PAGE_MESSAGES);
+        messages.addToTop(message);
     }
 
     @Override

@@ -24,11 +24,15 @@
 
 package net.lacolaco.smileessence.viewmodel;
 
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 import twitter4j.DirectMessage;
 
 import java.util.Date;
 
-public class MessageViewModel
+public class MessageViewModel implements IViewModel
 {
 
     private long id;
@@ -76,5 +80,11 @@ public class MessageViewModel
     public Date getCreatedAt()
     {
         return createdAt;
+    }
+
+    @Override
+    public View getView(Context context, LayoutInflater inflater, View convertedView)
+    {
+        return new TextView(context);
     }
 }
