@@ -78,7 +78,7 @@ public class StatusViewModel implements IViewModel
 
     public long getID()
     {
-        return getId();
+        return id;
     }
 
     public String getText()
@@ -129,11 +129,6 @@ public class StatusViewModel implements IViewModel
     public SymbolEntity[] getSymbols()
     {
         return symbols;
-    }
-
-    public long getId()
-    {
-        return id;
     }
 
     public long getUserID()
