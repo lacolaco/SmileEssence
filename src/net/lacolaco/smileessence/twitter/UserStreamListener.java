@@ -28,6 +28,7 @@ import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
+import net.lacolaco.smileessence.view.adapter.StatusListAdapter;
 import net.lacolaco.smileessence.viewmodel.EnumEvent;
 import net.lacolaco.smileessence.viewmodel.EventViewModel;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
@@ -58,7 +59,6 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onCleanUp()
     {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -70,31 +70,47 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onFriendList(long[] friendIds)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void onFavorite(User source, User target, Status favoritedStatus)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if(activity.getCurrentAccount().userID == target.getId())
+        {
+            EventViewModel event = new EventViewModel(EnumEvent.FAVORITED, source, favoritedStatus);
+            CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
+            new Notificator(activity, event.getFormattedString(activity)).publish();
+            history.addToTop(event);
+        }
     }
 
     @Override
     public void onUnfavorite(User source, User target, Status unfavoritedStatus)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if(activity.getCurrentAccount().userID == target.getId())
+        {
+            EventViewModel event = new EventViewModel(EnumEvent.UNFAVORITED, source, unfavoritedStatus);
+            CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
+            new Notificator(activity, event.getFormattedString(activity)).publish();
+            history.addToTop(event);
+        }
     }
 
     @Override
     public void onFollow(User source, User followedUser)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if(activity.getCurrentAccount().userID == followedUser.getId())
+        {
+            EventViewModel event = new EventViewModel(EnumEvent.FOLLOWED, source);
+            CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
+            new Notificator(activity, event.getFormattedString(activity)).publish();
+            history.addToTop(event);
+        }
     }
 
     @Override
     public void onUnfollow(User source, User unfollowedUser)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -106,61 +122,65 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onUserListMemberAddition(User addedMember, User listOwner, UserList list)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void onUserListMemberDeletion(User deletedMember, User listOwner, UserList list)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void onUserListSubscription(User subscriber, User listOwner, UserList list)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void onUserListUnsubscription(User subscriber, User listOwner, UserList list)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void onUserListCreation(User listOwner, UserList list)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void onUserListUpdate(User listOwner, UserList list)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void onUserListDeletion(User listOwner, UserList list)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void onUserProfileUpdate(User updatedUser)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void onBlock(User source, User blockedUser)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if(activity.getCurrentAccount().userID == blockedUser.getId())
+        {
+            EventViewModel event = new EventViewModel(EnumEvent.BLOCKED, source);
+            CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
+            new Notificator(activity, event.getFormattedString(activity)).publish();
+            history.addToTop(event);
+        }
     }
 
     @Override
     public void onUnblock(User source, User unblockedUser)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if(activity.getCurrentAccount().userID == unblockedUser.getId())
+        {
+            EventViewModel event = new EventViewModel(EnumEvent.UNBLOCKED, source);
+            CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
+            new Notificator(activity, event.getFormattedString(activity)).publish();
+            history.addToTop(event);
+        }
     }
 
     @Override
@@ -181,8 +201,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
                 viewModel.setRetweetOfMe(true);
                 CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
                 EventViewModel retweeted = new EventViewModel(EnumEvent.RETWEETED, status.getUser(), status);
-                Notificator notificator = new Notificator(activity, retweeted.getFormattedString(activity));
-                notificator.publish();
+                new Notificator(activity, retweeted.getFormattedString(activity)).publish();
                 history.addToTop(retweeted);
             }
         }
@@ -193,8 +212,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
             mentions.addToTop(viewModel);
             CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
             EventViewModel mentioned = new EventViewModel(EnumEvent.MENTIONED, status.getUser(), status);
-            Notificator notificator = new Notificator(activity, mentioned.getFormattedString(activity));
-            notificator.publish();
+            new Notificator(activity, mentioned.getFormattedString(activity)).publish();
             history.addToTop(mentioned);
         }
     }
@@ -202,30 +220,34 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        for(int i = 0; i < activity.getPageCount(); i++)
+        {
+            CustomListAdapter adapter = activity.getListAdapter(i);
+            if(adapter != null && adapter instanceof StatusListAdapter)
+            {
+                StatusListAdapter statusListAdapter = (StatusListAdapter) adapter;
+                statusListAdapter.removeByStatusID(statusDeletionNotice.getStatusId());
+            }
+        }
     }
 
     @Override
     public void onTrackLimitationNotice(int numberOfLimitedStatuses)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void onScrubGeo(long userId, long upToStatusId)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void onStallWarning(StallWarning warning)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void onException(Exception ex)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

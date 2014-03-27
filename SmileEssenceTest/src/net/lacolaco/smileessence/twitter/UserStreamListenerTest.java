@@ -30,6 +30,7 @@ import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.util.TwitterMock;
 import twitter4j.Status;
+import twitter4j.StatusDeletionNotice;
 import twitter4j.User;
 
 public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<MainActivity>
@@ -37,6 +38,9 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
 
     TwitterMock mock;
     UserStreamListener listener;
+    private String token;
+    private User user;
+    private String secret;
 
     public UserStreamListenerTest()
     {
@@ -48,14 +52,14 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
     {
         mock = new TwitterMock(getInstrumentation().getContext());
         listener = new UserStreamListener(getActivity());
+        token = mock.getAccessToken();
+        secret = mock.getAccessTokenSecret();
+        user = mock.getUserMock();
     }
 
     public void testOnStatus() throws Exception
     {
         final Status status = mock.getRetweetMock();
-        final String token = mock.getAccessToken();
-        final String secret = mock.getAccessTokenSecret();
-        final User user = mock.getUserMock();
         getActivity().runOnUiThread(new Runnable()
         {
             @Override
@@ -72,12 +76,47 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
         assertEquals(status.getRetweetedStatus(), StatusCache.getInstance().get(status.getRetweetedStatus().getId()));
     }
 
+    public void testOnStatusDelete() throws Exception
+    {
+        final Status status = mock.getStatusMock();
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Account account = new Account(token, secret, user.getId(), user.getScreenName());
+                getActivity().setCurrentAccount(account);
+                getActivity().initializePages();
+                listener.onStatus(status);
+                listener.onDeletionNotice(new StatusDeletionNotice()
+                {
+                    @Override
+                    public long getStatusId()
+                    {
+                        return status.getId();
+                    }
+
+                    @Override
+                    public long getUserId()
+                    {
+                        return status.getUser().getId();
+                    }
+
+                    @Override
+                    public int compareTo(StatusDeletionNotice another)
+                    {
+                        return 0;
+                    }
+                });
+            }
+        });
+        Thread.sleep(1000);
+        assertEquals(0, getActivity().getListAdapter(MainActivity.PAGE_HOME).getCount());
+    }
+
     public void testOnMention() throws Exception
     {
         final Status status = mock.getStatusMock();
-        final String token = mock.getAccessToken();
-        final String secret = mock.getAccessTokenSecret();
-        final User user = mock.getUserMock();
         getActivity().runOnUiThread(new Runnable()
         {
             @Override
@@ -97,9 +136,6 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
     public void testOnRetweeted() throws Exception
     {
         final Status status = mock.getRetweetMock();
-        final String token = mock.getAccessToken();
-        final String secret = mock.getAccessTokenSecret();
-        final User user = mock.getUserMock();
         getActivity().runOnUiThread(new Runnable()
         {
             @Override
@@ -114,5 +150,62 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
         Thread.sleep(1000);
         assertEquals(1, getActivity().getListAdapter(MainActivity.PAGE_HOME).getCount());
         assertEquals(0, getActivity().getListAdapter(MainActivity.PAGE_HISTORY).getCount());
+    }
+
+    public void testOnFavorited() throws Exception
+    {
+        final Status status = mock.getStatusMock();
+        final User source = status.getUser();
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Account account = new Account(token, secret, user.getId(), user.getScreenName());
+                getActivity().setCurrentAccount(account);
+                getActivity().initializePages();
+                listener.onFavorite(source, user, status);
+                listener.onUnfavorite(source, user, status);
+            }
+        });
+        Thread.sleep(1000);
+        assertEquals(2, getActivity().getListAdapter(MainActivity.PAGE_HISTORY).getCount());
+    }
+
+    public void testOnFollow() throws Exception
+    {
+        final User source = mock.getUserMock();
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Account account = new Account(token, secret, user.getId(), user.getScreenName());
+                getActivity().setCurrentAccount(account);
+                getActivity().initializePages();
+                listener.onFollow(source, user);
+            }
+        });
+        Thread.sleep(1000);
+        assertEquals(1, getActivity().getListAdapter(MainActivity.PAGE_HISTORY).getCount());
+    }
+
+    public void testOnBlock() throws Exception
+    {
+        final User source = mock.getUserMock();
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Account account = new Account(token, secret, user.getId(), user.getScreenName());
+                getActivity().setCurrentAccount(account);
+                getActivity().initializePages();
+                listener.onBlock(source, user);
+                listener.onUnblock(source, user);
+            }
+        });
+        Thread.sleep(1000);
+        assertEquals(2, getActivity().getListAdapter(MainActivity.PAGE_HISTORY).getCount());
     }
 }
