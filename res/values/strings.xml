@@ -35,7 +35,7 @@
     <string name="page_name_post">Post</string>
     <string name="page_name_home">Home</string>
     <string name="page_name_mentions">Mentions</string>
-    <string name="page_name_message">Message</string>
+    <string name="page_name_messages">Messages</string>
     <string name="page_name_history">History</string>
     <string name="actionbar_add">Add page</string>
     <string name="actionbar_setting">Setting</string>

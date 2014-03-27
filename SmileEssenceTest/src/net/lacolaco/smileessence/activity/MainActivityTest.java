@@ -26,6 +26,7 @@ package net.lacolaco.smileessence.activity;
 
 import android.app.ListFragment;
 import android.test.ActivityInstrumentationTestCase2;
+import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.util.TwitterMock;
@@ -113,7 +114,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
             @Override
             public void run()
             {
-                assertTrue(getActivity().addPage("test", TestFragment.class, null));
+                assertTrue(getActivity().addPage("test", TestFragment.class, null, true));
             }
         });
     }
@@ -184,8 +185,30 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
             public void run()
             {
                 CustomListAdapter<StatusViewModel> adapter = new CustomListAdapter<>(getActivity(), StatusViewModel.class);
-                assertTrue(getActivity().registerListFragment("", ListFragment.class, adapter));
+                assertTrue(getActivity().addListPage("", ListFragment.class, adapter, true));
                 assertEquals(adapter, getActivity().getListAdapter(getActivity().getPageCount() - 1));
+            }
+        });
+    }
+
+    public void testInitializeTimelines() throws Exception
+    {
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                getActivity().initializePages();
+                assertEquals(getActivity().getResourceHelper().getString(R.string.page_name_post), getActivity().getPageInfo(0).getName());
+                assertEquals(getActivity().getResourceHelper().getString(R.string.page_name_home), getActivity().getPageInfo(1).getName());
+                assertEquals(getActivity().getResourceHelper().getString(R.string.page_name_mentions), getActivity().getPageInfo(2).getName());
+                assertEquals(getActivity().getResourceHelper().getString(R.string.page_name_messages), getActivity().getPageInfo(3).getName());
+                assertEquals(getActivity().getResourceHelper().getString(R.string.page_name_history), getActivity().getPageInfo(4).getName());
+                assertNull(getActivity().getListAdapter(0));
+                assertNotNull(getActivity().getListAdapter(1));
+                assertNotNull(getActivity().getListAdapter(2));
+                assertNotNull(getActivity().getListAdapter(3));
+                assertNotNull(getActivity().getListAdapter(4));
             }
         });
     }

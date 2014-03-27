@@ -39,7 +39,7 @@ import java.util.List;
 public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
 {
 
-    private final Object LOCK = new Object();
+    protected final Object LOCK = new Object();
     protected Class<T> clss;
     protected ArrayList<T> list = new ArrayList<>();
     protected T[] array;
@@ -142,6 +142,10 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
     @Override
     public int getCount()
     {
+        if(array == null)
+        {
+            return 0;
+        }
         return array.length;
     }
 

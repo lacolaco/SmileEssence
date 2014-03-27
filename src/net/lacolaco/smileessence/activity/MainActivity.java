@@ -43,9 +43,12 @@ import net.lacolaco.smileessence.twitter.OAuthSession;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.UserStreamListener;
 import net.lacolaco.smileessence.util.NetworkHelper;
+import net.lacolaco.smileessence.view.CustomListFragment;
 import net.lacolaco.smileessence.view.TextFragment;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.view.adapter.PageListAdapter;
+import net.lacolaco.smileessence.view.adapter.StatusListAdapter;
+import net.lacolaco.smileessence.viewmodel.HistoryViewModel;
 import net.lacolaco.smileessence.viewmodel.menu.MainActivityMenuFactory;
 import twitter4j.TwitterStream;
 import twitter4j.auth.AccessToken;
@@ -56,7 +59,6 @@ public class MainActivity extends Activity
 {
 
     public static final int REQUEST_OAUTH = 10;
-    private static final String FRAGMENT_INDEX = "fragmentIndex";
     private ResourceHelper resourceHelper;
     private UserPreferenceHelper userPref;
     private AppPreferenceHelper appPref;
@@ -196,15 +198,6 @@ public class MainActivity extends Activity
         bar.setDisplayShowTitleEnabled(false);
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         pagerAdapter = new PageListAdapter(this, viewPager);
-        Bundle args = new Bundle();
-        args.putString(TextFragment.ARG_TEXT, "test");
-        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_post), TextFragment.class, args);
-        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_home), TextFragment.class, args);
-        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_mentions), TextFragment.class, args);
-        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_message), TextFragment.class, args);
-        pagerAdapter.addPageWithoutNotify(resourceHelper.getString(R.string.page_name_history), TextFragment.class, args);
-        pagerAdapter.notifyDataSetChanged();
-        getActionBar().setSelectedNavigationItem(1); //Home
     }
 
     private long getLastUsedAccountID()
@@ -270,9 +263,16 @@ public class MainActivity extends Activity
      *
      * @see PageListAdapter#addPage(String, Class, android.os.Bundle)
      */
-    public boolean addPage(String name, Class<? extends Fragment> fragmentClass, Bundle args)
+    public boolean addPage(String name, Class<? extends Fragment> fragmentClass, Bundle args, boolean withNotify)
     {
-        return this.pagerAdapter.addPage(name, fragmentClass, args);
+        if(withNotify)
+        {
+            return this.pagerAdapter.addPage(name, fragmentClass, args);
+        }
+        else
+        {
+            return this.pagerAdapter.addPageWithoutNotify(name, fragmentClass, args);
+        }
     }
 
     /**
@@ -305,17 +305,28 @@ public class MainActivity extends Activity
         return this.viewPager.getCurrentItem();
     }
 
+    /**
+     * Get PageInfo at position.
+     *
+     * @param position page position
+     * @return PageInfo
+     */
+    public PageListAdapter.PageInfo getPageInfo(int position)
+    {
+        return pagerAdapter.getPage(position);
+    }
+
     public int getPageCount()
     {
         return pagerAdapter.getCount();
     }
 
-    public boolean registerListFragment(String name, Class<? extends ListFragment> fragmentClass, CustomListAdapter<?> adapter)
+    public boolean addListPage(String name, Class<? extends ListFragment> fragmentClass, CustomListAdapter<?> adapter, boolean withNotify)
     {
         int nextPosition = pagerAdapter.getCount();
         Bundle args = new Bundle();
-        args.putInt(FRAGMENT_INDEX, nextPosition);
-        if(addPage(name, fragmentClass, args))
+        args.putInt(CustomListFragment.FRAGMENT_INDEX, nextPosition);
+        if(addPage(name, fragmentClass, args, withNotify))
         {
             adapterSparseArray.append(nextPosition, adapter);
             return true;
@@ -356,4 +367,22 @@ public class MainActivity extends Activity
         stream.user();
         return true;
     }
+
+    /**
+     * Initialize basic pages.
+     */
+    public void initializePages()
+    {
+        addPage(resourceHelper.getString(R.string.page_name_post), TextFragment.class, null, false);
+        StatusListAdapter homeAdapter = new StatusListAdapter(this);
+        StatusListAdapter mentionsAdapter = new StatusListAdapter(this);
+        StatusListAdapter messagesAdapter = new StatusListAdapter(this);
+        CustomListAdapter<HistoryViewModel> historyAdapter = new CustomListAdapter<>(this, HistoryViewModel.class);
+        addListPage(resourceHelper.getString(R.string.page_name_home), CustomListFragment.class, homeAdapter, false);
+        addListPage(resourceHelper.getString(R.string.page_name_mentions), CustomListFragment.class, mentionsAdapter, false);
+        addListPage(resourceHelper.getString(R.string.page_name_messages), CustomListFragment.class, messagesAdapter, false);
+        addListPage(resourceHelper.getString(R.string.page_name_history), CustomListFragment.class, historyAdapter, false);
+        pagerAdapter.notifyDataSetChanged();
+    }
+
 }

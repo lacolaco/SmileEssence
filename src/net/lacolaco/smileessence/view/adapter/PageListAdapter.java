@@ -43,21 +43,6 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
     private final ViewPager viewPager;
     private final ArrayList<PageInfo> pages = new ArrayList<>();
 
-    static final class PageInfo
-    {
-
-        private final String name;
-        private final Class<? extends Fragment> fragmentClass;
-        private final Bundle args;
-
-        PageInfo(String name, Class<? extends Fragment> clss, Bundle args)
-        {
-            this.name = name;
-            this.fragmentClass = clss;
-            this.args = args;
-        }
-    }
-
     public PageListAdapter(Activity activity, ViewPager viewPager)
     {
         super(activity.getFragmentManager());
@@ -66,6 +51,11 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
         this.viewPager = viewPager;
         viewPager.setAdapter(this);
         viewPager.setOnPageChangeListener(this);
+    }
+
+    public PageInfo getPage(int position)
+    {
+        return pages.get(position);
     }
 
     @Override
@@ -181,5 +171,35 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
     {
         viewPager.setCurrentItem(itemPosition);
         return true;
+    }
+
+    public static final class PageInfo
+    {
+
+        private final String name;
+        private final Class<? extends Fragment> fragmentClass;
+        private final Bundle args;
+
+        PageInfo(String name, Class<? extends Fragment> clss, Bundle args)
+        {
+            this.name = name;
+            this.fragmentClass = clss;
+            this.args = args;
+        }
+
+        public String getName()
+        {
+            return name;
+        }
+
+        public Class<? extends Fragment> getFragmentClass()
+        {
+            return fragmentClass;
+        }
+
+        public Bundle getArgs()
+        {
+            return args;
+        }
     }
 }
