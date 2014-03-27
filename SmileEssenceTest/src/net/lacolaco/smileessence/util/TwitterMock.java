@@ -74,6 +74,11 @@ public class TwitterMock
         return TwitterObjectFactory.createUser(getJson("user.json"));
     }
 
+    public DirectMessage getDirectMessageMock() throws IOException, TwitterException
+    {
+        return TwitterObjectFactory.createDirectMessage(getJson("directmessage.json"));
+    }
+
     public String getAccessToken() throws IOException, JSONException
     {
         return new JSONObject(getJson("tokens.json")).getString("token");
