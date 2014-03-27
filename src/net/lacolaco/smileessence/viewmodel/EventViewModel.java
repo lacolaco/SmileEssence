@@ -59,17 +59,6 @@ public class EventViewModel implements IViewModel
         this(event, source, null);
     }
 
-    public String getFormatString(Context context)
-    {
-        return String.format(context.getString(event.getTextFormatResourceID()), sourceUserScreenName);
-    }
-
-    @Override
-    public View getView(Context context, LayoutInflater inflater, View convertedView)
-    {
-        return new TextView(context);
-    }
-
     public long getSourceUserID()
     {
         return sourceUserID;
@@ -80,8 +69,26 @@ public class EventViewModel implements IViewModel
         return targetStatusID;
     }
 
+    public EnumEvent getEvent()
+    {
+        return event;
+    }
+
     public boolean isStatusEvent()
     {
         return targetStatusID != -1L;
     }
+
+    public String getFormattedString(Context context)
+    {
+        return String.format(context.getString(event.getTextFormatResourceID()), sourceUserScreenName);
+    }
+
+    @Override
+    public View getView(Context context, LayoutInflater inflater, View convertedView)
+    {
+        return new TextView(context);
+    }
+
+
 }

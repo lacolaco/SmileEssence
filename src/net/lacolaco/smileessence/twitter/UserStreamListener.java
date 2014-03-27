@@ -24,10 +24,24 @@
 
 package net.lacolaco.smileessence.twitter;
 
+import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.data.StatusCache;
+import net.lacolaco.smileessence.notification.Notificator;
+import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
+import net.lacolaco.smileessence.viewmodel.EnumEvent;
+import net.lacolaco.smileessence.viewmodel.EventViewModel;
+import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 import twitter4j.*;
 
-public class UserStreamListener implements twitter4j.UserStreamListener, ConnectionLifeCycleListener, RateLimitStatusListener
+public class UserStreamListener implements twitter4j.UserStreamListener, ConnectionLifeCycleListener
 {
+
+    private final MainActivity activity;
+
+    public UserStreamListener(MainActivity activity)
+    {
+        this.activity = activity;
+    }
 
     @Override
     public void onConnect()
@@ -43,18 +57,6 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
 
     @Override
     public void onCleanUp()
-    {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void onRateLimitStatus(RateLimitStatusEvent event)
-    {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void onRateLimitReached(RateLimitStatusEvent event)
     {
         //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -164,7 +166,37 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onStatus(Status status)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        StatusCache.getInstance().put(status);
+        if(status.isRetweet())
+        {
+            StatusCache.getInstance().put(status.getRetweetedStatus());
+        }
+        CustomListAdapter<?> home = activity.getListAdapter(MainActivity.PAGE_HOME);
+        StatusViewModel viewModel = new StatusViewModel(status);
+        home.addToTop(viewModel);
+        if(status.isRetweet())
+        {
+            if(viewModel.isRetweetOfMe(activity.getCurrentAccount().userID))
+            {
+                viewModel.setRetweetOfMe(true);
+                CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
+                EventViewModel retweeted = new EventViewModel(EnumEvent.RETWEETED, status.getUser(), status);
+                Notificator notificator = new Notificator(activity, retweeted.getFormattedString(activity));
+                notificator.publish();
+                history.addToTop(retweeted);
+            }
+        }
+        else if(viewModel.isMention(activity.getCurrentAccount().screenName))
+        {
+            viewModel.setMention(true);
+            CustomListAdapter<?> mentions = activity.getListAdapter(MainActivity.PAGE_MENTIONS);
+            mentions.addToTop(viewModel);
+            CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
+            EventViewModel mentioned = new EventViewModel(EnumEvent.MENTIONED, status.getUser(), status);
+            Notificator notificator = new Notificator(activity, mentioned.getFormattedString(activity));
+            notificator.publish();
+            history.addToTop(mentioned);
+        }
     }
 
     @Override

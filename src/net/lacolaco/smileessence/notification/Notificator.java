@@ -63,6 +63,9 @@ public class Notificator
         Crouton.cancelAllCroutons();
     }
 
+    /**
+     * Notify self on cronton or toast.
+     */
     public void publish()
     {
         if(activity == null || activity.isFinishing())

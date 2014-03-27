@@ -33,6 +33,7 @@ import net.lacolaco.smileessence.util.TwitterMock;
 import net.lacolaco.smileessence.view.TestFragment;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
+import twitter4j.User;
 
 /**
  * This is a simple framework for a test of an Application.  See
@@ -148,12 +149,13 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         TwitterMock mock = new TwitterMock(getInstrumentation().getContext());
         final String token = mock.getAccessToken();
         final String secret = mock.getAccessTokenSecret();
+        final User user = mock.getUserMock();
         getActivity().runOnUiThread(new Runnable()
         {
             @Override
             public void run()
             {
-                Account account = new Account(token, secret);
+                Account account = new Account(token, secret, user.getId(), user.getScreenName());
                 getActivity().setCurrentAccount(account);
                 assertTrue(getActivity().startStream());
             }
@@ -165,12 +167,13 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         TwitterMock mock = new TwitterMock(getInstrumentation().getContext());
         final String token = mock.getAccessToken();
         final String secret = mock.getAccessTokenSecret();
+        final User user = mock.getUserMock();
         getActivity().runOnUiThread(new Runnable()
         {
             @Override
             public void run()
             {
-                Account account = new Account(token, secret);
+                Account account = new Account(token, secret, user.getId(), user.getScreenName());
                 getActivity().setCurrentAccount(account);
                 assertTrue(getActivity().startTwitter());
             }

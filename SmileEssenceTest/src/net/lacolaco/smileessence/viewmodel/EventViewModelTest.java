@@ -51,15 +51,15 @@ public class EventViewModelTest extends InstrumentationTestCase
         EventViewModel history = new EventViewModel(EnumEvent.FAVORITED, source, status);
         assertEquals(source.getId(), history.getSourceUserID());
         assertEquals(status.getId(), history.getTargetStatusID());
-        assertEquals(String.format("Favorited by %s", source.getScreenName()), history.getFormatString(getInstrumentation().getTargetContext()));
+        assertEquals(String.format("Favorited by %s", source.getScreenName()), history.getFormattedString(getInstrumentation().getTargetContext()));
         history = new EventViewModel(EnumEvent.RECEIVE_MESSAGE, source);
         Context context = getInstrumentation().getTargetContext();
         Configuration config = context.getResources().getConfiguration();
         config.locale = Locale.ENGLISH;
         context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-        assertEquals(String.format("Received %s's message", source.getScreenName()), history.getFormatString(context));
+        assertEquals(String.format("Received %s's message", source.getScreenName()), history.getFormattedString(context));
         config.locale = Locale.JAPANESE;
         context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-        assertEquals(String.format("%sからDMを受信", source.getScreenName()), history.getFormatString(context));
+        assertEquals(String.format("%sからDMを受信", source.getScreenName()), history.getFormattedString(context));
     }
 }

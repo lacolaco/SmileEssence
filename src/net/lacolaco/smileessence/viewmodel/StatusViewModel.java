@@ -51,6 +51,8 @@ public class StatusViewModel implements IViewModel
     private MediaEntity[] media;
     private URLEntity[] urls;
     private SymbolEntity[] symbols;
+    private boolean isMention;
+    private boolean isRetweetOfMe;
 
     public StatusViewModel(Status status)
     {
@@ -156,9 +158,41 @@ public class StatusViewModel implements IViewModel
         return isProtected;
     }
 
+    public boolean isMention()
+    {
+        return isMention;
+    }
+
+    public boolean isMention(String screenName)
+    {
+        return text.contains(String.format("@%s", screenName));
+    }
+
+    public void setMention(boolean mention)
+    {
+        isMention = mention;
+    }
+
+    public boolean isRetweetOfMe()
+    {
+        return isRetweetOfMe;
+    }
+
+    public boolean isRetweetOfMe(long userID)
+    {
+        return retweetedStatus != null && retweetedStatus.getUserID() == userID;
+    }
+
+    public void setRetweetOfMe(boolean retweet)
+    {
+        this.isRetweetOfMe = retweet;
+    }
+
     @Override
     public View getView(Context context, LayoutInflater inflater, View convertedView)
     {
         return new TextView(context);
     }
+
+
 }

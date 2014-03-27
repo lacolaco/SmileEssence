@@ -59,6 +59,11 @@ public class MainActivity extends Activity
 {
 
     public static final int REQUEST_OAUTH = 10;
+    public static final int PAGE_POST = 0;
+    public static final int PAGE_HOME = 1;
+    public static final int PAGE_MENTIONS = 2;
+    public static final int PAGE_MESSAGES = 3;
+    public static final int PAGE_HISTORY = 4;
     private ResourceHelper resourceHelper;
     private UserPreferenceHelper userPref;
     private AppPreferenceHelper appPref;
@@ -139,10 +144,9 @@ public class MainActivity extends Activity
                 else
                 {
                     AccessToken token = oauthSession.getAccessToken(data.getData());
-                    Account account = new Account(token.getToken(), token.getTokenSecret());
+                    Account account = new Account(token.getToken(), token.getTokenSecret(), token.getUserId(), token.getScreenName());
                     account.save();
                     setCurrentAccount(account);
-                    //                    initializeTimelines();
                 }
             }
         }
@@ -360,10 +364,9 @@ public class MainActivity extends Activity
             stream.shutdown();
         }
         stream = new TwitterApi(currentAccount).getTwitterStream();
-        UserStreamListener listener = new UserStreamListener();
+        UserStreamListener listener = new UserStreamListener(this);
         stream.addListener(listener);
         stream.addConnectionLifeCycleListener(listener);
-        stream.addRateLimitStatusListener(listener);
         stream.user();
         return true;
     }

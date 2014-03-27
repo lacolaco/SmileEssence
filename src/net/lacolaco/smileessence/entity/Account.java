@@ -36,16 +36,22 @@ public class Account extends Model
     public String accessToken;
     @Column(name = "Secret", notNull = true)
     public String accessSecret;
+    @Column(name = "UserID", notNull = true)
+    public long userID;
+    @Column(name = "ScreenName", notNull = true)
+    public String screenName;
 
     public Account()
     {
         super();
     }
 
-    public Account(String token, String tokenSecret)
+    public Account(String token, String tokenSecret, long userID, String screenName)
     {
         super();
         this.accessToken = token;
         this.accessSecret = tokenSecret;
+        this.userID = userID;
+        this.screenName = screenName;
     }
 }
