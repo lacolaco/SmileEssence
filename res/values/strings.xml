@@ -44,4 +44,12 @@
     <string name="actionbar_favstar">Favstar</string>
     <string name="actionbar_aclog">Aclog</string>
     <string name="actionbar_twilog">Twilog</string>
+    <string name="format_event_favorited">Favorited by %s</string>
+    <string name="format_event_unfavorited">Unfavorited by %s</string>
+    <string name="format_event_retweeted">Retweeted by %s</string>
+    <string name="format_event_mentioned">Mentioned by %s</string>
+    <string name="format_event_followed">Followed by %s</string>
+    <string name="format_event_blocked">Blocked by %s</string>
+    <string name="format_event_unblocked">Unblocked by %s</string>
+    <string name="format_event_message">Received %s\'s message</string>
 </resources>

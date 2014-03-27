@@ -24,18 +24,31 @@
 
 package net.lacolaco.smileessence.viewmodel;
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
+import android.test.InstrumentationTestCase;
+import net.lacolaco.smileessence.util.TwitterMock;
+import twitter4j.Status;
+import twitter4j.User;
 
-public class HistoryViewModel implements IViewModel
+public class EventViewModelTest extends InstrumentationTestCase
 {
 
+    TwitterMock mock;
 
     @Override
-    public View getView(Context context, LayoutInflater inflater, View convertedView)
+    public void setUp() throws Exception
     {
-        return new TextView(context);
+        mock = new TwitterMock(getInstrumentation().getContext());
+    }
+
+    public void testNewInstance() throws Exception
+    {
+        Status status = mock.getStatusMock();
+        User source = mock.getUserMock();
+        EventViewModel history = new EventViewModel(EnumEvent.FAVORITED, source, status);
+        assertEquals(source.getId(), history.getSourceUserID());
+        assertEquals(status.getId(), history.getTargetStatusID());
+        assertEquals(String.format("Favorited by %s", source.getScreenName()), history.getFormatString(getInstrumentation().getTargetContext()));
+        history = new EventViewModel(EnumEvent.RECEIVE_MESSAGE, source);
+        assertEquals(String.format("Received %s's message", source.getScreenName()), history.getFormatString(getInstrumentation().getTargetContext()));
     }
 }

@@ -48,7 +48,7 @@ import net.lacolaco.smileessence.view.TextFragment;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.view.adapter.PageListAdapter;
 import net.lacolaco.smileessence.view.adapter.StatusListAdapter;
-import net.lacolaco.smileessence.viewmodel.HistoryViewModel;
+import net.lacolaco.smileessence.viewmodel.EventViewModel;
 import net.lacolaco.smileessence.viewmodel.menu.MainActivityMenuFactory;
 import twitter4j.TwitterStream;
 import twitter4j.auth.AccessToken;
@@ -377,7 +377,7 @@ public class MainActivity extends Activity
         StatusListAdapter homeAdapter = new StatusListAdapter(this);
         StatusListAdapter mentionsAdapter = new StatusListAdapter(this);
         StatusListAdapter messagesAdapter = new StatusListAdapter(this);
-        CustomListAdapter<HistoryViewModel> historyAdapter = new CustomListAdapter<>(this, HistoryViewModel.class);
+        CustomListAdapter<EventViewModel> historyAdapter = new CustomListAdapter<>(this, EventViewModel.class);
         addListPage(resourceHelper.getString(R.string.page_name_home), CustomListFragment.class, homeAdapter, false);
         addListPage(resourceHelper.getString(R.string.page_name_mentions), CustomListFragment.class, mentionsAdapter, false);
         addListPage(resourceHelper.getString(R.string.page_name_messages), CustomListFragment.class, messagesAdapter, false);
