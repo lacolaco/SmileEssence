@@ -24,10 +24,136 @@
 
 package net.lacolaco.smileessence.view;
 
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.EditTextPreference;
+import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.text.TextUtils;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.notification.Notificator;
+import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 
-public class SettingFragment extends PreferenceFragment
+import static android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+
+public class SettingFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener
 {
 
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.setting);
+        EditTextPreference textSizePreference = (EditTextPreference) findPreference(R.string.key_setting_text_size);
+        textSizePreference.setSummary(textSizePreference.getText());
+        textSizePreference.setOnPreferenceChangeListener(this);
+        ListPreference themePreference = (ListPreference) findPreference(R.string.key_setting_theme);
+        themePreference.setSummary(themePreference.getEntry());
+        ListPreference namestylePreference = (ListPreference) findPreference(R.string.key_setting_namestyle);
+        namestylePreference.setSummary(namestylePreference.getEntry());
+        EditTextPreference timelinesPreference = (EditTextPreference) findPreference(R.string.key_setting_timelines);
+        timelinesPreference.setSummary(String.format(getString(R.string.setting_timelines_summary_format), timelinesPreference.getText()));
+        timelinesPreference.setOnPreferenceChangeListener(this);
+        Preference appInfoPreference = findPreference(R.string.key_setting_application_information);
+        appInfoPreference.setOnPreferenceClickListener(this);
+    }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    public Preference findPreference(int preferenceResID)
+    {
+        return findPreference(getString(preferenceResID));
+    }
+
+    private void setSummaryCurrentValue()
+    {
+        EditTextPreference textSizePreference = (EditTextPreference) findPreference(R.string.key_setting_text_size);
+        textSizePreference.setSummary(textSizePreference.getText());
+        ListPreference themePreference = (ListPreference) findPreference(R.string.key_setting_theme);
+        themePreference.setSummary(themePreference.getEntry());
+        ListPreference namestylePreference = (ListPreference) findPreference(R.string.key_setting_namestyle);
+        namestylePreference.setSummary(namestylePreference.getEntry());
+        EditTextPreference timelinesPreference = (EditTextPreference) findPreference(R.string.key_setting_timelines);
+        timelinesPreference.setSummary(String.format(getString(R.string.setting_timelines_summary_format), timelinesPreference.getText()));
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
+    {
+        setSummaryCurrentValue();
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue)
+    {
+        String newValueStr = String.valueOf(newValue);
+        if(preference.getKey().contentEquals(getString(R.string.key_setting_text_size)))
+        {
+            if(TextUtils.isDigitsOnly(newValueStr))
+            {
+                int newTextSize = Integer.parseInt(newValueStr);
+                if(UserPreferenceHelper.TEXT_SIZE_MIN <= newTextSize && newTextSize <= UserPreferenceHelper.TEXT_SIZE_MAX)
+                {
+                    return true;
+                }
+                new Notificator(getActivity(), getString(R.string.error_setting_text_size_range)).publish();
+            }
+            else
+            {
+                new Notificator(getActivity(), getString(R.string.error_setting_text_size_not_number)).publish();
+            }
+            return false;
+        }
+        else if(preference.getKey().contentEquals(getString(R.string.key_setting_timelines)))
+        {
+            if(TextUtils.isDigitsOnly(newValueStr))
+            {
+                int newTextSize = Integer.parseInt(newValueStr);
+                if(UserPreferenceHelper.TIMELINES_MIN <= newTextSize && newTextSize <= UserPreferenceHelper.TIMELINES_MAX)
+                {
+                    return true;
+                }
+                new Notificator(getActivity(), getString(R.string.error_setting_timelines_range)).publish();
+            }
+            else
+            {
+                new Notificator(getActivity(), getString(R.string.error_setting_timelines_not_number)).publish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onPreferenceClick(Preference preference)
+    {
+        if(preference.getKey().contentEquals(getString(R.string.key_setting_application_information)))
+        {
+
+        }
+        else if(preference.getKey().contentEquals(getString(R.string.key_setting_licenses)))
+        {
+
+        }
+        else if(preference.getKey().contentEquals(getString(R.string.key_setting_delete_authentication)))
+        {
+
+        }
+        return true;
+    }
 }

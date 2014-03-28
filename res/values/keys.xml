@@ -25,18 +25,18 @@
 
 <resources>
     <string name="key_test_preference">testPreference</string>
-    <string name="key_text_size">textSize</string>
-    <string name="key_on_submit">onSubmit</string>
-    <string name="key_clear_accounts">clearAccounts</string>
-    <string name="key_unfav_notify">unfavNotify</string>
+    <string name="key_setting_text_size">textSize</string>
+    <string name="key_setting_back_to_home">onSubmit</string>
+    <string name="key_setting_delete_authentication">clearAccounts</string>
+    <string name="key_setting_notify_on_unfavorited">unfavNotify</string>
     <string name="key_open_ime">openIME</string>
-    <string name="key_confirm">confirm</string>
-    <string name="key_morse">morse</string>
-    <string name="key_namestyle">nameStyle</string>
+    <string name="key_setting_show_confirm_dialog">confirm</string>
+    <string name="key_setting_read_morse">morse</string>
+    <string name="key_setting_namestyle">nameStyle</string>
     <string name="key_retweet_visibility">retweetVisibility</string>
-    <string name="key_search_retweet">searchRetweet</string>
-    <string name="key_request_count">requestCount</string>
-    <string name="key_theme">theme</string>
-    <string name="key_app_info">appInfo</string>
-    <string name="key_license_notices">licenseNotice</string>
+    <string name="key_setting_search_includes_retweets">searchRetweet</string>
+    <string name="key_setting_timelines">requestCount</string>
+    <string name="key_setting_theme">theme</string>
+    <string name="key_setting_application_information">appInfo</string>
+    <string name="key_setting_licenses">licenseNotice</string>
 </resources>

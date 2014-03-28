@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ The MIT License (MIT)
+  ~
+  ~ Copyright (c) 2012-2014 lacolaco.net
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/setting_category_display_title"
+        android:summary="@string/setting_category_display_summary">
+        <EditTextPreference
+            android:title="@string/setting_text_size_title"
+            android:key="@string/key_setting_text_size"
+            android:defaultValue="10"
+            android:dialogTitle="@string/setting_text_size_dialog_title"
+            android:dialogMessage="@string/setting_text_size_dialog_message"
+            android:numeric="decimal"/>
+        <ListPreference
+            android:title="@string/setting_theme_title"
+            android:key="@string/key_setting_theme"
+            android:dialogTitle="@string/setting_theme_dialog_title"
+            android:entries="@array/setting_theme_names"
+            android:entryValues="@array/setting_theme_ids"
+            android:defaultValue="0"/>
+        <ListPreference
+            android:title="@string/setting_namestyle_title"
+            android:key="@string/key_setting_namestyle"
+            android:dialogTitle="@string/setting_namestyle_dialog_title"
+            android:entries="@array/setting_namestyle_names"
+            android:entryValues="@array/setting_namestyle_ids"
+            android:defaultValue="0"/>
+        <SwitchPreference
+            android:title="@string/setting_read_morse"
+            android:key="@string/key_setting_read_morse"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/setting_category_system_title">
+        <SwitchPreference
+            android:title="@string/setting_show_confirm_dialog"
+            android:key="@string/key_setting_show_confirm_dialog"
+            android:defaultValue="true"/>
+        <SwitchPreference
+            android:title="@string/setting_back_to_home_title"
+            android:key="@string/key_setting_back_to_home"
+            android:defaultValue="true"/>
+        <SwitchPreference
+            android:title="@string/setting_notify_on_unfavorited_title"
+            android:key="@string/key_setting_notify_on_unfavorited"
+            android:defaultValue="false"/>
+        <SwitchPreference
+            android:title="@string/setting_search_includes_retweets"
+            android:key="@string/key_setting_search_includes_retweets"
+            android:defaultValue="false"/>
+        <EditTextPreference
+            android:title="@string/setting_timelines_title"
+            android:summary="@string/setting_timelines_summary_format"
+            android:key="@string/key_setting_timelines"
+            android:dialogTitle="@string/setting_timelines_dialog_title"
+            android:dialogMessage="@string/setting_timelines_dialog_message"
+            android:defaultValue="20"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/setting_category_about_title">
+        <Preference
+            android:title="@string/setting_application_information_title"
+            android:key="@string/key_setting_application_information"/>
+        <Preference
+            android:title="@string/setting_licenses_title"
+            android:key="@string/key_setting_licenses"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/setting_category_account_title">
+        <Preference
+            android:title="@string/setting_delete_authentication_title"
+            android:summary="@string/setting_delete_authentication_summary"
+            android:key="@string/key_setting_delete_authentication"/>
+    </PreferenceCategory>
+</PreferenceScreen>

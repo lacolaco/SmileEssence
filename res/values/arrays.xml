@@ -24,16 +24,24 @@
   -->
 
 <resources>
-    <string-array name="entry_namestyle">
+    <string-array name="setting_namestyle_names">
         <item>@string/namestyle_s_n</item>
         <item>@string/namestyle_n_s</item>
         <item>@string/namestyle_s</item>
         <item>@string/namestyle_n</item>
     </string-array>
-    <string-array name="entryvalues_namestyle">
-        <item>@string/namestyle_s_n</item>
-        <item>@string/namestyle_n_s</item>
-        <item>@string/namestyle_s</item>
-        <item>@string/namestyle_n</item>
+    <string-array name="setting_namestyle_ids">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="setting_theme_names">
+        <item>@string/theme_dark</item>
+        <item>@string/theme_light</item>
+    </string-array>
+    <string-array name="setting_theme_ids">
+        <item>0</item>
+        <item>1</item>
     </string-array>
 </resources>

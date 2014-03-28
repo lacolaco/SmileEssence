@@ -45,7 +45,7 @@ public class UserPreferenceHelperTest extends AndroidTestCase
 
     public void testUseDefault() throws Exception
     {
-        assertNotSame(0, pref.getValue(R.string.key_text_size, 10));
+        assertNotSame(0, pref.getValue(R.string.key_setting_text_size, 10));
     }
 
     public void testPutAndGet() throws Exception

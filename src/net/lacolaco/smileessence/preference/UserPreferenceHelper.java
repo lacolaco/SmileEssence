@@ -33,6 +33,11 @@ import java.util.Set;
 public class UserPreferenceHelper extends SharedPreferenceHelper
 {
 
+    public static final int TEXT_SIZE_MIN = 8;
+    public static final int TEXT_SIZE_MAX = 24;
+    public static final int TIMELINES_MIN = 1;
+    public static final int TIMELINES_MAX = 200;
+
     public UserPreferenceHelper(Context context)
     {
         super(context, null);

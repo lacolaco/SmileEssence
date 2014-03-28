@@ -48,22 +48,22 @@ public class SharedPreferenceHelper
 
     public boolean getValue(String key, boolean defaultValue)
     {
-        return getPref().getBoolean(key, defaultValue);
+        return Boolean.valueOf(getPref().getString(key, String.valueOf(defaultValue)));
     }
 
     public int getValue(String key, int defaultValue)
     {
-        return getPref().getInt(key, defaultValue);
+        return Integer.valueOf(getPref().getString(key, String.valueOf(defaultValue)));
     }
 
     public float getValue(String key, float defaultValue)
     {
-        return getPref().getFloat(key, defaultValue);
+        return Float.valueOf(getPref().getString(key, String.valueOf(defaultValue)));
     }
 
     public long getValue(String key, long defaultValue)
     {
-        return getPref().getLong(key, defaultValue);
+        return Long.valueOf(getPref().getString(key, String.valueOf(defaultValue)));
     }
 
     public String getValue(String key, String defaultValue)
@@ -79,28 +79,28 @@ public class SharedPreferenceHelper
     public boolean putValue(String key, boolean value)
     {
         SharedPreferences.Editor editor = getPref().edit();
-        editor.putBoolean(key, value);
+        editor.putString(key, String.valueOf(value));
         return editor.commit();
     }
 
     public boolean putValue(String key, int value)
     {
         SharedPreferences.Editor editor = getPref().edit();
-        editor.putInt(key, value);
+        editor.putString(key, String.valueOf(value));
         return editor.commit();
     }
 
     public boolean putValue(String key, float value)
     {
         SharedPreferences.Editor editor = getPref().edit();
-        editor.putFloat(key, value);
+        editor.putString(key, String.valueOf(value));
         return editor.commit();
     }
 
     public boolean putValue(String key, long value)
     {
         SharedPreferences.Editor editor = getPref().edit();
-        editor.putLong(key, value);
+        editor.putString(key, String.valueOf(value));
         return editor.commit();
     }
 
