@@ -81,7 +81,7 @@ public class EventViewModel implements IViewModel
 
     public String getFormattedString(Context context)
     {
-        return String.format(context.getString(event.getTextFormatResourceID()), sourceUserScreenName);
+        return context.getString(event.getTextFormatResourceID(), sourceUserScreenName);
     }
 
     @Override

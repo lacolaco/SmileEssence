@@ -27,6 +27,7 @@ package net.lacolaco.smileessence.viewmodel;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.test.InstrumentationTestCase;
+import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.util.TwitterMock;
 import twitter4j.Status;
 import twitter4j.User;
@@ -46,20 +47,20 @@ public class EventViewModelTest extends InstrumentationTestCase
 
     public void testNewInstance() throws Exception
     {
+        Context context = getInstrumentation().getTargetContext();
         Status status = mock.getStatusMock();
         User source = mock.getUserMock();
-        EventViewModel history = new EventViewModel(EnumEvent.FAVORITED, source, status);
-        assertEquals(source.getId(), history.getSourceUserID());
-        assertEquals(status.getId(), history.getTargetStatusID());
-        assertEquals(String.format("Favorited by %s", source.getScreenName()), history.getFormattedString(getInstrumentation().getTargetContext()));
-        history = new EventViewModel(EnumEvent.RECEIVE_MESSAGE, source);
-        Context context = getInstrumentation().getTargetContext();
+        EventViewModel event = new EventViewModel(EnumEvent.FAVORITED, source, status);
+        assertEquals(source.getId(), event.getSourceUserID());
+        assertEquals(status.getId(), event.getTargetStatusID());
+        assertEquals(context.getString(R.string.format_event_favorited, source.getScreenName()), event.getFormattedString(context));
+        event = new EventViewModel(EnumEvent.RECEIVE_MESSAGE, source);
         Configuration config = context.getResources().getConfiguration();
         config.locale = Locale.ENGLISH;
         context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-        assertEquals(String.format("Received %s's message", source.getScreenName()), history.getFormattedString(context));
+        assertEquals(String.format("Received %s's message", source.getScreenName()), event.getFormattedString(context));
         config.locale = Locale.JAPANESE;
         context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-        assertEquals(String.format("%sからDMを受信", source.getScreenName()), history.getFormattedString(context));
+        assertEquals(String.format("%sからのDMを受信", source.getScreenName()), event.getFormattedString(context));
     }
 }

@@ -42,20 +42,20 @@ public class StatusCacheTest extends InstrumentationTestCase
     public void testPutStatus() throws Exception
     {
         Status status = mock.getStatusMock();
-        assertNull(StatusCache.getInstance().put(status));
+        assertNotNull(StatusCache.getInstance().put(status));
     }
 
     public void testGetStatus() throws Exception
     {
         Status status = mock.getStatusMock();
-        assertNull(StatusCache.getInstance().put(status));
+        assertNotNull(StatusCache.getInstance().put(status));
         assertSame(status, StatusCache.getInstance().get(status.getId()));
     }
 
     public void testRemoveStatus() throws Exception
     {
         Status status = mock.getStatusMock();
-        assertNull(StatusCache.getInstance().put(status));
+        assertNotNull(StatusCache.getInstance().put(status));
         assertSame(status, StatusCache.getInstance().remove(status.getId()));
         assertNull(StatusCache.getInstance().get(status.getId()));
     }
