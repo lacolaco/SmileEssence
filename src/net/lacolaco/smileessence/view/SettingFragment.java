@@ -34,6 +34,8 @@ import android.text.TextUtils;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
+import net.lacolaco.smileessence.view.dialog.DialogHelper;
+import net.lacolaco.smileessence.view.dialog.SimpleDialogFragment;
 
 import static android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 
@@ -144,11 +146,17 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
     {
         if(preference.getKey().contentEquals(getString(R.string.key_setting_application_information)))
         {
-
+            SimpleDialogFragment informationDialog = SimpleDialogFragment.newInstance(
+                    R.layout.dialog_app_info,
+                    getString(R.string.dialog_title_about));
+            new DialogHelper(getActivity(), informationDialog).show();
         }
         else if(preference.getKey().contentEquals(getString(R.string.key_setting_licenses)))
         {
-
+            SimpleDialogFragment licensesDialog = SimpleDialogFragment.newInstance(
+                    R.layout.dialog_licenses,
+                    getString(R.string.dialog_title_licenses));
+            new DialogHelper(getActivity(), licensesDialog).show();
         }
         else if(preference.getKey().contentEquals(getString(R.string.key_setting_delete_authentication)))
         {

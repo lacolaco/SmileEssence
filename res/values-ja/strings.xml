@@ -83,4 +83,15 @@
     <string name="error_setting_text_size_not_number">数を入力してください</string>
     <string name="error_setting_timelines_range">1から200の間で設定してください</string>
     <string name="error_setting_timelines_not_number">数を入力してください</string>
+    <string name="alert_dialog_ok">OK</string>
+    <string name="app_author">Developed by laco0416</string>
+    <string name="app_thanks_to">Thanks to</string>
+    <string name="dialog_title_about">アプリ情報</string>
+    <string name="dialog_licenses_notices_of_files">Notices of files:</string>
+    <string name="dialog_licenses_list_marker">-</string>
+    <string name="library_name_twitter4j">twitter4j</string>
+    <string name="library_name_crouton">Crouton</string>
+    <string name="library_name_volley">Volley</string>
+    <string name="library_name_pull_to_refresh">PullToRefresh</string>
+    <string name="dialog_title_licenses">オープンソースライセンス</string>
 </resources>
