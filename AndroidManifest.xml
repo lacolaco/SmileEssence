@@ -57,5 +57,9 @@
             android:name=".activity.WebViewActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="standard"/>
+        <activity
+            android:name=".activity.SettingActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="standard"/>
     </application>
 </manifest>
