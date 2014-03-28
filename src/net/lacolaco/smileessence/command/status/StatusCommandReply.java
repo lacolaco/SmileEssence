@@ -22,30 +22,37 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.entity;
+package net.lacolaco.smileessence.command.status;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
+import android.content.Context;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.entity.Account;
+import twitter4j.Status;
 
-@Table(name = "Templates")
-public class Template extends Model
+public class StatusCommandReply extends StatusCommand
 {
 
-    @Column(name = "Text", notNull = true)
-    public String text;
-    @Column(name = "Ordinal")
-    public int ordinal;
-
-    public Template()
+    public StatusCommandReply(Context context, Account account, long statusId)
     {
-        super();
+        super(R.id.key_command_status_reply, context, account, statusId);
     }
 
-    public Template(String text, int ordinal)
+    @Override
+    public String getText()
     {
-        super();
-        this.text = text;
-        this.ordinal = ordinal;
+        return getContext().getString(R.string.command_status_reply);
+    }
+
+    @Override
+    public boolean execute()
+    {
+        Status status = tryGetStatus();
+        if(status == null)
+        {
+            //TODO error
+            return false;
+        }
+        //String text = String.format("@%s ", status.getUser().getScreenName());
+        return true;
     }
 }

@@ -22,30 +22,36 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.entity;
+package net.lacolaco.smileessence.twitter.task;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
+import net.lacolaco.smileessence.logging.Logger;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
-@Table(name = "Templates")
-public class Template extends Model
+public class ShowStatusTask extends TwitterTask<Status>
 {
 
-    @Column(name = "Text", notNull = true)
-    public String text;
-    @Column(name = "Ordinal")
-    public int ordinal;
+    private final long id;
 
-    public Template()
+    public ShowStatusTask(Twitter twitter, long id)
     {
-        super();
+        super(twitter);
+        this.id = id;
     }
 
-    public Template(String text, int ordinal)
+    @Override
+    protected twitter4j.Status doInBackground(Void... params)
     {
-        super();
-        this.text = text;
-        this.ordinal = ordinal;
+        try
+        {
+            return twitter.tweets().showStatus(id);
+        }
+        catch(TwitterException e)
+        {
+            e.printStackTrace();
+            Logger.error(e.toString());
+            return null;
+        }
     }
 }

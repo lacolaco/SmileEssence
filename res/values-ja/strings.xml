@@ -94,4 +94,8 @@
     <string name="library_name_volley">Volley</string>
     <string name="library_name_pull_to_refresh">PullToRefresh</string>
     <string name="dialog_title_licenses">オープンソースライセンス</string>
+    <string name="command_status_reply">返信</string>
+    <string name="command_user_reply">返信</string>
+    <string name="command_message_reply">返信</string>
+    <string name="command_event_reply">返信</string>
 </resources>

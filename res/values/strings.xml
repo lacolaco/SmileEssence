@@ -94,4 +94,8 @@
     <string name="library_name_volley">Volley</string>
     <string name="library_name_pull_to_refresh">PullToRefresh</string>
     <string name="dialog_title_licenses">Licenses</string>
+    <string name="command_status_reply">Reply</string>
+    <string name="command_user_reply">Reply</string>
+    <string name="command_message_reply">Reply</string>
+    <string name="command_event_reply">Reply</string>
 </resources>

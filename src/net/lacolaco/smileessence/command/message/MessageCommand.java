@@ -22,30 +22,16 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.entity;
+package net.lacolaco.smileessence.command.message;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
+import android.content.Context;
+import net.lacolaco.smileessence.command.Command;
 
-@Table(name = "Templates")
-public class Template extends Model
+public abstract class MessageCommand extends Command
 {
 
-    @Column(name = "Text", notNull = true)
-    public String text;
-    @Column(name = "Ordinal")
-    public int ordinal;
-
-    public Template()
+    public MessageCommand(int key, Context context)
     {
-        super();
-    }
-
-    public Template(String text, int ordinal)
-    {
-        super();
-        this.text = text;
-        this.ordinal = ordinal;
+        super(key, context);
     }
 }

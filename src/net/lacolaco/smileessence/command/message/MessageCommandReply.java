@@ -22,30 +22,37 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.entity;
+package net.lacolaco.smileessence.command.message;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
+import android.content.Context;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.entity.Account;
 
-@Table(name = "Templates")
-public class Template extends Model
+public class MessageCommandReply extends MessageCommand
 {
 
-    @Column(name = "Text", notNull = true)
-    public String text;
-    @Column(name = "Ordinal")
-    public int ordinal;
+    private final long messageID;
 
-    public Template()
+    public MessageCommandReply(Context context, Account account, long messageID)
     {
-        super();
+        super(R.id.key_command_message_reply, context);
+        this.messageID = messageID;
     }
 
-    public Template(String text, int ordinal)
+    public long getMessageID()
     {
-        super();
-        this.text = text;
-        this.ordinal = ordinal;
+        return messageID;
+    }
+
+    @Override
+    public String getText()
+    {
+        return getContext().getString(R.string.command_message_reply);
+    }
+
+    @Override
+    public boolean execute()
+    {
+        return true;
     }
 }

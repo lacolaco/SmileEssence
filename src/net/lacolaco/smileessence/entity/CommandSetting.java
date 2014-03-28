@@ -32,20 +32,23 @@ import com.activeandroid.annotation.Table;
 public class CommandSetting extends Model
 {
 
-    @Column(name = "CommandID")
-    public int commandID;
+    @Column(name = "CommandKey")
+    public int commandKey;
     @Column(name = "Visibility")
     public boolean visibility;
+    @Column(name = "Ordinal")
+    public int ordinal;
 
     public CommandSetting()
     {
         super();
     }
 
-    public CommandSetting(int commandID, boolean visibility)
+    public CommandSetting(int commandKey, boolean visibility, int order)
     {
         super();
-        this.commandID = commandID;
+        this.commandKey = commandKey;
         this.visibility = visibility;
+        this.ordinal = order;
     }
 }

@@ -22,30 +22,25 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.entity;
+package net.lacolaco.smileessence.command.event;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
+import android.content.Context;
+import net.lacolaco.smileessence.command.Command;
+import net.lacolaco.smileessence.viewmodel.EventViewModel;
 
-@Table(name = "Templates")
-public class Template extends Model
+public abstract class EventCommand extends Command
 {
 
-    @Column(name = "Text", notNull = true)
-    public String text;
-    @Column(name = "Ordinal")
-    public int ordinal;
+    private final EventViewModel event;
 
-    public Template()
+    public EventCommand(int key, Context context, EventViewModel event)
     {
-        super();
+        super(key, context);
+        this.event = event;
     }
 
-    public Template(String text, int ordinal)
+    public EventViewModel getEvent()
     {
-        super();
-        this.text = text;
-        this.ordinal = ordinal;
+        return event;
     }
 }

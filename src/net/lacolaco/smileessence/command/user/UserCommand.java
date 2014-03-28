@@ -22,30 +22,24 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.entity;
+package net.lacolaco.smileessence.command.user;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
+import android.content.Context;
+import net.lacolaco.smileessence.command.Command;
 
-@Table(name = "Templates")
-public class Template extends Model
+public abstract class UserCommand extends Command
 {
 
-    @Column(name = "Text", notNull = true)
-    public String text;
-    @Column(name = "Ordinal")
-    public int ordinal;
+    private final long userID;
 
-    public Template()
+    public UserCommand(int key, Context context, long userID)
     {
-        super();
+        super(key, context);
+        this.userID = userID;
     }
 
-    public Template(String text, int ordinal)
+    public long getUserID()
     {
-        super();
-        this.text = text;
-        this.ordinal = ordinal;
+        return userID;
     }
 }

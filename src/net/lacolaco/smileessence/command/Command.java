@@ -22,30 +22,45 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.entity;
+package net.lacolaco.smileessence.command;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
+import android.content.Context;
 
-@Table(name = "Templates")
-public class Template extends Model
+public abstract class Command
 {
 
-    @Column(name = "Text", notNull = true)
-    public String text;
-    @Column(name = "Ordinal")
-    public int ordinal;
+    private final int key;
+    private final Context context;
+    private boolean isVisible;
 
-    public Template()
+    public Command(int key, Context context)
     {
-        super();
+        this.key = key;
+        this.context = context;
+        this.isVisible = true;
     }
 
-    public Template(String text, int ordinal)
+    public abstract String getText();
+
+    public abstract boolean execute();
+
+    public int getKey()
     {
-        super();
-        this.text = text;
-        this.ordinal = ordinal;
+        return key;
+    }
+
+    public Context getContext()
+    {
+        return context;
+    }
+
+    public boolean isVisible()
+    {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible)
+    {
+        isVisible = visible;
     }
 }
