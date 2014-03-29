@@ -26,14 +26,26 @@
 <resources>
 
     <style name="theme_dark" parent="@android:style/Theme.Holo">
+        <item name="page_background">@color/black</item>
         <item name="icon_post_delete">@drawable/icon_delete_w</item>
         <item name="icon_post_picture">@drawable/icon_picture_w</item>
         <item name="icon_post_row">@drawable/icon_row_w</item>
+        <item name="button_blue_background">@color/black</item>
+        <item name="button_blue_foreground">@color/white</item>
+        <item name="button_round_blue">@drawable/button_round_blue</item>
     </style>
 
     <style name="theme_light" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="page_background">@color/white</item>
         <item name="icon_post_delete">@drawable/icon_delete</item>
         <item name="icon_post_picture">@drawable/icon_picture</item>
         <item name="icon_post_row">@drawable/icon_row</item>
+        <item name="button_blue_background">@color/metro_blue</item>
+        <item name="button_blue_foreground">@color/white</item>
+        <item name="button_round_blue">@drawable/button_round_blue_light</item>
+    </style>
+
+    <style name="custom_button_transparent">
+        <item name="android:background">@drawable/button_selector_transparent</item>
     </style>
 </resources>

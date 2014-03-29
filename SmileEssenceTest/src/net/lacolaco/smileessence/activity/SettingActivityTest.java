@@ -29,14 +29,12 @@ import android.preference.Preference;
 import android.test.ActivityInstrumentationTestCase2;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
-import net.lacolaco.smileessence.resource.ResourceHelper;
 import net.lacolaco.smileessence.view.SettingFragment;
 
 public class SettingActivityTest extends ActivityInstrumentationTestCase2<SettingActivity>
 {
 
     private Fragment fragment;
-    ResourceHelper resource;
 
     public SettingActivityTest()
     {
@@ -47,7 +45,6 @@ public class SettingActivityTest extends ActivityInstrumentationTestCase2<Settin
     public void setUp() throws Exception
     {
         fragment = getActivity().getFragmentManager().findFragmentById(R.id.fragment_setting);
-        resource = new ResourceHelper(getActivity());
     }
 
     public void testGetValues() throws Exception
@@ -58,13 +55,13 @@ public class SettingActivityTest extends ActivityInstrumentationTestCase2<Settin
 
     public void testGetPreference() throws Exception
     {
-        SettingFragment settingFragment = (SettingFragment) fragment;
+        SettingFragment settingFragment = (SettingFragment)fragment;
         Preference textSize = settingFragment.findPreference(R.string.key_setting_text_size);
         assertNotNull(textSize);
         UserPreferenceHelper preferenceHelper = new UserPreferenceHelper(getActivity());
         assertEquals("10", textSize.getSummary());
         assertEquals("Dark", settingFragment.findPreference(R.string.key_setting_theme).getSummary());
         assertEquals("ScreenName / Name", settingFragment.findPreference(R.string.key_setting_namestyle).getSummary());
-        assertEquals(String.format(resource.getString(R.string.setting_timelines_summary_format), 20), settingFragment.findPreference(R.string.key_setting_timelines).getSummary());
+        assertEquals(String.format(getActivity().getString(R.string.setting_timelines_summary_format), 20), settingFragment.findPreference(R.string.key_setting_timelines).getSummary());
     }
 }

@@ -26,140 +26,175 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="?attr/page_background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="10dp"
+        android:padding="15dp"
         android:scrollbars="vertical">
 
-        <!--
-            In Reply To Item
-        -->
-        <FrameLayout
-            android:id="@+id/post_inreplyto"
+        <LinearLayout
+            android:id="@+id/post_inreplyto_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="10dp"
+            android:background="@android:color/holo_orange_dark"
             android:visibility="gone">
-        </FrameLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp">
-
-            <EditText
-                android:id="@+id/post_edit_text"
+            <TextView
+                android:id="@+id/post_reply_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:gravity="top"
-                android:inputType="text|textMultiLine"
-                android:minLines="2"
-                android:maxLines="8"
-                android:scrollbars="vertical"
-                android:layout_weight="1"
-                android:freezesText="true"/>
+                android:layout_height="30dp"
+                android:layout_weight="1"/>
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="80dp"
+            <ImageButton
+                android:id="@+id/post_reply_delete"
+                android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_marginBottom="10dp">
+                android:src="?attr/icon_post_delete"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:baselineAligned="false">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/post_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:inputType="text|textMultiLine"
+                    android:minHeight="60dp"
+                    android:freezesText="true"/>
+            </FrameLayout>
+
+            <RelativeLayout
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                >
 
                 <ImageButton
                     android:id="@+id/post_delete"
-                    android:layout_width="30dp"
-                    android:layout_height="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_alignParentTop="true"
                     android:src="?attr/icon_post_delete"
-                    android:scaleType="fitCenter"
-                    android:layout_gravity="center_horizontal"/>
+                    android:background="@android:color/transparent"
+                    android:scaleType="fitCenter"/>
 
                 <TextView
                     android:id="@+id/post_text_count"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal|bottom"
+                    android:layout_height="30dp"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center_horizontal|center_vertical"
                     android:freezesText="true"/>
-            </LinearLayout>
+            </RelativeLayout>
+
         </LinearLayout>
 
-        <LinearLayout
+        <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill_horizontal"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_height="40dp"
             android:baselineAligned="false"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:columnCount="8"
+            android:rowCount="1"
+            android:alignmentMode="alignBounds">
 
-            <LinearLayout
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/post_media"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:padding="0dp"
-                    android:scaleType="fitCenter"
-                    android:src="?attr/icon_post_picture"/>
-
-                <ImageButton
-                    android:id="@+id/post_menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:padding="0dp"
-                    android:scaleType="fitCenter"
-                    android:src="?attr/icon_post_row"/>
-            </LinearLayout>
-
-            <FrameLayout
-                android:layout_width="5dp"
+            <ImageButton
+                android:id="@+id/post_media"
+                android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:background="@android:color/transparent"/>
+                android:scaleType="centerCrop"
+                android:src="?attr/icon_post_picture"
+                android:layout_column="0"
+                android:layout_row="0"
+                android:layout_gravity="fill"
+                android:background="@android:color/transparent"
+                android:adjustViewBounds="false"/>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:layout_column="1"/>
+
+            <ImageButton
+                android:id="@+id/post_menu"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="?attr/icon_post_row"
+                android:layout_column="2"
+                android:layout_row="0"
+                android:layout_gravity="fill"
+                android:background="@android:color/transparent"
+                android:adjustViewBounds="false"/>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:layout_column="3"/>
 
             <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="10"
-                android:padding="1dp">
+                android:layout_height="match_parent"
+                android:layout_gravity="fill"
+                android:layout_column="4"
+                android:layout_columnSpan="4"
+                android:layout_row="0"
+                android:background="?attr/button_round_blue">
 
                 <Button
                     android:id="@+id/post_tweet_button"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="match_parent"
                     android:gravity="center"
+                    style="@style/custom_button_transparent"
                     android:text="@string/post_button_tweet"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:textColor="?attr/button_blue_foreground"/>
             </FrameLayout>
-        </LinearLayout>
+        </GridLayout>
 
-        <ImageView
-            android:id="@+id/post_media_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="left"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="10dp"
-            android:clickable="true"
-            android:visibility="gone"/>
+        <LinearLayout
+            android:id="@+id/post_media_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/post_media_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:scaleType="fitCenter"/>
+
+            <ImageButton
+                android:id="@+id/post_media_delete"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="?attr/icon_post_delete"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"/>
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

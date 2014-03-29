@@ -39,7 +39,6 @@ import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.preference.AppPreferenceHelper;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
-import net.lacolaco.smileessence.resource.ResourceHelper;
 import net.lacolaco.smileessence.twitter.OAuthSession;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.UserStreamListener;
@@ -62,7 +61,6 @@ public class MainActivity extends Activity
     public static final int PAGE_MENTIONS = 2;
     public static final int PAGE_MESSAGES = 3;
     public static final int PAGE_HISTORY = 4;
-    private ResourceHelper resourceHelper;
     private UserPreferenceHelper userPref;
     private AppPreferenceHelper appPref;
     private ViewPager viewPager;
@@ -195,7 +193,8 @@ public class MainActivity extends Activity
 
     private void setTheme()
     {
-        switch(userPref.getValue(R.string.key_setting_theme, 0))
+        //TODO on release switch(userPref.getValue(R.string.key_setting_theme, 0))
+        switch(1)
         {
             case 0:
             {
