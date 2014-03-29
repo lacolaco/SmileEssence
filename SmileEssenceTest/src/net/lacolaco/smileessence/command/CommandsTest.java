@@ -64,7 +64,7 @@ public class CommandsTest extends InstrumentationTestCase
         Status status = mock.getStatusMock();
         StatusCache.getInstance().put(status);
 
-        StatusCommand reply = new StatusCommandReply(context, account, status.getId());
+        StatusCommand reply = new StatusCommandReply(context, status);
         assertTrue(reply.isVisible());
         reply.setVisible(false);
         assertFalse(reply.isVisible());
