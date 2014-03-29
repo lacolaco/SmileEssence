@@ -24,43 +24,33 @@
 
 package net.lacolaco.smileessence.command;
 
-import android.content.Context;
+import android.app.Activity;
 
 public abstract class Command
 {
 
     private final int key;
-    private final Context context;
-    private boolean isVisible;
+    private final Activity activity;
 
-    public Command(int key, Context context)
+    public Command(int key, Activity activity)
     {
         this.key = key;
-        this.context = context;
-        this.isVisible = true;
+        this.activity = activity;
     }
-
-    public abstract String getText();
-
-    public abstract boolean execute();
 
     public int getKey()
     {
         return key;
     }
 
-    public Context getContext()
+    public Activity getActivity()
     {
-        return context;
+        return activity;
     }
 
-    public boolean isVisible()
-    {
-        return isVisible;
-    }
+    public abstract String getText();
 
-    public void setVisible(boolean visible)
-    {
-        isVisible = visible;
-    }
+    public abstract boolean execute();
+
+    public abstract boolean isEnabled();
 }

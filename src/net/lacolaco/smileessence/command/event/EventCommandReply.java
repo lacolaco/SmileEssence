@@ -24,7 +24,7 @@
 
 package net.lacolaco.smileessence.command.event;
 
-import android.content.Context;
+import android.app.Activity;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TweetBuilder;
@@ -34,15 +34,15 @@ import net.lacolaco.smileessence.viewmodel.EventViewModel;
 public class EventCommandReply extends EventCommand
 {
 
-    public EventCommandReply(Context context, Account account, EventViewModel event)
+    public EventCommandReply(Activity activity, Account account, EventViewModel event)
     {
-        super(R.id.key_command_event_reply, context, event);
+        super(R.id.key_command_event_reply, activity, event);
     }
 
     @Override
     public String getText()
     {
-        return getContext().getString(R.string.command_event_reply);
+        return getActivity().getString(R.string.command_event_reply);
     }
 
     @Override
@@ -52,7 +52,14 @@ public class EventCommandReply extends EventCommand
                  .beginTransaction()
                  .setText(new TweetBuilder().addScreenName(getEvent().getSourceScreenName()).buildText())
                  .setInReplyToScreenName(getEvent().getSourceScreenName())
+                 .requestOpenPage(true)
                  .commit();
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled()
+    {
         return true;
     }
 }

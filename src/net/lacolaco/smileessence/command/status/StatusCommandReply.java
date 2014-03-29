@@ -24,7 +24,7 @@
 
 package net.lacolaco.smileessence.command.status;
 
-import android.content.Context;
+import android.app.Activity;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.twitter.TweetBuilder;
 import net.lacolaco.smileessence.view.adapter.PostState;
@@ -33,30 +33,36 @@ import twitter4j.Status;
 public class StatusCommandReply extends StatusCommand
 {
 
-    public StatusCommandReply(Context context, Status status)
+    public StatusCommandReply(Activity activity, Status status)
     {
-        super(R.id.key_command_status_reply, context, status);
+        super(R.id.key_command_status_reply, activity, status);
     }
 
     @Override
     public String getText()
     {
-        return getContext().getString(R.string.command_status_reply);
+        return getActivity().getString(R.string.command_status_reply);
     }
 
     @Override
-    public boolean execute(Status status)
+    public boolean execute()
     {
-        TweetBuilder builder = new TweetBuilder().addScreenName(status.getUser().getScreenName());
+        TweetBuilder builder = new TweetBuilder().addScreenName(getStatus().getUser().getScreenName());
 
         PostState.newState()
                  .beginTransaction()
                  .setText(builder.buildText())
-                 .setInReplyToText(status.getText())
-                 .setInReplyToScreenName(status.getUser().getScreenName())
-                 .setInReplyToStatusID(status.getId())
+                 .setInReplyToText(getStatus().getText())
+                 .setInReplyToScreenName(getStatus().getUser().getScreenName())
+                 .setInReplyToStatusID(getStatus().getId())
                  .requestOpenPage(true)
                  .commit();
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled()
+    {
         return true;
     }
 }

@@ -24,37 +24,23 @@
 
 package net.lacolaco.smileessence.command.user;
 
-import android.content.Context;
+import android.app.Activity;
 import net.lacolaco.smileessence.command.Command;
-import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import twitter4j.User;
 
 public abstract class UserCommand extends Command
 {
 
-    private final Account account;
-    private final long userID;
+    private final User user;
 
-    public UserCommand(int key, Context context, Account account, long userID)
+    public UserCommand(int key, Activity activity, User user)
     {
-        super(key, context);
-        this.account = account;
-        this.userID = userID;
+        super(key, activity);
+        this.user = user;
     }
 
-    public Account getAccount()
+    protected User getUser()
     {
-        return account;
-    }
-
-    public long getUserID()
-    {
-        return userID;
-    }
-
-    protected final User tryGetUser()
-    {
-        return TwitterUtils.tryGetUser(account, userID);
+        return user;
     }
 }

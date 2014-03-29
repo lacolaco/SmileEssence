@@ -24,9 +24,8 @@
 
 package net.lacolaco.smileessence.command.user;
 
-import android.content.Context;
+import android.app.Activity;
 import net.lacolaco.smileessence.R;
-import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TweetBuilder;
 import net.lacolaco.smileessence.view.adapter.PostState;
 import twitter4j.User;
@@ -34,31 +33,32 @@ import twitter4j.User;
 public class UserCommandReply extends UserCommand
 {
 
-    public UserCommandReply(Context context, Account account, long userID)
+    public UserCommandReply(Activity activity, User user)
     {
-        super(R.id.key_command_user_reply, context, account, userID);
+        super(R.id.key_command_user_reply, activity, user);
     }
 
     @Override
     public String getText()
     {
-        return getContext().getString(R.string.command_user_reply);
+        return getActivity().getString(R.string.command_user_reply);
     }
 
     @Override
     public boolean execute()
     {
-        User user = tryGetUser();
-        if(user == null)
-        {
-            //TODO notify
-            return false;
-        }
         PostState.newState()
                  .beginTransaction()
-                 .setInReplyToScreenName(user.getScreenName())
-                 .setText(new TweetBuilder().addScreenName(user.getScreenName()).buildText())
+                 .setInReplyToScreenName(getUser().getScreenName())
+                 .setText(new TweetBuilder().addScreenName(getUser().getScreenName()).buildText())
+                 .requestOpenPage(true)
                  .commit();
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled()
+    {
         return true;
     }
 }

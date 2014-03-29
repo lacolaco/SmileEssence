@@ -24,41 +24,41 @@
 
 package net.lacolaco.smileessence.command.message;
 
-import android.content.Context;
+import android.app.Activity;
 import net.lacolaco.smileessence.R;
-import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.view.adapter.PostState;
 import twitter4j.DirectMessage;
 
 public class MessageCommandReply extends MessageCommand
 {
 
-    public MessageCommandReply(Context context, Account account, long messageID)
+    public MessageCommandReply(Activity activity, DirectMessage message)
     {
-        super(R.id.key_command_message_reply, context, account, messageID);
+        super(R.id.key_command_message_reply, activity, message);
     }
 
     @Override
     public String getText()
     {
-        return getContext().getString(R.string.command_message_reply);
+        return getActivity().getString(R.string.command_message_reply);
     }
 
     @Override
     public boolean execute()
     {
-        DirectMessage message = tryGetMessage();
-        if(message == null)
-        {
-            //TODO notify
-            return false;
-        }
         PostState.newState()
                  .beginTransaction()
                  .setDirectMessage(true)
-                 .setInReplyToScreenName(message.getSenderScreenName())
-                 .setInReplyToText(message.getText())
+                 .setInReplyToScreenName(getMessage().getSenderScreenName())
+                 .setInReplyToText(getMessage().getText())
+                 .requestOpenPage(true)
                  .commit();
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled()
+    {
         return true;
     }
 }

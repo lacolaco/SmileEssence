@@ -22,25 +22,46 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.command.message;
+package net.lacolaco.smileessence.twitter.task;
 
-import android.app.Activity;
-import net.lacolaco.smileessence.command.Command;
-import twitter4j.DirectMessage;
+import net.lacolaco.smileessence.data.StatusCache;
+import net.lacolaco.smileessence.logging.Logger;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
-public abstract class MessageCommand extends Command
+public class FavoriteTask extends TwitterTask<Status>
 {
 
-    private final DirectMessage message;
+    private final long statusID;
 
-    public MessageCommand(int key, Activity activity, DirectMessage message)
+    public FavoriteTask(Twitter twitter, long statusID)
     {
-        super(key, activity);
-        this.message = message;
+        super(twitter);
+        this.statusID = statusID;
     }
 
-    protected DirectMessage getMessage()
+    @Override
+    protected twitter4j.Status doInBackground(Void... params)
     {
-        return message;
+        try
+        {
+            return twitter.favorites().createFavorite(statusID);
+        }
+        catch(TwitterException e)
+        {
+            e.printStackTrace();
+            Logger.error(e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    protected void onPostExecute(twitter4j.Status status)
+    {
+        if(status != null)
+        {
+            StatusCache.getInstance().put(status);
+        }
     }
 }

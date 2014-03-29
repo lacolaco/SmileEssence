@@ -27,17 +27,18 @@ package net.lacolaco.smileessence.command.status;
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.twitter.TweetBuilder;
-import net.lacolaco.smileessence.twitter.util.TwitterUtils;
-import net.lacolaco.smileessence.view.adapter.PostState;
+import net.lacolaco.smileessence.notification.NotificationType;
+import net.lacolaco.smileessence.notification.Notificator;
+import net.lacolaco.smileessence.twitter.TwitterApi;
+import net.lacolaco.smileessence.twitter.task.FavoriteTask;
 import twitter4j.Status;
 
-public class StatusCommandReplyToAll extends StatusCommand
+public class StatusCommandFavorite extends StatusCommand
 {
 
     private final Account account;
 
-    public StatusCommandReplyToAll(int key, Activity activity, Status status, Account account)
+    public StatusCommandFavorite(int key, Activity activity, Status status, Account account)
     {
         super(key, activity, status);
         this.account = account;
@@ -46,20 +47,35 @@ public class StatusCommandReplyToAll extends StatusCommand
     @Override
     public String getText()
     {
-        return getActivity().getString(R.string.command_status_reply_to_all);
+        return getActivity().getString(R.string.command_status_favorite);
     }
 
     @Override
     public boolean execute()
     {
-        TweetBuilder builder = new TweetBuilder().addScreenNames(TwitterUtils.getScreenNames(getStatus(), account));
-        PostState.newState().beginTransaction().setText(builder.buildText()).requestOpenPage(true).commit();
+        FavoriteTask task = new FavoriteTask(new TwitterApi(account).getTwitter(), getStatus().getId())
+        {
+            @Override
+            protected void onPostExecute(twitter4j.Status status)
+            {
+                super.onPostExecute(status);
+                if(status != null)
+                {
+                    new Notificator(getActivity(), getActivity().getString(R.string.notice_favorite_succeeded)).publish();
+                }
+                else
+                {
+                    new Notificator(getActivity(), getActivity().getString(R.string.notice_favorite_failed), NotificationType.ALERT).publish();
+                }
+            }
+        };
+        task.execute();
         return true;
     }
 
     @Override
     public boolean isEnabled()
     {
-        return TwitterUtils.getScreenNames(getStatus(), account).size() > 1;
+        return !getStatus().isFavorited();
     }
 }

@@ -100,4 +100,7 @@
     <string name="command_event_reply">Reply</string>
     <string name="post_button_tweet">Tweet</string>
     <string name="command_status_reply_to_all">Reply to all</string>
+    <string name="command_status_favorite">Add to favorite</string>
+    <string name="notice_favorite_succeeded">Succeeded to favorite</string>
+    <string name="notice_favorite_failed">Failed to favorite</string>
 </resources>

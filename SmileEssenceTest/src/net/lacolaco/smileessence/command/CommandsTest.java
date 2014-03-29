@@ -65,9 +65,9 @@ public class CommandsTest extends InstrumentationTestCase
         StatusCache.getInstance().put(status);
 
         StatusCommand reply = new StatusCommandReply(context, status);
-        assertTrue(reply.isVisible());
+        assertTrue(reply.isEnabled());
         reply.setVisible(false);
-        assertFalse(reply.isVisible());
+        assertFalse(reply.isEnabled());
         assertEquals(R.id.key_command_status_reply, reply.getKey());
         assertEquals(context.getString(R.string.command_status_reply), reply.getText());
         assertTrue(reply.execute());
@@ -84,9 +84,9 @@ public class CommandsTest extends InstrumentationTestCase
         User user = mock.getUserMock();
 
         UserCommand reply = new UserCommandReply(context, account, user.getId());
-        assertTrue(reply.isVisible());
+        assertTrue(reply.isEnabled());
         reply.setVisible(false);
-        assertFalse(reply.isVisible());
+        assertFalse(reply.isEnabled());
         assertEquals(context.getString(R.string.command_user_reply), reply.getText());
         assertTrue(reply.execute());
         assertEquals("@laco0416 ", PostState.getState().getText());
@@ -102,9 +102,9 @@ public class CommandsTest extends InstrumentationTestCase
         DirectMessage message = mock.getDirectMessageMock();
 
         MessageCommand reply = new MessageCommandReply(context, account, message.getId());
-        assertTrue(reply.isVisible());
+        assertTrue(reply.isEnabled());
         reply.setVisible(false);
-        assertFalse(reply.isVisible());
+        assertFalse(reply.isEnabled());
         assertEquals(context.getString(R.string.command_message_reply), reply.getText());
         assertTrue(reply.execute());
         assertEquals("", PostState.getState().getText());
@@ -121,9 +121,9 @@ public class CommandsTest extends InstrumentationTestCase
         EventViewModel message = new EventViewModel(EnumEvent.MENTIONED, mock.getStatusMock().getUser(), mock.getStatusMock());
 
         EventCommand reply = new EventCommandReply(context, account, message);
-        assertTrue(reply.isVisible());
+        assertTrue(reply.isEnabled());
         reply.setVisible(false);
-        assertFalse(reply.isVisible());
+        assertFalse(reply.isEnabled());
         assertEquals(context.getString(R.string.command_event_reply), reply.getText());
         assertTrue(reply.execute());
         assertEquals(String.format("@%s ", message.getSourceScreenName()), PostState.getState().getText());

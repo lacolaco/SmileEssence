@@ -24,7 +24,7 @@
 
 package net.lacolaco.smileessence.command.status;
 
-import android.content.Context;
+import android.app.Activity;
 import net.lacolaco.smileessence.command.Command;
 import twitter4j.Status;
 
@@ -33,22 +33,14 @@ public abstract class StatusCommand extends Command
 
     private final Status status;
 
-    public StatusCommand(int key, Context context, Status status)
+    public StatusCommand(int key, Activity activity, Status status)
     {
-        super(key, context);
+        super(key, activity);
         this.status = status;
     }
 
-    public Status getStatus()
+    protected final Status getStatus()
     {
         return status;
     }
-
-    @Override
-    public final boolean execute()
-    {
-        return execute(status);
-    }
-
-    protected abstract boolean execute(Status status);
 }

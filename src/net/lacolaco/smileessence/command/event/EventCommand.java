@@ -24,7 +24,7 @@
 
 package net.lacolaco.smileessence.command.event;
 
-import android.content.Context;
+import android.app.Activity;
 import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.viewmodel.EventViewModel;
 
@@ -33,13 +33,13 @@ public abstract class EventCommand extends Command
 
     private final EventViewModel event;
 
-    public EventCommand(int key, Context context, EventViewModel event)
+    public EventCommand(int key, Activity activity, EventViewModel event)
     {
-        super(key, context);
+        super(key, activity);
         this.event = event;
     }
 
-    public EventViewModel getEvent()
+    protected EventViewModel getEvent()
     {
         return event;
     }
