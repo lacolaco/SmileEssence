@@ -28,6 +28,7 @@ import twitter4j.StatusUpdate;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class TweetBuilder
 {
@@ -53,6 +54,12 @@ public class TweetBuilder
     public TweetBuilder addScreenName(String screenName)
     {
         screenNameList.add(screenName);
+        return this;
+    }
+
+    public TweetBuilder addScreenNames(Collection<String> screenNames)
+    {
+        screenNameList.addAll(screenNames);
         return this;
     }
 

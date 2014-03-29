@@ -25,30 +25,41 @@
 package net.lacolaco.smileessence.command.status;
 
 import android.content.Context;
-import net.lacolaco.smileessence.command.Command;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.twitter.TweetBuilder;
+import net.lacolaco.smileessence.twitter.util.TwitterUtils;
+import net.lacolaco.smileessence.view.adapter.PostState;
 import twitter4j.Status;
 
-public abstract class StatusCommand extends Command
+public class StatusCommandReplyToAll extends StatusCommand
 {
 
-    private final Status status;
+    private final Account account;
 
-    public StatusCommand(int key, Context context, Status status)
+    public StatusCommandReplyToAll(int key, Context context, Status status, Account account)
     {
-        super(key, context);
-        this.status = status;
-    }
-
-    public Status getStatus()
-    {
-        return status;
+        super(key, context, status);
+        this.account = account;
     }
 
     @Override
-    public final boolean execute()
+    public String getText()
     {
-        return execute(status);
+        return getContext().getString(R.string.command_status_reply_to_all);
     }
 
-    protected abstract boolean execute(Status status);
+    @Override
+    protected boolean execute(Status status)
+    {
+        TweetBuilder builder = new TweetBuilder().addScreenNames(TwitterUtils.getScreenNames(status, account));
+        PostState.newState().beginTransaction().setText(builder.buildText()).requestOpenPage(true).commit();
+        return true;
+    }
+
+    @Override
+    public boolean isVisible()
+    {
+        return TwitterUtils.getScreenNames(getStatus(), account).size() > 1;
+    }
 }

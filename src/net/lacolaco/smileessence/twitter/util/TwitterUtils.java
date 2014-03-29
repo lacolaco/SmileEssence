@@ -37,7 +37,10 @@ import net.lacolaco.smileessence.twitter.task.ShowUserTask;
 import twitter4j.DirectMessage;
 import twitter4j.Status;
 import twitter4j.User;
+import twitter4j.UserMentionEntity;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 
 public class TwitterUtils
@@ -130,5 +133,34 @@ public class TwitterUtils
             Logger.error(e.getMessage());
         }
         return message;
+    }
+
+    /**
+     * Get array of screenName in own text
+     *
+     * @param status  status
+     * @param account own account(excluded in result)
+     * @return
+     */
+    public static Collection<String> getScreenNames(Status status, Account account)
+    {
+        ArrayList<String> names = new ArrayList<>();
+        names.add(status.getUser().getScreenName());
+        if(status.getUserMentionEntities() != null)
+        {
+            for(UserMentionEntity entity : status.getUserMentionEntities())
+            {
+                if(entity.getScreenName().equals(account.screenName))
+                {
+                    continue;
+                }
+                if(names.contains(entity.getScreenName()))
+                {
+                    continue;
+                }
+                names.add(entity.getScreenName());
+            }
+        }
+        return names;
     }
 }

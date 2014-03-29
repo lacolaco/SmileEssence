@@ -34,6 +34,7 @@ public class PostState
     private String inReplyToText = "";
     private String mediaFilePath = "";
     private boolean directMessage = false;
+    private boolean requested = false;
     private OnPostStateChangeListener listener;
 
     private PostState()
@@ -78,6 +79,11 @@ public class PostState
     public boolean isDirectMessage()
     {
         return directMessage;
+    }
+
+    public boolean isRequested()
+    {
+        return requested;
     }
 
     public PostState setListener(OnPostStateChangeListener listener)
@@ -159,6 +165,12 @@ public class PostState
         public PostStateTransaction setDirectMessage(boolean directMessage)
         {
             state.directMessage = directMessage;
+            return this;
+        }
+
+        public PostStateTransaction requestOpenPage(boolean openPageRequest)
+        {
+            state.requested = openPageRequest;
             return this;
         }
 

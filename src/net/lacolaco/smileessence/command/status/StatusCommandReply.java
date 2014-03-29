@@ -26,7 +26,6 @@ package net.lacolaco.smileessence.command.status;
 
 import android.content.Context;
 import net.lacolaco.smileessence.R;
-import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TweetBuilder;
 import net.lacolaco.smileessence.view.adapter.PostState;
 import twitter4j.Status;
@@ -34,9 +33,9 @@ import twitter4j.Status;
 public class StatusCommandReply extends StatusCommand
 {
 
-    public StatusCommandReply(Context context, Account account, long statusId)
+    public StatusCommandReply(Context context, Status status)
     {
-        super(R.id.key_command_status_reply, context, account, statusId);
+        super(R.id.key_command_status_reply, context, status);
     }
 
     @Override
@@ -46,14 +45,8 @@ public class StatusCommandReply extends StatusCommand
     }
 
     @Override
-    public boolean execute()
+    public boolean execute(Status status)
     {
-        Status status = tryGetStatus();
-        if(status == null)
-        {
-            //TODO error
-            return false;
-        }
         TweetBuilder builder = new TweetBuilder().addScreenName(status.getUser().getScreenName());
 
         PostState.newState()
@@ -62,6 +55,7 @@ public class StatusCommandReply extends StatusCommand
                  .setInReplyToText(status.getText())
                  .setInReplyToScreenName(status.getUser().getScreenName())
                  .setInReplyToStatusID(status.getId())
+                 .requestOpenPage(true)
                  .commit();
         return true;
     }
