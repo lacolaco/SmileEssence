@@ -26,14 +26,9 @@ package net.lacolaco.smileessence.command.user;
 
 import android.content.Context;
 import net.lacolaco.smileessence.command.Command;
-import net.lacolaco.smileessence.data.UserCache;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.logging.Logger;
-import net.lacolaco.smileessence.twitter.TwitterApi;
-import net.lacolaco.smileessence.twitter.task.ShowUserTask;
+import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import twitter4j.User;
-
-import java.util.concurrent.ExecutionException;
 
 public abstract class UserCommand extends Command
 {
@@ -58,29 +53,8 @@ public abstract class UserCommand extends Command
         return userID;
     }
 
-    /**
-     * Get status from api if cache is not found
-     *
-     * @return null if api error happen
-     */
-    public final User tryGetUser()
+    protected final User tryGetUser()
     {
-        User user = UserCache.getInstance().get(userID);
-        if(user != null)
-        {
-            return user;
-        }
-        ShowUserTask task = new ShowUserTask(new TwitterApi(account).getTwitter(), userID);
-        task.execute();
-        try
-        {
-            user = task.get();
-        }
-        catch(InterruptedException | ExecutionException e)
-        {
-            e.printStackTrace();
-            Logger.error(e.toString());
-        }
-        return user;
+        return TwitterUtils.tryGetUser(account, userID);
     }
 }

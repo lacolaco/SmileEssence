@@ -24,7 +24,6 @@
 
 package net.lacolaco.smileessence.twitter;
 
-import com.twitter.Validator;
 import twitter4j.StatusUpdate;
 
 import java.io.File;
@@ -107,11 +106,5 @@ public class TweetBuilder
             }
         }
         return statusUpdate;
-    }
-
-    public static int getFixedTextLength(String str)
-    {
-        Validator validator = new Validator();
-        return validator.getTweetLength(str);
     }
 }

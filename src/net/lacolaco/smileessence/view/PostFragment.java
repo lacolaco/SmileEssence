@@ -41,7 +41,7 @@ import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
-import net.lacolaco.smileessence.twitter.TweetBuilder;
+import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.util.BitmapFileTask;
 import net.lacolaco.smileessence.view.adapter.PostState;
 
@@ -141,7 +141,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count)
     {
-        int remainingCount = 140 - TweetBuilder.getFixedTextLength(s.toString());
+        int remainingCount = 140 - TwitterUtils.getFixedTextLength(s.toString());
         textViewCount.setText(String.valueOf(remainingCount));
         if(remainingCount == 140)
         {

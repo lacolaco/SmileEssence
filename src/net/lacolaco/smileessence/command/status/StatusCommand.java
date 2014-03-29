@@ -26,14 +26,9 @@ package net.lacolaco.smileessence.command.status;
 
 import android.content.Context;
 import net.lacolaco.smileessence.command.Command;
-import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.logging.Logger;
-import net.lacolaco.smileessence.twitter.TwitterApi;
-import net.lacolaco.smileessence.twitter.task.ShowStatusTask;
+import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import twitter4j.Status;
-
-import java.util.concurrent.ExecutionException;
 
 public abstract class StatusCommand extends Command
 {
@@ -48,36 +43,6 @@ public abstract class StatusCommand extends Command
         this.statusID = statusID;
     }
 
-    /**
-     * Get status from api if cache is not found
-     *
-     * @return null if api error happen
-     */
-    public final Status tryGetStatus()
-    {
-        Status status = StatusCache.getInstance().get(statusID);
-        if(status != null)
-        {
-            return status;
-        }
-        ShowStatusTask task = new ShowStatusTask(new TwitterApi(account).getTwitter(), statusID);
-        task.execute();
-        try
-        {
-            status = task.get();
-        }
-        catch(InterruptedException | ExecutionException e)
-        {
-            e.printStackTrace();
-            Logger.error(e.toString());
-        }
-        return status;
-    }
-
-    public abstract String getText();
-
-    public abstract boolean execute();
-
     public Account getAccount()
     {
         return account;
@@ -86,5 +51,10 @@ public abstract class StatusCommand extends Command
     public long getStatusID()
     {
         return statusID;
+    }
+
+    protected final Status tryGetStatus()
+    {
+        return TwitterUtils.tryGetStatus(account, statusID);
     }
 }

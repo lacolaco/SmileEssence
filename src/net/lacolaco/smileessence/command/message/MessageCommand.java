@@ -26,14 +26,9 @@ package net.lacolaco.smileessence.command.message;
 
 import android.content.Context;
 import net.lacolaco.smileessence.command.Command;
-import net.lacolaco.smileessence.data.DirectMessageCache;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.logging.Logger;
-import net.lacolaco.smileessence.twitter.TwitterApi;
-import net.lacolaco.smileessence.twitter.task.ShowDirectMessageTask;
+import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import twitter4j.DirectMessage;
-
-import java.util.concurrent.ExecutionException;
 
 public abstract class MessageCommand extends Command
 {
@@ -60,22 +55,6 @@ public abstract class MessageCommand extends Command
 
     protected final DirectMessage tryGetMessage()
     {
-        DirectMessage message = DirectMessageCache.getInstance().get(messageID);
-        if(message != null)
-        {
-            return message;
-        }
-        ShowDirectMessageTask task = new ShowDirectMessageTask(new TwitterApi(account).getTwitter(), messageID);
-        task.execute();
-        try
-        {
-            message = task.get();
-        }
-        catch(InterruptedException | ExecutionException e)
-        {
-            e.printStackTrace();
-            Logger.error(e.getMessage());
-        }
-        return message;
+        return TwitterUtils.tryGetMessage(account, messageID);
     }
 }
