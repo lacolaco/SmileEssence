@@ -27,12 +27,8 @@
 <shape
     android:shape="rectangle"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <stroke android:color="@color/white"/>
-    <solid android:color="@color/metro_blue"/>
-    <corners android:radius="5.0dip"/>
-    <padding
-        android:top="1dp"
-        android:bottom="1dp"
-        android:left="1dp"
-        android:right="1dp"/>
+    <stroke
+        android:color="@color/white"
+        android:width="1dp"/>
+    <solid android:color="@android:color/holo_blue_dark"/>
 </shape>

@@ -30,6 +30,7 @@
     <color name="dark_blue">#231493</color>
     <color name="dark_blue_dark">#ff556e7c</color>
     <color name="white">#FFFFFF</color>
+    <color name="gray_dark_dark">#ff11131b</color>
     <color name="gray_dark">#535353</color>
     <color name="gray_dark_light">#656565</color>
     <color name="gray_light">#808080</color>

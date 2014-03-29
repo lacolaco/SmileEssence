@@ -31,4 +31,5 @@
     <attr name="button_blue_background" format="color"/>
     <attr name="button_blue_foreground" format="color"/>
     <attr name="button_round_blue" format="reference"/>
+    <attr name="custom_button_transparent" format="reference"/>
 </resources>

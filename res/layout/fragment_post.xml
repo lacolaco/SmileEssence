@@ -54,8 +54,8 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                style="?attr/custom_button_transparent"
                 android:src="?attr/icon_post_delete"
-                android:background="@android:color/transparent"
                 android:scaleType="fitCenter"/>
         </LinearLayout>
 
@@ -93,8 +93,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:layout_alignParentTop="true"
+                    style="?attr/custom_button_transparent"
                     android:src="?attr/icon_post_delete"
-                    android:background="@android:color/transparent"
                     android:scaleType="fitCenter"/>
 
                 <TextView
@@ -102,6 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:layout_alignParentBottom="true"
+                    android:textAppearance="@android:style/TextAppearance.Widget.TextView"
                     android:gravity="center_horizontal|center_vertical"
                     android:freezesText="true"/>
             </RelativeLayout>
@@ -121,12 +122,12 @@
                 android:id="@+id/post_media"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
+                style="?attr/custom_button_transparent"
                 android:scaleType="centerCrop"
                 android:src="?attr/icon_post_picture"
                 android:layout_column="0"
                 android:layout_row="0"
                 android:layout_gravity="fill"
-                android:background="@android:color/transparent"
                 android:adjustViewBounds="false"/>
 
             <Space
@@ -138,12 +139,12 @@
                 android:id="@+id/post_menu"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
+                style="?attr/custom_button_transparent"
                 android:scaleType="centerCrop"
                 android:src="?attr/icon_post_row"
                 android:layout_column="2"
                 android:layout_row="0"
                 android:layout_gravity="fill"
-                android:background="@android:color/transparent"
                 android:adjustViewBounds="false"/>
 
             <Space
@@ -165,7 +166,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    style="@style/custom_button_transparent"
+                    style="?attr/custom_button_transparent"
                     android:text="@string/post_button_tweet"
                     android:textStyle="bold"
                     android:textColor="?attr/button_blue_foreground"/>
@@ -191,8 +192,8 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                style="?attr/custom_button_transparent"
                 android:src="?attr/icon_post_delete"
-                android:background="@android:color/transparent"
                 android:scaleType="fitCenter"/>
         </LinearLayout>
     </LinearLayout>

@@ -89,12 +89,16 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         initializeView();
+        //TODO account check
+        initializePages();
+        Logger.debug("MainActivity:onCreate");
     }
 
     @Override
     protected void onResume()
     {
         super.onResume();
+        Logger.debug("MainActivity:onResume");
         //        //account check
         //        long id = getLastUsedAccountID();
         //        if(id < 0)
@@ -123,7 +127,7 @@ public class MainActivity extends Activity
         //            }
         //            initializeTimelines();
         //        }
-        initializePages();
+
     }
 
     @Override
@@ -153,6 +157,7 @@ public class MainActivity extends Activity
     protected void onPause()
     {
         super.onPause();
+        Logger.debug("MainActivity:onPause");
     }
 
     @Override
@@ -163,12 +168,14 @@ public class MainActivity extends Activity
         {
             stream.shutdown();
         }
+        Logger.debug("MainActivity:onDestroy");
     }
 
     @Override
     protected void onStop()
     {
         super.onStop();
+        Logger.debug("MainActivity:onStop");
     }
 
     @Override
@@ -410,5 +417,6 @@ public class MainActivity extends Activity
         addListPage(getString(R.string.page_name_messages), CustomListFragment.class, messagesAdapter, false);
         addListPage(getString(R.string.page_name_history), CustomListFragment.class, historyAdapter, false);
         pagerAdapter.notifyDataSetChanged();
+        PostState.clearState();
     }
 }

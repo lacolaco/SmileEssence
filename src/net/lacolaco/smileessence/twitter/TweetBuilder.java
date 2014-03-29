@@ -109,9 +109,9 @@ public class TweetBuilder
         return statusUpdate;
     }
 
-    public int getFixedTextLength()
+    public static int getFixedTextLength(String str)
     {
         Validator validator = new Validator();
-        return validator.getTweetLength(buildText());
+        return validator.getTweetLength(str);
     }
 }
