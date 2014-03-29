@@ -103,4 +103,7 @@
     <string name="command_status_favorite">Add to favorite</string>
     <string name="notice_favorite_succeeded">Succeeded to favorite</string>
     <string name="notice_favorite_failed">Failed to favorite</string>
+    <string name="command_status_retweet">Retweet</string>
+    <string name="notice_retweet_succeeded">Succeeded to retweet</string>
+    <string name="notice_retweet_failed">Failed to retweet</string>
 </resources>

@@ -100,7 +100,10 @@
     <string name="command_event_reply">返信</string>
     <string name="post_button_tweet">つぶやく</string>
     <string name="command_status_reply_to_all">全員に返信</string>
-    <string name="command_status_favorite">Add to favorite</string>
-    <string name="notice_favorite_succeeded">Succeeded to favorite</string>
-    <string name="notice_favorite_failed">Failed to favorite</string>
+    <string name="command_status_favorite">お気に入りに追加</string>
+    <string name="notice_favorite_succeeded">お気に入りに追加しました</string>
+    <string name="notice_favorite_failed">お気に入りの追加に失敗しました</string>
+    <string name="command_status_retweet">リツイート</string>
+    <string name="notice_retweet_succeeded">リツイートしました</string>
+    <string name="notice_retweet_failed">リツイートに失敗しました</string>
 </resources>
