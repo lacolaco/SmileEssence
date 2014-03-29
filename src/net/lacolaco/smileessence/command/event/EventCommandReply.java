@@ -26,7 +26,6 @@ package net.lacolaco.smileessence.command.event;
 
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
-import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TweetBuilder;
 import net.lacolaco.smileessence.view.adapter.PostState;
 import net.lacolaco.smileessence.viewmodel.EventViewModel;
@@ -34,7 +33,7 @@ import net.lacolaco.smileessence.viewmodel.EventViewModel;
 public class EventCommandReply extends EventCommand
 {
 
-    public EventCommandReply(Activity activity, Account account, EventViewModel event)
+    public EventCommandReply(Activity activity, EventViewModel event)
     {
         super(R.id.key_command_event_reply, activity, event);
     }
