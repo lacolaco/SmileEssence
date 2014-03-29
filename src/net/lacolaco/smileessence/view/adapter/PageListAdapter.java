@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.widget.ArrayAdapter;
+import net.lacolaco.smileessence.R;
 
 import java.util.ArrayList;
 
@@ -132,7 +133,7 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
         {
             itemList.add(page.name);
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, android.R.id.text1, itemList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.navigation_list_item, R.id.navigation_list_item_text, itemList);
         actionBar.setListNavigationCallbacks(adapter, this);
     }
 
