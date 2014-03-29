@@ -55,8 +55,10 @@ public class UserCommandReply extends UserCommand
             return false;
         }
         PostState.newState()
+                 .beginTransaction()
                  .setInReplyToScreenName(user.getScreenName())
-                 .setText(new TweetBuilder().addScreenName(user.getScreenName()).toString());
+                 .setText(new TweetBuilder().addScreenName(user.getScreenName()).buildText())
+                 .commit();
         return true;
     }
 }

@@ -54,9 +54,11 @@ public class MessageCommandReply extends MessageCommand
             return false;
         }
         PostState.newState()
+                 .beginTransaction()
                  .setDirectMessage(true)
                  .setInReplyToScreenName(message.getSenderScreenName())
-                 .setInReplyToText(message.getText());
+                 .setInReplyToText(message.getText())
+                 .commit();
         return true;
     }
 }

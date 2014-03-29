@@ -54,14 +54,15 @@ public class StatusCommandReply extends StatusCommand
             //TODO error
             return false;
         }
-        TweetBuilder builder = new TweetBuilder()
-                .addScreenName(status.getUser().getScreenName());
+        TweetBuilder builder = new TweetBuilder().addScreenName(status.getUser().getScreenName());
 
         PostState.newState()
-                 .setText(builder.toString())
+                 .beginTransaction()
+                 .setText(builder.buildText())
                  .setInReplyToText(status.getText())
                  .setInReplyToScreenName(status.getUser().getScreenName())
-                 .setInReplyToStatusID(status.getId());
+                 .setInReplyToStatusID(status.getId())
+                 .commit();
         return true;
     }
 }

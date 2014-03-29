@@ -49,8 +49,10 @@ public class EventCommandReply extends EventCommand
     public boolean execute()
     {
         PostState.newState()
-                 .setText(new TweetBuilder().addScreenName(getEvent().getSourceScreenName()).toString())
-                 .setInReplyToScreenName(getEvent().getSourceScreenName());
+                 .beginTransaction()
+                 .setText(new TweetBuilder().addScreenName(getEvent().getSourceScreenName()).buildText())
+                 .setInReplyToScreenName(getEvent().getSourceScreenName())
+                 .commit();
         return true;
     }
 }

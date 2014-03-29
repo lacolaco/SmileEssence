@@ -38,12 +38,6 @@ public class TweetBuilder
     private long inReplyToStatusID = -1;
     private String mediaPath;
 
-    @Override
-    public String toString()
-    {
-        return buildText();
-    }
-
     public TweetBuilder setText(String text)
     {
         this.text = text;
@@ -78,7 +72,7 @@ public class TweetBuilder
         this.mediaPath = mediaPath;
     }
 
-    private String buildText()
+    public String buildText()
     {
         StringBuilder builder = new StringBuilder();
 

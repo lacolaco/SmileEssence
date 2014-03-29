@@ -177,7 +177,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         {
             InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-            PostState.getState().setText(editText.getText().toString());
+            PostState.getState().beginTransaction().setText(editText.getText().toString()).commit();
         }
     }
 

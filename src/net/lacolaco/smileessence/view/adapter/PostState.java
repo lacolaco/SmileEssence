@@ -33,7 +33,7 @@ public class PostState
     private String inReplyToScreenName = "";
     private String inReplyToText = "";
     private String mediaFilePath = "";
-    private boolean directMessage;
+    private boolean directMessage = false;
     private OnPostStateChangeListener listener;
 
     private PostState()
@@ -55,23 +55,9 @@ public class PostState
         return text;
     }
 
-    public PostState setText(String text)
-    {
-        this.text = text;
-        postStateChange();
-        return this;
-    }
-
     public long getInReplyToStatusID()
     {
         return inReplyToStatusID;
-    }
-
-    public PostState setInReplyToStatusID(long inReplyToStatusID)
-    {
-        this.inReplyToStatusID = inReplyToStatusID;
-        postStateChange();
-        return this;
     }
 
     public String getInReplyToScreenName()
@@ -79,23 +65,9 @@ public class PostState
         return inReplyToScreenName;
     }
 
-    public PostState setInReplyToScreenName(String inReplyToScreenName)
-    {
-        this.inReplyToScreenName = inReplyToScreenName;
-        postStateChange();
-        return this;
-    }
-
     public String getInReplyToText()
     {
         return inReplyToText;
-    }
-
-    public PostState setInReplyToText(String inReplyToText)
-    {
-        this.inReplyToText = inReplyToText;
-        postStateChange();
-        return this;
     }
 
     public String getMediaFilePath()
@@ -103,23 +75,9 @@ public class PostState
         return mediaFilePath;
     }
 
-    public PostState setMediaFilePath(String mediaFilePath)
-    {
-        this.mediaFilePath = mediaFilePath;
-        postStateChange();
-        return this;
-    }
-
     public boolean isDirectMessage()
     {
         return directMessage;
-    }
-
-    public PostState setDirectMessage(boolean directMessage)
-    {
-        this.directMessage = directMessage;
-        postStateChange();
-        return this;
     }
 
     public PostState setListener(OnPostStateChangeListener listener)
@@ -138,6 +96,75 @@ public class PostState
         if(listener != null)
         {
             listener.onPostStateChange(this);
+        }
+    }
+
+    public PostStateTransaction beginTransaction()
+    {
+        return new PostStateTransaction(this);
+    }
+
+    private PostState copy(PostState another)
+    {
+        this.text = another.text;
+        this.inReplyToStatusID = another.inReplyToStatusID;
+        this.inReplyToScreenName = another.inReplyToScreenName;
+        this.inReplyToText = another.inReplyToText;
+        this.mediaFilePath = another.mediaFilePath;
+        this.directMessage = another.directMessage;
+        this.listener = another.listener;
+        return this;
+    }
+
+    public static class PostStateTransaction
+    {
+
+        private PostState state;
+
+        private PostStateTransaction(PostState state)
+        {
+            this.state = new PostState().copy(state);
+        }
+
+        public PostStateTransaction setText(String text)
+        {
+            state.text = text;
+            return this;
+        }
+
+        public PostStateTransaction setInReplyToStatusID(long inReplyToStatusID)
+        {
+            state.inReplyToStatusID = inReplyToStatusID;
+            return this;
+        }
+
+        public PostStateTransaction setInReplyToScreenName(String inReplyToScreenName)
+        {
+            state.inReplyToScreenName = inReplyToScreenName;
+            return this;
+        }
+
+        public PostStateTransaction setInReplyToText(String inReplyToText)
+        {
+            state.inReplyToText = inReplyToText;
+            return this;
+        }
+
+        public PostStateTransaction setMediaFilePath(String mediaFilePath)
+        {
+            state.mediaFilePath = mediaFilePath;
+            return this;
+        }
+
+        public PostStateTransaction setDirectMessage(boolean directMessage)
+        {
+            state.directMessage = directMessage;
+            return this;
+        }
+
+        public void commit()
+        {
+            PostState.getState().copy(state).postStateChange();
         }
     }
 

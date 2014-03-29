@@ -45,12 +45,12 @@ public class TweetBuilderTest extends InstrumentationTestCase
         User user = mock.getUserMock();
         Status status = mock.getStatusMock();
         TweetBuilder builder = new TweetBuilder();
-        assertEquals("", builder.toString());
+        assertEquals("", builder.buildText());
         builder.addScreenName(user.getScreenName());
         builder.setText("test");
-        assertEquals("@laco0416 test", builder.toString());
+        assertEquals("@laco0416 test", builder.buildText());
         builder.addText(" #test");
-        assertEquals("@laco0416 test #test", builder.toString());
+        assertEquals("@laco0416 test #test", builder.buildText());
         builder.setInReplyToStatusID(status.getInReplyToStatusId());
         assertEquals(status.getInReplyToStatusId(), builder.build().getInReplyToStatusId());
         builder.setMediaPath("");
