@@ -24,6 +24,7 @@
 
 package net.lacolaco.smileessence.twitter.task;
 
+import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.logging.Logger;
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -53,5 +54,11 @@ public class ShowStatusTask extends TwitterTask<Status>
             Logger.error(e.toString());
             return null;
         }
+    }
+
+    @Override
+    protected void onPostExecute(twitter4j.Status status)
+    {
+        StatusCache.getInstance().put(status);
     }
 }

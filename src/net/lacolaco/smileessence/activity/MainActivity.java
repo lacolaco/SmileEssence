@@ -417,6 +417,6 @@ public class MainActivity extends Activity
         addListPage(getString(R.string.page_name_messages), CustomListFragment.class, messagesAdapter, false);
         addListPage(getString(R.string.page_name_history), CustomListFragment.class, historyAdapter, false);
         pagerAdapter.notifyDataSetChanged();
-        PostState.clearState();
+        PostState.newState();
     }
 }

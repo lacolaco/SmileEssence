@@ -27,21 +27,15 @@ package net.lacolaco.smileessence.command.message;
 import android.content.Context;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.view.adapter.PostState;
+import twitter4j.DirectMessage;
 
 public class MessageCommandReply extends MessageCommand
 {
 
-    private final long messageID;
-
     public MessageCommandReply(Context context, Account account, long messageID)
     {
-        super(R.id.key_command_message_reply, context);
-        this.messageID = messageID;
-    }
-
-    public long getMessageID()
-    {
-        return messageID;
+        super(R.id.key_command_message_reply, context, account, messageID);
     }
 
     @Override
@@ -53,6 +47,16 @@ public class MessageCommandReply extends MessageCommand
     @Override
     public boolean execute()
     {
+        DirectMessage message = tryGetMessage();
+        if(message == null)
+        {
+            //TODO notify
+            return false;
+        }
+        PostState.newState()
+                 .setDirectMessage(true)
+                 .setInReplyToScreenName(message.getSenderScreenName())
+                 .setInReplyToText(message.getText());
         return true;
     }
 }

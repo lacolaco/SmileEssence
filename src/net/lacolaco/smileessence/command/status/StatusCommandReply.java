@@ -27,6 +27,8 @@ package net.lacolaco.smileessence.command.status;
 import android.content.Context;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.twitter.TweetBuilder;
+import net.lacolaco.smileessence.view.adapter.PostState;
 import twitter4j.Status;
 
 public class StatusCommandReply extends StatusCommand
@@ -52,7 +54,14 @@ public class StatusCommandReply extends StatusCommand
             //TODO error
             return false;
         }
-        //String text = String.format("@%s ", status.getUser().getScreenName());
+        TweetBuilder builder = new TweetBuilder()
+                .addScreenName(status.getUser().getScreenName());
+
+        PostState.newState()
+                 .setText(builder.toString())
+                 .setInReplyToText(status.getText())
+                 .setInReplyToScreenName(status.getUser().getScreenName())
+                 .setInReplyToStatusID(status.getId());
         return true;
     }
 }

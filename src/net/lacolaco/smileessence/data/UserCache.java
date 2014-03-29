@@ -22,41 +22,58 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.command.user;
+package net.lacolaco.smileessence.data;
 
-import android.content.Context;
-import net.lacolaco.smileessence.R;
-import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.twitter.TweetBuilder;
-import net.lacolaco.smileessence.view.adapter.PostState;
 import twitter4j.User;
 
-public class UserCommandReply extends UserCommand
+import java.util.concurrent.ConcurrentHashMap;
+
+public class UserCache
 {
 
-    public UserCommandReply(Context context, Account account, long userID)
+    private static UserCache instance = new UserCache();
+
+    private ConcurrentHashMap<Long, User> cache = new ConcurrentHashMap<>();
+
+    private UserCache()
     {
-        super(R.id.key_command_user_reply, context, account, userID);
     }
 
-    @Override
-    public String getText()
+    public static UserCache getInstance()
     {
-        return getContext().getString(R.string.command_user_reply);
+        return instance;
     }
 
-    @Override
-    public boolean execute()
+    /**
+     * Put user into cache
+     *
+     * @param user
+     * @return the previous value associated with key, or null if there was no mapping for key
+     */
+    public User put(User user)
     {
-        User user = tryGetUser();
-        if(user == null)
-        {
-            //TODO notify
-            return false;
-        }
-        PostState.newState()
-                 .setInReplyToScreenName(user.getScreenName())
-                 .setText(new TweetBuilder().addScreenName(user.getScreenName()).toString());
-        return true;
+        return cache.put(user.getId(), user);
+    }
+
+    /**
+     * Get user by id
+     *
+     * @param id user id
+     * @return cached value
+     */
+    public User get(long id)
+    {
+        return cache.get(id);
+    }
+
+    /**
+     * Remove user by id
+     *
+     * @param id user id
+     * @return removed user
+     */
+    public User remove(long id)
+    {
+        return cache.remove(id);
     }
 }

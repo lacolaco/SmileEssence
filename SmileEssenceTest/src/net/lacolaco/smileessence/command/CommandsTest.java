@@ -38,6 +38,7 @@ import net.lacolaco.smileessence.command.user.UserCommandReply;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.util.TwitterMock;
+import net.lacolaco.smileessence.view.adapter.PostState;
 import net.lacolaco.smileessence.viewmodel.EnumEvent;
 import net.lacolaco.smileessence.viewmodel.EventViewModel;
 import twitter4j.DirectMessage;
@@ -70,6 +71,10 @@ public class CommandsTest extends InstrumentationTestCase
         assertEquals(R.id.key_command_status_reply, reply.getKey());
         assertEquals(context.getString(R.string.command_status_reply), reply.getText());
         assertTrue(reply.execute());
+        assertEquals("@laco0416_2 ", PostState.getState().getText());
+        assertEquals(status.getId(), PostState.getState().getInReplyToStatusID());
+        assertEquals(status.getUser().getScreenName(), PostState.getState().getInReplyToScreenName());
+        assertEquals(status.getText(), PostState.getState().getInReplyToText());
     }
 
     public void testUserCommand() throws Exception
@@ -84,6 +89,10 @@ public class CommandsTest extends InstrumentationTestCase
         assertFalse(reply.isVisible());
         assertEquals(context.getString(R.string.command_user_reply), reply.getText());
         assertTrue(reply.execute());
+        assertEquals("@laco0416 ", PostState.getState().getText());
+        assertEquals(-1, PostState.getState().getInReplyToStatusID());
+        assertEquals(user.getScreenName(), PostState.getState().getInReplyToScreenName());
+        assertEquals("", PostState.getState().getInReplyToText());
     }
 
     public void testMessageCommand() throws Exception
@@ -98,6 +107,11 @@ public class CommandsTest extends InstrumentationTestCase
         assertFalse(reply.isVisible());
         assertEquals(context.getString(R.string.command_message_reply), reply.getText());
         assertTrue(reply.execute());
+        assertEquals("", PostState.getState().getText());
+        assertEquals(-1, PostState.getState().getInReplyToStatusID());
+        assertEquals(message.getSenderScreenName(), PostState.getState().getInReplyToScreenName());
+        assertTrue(PostState.getState().isDirectMessage());
+        assertEquals(message.getText(), PostState.getState().getInReplyToText());
     }
 
     public void testEventCommand() throws Exception
@@ -112,5 +126,10 @@ public class CommandsTest extends InstrumentationTestCase
         assertFalse(reply.isVisible());
         assertEquals(context.getString(R.string.command_event_reply), reply.getText());
         assertTrue(reply.execute());
+        assertEquals(String.format("@%s ", message.getSourceScreenName()), PostState.getState().getText());
+        assertEquals(-1, PostState.getState().getInReplyToStatusID());
+        assertEquals(message.getSourceScreenName(), PostState.getState().getInReplyToScreenName());
+        assertFalse(PostState.getState().isDirectMessage());
+        assertEquals("", PostState.getState().getInReplyToText());
     }
 }

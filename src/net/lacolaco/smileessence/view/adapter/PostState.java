@@ -33,20 +33,21 @@ public class PostState
     private String inReplyToScreenName = "";
     private String inReplyToText = "";
     private String mediaFilePath = "";
+    private boolean directMessage;
     private OnPostStateChangeListener listener;
 
     private PostState()
     {
     }
 
-    public static PostState getInstance()
+    public static PostState getState()
     {
         return instance;
     }
 
-    public static PostState clearState()
+    public static PostState newState()
     {
-        return instance = new PostState();
+        return instance = new PostState().setListener(instance.listener);
     }
 
     public String getText()
@@ -109,9 +110,22 @@ public class PostState
         return this;
     }
 
-    public void setListener(OnPostStateChangeListener listener)
+    public boolean isDirectMessage()
+    {
+        return directMessage;
+    }
+
+    public PostState setDirectMessage(boolean directMessage)
+    {
+        this.directMessage = directMessage;
+        postStateChange();
+        return this;
+    }
+
+    public PostState setListener(OnPostStateChangeListener listener)
     {
         this.listener = listener;
+        return this;
     }
 
     public void removeListener()

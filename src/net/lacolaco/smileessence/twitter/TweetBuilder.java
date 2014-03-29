@@ -88,7 +88,7 @@ public class TweetBuilder
             builder.append(String.format("@%s ", screenName));
         }
         builder.append(text);
-        return builder.toString().trim();
+        return builder.toString();
     }
 
     public StatusUpdate build()

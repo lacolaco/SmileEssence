@@ -22,41 +22,58 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.command.user;
+package net.lacolaco.smileessence.data;
 
-import android.content.Context;
-import net.lacolaco.smileessence.R;
-import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.twitter.TweetBuilder;
-import net.lacolaco.smileessence.view.adapter.PostState;
-import twitter4j.User;
+import twitter4j.DirectMessage;
 
-public class UserCommandReply extends UserCommand
+import java.util.concurrent.ConcurrentHashMap;
+
+public class DirectMessageCache
 {
 
-    public UserCommandReply(Context context, Account account, long userID)
+    private static DirectMessageCache instance = new DirectMessageCache();
+
+    private ConcurrentHashMap<Long, DirectMessage> cache = new ConcurrentHashMap<>();
+
+    private DirectMessageCache()
     {
-        super(R.id.key_command_user_reply, context, account, userID);
     }
 
-    @Override
-    public String getText()
+    public static DirectMessageCache getInstance()
     {
-        return getContext().getString(R.string.command_user_reply);
+        return instance;
     }
 
-    @Override
-    public boolean execute()
+    /**
+     * Put message into cache
+     *
+     * @param message
+     * @return the previous value associated with key, or null if there was no mapping for key
+     */
+    public DirectMessage put(DirectMessage message)
     {
-        User user = tryGetUser();
-        if(user == null)
-        {
-            //TODO notify
-            return false;
-        }
-        PostState.newState()
-                 .setInReplyToScreenName(user.getScreenName())
-                 .setText(new TweetBuilder().addScreenName(user.getScreenName()).toString());
-        return true;
+        return cache.put(message.getId(), message);
+    }
+
+    /**
+     * Get message by id
+     *
+     * @param id message id
+     * @return cached value
+     */
+    public DirectMessage get(long id)
+    {
+        return cache.get(id);
+    }
+
+    /**
+     * Remove message by id
+     *
+     * @param id message id
+     * @return removed message
+     */
+    public DirectMessage remove(long id)
+    {
+        return cache.remove(id);
     }
 }

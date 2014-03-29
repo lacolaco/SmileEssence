@@ -66,7 +66,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     {
         MainActivity activity = (MainActivity)getActivity();
         UserPreferenceHelper preferenceHelper = new UserPreferenceHelper(activity);
-        PostState state = PostState.getInstance();
+        PostState state = PostState.getState();
 
         View v = inflater.inflate(R.layout.fragment_post, null);
         buttonTweet = (Button)v.findViewById(R.id.post_tweet_button);
@@ -130,7 +130,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     public void onDestroyView()
     {
         super.onDestroy();
-        PostState.getInstance().removeListener();
+        PostState.getState().removeListener();
     }
 
     @Override
@@ -177,7 +177,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         {
             InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-            PostState.getInstance().setText(editText.getText().toString());
+            PostState.getState().setText(editText.getText().toString());
         }
     }
 

@@ -22,23 +22,43 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.resource;
+package net.lacolaco.smileessence.twitter.task;
 
-import android.test.AndroidTestCase;
-import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.data.DirectMessageCache;
+import net.lacolaco.smileessence.logging.Logger;
+import twitter4j.DirectMessage;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
-public class ResourceHelperTest extends AndroidTestCase
+public class ShowDirectMessageTask extends TwitterTask<DirectMessage>
 {
 
-    public void testReadResource() throws Exception
+    private final long messageID;
+
+    public ShowDirectMessageTask(Twitter twitter, long messageID)
     {
-        ResourceHelper pref = new ResourceHelper(getContext());
-        assertNotNull(pref.getString(R.string.app_name));
+        super(twitter);
+        this.messageID = messageID;
     }
 
-    public void testNotFound() throws Exception
+    @Override
+    protected DirectMessage doInBackground(Void... params)
     {
-        ResourceHelper pref = new ResourceHelper(getContext());
-        assertNull(pref.getString(-1));
+        try
+        {
+            return twitter.directMessages().showDirectMessage(messageID);
+        }
+        catch(TwitterException e)
+        {
+            e.printStackTrace();
+            Logger.error(e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    protected void onPostExecute(DirectMessage directMessage)
+    {
+        DirectMessageCache.getInstance().put(directMessage);
     }
 }

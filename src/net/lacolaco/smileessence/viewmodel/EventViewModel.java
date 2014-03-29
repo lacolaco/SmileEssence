@@ -36,14 +36,14 @@ public class EventViewModel implements IViewModel
 
     private EnumEvent event;
     private long sourceUserID;
-    private String sourceUserScreenName;
     private long targetStatusID;
+    private String sourceScreenName;
 
     public EventViewModel(EnumEvent event, User source, Status status)
     {
         this.event = event;
         this.sourceUserID = source.getId();
-        this.sourceUserScreenName = source.getScreenName();
+        this.sourceScreenName = source.getScreenName();
         if(status != null)
         {
             targetStatusID = status.getId();
@@ -59,19 +59,24 @@ public class EventViewModel implements IViewModel
         this(event, source, null);
     }
 
+    public EnumEvent getEvent()
+    {
+        return event;
+    }
+
     public long getSourceUserID()
     {
         return sourceUserID;
     }
 
+    public String getSourceScreenName()
+    {
+        return sourceScreenName;
+    }
+
     public long getTargetStatusID()
     {
         return targetStatusID;
-    }
-
-    public EnumEvent getEvent()
-    {
-        return event;
     }
 
     public boolean isStatusEvent()
@@ -81,7 +86,7 @@ public class EventViewModel implements IViewModel
 
     public String getFormattedString(Context context)
     {
-        return context.getString(event.getTextFormatResourceID(), sourceUserScreenName);
+        return context.getString(event.getTextFormatResourceID(), sourceScreenName);
     }
 
     @Override
@@ -89,6 +94,4 @@ public class EventViewModel implements IViewModel
     {
         return new TextView(context);
     }
-
-
 }

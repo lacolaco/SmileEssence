@@ -27,6 +27,8 @@ package net.lacolaco.smileessence.command.event;
 import android.content.Context;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.twitter.TweetBuilder;
+import net.lacolaco.smileessence.view.adapter.PostState;
 import net.lacolaco.smileessence.viewmodel.EventViewModel;
 
 public class EventCommandReply extends EventCommand
@@ -46,6 +48,9 @@ public class EventCommandReply extends EventCommand
     @Override
     public boolean execute()
     {
+        PostState.newState()
+                 .setText(new TweetBuilder().addScreenName(getEvent().getSourceScreenName()).toString())
+                 .setInReplyToScreenName(getEvent().getSourceScreenName());
         return true;
     }
 }
