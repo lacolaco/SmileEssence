@@ -36,7 +36,8 @@
     <application
         android:label="@string/app_name"
         android:name=".Application"
-        android:icon="@drawable/icon_application">
+        android:icon="@drawable/icon_application"
+        android:theme="@style/theme_dark">
         <meta-data
             android:name="AA_DB_NAME"
             android:value="app.db"/>

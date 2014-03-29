@@ -24,7 +24,7 @@
 
 package net.lacolaco.smileessence.view.adapter;
 
-import net.lacolaco.smileessence.activity.MainActivity;
+import android.app.Activity;
 import net.lacolaco.smileessence.viewmodel.MessageViewModel;
 
 import java.util.Iterator;
@@ -32,7 +32,7 @@ import java.util.Iterator;
 public class MessageListAdapter extends CustomListAdapter<MessageViewModel>
 {
 
-    public MessageListAdapter(MainActivity activity)
+    public MessageListAdapter(Activity activity)
     {
         super(activity, MessageViewModel.class);
     }

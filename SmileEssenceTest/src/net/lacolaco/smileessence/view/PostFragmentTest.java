@@ -22,37 +22,31 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.view.adapter;
+package net.lacolaco.smileessence.view;
 
-import android.app.Activity;
-import net.lacolaco.smileessence.viewmodel.StatusViewModel;
+import android.test.ActivityInstrumentationTestCase2;
+import net.lacolaco.smileessence.activity.MainActivity;
 
-import java.util.Iterator;
-
-public final class StatusListAdapter extends CustomListAdapter<StatusViewModel>
+public class PostFragmentTest extends ActivityInstrumentationTestCase2<MainActivity>
 {
 
-    public StatusListAdapter(Activity activity)
+    public PostFragmentTest()
     {
-        super(activity, StatusViewModel.class);
+        super(MainActivity.class);
     }
 
-    public StatusViewModel removeByStatusID(long statusID)
+    public void testView() throws Exception
     {
-        synchronized(this.LOCK)
+        getActivity().runOnUiThread(new Runnable()
         {
-            Iterator<StatusViewModel> iterator = this.list.iterator();
-            while(iterator.hasNext())
+            @Override
+            public void run()
             {
-                StatusViewModel statusViewModel = iterator.next();
-                if(statusViewModel.getID() == statusID)
-                {
-                    iterator.remove();
-                    updateAdapter();
-                    return statusViewModel;
-                }
+                getActivity().initializePages();
             }
-            return null;
-        }
+        });
+        Thread.sleep(1000);
+        PostFragment fragment = (PostFragment)getActivity().getPagerAdapter().getItem(MainActivity.PAGE_POST);
+        assertNotNull(fragment);
     }
 }

@@ -36,6 +36,7 @@ import android.util.SparseArray;
 import android.view.Menu;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.preference.AppPreferenceHelper;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.resource.ResourceHelper;
@@ -44,7 +45,7 @@ import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.UserStreamListener;
 import net.lacolaco.smileessence.util.NetworkHelper;
 import net.lacolaco.smileessence.view.CustomListFragment;
-import net.lacolaco.smileessence.view.TextFragment;
+import net.lacolaco.smileessence.view.PostFragment;
 import net.lacolaco.smileessence.view.adapter.*;
 import net.lacolaco.smileessence.viewmodel.menu.MainActivityMenuFactory;
 import twitter4j.TwitterStream;
@@ -77,9 +78,6 @@ public class MainActivity extends Activity
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
         try
         {
             setupHelpers();
@@ -89,6 +87,9 @@ public class MainActivity extends Activity
             e.printStackTrace();
             finish();
         }
+        setTheme();
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
         initializeView();
     }
 
@@ -124,6 +125,7 @@ public class MainActivity extends Activity
         //            }
         //            initializeTimelines();
         //        }
+        initializePages();
     }
 
     @Override
@@ -180,24 +182,50 @@ public class MainActivity extends Activity
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        MainActivityMenuFactory factory = new MainActivityMenuFactory(resourceHelper);
+        MainActivityMenuFactory factory = new MainActivityMenuFactory(this.getBaseContext());
         factory.addItemsToMenu(menu);
         return true;
     }
 
     private void setupHelpers() throws IOException
     {
-        resourceHelper = new ResourceHelper(this);
         userPref = new UserPreferenceHelper(this);
         appPref = new AppPreferenceHelper(this);
     }
 
+    private void setTheme()
+    {
+        switch(userPref.getValue(R.string.key_setting_theme, 0))
+        {
+            case 0:
+            {
+                setTheme(R.style.theme_dark);
+                Logger.debug("Theme:Dark");
+                break;
+            }
+            case 1:
+            {
+                setTheme(R.style.theme_light);
+                Logger.debug("Theme:Light");
+                break;
+            }
+            default:
+            {
+                setTheme(R.style.theme_dark);
+                Logger.debug("Theme:Default");
+                break;
+            }
+        }
+    }
+
+
     private void initializeView()
     {
         ActionBar bar = getActionBar();
-        bar.setDisplayShowHomeEnabled(false);
+        bar.setDisplayShowHomeEnabled(true);
         bar.setDisplayShowTitleEnabled(false);
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        viewPager = (ViewPager)findViewById(R.id.viewPager);
         pagerAdapter = new PageListAdapter(this, viewPager);
     }
 
@@ -216,17 +244,12 @@ public class MainActivity extends Activity
 
     private String getVersion()
     {
-        return resourceHelper.getString(R.string.app_version);
+        return getString(R.string.app_version);
     }
 
     private boolean isFirstLaunchThisVersion()
     {
         return !getVersion().contentEquals(appPref.getValue("app.version", ""));
-    }
-
-    public ResourceHelper getResourceHelper()
-    {
-        return resourceHelper;
     }
 
     public UserPreferenceHelper getUserPref()
@@ -322,6 +345,11 @@ public class MainActivity extends Activity
         return pagerAdapter.getCount();
     }
 
+    public boolean addPostPage()
+    {
+        return addPage(getString(R.string.page_name_post), PostFragment.class, null, true);
+    }
+
     public boolean addListPage(String name, Class<? extends ListFragment> fragmentClass, CustomListAdapter<?> adapter, boolean withNotify)
     {
         int nextPosition = pagerAdapter.getCount();
@@ -373,16 +401,15 @@ public class MainActivity extends Activity
      */
     public void initializePages()
     {
-        addPage(resourceHelper.getString(R.string.page_name_post), TextFragment.class, null, false);
+        addPostPage();
         StatusListAdapter homeAdapter = new StatusListAdapter(this);
         StatusListAdapter mentionsAdapter = new StatusListAdapter(this);
         MessageListAdapter messagesAdapter = new MessageListAdapter(this);
         EventListAdapter historyAdapter = new EventListAdapter(this);
-        addListPage(resourceHelper.getString(R.string.page_name_home), CustomListFragment.class, homeAdapter, false);
-        addListPage(resourceHelper.getString(R.string.page_name_mentions), CustomListFragment.class, mentionsAdapter, false);
-        addListPage(resourceHelper.getString(R.string.page_name_messages), CustomListFragment.class, messagesAdapter, false);
-        addListPage(resourceHelper.getString(R.string.page_name_history), CustomListFragment.class, historyAdapter, false);
+        addListPage(getString(R.string.page_name_home), CustomListFragment.class, homeAdapter, false);
+        addListPage(getString(R.string.page_name_mentions), CustomListFragment.class, mentionsAdapter, false);
+        addListPage(getString(R.string.page_name_messages), CustomListFragment.class, messagesAdapter, false);
+        addListPage(getString(R.string.page_name_history), CustomListFragment.class, historyAdapter, false);
         pagerAdapter.notifyDataSetChanged();
     }
-
 }

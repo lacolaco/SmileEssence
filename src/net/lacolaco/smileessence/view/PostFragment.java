@@ -22,37 +22,29 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.view.adapter;
+package net.lacolaco.smileessence.view;
 
-import android.app.Activity;
-import net.lacolaco.smileessence.viewmodel.StatusViewModel;
+import android.app.Fragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import net.lacolaco.smileessence.R;
 
-import java.util.Iterator;
-
-public final class StatusListAdapter extends CustomListAdapter<StatusViewModel>
+public class PostFragment extends Fragment
 {
 
-    public StatusListAdapter(Activity activity)
+    @Override
+    public void onCreate(Bundle savedInstanceState)
     {
-        super(activity, StatusViewModel.class);
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
-    public StatusViewModel removeByStatusID(long statusID)
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        synchronized(this.LOCK)
-        {
-            Iterator<StatusViewModel> iterator = this.list.iterator();
-            while(iterator.hasNext())
-            {
-                StatusViewModel statusViewModel = iterator.next();
-                if(statusViewModel.getID() == statusID)
-                {
-                    iterator.remove();
-                    updateAdapter();
-                    return statusViewModel;
-                }
-            }
-            return null;
-        }
+        View v = inflater.inflate(R.layout.fragment_post, null);
+        return v;
     }
 }

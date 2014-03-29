@@ -24,40 +24,40 @@
 
 package net.lacolaco.smileessence.viewmodel.menu;
 
+import android.content.Context;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import net.lacolaco.smileessence.R;
-import net.lacolaco.smileessence.resource.ResourceHelper;
 
 public class MainActivityMenuFactory
 {
 
-    private final ResourceHelper resourceHelper;
+    private final Context context;
 
-    public MainActivityMenuFactory(ResourceHelper resourceHelper)
+    public MainActivityMenuFactory(Context context)
     {
-        this.resourceHelper = resourceHelper;
+        this.context = context;
     }
 
     public void addItemsToMenu(Menu menu)
     {
         //Add button
-        MenuItem addButton = menu.add(Menu.NONE, R.id.actionbar_add, Menu.NONE, resourceHelper.getString(R.string.actionbar_add));
+        MenuItem addButton = menu.add(Menu.NONE, R.id.actionbar_add, Menu.NONE, context.getString(R.string.actionbar_add));
         addButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         addButton.setIcon(R.drawable.ic_action_new);
         //Setting button
-        MenuItem setting = menu.add(Menu.NONE, R.id.actionbar_setting, Menu.NONE, resourceHelper.getString(R.string.actionbar_setting));
+        MenuItem setting = menu.add(Menu.NONE, R.id.actionbar_setting, Menu.NONE, context.getString(R.string.actionbar_setting));
         setting.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         setting.setIcon(R.drawable.ic_action_settings);
         //External services
-        SubMenu services = menu.addSubMenu(Menu.NONE, R.id.actionbar_services, Menu.NONE, resourceHelper.getString(R.string.actionbar_services));
+        SubMenu services = menu.addSubMenu(Menu.NONE, R.id.actionbar_services, Menu.NONE, context.getString(R.string.actionbar_services));
         services.setHeaderIcon(R.drawable.ic_action_web_site);
-        services.add(Menu.NONE, R.id.actionbar_favstar, Menu.NONE, resourceHelper.getString(R.string.actionbar_favstar));
-        services.add(Menu.NONE, R.id.actionbar_aclog, Menu.NONE, resourceHelper.getString(R.string.actionbar_aclog));
-        services.add(Menu.NONE, R.id.actionbar_twilog, Menu.NONE, resourceHelper.getString(R.string.actionbar_twilog));
+        services.add(Menu.NONE, R.id.actionbar_favstar, Menu.NONE, context.getString(R.string.actionbar_favstar));
+        services.add(Menu.NONE, R.id.actionbar_aclog, Menu.NONE, context.getString(R.string.actionbar_aclog));
+        services.add(Menu.NONE, R.id.actionbar_twilog, Menu.NONE, context.getString(R.string.actionbar_twilog));
         //Report to author
-        MenuItem report = menu.add(Menu.NONE, R.id.actionbar_report, Menu.NONE, resourceHelper.getString(R.string.actionbar_report));
+        MenuItem report = menu.add(Menu.NONE, R.id.actionbar_report, Menu.NONE, context.getString(R.string.actionbar_report));
         report.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         report.setIcon(R.drawable.ic_action_email);
     }

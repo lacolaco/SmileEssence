@@ -24,11 +24,11 @@
 
 package net.lacolaco.smileessence.view.adapter;
 
+import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import com.google.common.collect.Iterables;
-import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.viewmodel.IViewModel;
 
 import java.util.ArrayList;
@@ -44,15 +44,15 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
     protected ArrayList<T> list = new ArrayList<>();
     protected T[] array;
     protected boolean isNotifiable = true;
-    protected MainActivity activity;
+    protected Activity activity;
 
-    public CustomListAdapter(MainActivity activity, Class<T> clss)
+    public CustomListAdapter(Activity activity, Class<T> clss)
     {
         this.activity = activity;
         this.clss = clss;
     }
 
-    public MainActivity getActivity()
+    public Activity getActivity()
     {
         return activity;
     }
@@ -164,7 +164,7 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        View view = ((T) getItem(position)).getView(activity, activity.getLayoutInflater(), convertView);
+        View view = ((T)getItem(position)).getView(activity, activity.getLayoutInflater(), convertView);
         return view;
     }
 }

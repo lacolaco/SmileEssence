@@ -98,4 +98,5 @@
     <string name="command_user_reply">返信</string>
     <string name="command_message_reply">返信</string>
     <string name="command_event_reply">返信</string>
+    <string name="post_button_tweet">つぶやく</string>
 </resources>

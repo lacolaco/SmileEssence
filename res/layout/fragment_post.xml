@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ The MIT License (MIT)
+  ~
+  ~ Copyright (c) 2012-2014 lacolaco.net
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:scrollbars="vertical">
+
+        <!--
+            In Reply To Item
+        -->
+        <FrameLayout
+            android:id="@+id/post_inreplyto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone">
+        </FrameLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp">
+
+            <EditText
+                android:id="@+id/post_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="top"
+                android:inputType="text|textMultiLine"
+                android:minLines="2"
+                android:maxLines="8"
+                android:scrollbars="vertical"
+                android:layout_weight="1"
+                android:freezesText="true"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp">
+
+                <ImageButton
+                    android:id="@+id/post_delete"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:src="?attr/icon_post_delete"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="center_horizontal"/>
+
+                <TextView
+                    android:id="@+id/post_text_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal|bottom"
+                    android:freezesText="true"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/post_media"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:padding="0dp"
+                    android:scaleType="fitCenter"
+                    android:src="?attr/icon_post_picture"/>
+
+                <ImageButton
+                    android:id="@+id/post_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:padding="0dp"
+                    android:scaleType="fitCenter"
+                    android:src="?attr/icon_post_row"/>
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="5dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"/>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="10"
+                android:padding="1dp">
+
+                <Button
+                    android:id="@+id/post_tweet_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="@string/post_button_tweet"
+                    android:textStyle="bold"/>
+            </FrameLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/post_media_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+</ScrollView>

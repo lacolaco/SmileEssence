@@ -78,11 +78,6 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     }
 
-    public void testGetResourceHelper() throws Exception
-    {
-        assertNotNull(getActivity().getResourceHelper());
-    }
-
     public void testGetPreferenceHelper() throws Exception
     {
         assertNotNull(getActivity().getUserPref());
@@ -204,11 +199,11 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
             public void run()
             {
                 getActivity().initializePages();
-                assertEquals(getActivity().getResourceHelper().getString(R.string.page_name_post), getActivity().getPageInfo(0).getName());
-                assertEquals(getActivity().getResourceHelper().getString(R.string.page_name_home), getActivity().getPageInfo(1).getName());
-                assertEquals(getActivity().getResourceHelper().getString(R.string.page_name_mentions), getActivity().getPageInfo(2).getName());
-                assertEquals(getActivity().getResourceHelper().getString(R.string.page_name_messages), getActivity().getPageInfo(3).getName());
-                assertEquals(getActivity().getResourceHelper().getString(R.string.page_name_history), getActivity().getPageInfo(4).getName());
+                assertEquals(getActivity().getString(R.string.page_name_post), getActivity().getPageInfo(0).getName());
+                assertEquals(getActivity().getString(R.string.page_name_home), getActivity().getPageInfo(1).getName());
+                assertEquals(getActivity().getString(R.string.page_name_mentions), getActivity().getPageInfo(2).getName());
+                assertEquals(getActivity().getString(R.string.page_name_messages), getActivity().getPageInfo(3).getName());
+                assertEquals(getActivity().getString(R.string.page_name_history), getActivity().getPageInfo(4).getName());
                 assertNull(getActivity().getListAdapter(0));
                 assertNotNull(getActivity().getListAdapter(1));
                 assertNotNull(getActivity().getListAdapter(2));
