@@ -24,7 +24,6 @@
   -->
 
 <resources>
-    <item name="key_command_user_reply" type="id"/>
     <item name="key_command_message_reply" type="id"/>
     <item name="key_command_event_reply" type="id"/>
     <item name="key_command_status_reply" type="id"/>
@@ -40,6 +39,7 @@
     <item name="key_command_status_make_anonymous" type="id"/>
     <item name="key_command_status_tofubuster" type="id"/>
     <item name="key_command_status_delete" type="id"/>
+    <item name="key_command_user_reply" type="id"/>
     <item name="key_command_user_add_to_reply" type="id"/>
     <item name="key_command_user_open_favstar" type="id"/>
     <item name="key_command_user_open_aclog" type="id"/>
@@ -48,4 +48,5 @@
     <item name="key_command_user_unfollow" type="id"/>
     <item name="key_command_user_block" type="id"/>
     <item name="key_command_user_unblock" type="id"/>
+    <item name="key_command_user_r4s" type="id"/>
 </resources>

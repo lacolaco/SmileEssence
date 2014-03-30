@@ -138,4 +138,7 @@
     <string name="command_user_unblock">ブロック解除</string>
     <string name="notice_unblock_succeeded">ブロック解除しました</string>
     <string name="notice_unblock_failed">ブロック解除に失敗しました</string>
+    <string name="command_user_r4s">スパム報告</string>
+    <string name="notice_r4s_succeeded">スパム報告しました</string>
+    <string name="notice_r4s_failed">スパム報告に失敗しました</string>
 </resources>
