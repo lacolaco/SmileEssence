@@ -108,4 +108,5 @@
     <string name="notice_retweet_failed">Failed to retweet</string>
     <string name="command_status_fav_and_rt">Retweet and favorite</string>
     <string name="command_status_quote">Quote</string>
+    <string name="command_status_clipboard">Copy to clipboard</string>
 </resources>
