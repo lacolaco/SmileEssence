@@ -69,11 +69,6 @@ public class TweetBuilder
         return this;
     }
 
-    public String getMediaPath()
-    {
-        return mediaPath;
-    }
-
     public void setMediaPath(String mediaPath)
     {
         this.mediaPath = mediaPath;
@@ -91,7 +86,7 @@ public class TweetBuilder
         return builder.toString();
     }
 
-    public StatusUpdate build()
+    public StatusUpdate toStatusUpdate()
     {
         StatusUpdate statusUpdate = new StatusUpdate(buildText());
         if(inReplyToStatusID >= 0)
