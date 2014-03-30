@@ -40,4 +40,5 @@
     <item name="key_command_status_make_anonymous" type="id"/>
     <item name="key_command_status_tofubuster" type="id"/>
     <item name="key_command_status_delete" type="id"/>
+    <item name="key_command_user_add_to_reply" type="id"/>
 </resources>

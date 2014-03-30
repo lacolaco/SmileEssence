@@ -37,6 +37,7 @@ import net.lacolaco.smileessence.command.status.StatusCommandMakeAnonymous;
 import net.lacolaco.smileessence.command.status.StatusCommandNanigaja;
 import net.lacolaco.smileessence.command.status.StatusCommandReply;
 import net.lacolaco.smileessence.command.user.UserCommand;
+import net.lacolaco.smileessence.command.user.UserCommandAddToReply;
 import net.lacolaco.smileessence.command.user.UserCommandReply;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.entity.Account;
@@ -90,7 +91,7 @@ public class CommandsTest extends ActivityInstrumentationTestCase2<MainActivity>
         Activity activity = getActivity();
         Account account = new Account(mock.getAccessToken(), mock.getAccessTokenSecret(), mock.getUserMock().getId(), mock.getUserMock().getScreenName());
         User user = mock.getUserMock();
-
+        PostState.getState().removeListener();
         UserCommand reply = new UserCommandReply(activity, user);
         assertTrue(reply.isEnabled());
         assertEquals(activity.getString(R.string.command_user_reply), reply.getText());
@@ -99,6 +100,9 @@ public class CommandsTest extends ActivityInstrumentationTestCase2<MainActivity>
         assertEquals(-1, PostState.getState().getInReplyToStatusID());
         assertEquals(user.getScreenName(), PostState.getState().getInReplyToScreenName());
         assertEquals("", PostState.getState().getInReplyToText());
+        UserCommandAddToReply addToReply = new UserCommandAddToReply(activity, user);
+        addToReply.execute();
+        assertEquals("@laco0416 @laco0416 ", PostState.getState().getText());
     }
 
     public void testMessageCommand() throws Exception

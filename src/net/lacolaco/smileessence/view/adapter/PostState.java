@@ -161,6 +161,20 @@ public class PostState
             return this;
         }
 
+        public PostStateTransaction appendText(String text)
+        {
+            state.text = state.text + text;
+            return this;
+        }
+
+        public PostStateTransaction insertText(int index, String text)
+        {
+            StringBuilder builder = new StringBuilder(state.text);
+            builder.insert(index, text);
+            state.text = builder.toString();
+            return this;
+        }
+
         public PostStateTransaction setInReplyToStatusID(long inReplyToStatusID)
         {
             state.inReplyToStatusID = inReplyToStatusID;
