@@ -9,7 +9,7 @@
       "screen_name":"laco0416_2",
       "location":"",
       "description":"規制垢だよバカヤロウ \r\n@laco0416",
-      "url":null,
+      "screenName":null,
       "entities":{
         "description":{
           "urls":[
@@ -59,12 +59,12 @@
       "screen_name":"laco0416",
       "location":"戦地 福岡",
       "description":"C#とかPythonとかJavaとか書きます\n\nhttps:\/\/t.co\/HaZ2B8rGTH\nお問い合せはこちらから。\nhttp:\/\/t.co\/sHp1REsW9I",
-      "url":"http:\/\/t.co\/xf9c1YjWDo",
+      "screenName":"http:\/\/t.co\/xf9c1YjWDo",
       "entities":{
-        "url":{
+        "screenName":{
           "urls":[
             {
-              "url":"http:\/\/t.co\/xf9c1YjWDo",
+              "screenName":"http:\/\/t.co\/xf9c1YjWDo",
               "expanded_url":"http:\/\/lacolaco.net",
               "display_url":"lacolaco.net",
               "indices":[
@@ -77,7 +77,7 @@
         "description":{
           "urls":[
             {
-              "url":"https:\/\/t.co\/HaZ2B8rGTH",
+              "screenName":"https:\/\/t.co\/HaZ2B8rGTH",
               "expanded_url":"https:\/\/twitter.com\/laco0416\/status\/441249190841032704",
               "display_url":"twitter.com\/laco0416\/statu…",
               "indices":[
@@ -86,7 +86,7 @@
               ]
             },
             {
-              "url":"http:\/\/t.co\/sHp1REsW9I",
+              "screenName":"http:\/\/t.co\/sHp1REsW9I",
               "expanded_url":"http:\/\/www.amazon.co.jp\/registry\/wishlist\/2FH7EWIU281C",
               "display_url":"amazon.co.jp\/registry\/wishl…",
               "indices":[

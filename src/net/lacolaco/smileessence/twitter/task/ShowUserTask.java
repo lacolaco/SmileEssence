@@ -34,11 +34,20 @@ public class ShowUserTask extends TwitterTask<User>
 {
 
     private final long userID;
+    private final String screenName;
 
     public ShowUserTask(Twitter twitter, long userID)
     {
         super(twitter);
         this.userID = userID;
+        this.screenName = null;
+    }
+
+    public ShowUserTask(Twitter twitter, String screenName)
+    {
+        super(twitter);
+        this.screenName = screenName;
+        this.userID = -1;
     }
 
     @Override
@@ -46,7 +55,14 @@ public class ShowUserTask extends TwitterTask<User>
     {
         try
         {
-            return twitter.users().showUser(userID);
+            if(screenName != null)
+            {
+                return twitter.users().showUser(screenName);
+            }
+            else
+            {
+                return twitter.users().showUser(userID);
+            }
         }
         catch(TwitterException e)
         {
