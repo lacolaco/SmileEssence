@@ -141,4 +141,5 @@
     <string name="command_user_r4s">Report for spam</string>
     <string name="notice_r4s_succeeded">Succeeded to report</string>
     <string name="notice_r4s_failed">Failed to report</string>
+    <string name="command_user_introduce">Introduce to everyone</string>
 </resources>

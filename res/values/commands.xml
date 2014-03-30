@@ -49,4 +49,5 @@
     <item name="key_command_user_block" type="id"/>
     <item name="key_command_user_unblock" type="id"/>
     <item name="key_command_user_r4s" type="id"/>
+    <item name="key_command_user_introduce" type="id"/>
 </resources>
