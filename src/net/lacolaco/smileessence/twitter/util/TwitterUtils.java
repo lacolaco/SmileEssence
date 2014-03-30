@@ -184,7 +184,7 @@ public class TwitterUtils
         return String.format("http://twilog.org/%s", screenName);
     }
 
-    public static String getTweetURL(Status status)
+    public static String getStatusURL(Status status)
     {
         return String.format("https://twitter.com/%s/status/%s", status.getUser().getScreenName(), status.getId());
     }
