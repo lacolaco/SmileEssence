@@ -30,24 +30,24 @@ import net.lacolaco.smileessence.command.CommandOpenURL;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import twitter4j.User;
 
-public class UserCommandOpenFavstar extends UserCommand
+public class UserCommandOpenAclog extends UserCommand
 {
 
-    public UserCommandOpenFavstar(Activity activity, User user)
+    public UserCommandOpenAclog(Activity activity, User user)
     {
-        super(R.id.key_command_user_open_favstar, activity, user);
+        super(R.id.key_command_user_open_aclog, activity, user);
     }
 
     @Override
     public String getText()
     {
-        return getActivity().getString(R.string.command_user_open_favstar);
+        return getActivity().getString(R.string.command_user_open_aclog);
     }
 
     @Override
     public boolean execute()
     {
-        return new CommandOpenURL(getActivity(), TwitterUtils.getFavstarRecentURL(getUser().getScreenName())).execute();
+        return new CommandOpenURL(getActivity(), TwitterUtils.getAclogTimelineURL(getUser().getScreenName())).execute();
     }
 
     @Override
