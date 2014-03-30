@@ -212,4 +212,28 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
             }
         });
     }
+
+    public void testMovePage() throws Exception
+    {
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                getActivity().initializePages();
+            }
+        });
+        Thread.sleep(1000);
+        assertEquals(MainActivity.PAGE_HOME, getActivity().getCurrentPageIndex());
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                getActivity().setSelectedPageIndex(MainActivity.PAGE_POST);
+            }
+        });
+        Thread.sleep(1000);
+        assertEquals(MainActivity.PAGE_POST, getActivity().getCurrentPageIndex());
+    }
 }

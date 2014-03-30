@@ -35,7 +35,8 @@ public class PostFragmentTest extends ActivityInstrumentationTestCase2<MainActiv
         super(MainActivity.class);
     }
 
-    public void testView() throws Exception
+    @Override
+    public void setUp() throws Exception
     {
         getActivity().runOnUiThread(new Runnable()
         {
@@ -46,6 +47,10 @@ public class PostFragmentTest extends ActivityInstrumentationTestCase2<MainActiv
             }
         });
         Thread.sleep(1000);
+    }
+
+    public void testView() throws Exception
+    {
         PostFragment fragment = (PostFragment)getActivity().getPagerAdapter().getItem(MainActivity.PAGE_POST);
         assertNotNull(fragment);
     }

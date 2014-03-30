@@ -24,9 +24,10 @@
 
 package net.lacolaco.smileessence.command;
 
-import android.content.Context;
-import android.test.InstrumentationTestCase;
+import android.app.Activity;
+import android.test.ActivityInstrumentationTestCase2;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.event.EventCommand;
 import net.lacolaco.smileessence.command.event.EventCommandReply;
 import net.lacolaco.smileessence.command.message.MessageCommand;
@@ -45,11 +46,15 @@ import twitter4j.DirectMessage;
 import twitter4j.Status;
 import twitter4j.User;
 
-public class CommandsTest extends InstrumentationTestCase
+public class CommandsTest extends ActivityInstrumentationTestCase2<MainActivity>
 {
 
-
     TwitterMock mock;
+
+    public CommandsTest()
+    {
+        super(MainActivity.class);
+    }
 
     @Override
     public void setUp() throws Exception
@@ -59,17 +64,15 @@ public class CommandsTest extends InstrumentationTestCase
 
     public void testStatusCommand() throws Exception
     {
-        Context context = getInstrumentation().getTargetContext();
+        Activity activity = getActivity();
         Account account = new Account(mock.getAccessToken(), mock.getAccessTokenSecret(), mock.getUserMock().getId(), mock.getUserMock().getScreenName());
         Status status = mock.getStatusMock();
         StatusCache.getInstance().put(status);
 
-        StatusCommand reply = new StatusCommandReply(context, status);
+        StatusCommand reply = new StatusCommandReply(activity, status);
         assertTrue(reply.isEnabled());
-        reply.setVisible(false);
-        assertFalse(reply.isEnabled());
         assertEquals(R.id.key_command_status_reply, reply.getKey());
-        assertEquals(context.getString(R.string.command_status_reply), reply.getText());
+        assertEquals(activity.getString(R.string.command_status_reply), reply.getText());
         assertTrue(reply.execute());
         assertEquals("@laco0416_2 ", PostState.getState().getText());
         assertEquals(status.getId(), PostState.getState().getInReplyToStatusID());
@@ -79,15 +82,13 @@ public class CommandsTest extends InstrumentationTestCase
 
     public void testUserCommand() throws Exception
     {
-        Context context = getInstrumentation().getTargetContext();
+        Activity activity = getActivity();
         Account account = new Account(mock.getAccessToken(), mock.getAccessTokenSecret(), mock.getUserMock().getId(), mock.getUserMock().getScreenName());
         User user = mock.getUserMock();
 
-        UserCommand reply = new UserCommandReply(context, account, user.getId());
+        UserCommand reply = new UserCommandReply(activity, user);
         assertTrue(reply.isEnabled());
-        reply.setVisible(false);
-        assertFalse(reply.isEnabled());
-        assertEquals(context.getString(R.string.command_user_reply), reply.getText());
+        assertEquals(activity.getString(R.string.command_user_reply), reply.getText());
         assertTrue(reply.execute());
         assertEquals("@laco0416 ", PostState.getState().getText());
         assertEquals(-1, PostState.getState().getInReplyToStatusID());
@@ -97,15 +98,13 @@ public class CommandsTest extends InstrumentationTestCase
 
     public void testMessageCommand() throws Exception
     {
-        Context context = getInstrumentation().getTargetContext();
+        Activity activity = getActivity();
         Account account = new Account(mock.getAccessToken(), mock.getAccessTokenSecret(), mock.getUserMock().getId(), mock.getUserMock().getScreenName());
         DirectMessage message = mock.getDirectMessageMock();
 
-        MessageCommand reply = new MessageCommandReply(context, account, message.getId());
+        MessageCommand reply = new MessageCommandReply(activity, message);
         assertTrue(reply.isEnabled());
-        reply.setVisible(false);
-        assertFalse(reply.isEnabled());
-        assertEquals(context.getString(R.string.command_message_reply), reply.getText());
+        assertEquals(activity.getString(R.string.command_message_reply), reply.getText());
         assertTrue(reply.execute());
         assertEquals("", PostState.getState().getText());
         assertEquals(-1, PostState.getState().getInReplyToStatusID());
@@ -116,15 +115,13 @@ public class CommandsTest extends InstrumentationTestCase
 
     public void testEventCommand() throws Exception
     {
-        Context context = getInstrumentation().getTargetContext();
+        Activity activity = getActivity();
         Account account = new Account(mock.getAccessToken(), mock.getAccessTokenSecret(), mock.getUserMock().getId(), mock.getUserMock().getScreenName());
         EventViewModel message = new EventViewModel(EnumEvent.MENTIONED, mock.getStatusMock().getUser(), mock.getStatusMock());
 
-        EventCommand reply = new EventCommandReply(context, account, message);
+        EventCommand reply = new EventCommandReply(activity, message);
         assertTrue(reply.isEnabled());
-        reply.setVisible(false);
-        assertFalse(reply.isEnabled());
-        assertEquals(context.getString(R.string.command_event_reply), reply.getText());
+        assertEquals(activity.getString(R.string.command_event_reply), reply.getText());
         assertTrue(reply.execute());
         assertEquals(String.format("@%s ", message.getSourceScreenName()), PostState.getState().getText());
         assertEquals(-1, PostState.getState().getInReplyToStatusID());

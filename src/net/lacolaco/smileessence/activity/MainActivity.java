@@ -346,32 +346,14 @@ public class MainActivity extends Activity
         return pagerAdapter.getPage(position);
     }
 
+    public void setSelectedPageIndex(int position)
+    {
+        getActionBar().setSelectedNavigationItem(position);
+    }
+
     public int getPageCount()
     {
         return pagerAdapter.getCount();
-    }
-
-    public boolean addPostPage()
-    {
-        return addPage(getString(R.string.page_name_post), PostFragment.class, null, true);
-    }
-
-    public boolean addListPage(String name, Class<? extends ListFragment> fragmentClass, CustomListAdapter<?> adapter, boolean withNotify)
-    {
-        int nextPosition = pagerAdapter.getCount();
-        Bundle args = new Bundle();
-        args.putInt(CustomListFragment.FRAGMENT_INDEX, nextPosition);
-        if(addPage(name, fragmentClass, args, withNotify))
-        {
-            adapterSparseArray.append(nextPosition, adapter);
-            return true;
-        }
-        return false;
-    }
-
-    public CustomListAdapter<?> getListAdapter(int i)
-    {
-        return adapterSparseArray.get(i);
     }
 
     public boolean startTwitter()
@@ -417,6 +399,30 @@ public class MainActivity extends Activity
         addListPage(getString(R.string.page_name_messages), CustomListFragment.class, messagesAdapter, false);
         addListPage(getString(R.string.page_name_history), CustomListFragment.class, historyAdapter, false);
         pagerAdapter.notifyDataSetChanged();
-        PostState.newState();
+        PostState.newState().beginTransaction().commit();
+        setSelectedPageIndex(PAGE_HOME);
+    }
+
+    public boolean addPostPage()
+    {
+        return addPage(getString(R.string.page_name_post), PostFragment.class, null, true);
+    }
+
+    public boolean addListPage(String name, Class<? extends ListFragment> fragmentClass, CustomListAdapter<?> adapter, boolean withNotify)
+    {
+        int nextPosition = pagerAdapter.getCount();
+        Bundle args = new Bundle();
+        args.putInt(CustomListFragment.FRAGMENT_INDEX, nextPosition);
+        if(addPage(name, fragmentClass, args, withNotify))
+        {
+            adapterSparseArray.append(nextPosition, adapter);
+            return true;
+        }
+        return false;
+    }
+
+    public CustomListAdapter<?> getListAdapter(int i)
+    {
+        return adapterSparseArray.get(i);
     }
 }

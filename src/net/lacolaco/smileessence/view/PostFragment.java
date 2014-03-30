@@ -231,27 +231,39 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     @Override
     public void onPostStateChange(PostState postState)
     {
-        editText.setText(postState.getText());
-        TextView textViewReply = (TextView)viewGroupReply.findViewById(R.id.post_reply_text);
-        if(TextUtils.isEmpty(postState.getInReplyToScreenName()))
+        if(editText != null)
         {
-            viewGroupReply.setVisibility(View.GONE);
+            editText.setText(postState.getText());
         }
-        else
+        if(viewGroupReply != null)
         {
-            viewGroupReply.setVisibility(View.VISIBLE);
-            textViewReply.setText(String.format("%s: %s", postState.getInReplyToScreenName(), postState.getInReplyToText()));
+            TextView textViewReply = (TextView)viewGroupReply.findViewById(R.id.post_reply_text);
+            if(TextUtils.isEmpty(postState.getInReplyToScreenName()))
+            {
+                viewGroupReply.setVisibility(View.GONE);
+            }
+            else
+            {
+                viewGroupReply.setVisibility(View.VISIBLE);
+                textViewReply.setText(String.format("%s: %s", postState.getInReplyToScreenName(), postState.getInReplyToText()));
+            }
         }
-        //Media view
-        ImageView imageViewMedia = (ImageView)viewGroupMedia.findViewById(R.id.post_media_image);
-        if(TextUtils.isEmpty(postState.getMediaFilePath()))
+        if(viewGroupMedia != null)
         {
-            viewGroupMedia.setVisibility(View.GONE);
+            ImageView imageViewMedia = (ImageView)viewGroupMedia.findViewById(R.id.post_media_image);
+            if(TextUtils.isEmpty(postState.getMediaFilePath()))
+            {
+                viewGroupMedia.setVisibility(View.GONE);
+            }
+            else
+            {
+                viewGroupMedia.setVisibility(View.VISIBLE);
+                new BitmapFileTask(postState.getMediaFilePath(), imageViewMedia).execute();
+            }
         }
-        else
+        if(postState.isRequestedToOpen())
         {
-            viewGroupMedia.setVisibility(View.VISIBLE);
-            new BitmapFileTask(postState.getMediaFilePath(), imageViewMedia).execute();
+            ((MainActivity)getActivity()).setSelectedPageIndex(MainActivity.PAGE_POST);
         }
     }
 }

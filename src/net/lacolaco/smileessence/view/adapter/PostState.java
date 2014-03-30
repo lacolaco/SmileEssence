@@ -34,7 +34,7 @@ public class PostState
     private String inReplyToText = "";
     private String mediaFilePath = "";
     private boolean directMessage = false;
-    private boolean requested = false;
+    private boolean requestedToOpen = false;
     private OnPostStateChangeListener listener;
 
     private PostState()
@@ -81,9 +81,9 @@ public class PostState
         return directMessage;
     }
 
-    public boolean isRequested()
+    public boolean isRequestedToOpen()
     {
-        return requested;
+        return requestedToOpen;
     }
 
     public PostState setListener(OnPostStateChangeListener listener)
@@ -118,6 +118,7 @@ public class PostState
         this.inReplyToText = another.inReplyToText;
         this.mediaFilePath = another.mediaFilePath;
         this.directMessage = another.directMessage;
+        this.requestedToOpen = another.requestedToOpen;
         this.listener = another.listener;
         return this;
     }
@@ -170,7 +171,7 @@ public class PostState
 
         public PostStateTransaction requestOpenPage(boolean openPageRequest)
         {
-            state.requested = openPageRequest;
+            state.requestedToOpen = openPageRequest;
             return this;
         }
 
