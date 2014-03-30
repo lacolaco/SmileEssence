@@ -111,7 +111,7 @@
     <string name="command_status_fav_and_rt">ふぁぼ＆リツイート</string>
     <string name="command_status_quote">引用</string>
     <string name="command_status_clipboard">クリップボードにコピー</string>
-    <string name="command_status_share">共有\.\.\.</string>
+    <string name="command_status_share">"共有..."</string>
     <string name="command_status_open_in_browser">ブラウザで開く</string>
     <string name="command_status_nanigaja">な～にが◯◯じゃ</string>
     <string name="format_status_command_nanigaja">な～にが%sじゃ</string>
@@ -119,4 +119,7 @@
     <string name="format_status_command_make_anonymous">？？？「%s」</string>
     <string name="command_status_tofubuster">TofuBuster</string>
     <string name="notice_tofubuster_not_found">TofuBusterがインストールされていません</string>
+    <string name="command_status_delete">削除</string>
+    <string name="notice_status_delete_succeeded">削除しました</string>
+    <string name="notice_status_delete_failed">削除に失敗しました</string>
 </resources>

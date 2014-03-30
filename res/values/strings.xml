@@ -109,7 +109,7 @@
     <string name="command_status_fav_and_rt">Retweet and favorite</string>
     <string name="command_status_quote">Quote</string>
     <string name="command_status_clipboard">Copy to clipboard</string>
-    <string name="command_status_share">Share...</string>
+    <string name="command_status_share">"Share..."</string>
     <string name="command_status_open_in_browser">Open in browser</string>
     <string name="command_status_nanigaja">What\'s xxx</string>
     <string name="format_status_command_nanigaja">What\'s %s</string>
@@ -119,4 +119,7 @@
     <string name="format_status_command_make_anonymous">"??? said \"%s\""</string>
     <string name="command_status_tofubuster">TofuBuster</string>
     <string name="notice_tofubuster_not_found">TofuBuster is not installed</string>
+    <string name="command_status_delete">Delete</string>
+    <string name="notice_status_delete_succeeded">Succeeded to delete tweet</string>
+    <string name="notice_status_delete_failed">Failed to delete tweet</string>
 </resources>
