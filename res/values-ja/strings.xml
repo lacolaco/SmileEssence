@@ -115,4 +115,6 @@
     <string name="command_status_open_in_browser">ブラウザで開く</string>
     <string name="command_status_nanigaja">な～にが◯◯じゃ</string>
     <string name="format_status_command_nanigaja">な～にが%sじゃ</string>
+    <string name="command_status_make_anonymous">匿名にする</string>
+    <string name="format_status_command_make_anonymous">？？？「%s」</string>
 </resources>
