@@ -163,4 +163,40 @@ public class TwitterUtils
         }
         return names;
     }
+
+    public static String getUserHomeURL(String screenName)
+    {
+        return String.format("https://twitter.com/%s", screenName);
+    }
+
+    public static String getAclogTimelineURL(String screenName)
+    {
+        return String.format("http://aclog.koba789.com/%s/timeline", screenName);
+    }
+
+    public static String getFavstarRecentURL(String screenName)
+    {
+        return String.format("http://favstar.fm/users/%s/recent", screenName);
+    }
+
+    public static String getTwilogURL(String screenName)
+    {
+        return String.format("http://twilog.org/%s", screenName);
+    }
+
+    public static String getTweetURL(Status status)
+    {
+        return String.format("https://twitter.com/%s/status/%s", status.getUser().getScreenName(), status.getId());
+    }
+
+    /**
+     * Get "@screen_name: text" format text
+     *
+     * @param status status
+     * @return summary string
+     */
+    public static String getStatusSummary(Status status)
+    {
+        return String.format("@%s: %s", status.getUser().getScreenName(), status.getText());
+    }
 }
