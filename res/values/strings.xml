@@ -123,4 +123,5 @@
     <string name="notice_status_delete_succeeded">Succeeded to delete tweet</string>
     <string name="notice_status_delete_failed">Failed to delete tweet</string>
     <string name="command_user_add_to_reply">Add to reply</string>
+    <string name="command_user_open_favstar">Open favstar</string>
 </resources>
