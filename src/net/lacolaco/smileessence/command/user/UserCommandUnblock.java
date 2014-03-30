@@ -28,6 +28,7 @@ import android.app.Activity;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TwitterApi;
+import net.lacolaco.smileessence.twitter.task.UnblockTask;
 import twitter4j.User;
 
 public class UserCommandUnblock extends UserCommand
