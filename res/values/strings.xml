@@ -107,4 +107,5 @@
     <string name="notice_retweet_succeeded">Succeeded to retweet</string>
     <string name="notice_retweet_failed">Failed to retweet</string>
     <string name="command_status_fav_and_rt">Retweet and favorite</string>
+    <string name="command_status_quote">Quote</string>
 </resources>

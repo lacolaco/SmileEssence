@@ -24,6 +24,8 @@
 
 package net.lacolaco.smileessence.twitter;
 
+import android.text.TextUtils;
+import twitter4j.Status;
 import twitter4j.StatusUpdate;
 
 import java.io.File;
@@ -37,7 +39,7 @@ public class TweetBuilder
     private String text = "";
     private ArrayList<String> screenNameList = new ArrayList<>();
     private long inReplyToStatusID = -1;
-    private String mediaPath;
+    private String mediaPath = "";
 
     public TweetBuilder setText(String text)
     {
@@ -45,10 +47,9 @@ public class TweetBuilder
         return this;
     }
 
-    public TweetBuilder addText(String str)
+    public TweetBuilder appendText(String str)
     {
-        this.text = text + str;
-        return this;
+        return setText(text + str);
     }
 
     public TweetBuilder addScreenName(String screenName)
@@ -69,9 +70,20 @@ public class TweetBuilder
         return this;
     }
 
-    public void setMediaPath(String mediaPath)
+    public TweetBuilder setMediaPath(String mediaPath)
     {
         this.mediaPath = mediaPath;
+        return this;
+    }
+
+    public TweetBuilder setQuotation(Status status)
+    {
+        return setText(String.format(" RT @%s: %s", status.getUser().getScreenName(), status.getText()));
+    }
+
+    public TweetBuilder setQuotation(Status status, String text)
+    {
+        return setText(String.format("%s RT @%s: %s", text, status.getUser().getScreenName(), status.getText()));
     }
 
     public String buildText()
@@ -93,7 +105,7 @@ public class TweetBuilder
         {
             statusUpdate.setInReplyToStatusId(inReplyToStatusID);
         }
-        if(mediaPath != null)
+        if(!TextUtils.isEmpty(mediaPath))
         {
             File media = new File(mediaPath);
             if(media.exists())

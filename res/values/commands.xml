@@ -32,4 +32,5 @@
     <item name="key_command_user_reply" type="id"/>
     <item name="key_command_message_reply" type="id"/>
     <item name="key_command_event_reply" type="id"/>
+    <item name="key_command_status_quote" type="id"/>
 </resources>

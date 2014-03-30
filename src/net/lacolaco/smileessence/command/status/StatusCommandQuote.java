@@ -22,38 +22,48 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.twitter;
+package net.lacolaco.smileessence.command.status;
 
-import android.test.InstrumentationTestCase;
-import net.lacolaco.smileessence.util.TwitterMock;
+import android.app.Activity;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.twitter.TweetBuilder;
+import net.lacolaco.smileessence.view.adapter.PostState;
 import twitter4j.Status;
-import twitter4j.User;
 
-public class TweetBuilderTest extends InstrumentationTestCase
+public class StatusCommandQuote extends StatusCommand
 {
 
-    TwitterMock mock;
-
-    @Override
-    public void setUp() throws Exception
+    public StatusCommandQuote(Activity activity, Status status)
     {
-        mock = new TwitterMock(getInstrumentation().getContext());
+        super(R.id.key_command_status_quote, activity, status);
     }
 
-    public void testBuilder() throws Exception
+    @Override
+    public String getText()
     {
-        User user = mock.getUserMock();
-        Status status = mock.getStatusMock();
-        TweetBuilder builder = new TweetBuilder();
-        assertEquals("", builder.buildText());
-        builder.addScreenName(user.getScreenName());
-        builder.setText("test");
-        assertEquals("@laco0416 test", builder.buildText());
-        builder.appendText(" #test");
-        assertEquals("@laco0416 test #test", builder.buildText());
-        builder.setInReplyToStatusID(status.getInReplyToStatusId());
-        assertEquals(status.getInReplyToStatusId(), builder.toStatusUpdate().getInReplyToStatusId());
-        builder.setMediaPath("");
-        assertNotNull(builder.toStatusUpdate());
+        return getActivity().getString(R.string.command_status_quote);
+    }
+
+    @Override
+    public boolean execute()
+    {
+        TweetBuilder builder = new TweetBuilder().setQuotation(getStatus());
+
+        PostState.newState()
+                 .beginTransaction()
+                 .setText(builder.buildText())
+                 .setInReplyToText(getStatus().getText())
+                 .setInReplyToScreenName(getStatus().getUser().getScreenName())
+                 .setInReplyToStatusID(getStatus().getId())
+                 .setCursor(0)
+                 .requestOpenPage(true)
+                 .commit();
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled()
+    {
+        return true;
     }
 }

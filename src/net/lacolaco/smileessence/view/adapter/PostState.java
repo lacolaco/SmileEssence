@@ -36,6 +36,8 @@ public class PostState
     private boolean directMessage = false;
     private boolean requestedToOpen = false;
     private OnPostStateChangeListener listener;
+    private int selectionStart = -1;
+    private int selectionEnd = -1;
 
     private PostState()
     {
@@ -86,6 +88,32 @@ public class PostState
         return requestedToOpen;
     }
 
+    public int getSelectionStart()
+    {
+        if(selectionStart < 0)
+        {
+            return text.length();
+        }
+        return selectionStart;
+    }
+
+    public int getSelectionEnd()
+    {
+        if(selectionEnd < 0)
+        {
+            return text.length();
+        }
+        return selectionEnd;
+    }
+
+    private void postStateChange()
+    {
+        if(listener != null)
+        {
+            listener.onPostStateChange(this);
+        }
+    }
+
     public PostState setListener(OnPostStateChangeListener listener)
     {
         this.listener = listener;
@@ -95,14 +123,6 @@ public class PostState
     public void removeListener()
     {
         this.listener = null;
-    }
-
-    private void postStateChange()
-    {
-        if(listener != null)
-        {
-            listener.onPostStateChange(this);
-        }
     }
 
     public PostStateTransaction beginTransaction()
@@ -119,6 +139,8 @@ public class PostState
         this.mediaFilePath = another.mediaFilePath;
         this.directMessage = another.directMessage;
         this.requestedToOpen = another.requestedToOpen;
+        this.selectionStart = another.selectionStart;
+        this.selectionEnd = another.selectionEnd;
         this.listener = another.listener;
         return this;
     }
@@ -166,6 +188,19 @@ public class PostState
         public PostStateTransaction setDirectMessage(boolean directMessage)
         {
             state.directMessage = directMessage;
+            return this;
+        }
+
+        public PostStateTransaction setCursor(int cursor)
+        {
+            state.selectionStart = state.selectionEnd = cursor;
+            return this;
+        }
+
+        public PostStateTransaction setSelection(int start, int end)
+        {
+            state.selectionStart = start;
+            state.selectionEnd = end;
             return this;
         }
 

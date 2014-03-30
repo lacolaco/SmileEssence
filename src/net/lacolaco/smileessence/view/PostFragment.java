@@ -234,6 +234,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         if(editText != null)
         {
             editText.setText(postState.getText());
+            editText.setSelection(postState.getSelectionStart(), postState.getSelectionEnd());
         }
         if(viewGroupReply != null)
         {
