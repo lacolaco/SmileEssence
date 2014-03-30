@@ -64,6 +64,6 @@ public class StatusCommandQuote extends StatusCommand
     @Override
     public boolean isEnabled()
     {
-        return true;
+        return !getStatus().getUser().isProtected();
     }
 }
