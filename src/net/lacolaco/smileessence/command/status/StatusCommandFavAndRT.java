@@ -34,9 +34,9 @@ public class StatusCommandFavAndRT extends StatusCommand
 
     private final Account account;
 
-    public StatusCommandFavAndRT(int key, Activity activity, Status status, Account account)
+    public StatusCommandFavAndRT(Activity activity, Status status, Account account)
     {
-        super(key, activity, status);
+        super(R.id.key_command_status_fav_and_rt, activity, status);
         this.account = account;
     }
 
