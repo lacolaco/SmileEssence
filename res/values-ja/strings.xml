@@ -150,4 +150,6 @@
     <string name="notice_message_send_failed">DMの送信に失敗しました</string>
     <string name="dialog_message_now_loading">読み込み中…</string>
     <string name="notice_error_show_user">ユーザーを表示できませんでした</string>
+    <string name="command_open_status_detail">ツイート詳細</string>
+    <string name="notice_error_show_status">ツイートを表示できませんでした</string>
 </resources>

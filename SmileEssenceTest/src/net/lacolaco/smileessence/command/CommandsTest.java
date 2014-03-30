@@ -28,8 +28,6 @@ import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
-import net.lacolaco.smileessence.command.event.EventCommand;
-import net.lacolaco.smileessence.command.event.EventCommandReply;
 import net.lacolaco.smileessence.command.message.MessageCommand;
 import net.lacolaco.smileessence.command.message.MessageCommandReply;
 import net.lacolaco.smileessence.command.status.StatusCommand;
@@ -43,8 +41,6 @@ import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.util.TwitterMock;
 import net.lacolaco.smileessence.view.adapter.PostState;
-import net.lacolaco.smileessence.viewmodel.EnumEvent;
-import net.lacolaco.smileessence.viewmodel.EventViewModel;
 import twitter4j.DirectMessage;
 import twitter4j.Status;
 import twitter4j.User;
@@ -120,22 +116,5 @@ public class CommandsTest extends ActivityInstrumentationTestCase2<MainActivity>
         assertEquals(message.getSenderScreenName(), PostState.getState().getInReplyToScreenName());
         assertTrue(PostState.getState().isDirectMessage());
         assertEquals(message.getText(), PostState.getState().getInReplyToText());
-    }
-
-    public void testEventCommand() throws Exception
-    {
-        Activity activity = getActivity();
-        Account account = new Account(mock.getAccessToken(), mock.getAccessTokenSecret(), mock.getUserMock().getId(), mock.getUserMock().getScreenName());
-        EventViewModel message = new EventViewModel(EnumEvent.MENTIONED, mock.getStatusMock().getUser(), mock.getStatusMock());
-
-        EventCommand reply = new EventCommandReply(activity, message);
-        assertTrue(reply.isEnabled());
-        assertEquals(activity.getString(R.string.command_event_reply), reply.getText());
-        assertTrue(reply.execute());
-        assertEquals(String.format("@%s ", message.getSourceScreenName()), PostState.getState().getText());
-        assertEquals(-1, PostState.getState().getInReplyToStatusID());
-        assertEquals(message.getSourceScreenName(), PostState.getState().getInReplyToScreenName());
-        assertFalse(PostState.getState().isDirectMessage());
-        assertEquals("", PostState.getState().getInReplyToText());
     }
 }

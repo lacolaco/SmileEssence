@@ -37,13 +37,13 @@ import twitter4j.User;
 
 import java.util.concurrent.ExecutionException;
 
-public class CommandOpenUserDialog extends Command
+public class CommandOpenUserDetail extends Command
 {
 
     private final String screenName;
     private final Account account;
 
-    public CommandOpenUserDialog(Activity activity, String screenName, Account account)
+    public CommandOpenUserDetail(Activity activity, String screenName, Account account)
     {
         super(-1, activity);
         this.screenName = screenName;

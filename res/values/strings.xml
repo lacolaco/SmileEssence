@@ -150,4 +150,6 @@
     <string name="notice_message_send_failed">Failed to send the message</string>
     <string name="dialog_message_now_loading">Now loading…</string>
     <string name="notice_error_show_user">Can\'t show this user</string>
+    <string name="command_open_status_detail">Tweet detail</string>
+    <string name="notice_error_show_status">Can\'t show this status</string>
 </resources>
