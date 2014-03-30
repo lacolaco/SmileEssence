@@ -117,4 +117,6 @@
     <string name="notice_tweet_failed">Failed to tweet</string>
     <string name="command_status_make_anonymous">Make anonymous</string>
     <string name="format_status_command_make_anonymous">"??? said \"%s\""</string>
+    <string name="command_status_tofubuster">TofuBuster</string>
+    <string name="notice_tofubuster_not_found">TofuBuster is not installed</string>
 </resources>

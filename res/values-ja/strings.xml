@@ -117,4 +117,6 @@
     <string name="format_status_command_nanigaja">な～にが%sじゃ</string>
     <string name="command_status_make_anonymous">匿名にする</string>
     <string name="format_status_command_make_anonymous">？？？「%s」</string>
+    <string name="command_status_tofubuster">TofuBuster</string>
+    <string name="notice_tofubuster_not_found">TofuBusterがインストールされていません</string>
 </resources>

@@ -38,4 +38,5 @@
     <item name="key_command_status_open_in_browser" type="id"/>
     <item name="key_command_status_nanigaja" type="id"/>
     <item name="key_command_status_make_anonymous" type="id"/>
+    <item name="key_command_status_tofubuster" type="id"/>
 </resources>
