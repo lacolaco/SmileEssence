@@ -111,7 +111,7 @@
     <string name="command_status_fav_and_rt">ふぁぼ＆リツイート</string>
     <string name="command_status_quote">引用</string>
     <string name="command_status_clipboard">クリップボードにコピー</string>
-    <string name="command_status_share">"共有"</string>
+    <string name="command_status_share">共有</string>
     <string name="command_status_open_in_browser">ブラウザで開く</string>
     <string name="command_status_nanigaja">な～にが◯◯じゃ</string>
     <string name="format_status_command_nanigaja">な～にが%sじゃ</string>
@@ -132,4 +132,10 @@
     <string name="command_user_unfollow">リムーブ</string>
     <string name="notice_unfollow_succeeded">リムーブしました</string>
     <string name="notice_unfollow_failed">リムーブに失敗しました</string>
+    <string name="command_user_block">ブロック</string>
+    <string name="notice_block_succeeded">ブロックしました</string>
+    <string name="notice_block_failed">ブロックに失敗しました</string>
+    <string name="command_user_unblock">ブロック解除</string>
+    <string name="notice_unblock_succeeded">ブロック解除しました</string>
+    <string name="notice_unblock_failed">ブロック解除に失敗しました</string>
 </resources>

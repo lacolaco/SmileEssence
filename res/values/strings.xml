@@ -109,7 +109,7 @@
     <string name="command_status_fav_and_rt">Retweet and favorite</string>
     <string name="command_status_quote">Quote</string>
     <string name="command_status_clipboard">Copy to clipboard</string>
-    <string name="command_status_share">"Share"</string>
+    <string name="command_status_share">Share</string>
     <string name="command_status_open_in_browser">Open in browser</string>
     <string name="command_status_nanigaja">What\'s xxx</string>
     <string name="format_status_command_nanigaja">What\'s %s</string>
@@ -129,7 +129,13 @@
     <string name="command_user_follow">Follow</string>
     <string name="notice_follow_succeeded">Succeeded to follow</string>
     <string name="notice_follow_failed">Failed to follow</string>
-    <string name="notice_unfollow_succeeded">Secceeded to Unfollow</string>
+    <string name="notice_unfollow_succeeded">Succeeded to Unfollow</string>
     <string name="notice_unfollow_failed">Failed to unfollow</string>
     <string name="command_user_unfollow">Unfollow</string>
+    <string name="command_user_block">Block</string>
+    <string name="notice_block_succeeded">Succeeded to block</string>
+    <string name="notice_block_failed">Failed to block</string>
+    <string name="command_user_unblock">Unblock</string>
+    <string name="notice_unblock_succeeded">Succeeded to unblock</string>
+    <string name="notice_unblock_failed">Failed to unblock</string>
 </resources>
