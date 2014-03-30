@@ -24,7 +24,8 @@
 
 package net.lacolaco.smileessence.twitter.task;
 
-import android.test.InstrumentationTestCase;
+import android.test.ActivityInstrumentationTestCase2;
+import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.util.TwitterMock;
 import twitter4j.StatusUpdate;
@@ -33,10 +34,15 @@ import twitter4j.Twitter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class UpdateStatusTaskTest extends InstrumentationTestCase
+public class UpdateStatusTaskTest extends ActivityInstrumentationTestCase2<MainActivity>
 {
 
     Twitter twitter;
+
+    public UpdateStatusTaskTest()
+    {
+        super(MainActivity.class);
+    }
 
     @Override
     public void setUp() throws Exception
@@ -48,7 +54,7 @@ public class UpdateStatusTaskTest extends InstrumentationTestCase
     public void testUpdateStatus() throws Exception
     {
         StatusUpdate update = new StatusUpdate(String.format("UpdateStatusTest %s", new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
-        UpdateStatusTask task = new UpdateStatusTask(twitter, update);
+        TweetTask task = new TweetTask(twitter, update, getActivity());
         task.execute();
         assertEquals(update.getStatus(), task.get().getText());
     }

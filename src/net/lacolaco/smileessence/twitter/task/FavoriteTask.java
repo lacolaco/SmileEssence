@@ -24,8 +24,12 @@
 
 package net.lacolaco.smileessence.twitter.task;
 
+import android.app.Activity;
+import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.logging.Logger;
+import net.lacolaco.smileessence.notification.NotificationType;
+import net.lacolaco.smileessence.notification.Notificator;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -34,11 +38,13 @@ public class FavoriteTask extends TwitterTask<Status>
 {
 
     private final long statusID;
+    private final Activity activity;
 
-    public FavoriteTask(Twitter twitter, long statusID)
+    public FavoriteTask(Twitter twitter, long statusID, Activity activity)
     {
         super(twitter);
         this.statusID = statusID;
+        this.activity = activity;
     }
 
     @Override
@@ -62,6 +68,11 @@ public class FavoriteTask extends TwitterTask<Status>
         if(status != null)
         {
             StatusCache.getInstance().put(status);
+            new Notificator(activity, R.string.notice_favorite_succeeded).publish();
+        }
+        else
+        {
+            new Notificator(activity, R.string.notice_favorite_failed, NotificationType.ALERT).publish();
         }
     }
 }

@@ -40,6 +40,16 @@ public class Notificator
     private static boolean isRunning;
     private static final int DURATION = 1000;
 
+    public Notificator(Activity activity, int resID)
+    {
+        this(activity, resID, NotificationType.INFO);
+    }
+
+    public Notificator(Activity activity, int resID, NotificationType type)
+    {
+        this(activity, activity.getString(resID), type);
+    }
+
     public Notificator(Activity activity, String text)
     {
         this(activity, text, NotificationType.INFO);

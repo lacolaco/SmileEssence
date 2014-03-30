@@ -98,7 +98,7 @@ public class TweetBuilder
         return builder.toString();
     }
 
-    public StatusUpdate toStatusUpdate()
+    public StatusUpdate build()
     {
         StatusUpdate statusUpdate = new StatusUpdate(buildText());
         if(inReplyToStatusID >= 0)

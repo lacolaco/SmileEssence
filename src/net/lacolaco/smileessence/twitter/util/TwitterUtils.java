@@ -184,6 +184,12 @@ public class TwitterUtils
         return String.format("http://twilog.org/%s", screenName);
     }
 
+    /**
+     * Get twitter status permalink
+     *
+     * @param status status
+     * @return url string
+     */
     public static String getStatusURL(Status status)
     {
         return String.format("https://twitter.com/%s/status/%s", status.getUser().getScreenName(), status.getId());

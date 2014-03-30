@@ -27,8 +27,6 @@ package net.lacolaco.smileessence.command.status;
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.notification.NotificationType;
-import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.RetweetTask;
 import twitter4j.Status;
@@ -54,22 +52,7 @@ public class StatusCommandRetweet extends StatusCommand
     @Override
     public boolean execute()
     {
-        RetweetTask task = new RetweetTask(new TwitterApi(account).getTwitter(), getStatus().getId())
-        {
-            @Override
-            protected void onPostExecute(twitter4j.Status status)
-            {
-                super.onPostExecute(status);
-                if(status != null)
-                {
-                    new Notificator(getActivity(), getActivity().getString(R.string.notice_retweet_succeeded)).publish();
-                }
-                else
-                {
-                    new Notificator(getActivity(), getActivity().getString(R.string.notice_retweet_failed), NotificationType.ALERT).publish();
-                }
-            }
-        };
+        RetweetTask task = new RetweetTask(new TwitterApi(account).getTwitter(), getStatus().getId(), getActivity());
         task.execute();
         return true;
     }

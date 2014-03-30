@@ -99,6 +99,8 @@
     <string name="command_message_reply">返信</string>
     <string name="command_event_reply">返信</string>
     <string name="post_button_tweet">つぶやく</string>
+    <string name="notice_tweet_succeeded">投稿しました</string>
+    <string name="notice_tweet_failed">投稿失敗しました</string>
     <string name="command_status_reply_to_all">全員に返信</string>
     <string name="command_status_favorite">お気に入りに追加</string>
     <string name="notice_favorite_succeeded">お気に入りに追加しました</string>
@@ -106,9 +108,11 @@
     <string name="command_status_retweet">リツイート</string>
     <string name="notice_retweet_succeeded">リツイートしました</string>
     <string name="notice_retweet_failed">リツイートに失敗しました</string>
-    <string name="command_status_fav_and_rt">Retweet and favorite</string>
-    <string name="command_status_quote">Quote</string>
-    <string name="command_status_clipboard">Copy to clipboard</string>
-    <string name="command_status_share">Share...</string>
-    <string name="command_status_open_in_browser">Open in browser</string>
+    <string name="command_status_fav_and_rt">ふぁぼ＆リツイート</string>
+    <string name="command_status_quote">引用</string>
+    <string name="command_status_clipboard">クリップボードにコピー</string>
+    <string name="command_status_share">共有\.\.\.</string>
+    <string name="command_status_open_in_browser">ブラウザで開く</string>
+    <string name="command_status_nanigaja">な～にが◯◯じゃ</string>
+    <string name="format_status_command_nanigaja">な～にが%sじゃ</string>
 </resources>

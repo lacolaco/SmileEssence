@@ -33,6 +33,7 @@ import net.lacolaco.smileessence.command.event.EventCommandReply;
 import net.lacolaco.smileessence.command.message.MessageCommand;
 import net.lacolaco.smileessence.command.message.MessageCommandReply;
 import net.lacolaco.smileessence.command.status.StatusCommand;
+import net.lacolaco.smileessence.command.status.StatusCommandNanigaja;
 import net.lacolaco.smileessence.command.status.StatusCommandReply;
 import net.lacolaco.smileessence.command.user.UserCommand;
 import net.lacolaco.smileessence.command.user.UserCommandReply;
@@ -78,6 +79,8 @@ public class CommandsTest extends ActivityInstrumentationTestCase2<MainActivity>
         assertEquals(status.getId(), PostState.getState().getInReplyToStatusID());
         assertEquals(status.getUser().getScreenName(), PostState.getState().getInReplyToScreenName());
         assertEquals(status.getText(), PostState.getState().getInReplyToText());
+        StatusCommandNanigaja nanigaja = new StatusCommandNanigaja(activity, status, account);
+        assertEquals("@laco0416_2 な～にがテスト #test http://t.co/nd7Bzal2EU http://t.co/yANfRHC4KWじゃ", StatusCommandNanigaja.build(activity, status, account));
     }
 
     public void testUserCommand() throws Exception

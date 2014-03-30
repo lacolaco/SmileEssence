@@ -24,8 +24,12 @@
 
 package net.lacolaco.smileessence.twitter.task;
 
+import android.app.Activity;
+import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.logging.Logger;
+import net.lacolaco.smileessence.notification.NotificationType;
+import net.lacolaco.smileessence.notification.Notificator;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -34,11 +38,13 @@ public class RetweetTask extends TwitterTask<Status>
 {
 
     private final long statusID;
+    private final Activity activity;
 
-    public RetweetTask(Twitter twitter, long statusID)
+    public RetweetTask(Twitter twitter, long statusID, Activity activity)
     {
         super(twitter);
         this.statusID = statusID;
+        this.activity = activity;
     }
 
     @Override
@@ -62,6 +68,11 @@ public class RetweetTask extends TwitterTask<Status>
         if(status != null)
         {
             StatusCache.getInstance().put(status);
+            new Notificator(activity, R.string.notice_retweet_succeeded).publish();
+        }
+        else
+        {
+            new Notificator(activity, R.string.notice_retweet_failed, NotificationType.ALERT).publish();
         }
     }
 }

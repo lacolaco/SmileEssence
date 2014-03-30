@@ -111,4 +111,8 @@
     <string name="command_status_clipboard">Copy to clipboard</string>
     <string name="command_status_share">Share...</string>
     <string name="command_status_open_in_browser">Open in browser</string>
+    <string name="command_status_nanigaja">What\'s xxx</string>
+    <string name="format_status_command_nanigaja">What\'s %s.</string>
+    <string name="notice_tweet_succeeded">Succeeded to tweet</string>
+    <string name="notice_tweet_failed">Failed to tweet</string>
 </resources>

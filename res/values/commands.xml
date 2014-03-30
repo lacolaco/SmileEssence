@@ -36,4 +36,5 @@
     <item name="key_command_status_clipboard" type="id"/>
     <item name="key_command_status_share" type="id"/>
     <item name="key_command_status_open_in_browser" type="id"/>
+    <item name="key_command_status_nanigaja" type="id"/>
 </resources>

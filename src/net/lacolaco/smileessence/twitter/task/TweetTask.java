@@ -24,21 +24,27 @@
 
 package net.lacolaco.smileessence.twitter.task;
 
+import android.app.Activity;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.logging.Logger;
+import net.lacolaco.smileessence.notification.Notificator;
 import twitter4j.Status;
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
-public class UpdateStatusTask extends TwitterTask<Status>
+public class TweetTask extends TwitterTask<Status>
 {
 
     private final StatusUpdate update;
+    private final Activity activity;
 
-    protected UpdateStatusTask(Twitter twitter, StatusUpdate update)
+    public TweetTask(Twitter twitter, StatusUpdate update, Activity activity)
     {
         super(twitter);
         this.update = update;
+        this.activity = activity;
     }
 
     @Override
@@ -53,6 +59,20 @@ public class UpdateStatusTask extends TwitterTask<Status>
             e.printStackTrace();
             Logger.error(e.toString());
             return null;
+        }
+    }
+
+    @Override
+    protected void onPostExecute(twitter4j.Status status)
+    {
+        if(status != null)
+        {
+            StatusCache.getInstance().put(status);
+            new Notificator(activity, R.string.notice_tweet_succeeded).publish();
+        }
+        else
+        {
+            new Notificator(activity, R.string.notice_tweet_failed).publish();
         }
     }
 }

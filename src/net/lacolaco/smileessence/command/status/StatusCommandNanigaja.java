@@ -27,38 +27,63 @@ package net.lacolaco.smileessence.command.status;
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.twitter.TweetBuilder;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.FavoriteTask;
+import net.lacolaco.smileessence.twitter.task.TweetTask;
 import twitter4j.Status;
+import twitter4j.StatusUpdate;
+import twitter4j.Twitter;
 
-public class StatusCommandFavorite extends StatusCommand
+public class StatusCommandNanigaja extends StatusCommand
 {
+
+    public static String build(Activity activity, Status status, Account account)
+    {
+        String str = status.getText();
+        String header = "";
+        if(str.startsWith("."))
+        {
+            str = str.replaceFirst(".", "");
+        }
+        if(str.startsWith(String.format("@%s", account.screenName)))
+        {
+            str = str.replaceFirst(String.format("@%s", account.screenName), "").trim();
+            header = status.getUser().getScreenName();
+        }
+        str = String.format("@%s %s", header, activity.getString(R.string.format_status_command_nanigaja, str)).trim();
+        return str;
+    }
 
     private final Account account;
 
-    public StatusCommandFavorite(Activity activity, Status status, Account account)
+    public StatusCommandNanigaja(Activity activity, Status status, Account account)
     {
-        super(R.id.key_command_status_favorite, activity, status);
+        super(R.id.key_command_status_nanigaja, activity, status);
         this.account = account;
     }
 
     @Override
     public String getText()
     {
-        return getActivity().getString(R.string.command_status_favorite);
+        return getActivity().getString(R.string.command_status_nanigaja);
     }
 
     @Override
     public boolean execute()
     {
-        FavoriteTask task = new FavoriteTask(new TwitterApi(account).getTwitter(), getStatus().getId(), getActivity());
-        task.execute();
+        StatusUpdate update = new TweetBuilder().setText(build(getActivity(), getStatus(), account))
+                                                .setInReplyToStatusID(getStatus().getId())
+                                                .build();
+        Twitter twitter = new TwitterApi(account).getTwitter();
+        new TweetTask(twitter, update, getActivity()).execute();
+        new FavoriteTask(twitter, getStatus().getId(), getActivity()).execute();
         return true;
     }
 
     @Override
     public boolean isEnabled()
     {
-        return !getStatus().isFavorited();
+        return true;
     }
 }

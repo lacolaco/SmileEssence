@@ -47,14 +47,14 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
     {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.setting);
-        EditTextPreference textSizePreference = (EditTextPreference) findPreference(R.string.key_setting_text_size);
+        EditTextPreference textSizePreference = (EditTextPreference)findPreference(R.string.key_setting_text_size);
         textSizePreference.setSummary(textSizePreference.getText());
         textSizePreference.setOnPreferenceChangeListener(this);
-        ListPreference themePreference = (ListPreference) findPreference(R.string.key_setting_theme);
+        ListPreference themePreference = (ListPreference)findPreference(R.string.key_setting_theme);
         themePreference.setSummary(themePreference.getEntry());
-        ListPreference namestylePreference = (ListPreference) findPreference(R.string.key_setting_namestyle);
+        ListPreference namestylePreference = (ListPreference)findPreference(R.string.key_setting_namestyle);
         namestylePreference.setSummary(namestylePreference.getEntry());
-        EditTextPreference timelinesPreference = (EditTextPreference) findPreference(R.string.key_setting_timelines);
+        EditTextPreference timelinesPreference = (EditTextPreference)findPreference(R.string.key_setting_timelines);
         timelinesPreference.setSummary(String.format(getString(R.string.setting_timelines_summary_format), timelinesPreference.getText()));
         timelinesPreference.setOnPreferenceChangeListener(this);
         Preference appInfoPreference = findPreference(R.string.key_setting_application_information);
@@ -84,13 +84,13 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
 
     private void setSummaryCurrentValue()
     {
-        EditTextPreference textSizePreference = (EditTextPreference) findPreference(R.string.key_setting_text_size);
+        EditTextPreference textSizePreference = (EditTextPreference)findPreference(R.string.key_setting_text_size);
         textSizePreference.setSummary(textSizePreference.getText());
-        ListPreference themePreference = (ListPreference) findPreference(R.string.key_setting_theme);
+        ListPreference themePreference = (ListPreference)findPreference(R.string.key_setting_theme);
         themePreference.setSummary(themePreference.getEntry());
-        ListPreference namestylePreference = (ListPreference) findPreference(R.string.key_setting_namestyle);
+        ListPreference namestylePreference = (ListPreference)findPreference(R.string.key_setting_namestyle);
         namestylePreference.setSummary(namestylePreference.getEntry());
-        EditTextPreference timelinesPreference = (EditTextPreference) findPreference(R.string.key_setting_timelines);
+        EditTextPreference timelinesPreference = (EditTextPreference)findPreference(R.string.key_setting_timelines);
         timelinesPreference.setSummary(String.format(getString(R.string.setting_timelines_summary_format), timelinesPreference.getText()));
     }
 
@@ -113,11 +113,11 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
                 {
                     return true;
                 }
-                new Notificator(getActivity(), getString(R.string.error_setting_text_size_range)).publish();
+                new Notificator(getActivity(), R.string.error_setting_text_size_range).publish();
             }
             else
             {
-                new Notificator(getActivity(), getString(R.string.error_setting_text_size_not_number)).publish();
+                new Notificator(getActivity(), R.string.error_setting_text_size_not_number).publish();
             }
             return false;
         }
@@ -130,11 +130,11 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
                 {
                     return true;
                 }
-                new Notificator(getActivity(), getString(R.string.error_setting_timelines_range)).publish();
+                new Notificator(getActivity(), R.string.error_setting_timelines_range).publish();
             }
             else
             {
-                new Notificator(getActivity(), getString(R.string.error_setting_timelines_not_number)).publish();
+                new Notificator(getActivity(), R.string.error_setting_timelines_not_number).publish();
             }
             return false;
         }
