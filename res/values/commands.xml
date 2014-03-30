@@ -44,4 +44,6 @@
     <item name="key_command_user_open_favstar" type="id"/>
     <item name="key_command_user_open_aclog" type="id"/>
     <item name="key_command_user_open_twilog" type="id"/>
+    <item name="key_command_user_follow" type="id"/>
+    <item name="key_command_user_unfollow" type="id"/>
 </resources>

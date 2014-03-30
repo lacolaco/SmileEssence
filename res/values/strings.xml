@@ -126,4 +126,10 @@
     <string name="command_user_open_favstar">Open favstar</string>
     <string name="command_user_open_aclog">Open aclog</string>
     <string name="command_user_open_twilog">Open twilog</string>
+    <string name="command_user_follow">Follow</string>
+    <string name="notice_follow_succeeded">Succeeded to follow</string>
+    <string name="notice_follow_failed">Failed to follow</string>
+    <string name="notice_unfollow_succeeded">Secceeded to Unfollow</string>
+    <string name="notice_unfollow_failed">Failed to unfollow</string>
+    <string name="command_user_unfollow">Unfollow</string>
 </resources>

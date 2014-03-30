@@ -126,4 +126,10 @@
     <string name="command_user_open_favstar">Favstarを開く</string>
     <string name="command_user_open_aclog">Aclogを開く</string>
     <string name="command_user_open_twilog">Twilogを開く</string>
+    <string name="command_user_follow">フォロー</string>
+    <string name="notice_follow_succeeded">フォローしました</string>
+    <string name="notice_follow_failed">フォローに失敗しました</string>
+    <string name="command_user_unfollow">リムーブ</string>
+    <string name="notice_unfollow_succeeded">リムーブしました</string>
+    <string name="notice_unfollow_failed">リムーブに失敗しました</string>
 </resources>
