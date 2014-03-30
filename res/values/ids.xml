@@ -32,4 +32,7 @@
     <item name="actionbar_aclog" type="id"/>
     <item name="actionbar_twilog" type="id"/>
     <item name="fragment_setting" type="id"/>
+    <item name="key_command_status_retweet" type="id"/>
+    <item name="key_command_status_favorite" type="id"/>
+    <item name="key_command_status_reply_to_all" type="id"/>
 </resources>

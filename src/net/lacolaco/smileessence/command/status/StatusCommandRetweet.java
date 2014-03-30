@@ -39,9 +39,9 @@ public class StatusCommandRetweet extends StatusCommand
 
     private final Account account;
 
-    public StatusCommandRetweet(int key, Activity activity, Status status, Account account)
+    public StatusCommandRetweet(Activity activity, Status status, Account account)
     {
-        super(key, activity, status);
+        super(R.id.key_command_status_retweet, activity, status);
         this.account = account;
     }
 

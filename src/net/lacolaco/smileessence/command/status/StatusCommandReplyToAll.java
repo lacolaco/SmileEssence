@@ -37,9 +37,9 @@ public class StatusCommandReplyToAll extends StatusCommand
 
     private final Account account;
 
-    public StatusCommandReplyToAll(int key, Activity activity, Status status, Account account)
+    public StatusCommandReplyToAll(Activity activity, Status status, Account account)
     {
-        super(key, activity, status);
+        super(R.id.key_command_status_reply_to_all, activity, status);
         this.account = account;
     }
 

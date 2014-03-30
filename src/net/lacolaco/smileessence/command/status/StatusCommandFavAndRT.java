@@ -27,55 +27,35 @@ package net.lacolaco.smileessence.command.status;
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.notification.NotificationType;
-import net.lacolaco.smileessence.notification.Notificator;
-import net.lacolaco.smileessence.twitter.TwitterApi;
-import net.lacolaco.smileessence.twitter.task.FavoriteTask;
 import twitter4j.Status;
 
-public class StatusCommandFavorite extends StatusCommand
+public class StatusCommandFavAndRT extends StatusCommand
 {
 
     private final Account account;
 
-    public StatusCommandFavorite(Activity activity, Status status, Account account)
+    public StatusCommandFavAndRT(int key, Activity activity, Status status, Account account)
     {
-        super(R.id.key_command_status_favorite, activity, status);
+        super(key, activity, status);
         this.account = account;
     }
 
     @Override
     public String getText()
     {
-        return getActivity().getString(R.string.command_status_favorite);
+        return getActivity().getString(R.string.command_status_fav_and_rt);
     }
 
     @Override
     public boolean execute()
     {
-        FavoriteTask task = new FavoriteTask(new TwitterApi(account).getTwitter(), getStatus().getId())
-        {
-            @Override
-            protected void onPostExecute(twitter4j.Status status)
-            {
-                super.onPostExecute(status);
-                if(status != null)
-                {
-                    new Notificator(getActivity(), getActivity().getString(R.string.notice_favorite_succeeded)).publish();
-                }
-                else
-                {
-                    new Notificator(getActivity(), getActivity().getString(R.string.notice_favorite_failed), NotificationType.ALERT).publish();
-                }
-            }
-        };
-        task.execute();
-        return true;
+        return new StatusCommandFavorite(getActivity(), getStatus(), account).execute() &
+                new StatusCommandRetweet(getActivity(), getStatus(), account).execute();
     }
 
     @Override
     public boolean isEnabled()
     {
-        return !getStatus().isFavorited();
+        return new StatusCommandRetweet(getActivity(), getStatus(), account).isEnabled();
     }
 }
