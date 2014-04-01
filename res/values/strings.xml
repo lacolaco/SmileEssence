@@ -39,7 +39,7 @@
     <string name="page_name_mentions">Mentions</string>
     <string name="page_name_messages">Messages</string>
     <string name="page_name_history">History</string>
-    <string name="actionbar_add">Add page</string>
+    <string name="actionbar_add_page">Add page</string>
     <string name="actionbar_setting">Setting</string>
     <string name="actionbar_services">Web sites</string>
     <string name="actionbar_report">Report to author</string>

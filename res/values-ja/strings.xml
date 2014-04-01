@@ -39,7 +39,7 @@
     <string name="page_name_mentions">メンション</string>
     <string name="page_name_messages">メッセージ</string>
     <string name="page_name_history">通知</string>
-    <string name="actionbar_add">ページを追加</string>
+    <string name="actionbar_add_page">ページを追加</string>
     <string name="actionbar_settings">設定</string>
     <string name="actionbar_setting">アプリ設定</string>
     <string name="actionbar_edit_templates">定型文設定</string>

@@ -34,6 +34,7 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.Menu;
+import android.view.MenuItem;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.logging.Logger;
@@ -46,7 +47,7 @@ import net.lacolaco.smileessence.util.NetworkHelper;
 import net.lacolaco.smileessence.view.CustomListFragment;
 import net.lacolaco.smileessence.view.PostFragment;
 import net.lacolaco.smileessence.view.adapter.*;
-import net.lacolaco.smileessence.viewmodel.menu.MainActivityMenuFactory;
+import net.lacolaco.smileessence.viewmodel.menu.MainActivityMenuHelper;
 import twitter4j.TwitterStream;
 import twitter4j.auth.AccessToken;
 
@@ -187,9 +188,14 @@ public class MainActivity extends Activity
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        MainActivityMenuFactory factory = new MainActivityMenuFactory(this.getBaseContext());
-        factory.addItemsToMenu(menu);
+        MainActivityMenuHelper.addItemsToMenu(this, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        return MainActivityMenuHelper.onItemSelected(this, item);
     }
 
     private void setupHelpers() throws IOException

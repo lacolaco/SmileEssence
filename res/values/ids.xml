@@ -24,7 +24,7 @@
   -->
 
 <resources>
-    <item name="actionbar_add" type="id"/>
+    <item name="actionbar_add_page" type="id"/>
     <item name="actionbar_settings" type="id"/>
     <item name="actionbar_setting" type="id"/>
     <item name="actionbar_edit_templates" type="id"/>
