@@ -152,4 +152,8 @@
     <string name="notice_error_show_user">Can\'t show this user</string>
     <string name="command_open_status_detail">Tweet detail</string>
     <string name="notice_error_show_status">Can\'t show this status</string>
+    <string name="actionbar_settings">Settings</string>
+    <string name="actionbar_edit_templates">Edit templates</string>
+    <string name="actionbar_edit_extraction">Edit extraction</string>
+    <string name="actionbar_edit_commands">Edit commands</string>
 </resources>

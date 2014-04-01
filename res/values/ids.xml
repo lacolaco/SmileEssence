@@ -25,7 +25,11 @@
 
 <resources>
     <item name="actionbar_add" type="id"/>
+    <item name="actionbar_settings" type="id"/>
     <item name="actionbar_setting" type="id"/>
+    <item name="actionbar_edit_templates" type="id"/>
+    <item name="actionbar_edit_extraction" type="id"/>
+    <item name="actionbar_edit_commands" type="id"/>
     <item name="actionbar_services" type="id"/>
     <item name="actionbar_report" type="id"/>
     <item name="actionbar_favstar" type="id"/>

@@ -47,12 +47,17 @@ public class MainActivityMenuFactory
         addButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         addButton.setIcon(R.drawable.ic_action_new);
         //Setting button
-        MenuItem setting = menu.add(Menu.NONE, R.id.actionbar_setting, Menu.NONE, context.getString(R.string.actionbar_setting));
-        setting.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-        setting.setIcon(R.drawable.ic_action_settings);
+        SubMenu settings = menu.addSubMenu(Menu.NONE, R.id.actionbar_settings, Menu.NONE, context.getString(R.string.actionbar_settings));
+        settings.setIcon(R.drawable.ic_action_settings);
+        settings.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        settings.add(Menu.NONE, R.id.actionbar_setting, Menu.NONE, context.getString(R.string.actionbar_setting));
+        settings.add(Menu.NONE, R.id.actionbar_edit_templates, Menu.NONE, context.getString(R.string.actionbar_edit_templates));
+        settings.add(Menu.NONE, R.id.actionbar_edit_extraction, Menu.NONE, context.getString(R.string.actionbar_edit_extraction));
+        settings.add(Menu.NONE, R.id.actionbar_edit_commands, Menu.NONE, context.getString(R.string.actionbar_edit_commands));
         //External services
         SubMenu services = menu.addSubMenu(Menu.NONE, R.id.actionbar_services, Menu.NONE, context.getString(R.string.actionbar_services));
-        services.setHeaderIcon(R.drawable.ic_action_web_site);
+        services.setIcon(R.drawable.ic_action_web_site);
+        services.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         services.add(Menu.NONE, R.id.actionbar_favstar, Menu.NONE, context.getString(R.string.actionbar_favstar));
         services.add(Menu.NONE, R.id.actionbar_aclog, Menu.NONE, context.getString(R.string.actionbar_aclog));
         services.add(Menu.NONE, R.id.actionbar_twilog, Menu.NONE, context.getString(R.string.actionbar_twilog));
