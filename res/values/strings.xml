@@ -163,4 +163,6 @@
     <string name="dialog_title_edit">Edit</string>
     <string name="activity_setting">App Setting</string>
     <string name="activity_edit_extraction">Extraction Setting</string>
+    <string name="actionbar_edit_command_all_on">Enable all</string>
+    <string name="activity_edit_command">Command Setting</string>
 </resources>

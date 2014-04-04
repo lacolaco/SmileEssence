@@ -29,10 +29,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import net.lacolaco.smileessence.R;
-import net.lacolaco.smileessence.activity.EditExtractionActivity;
-import net.lacolaco.smileessence.activity.EditTemplateActivity;
-import net.lacolaco.smileessence.activity.MainActivity;
-import net.lacolaco.smileessence.activity.SettingActivity;
+import net.lacolaco.smileessence.activity.*;
 import net.lacolaco.smileessence.command.CommandOpenURL;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.PostState;
@@ -96,7 +93,8 @@ public class MainActivityMenuHelper
             }
             case R.id.actionbar_edit_commands:
             {
-                //TODO start edit commands activity
+                Intent intent = new Intent(activity, EditCommandActivity.class);
+                activity.startActivity(intent);
                 break;
             }
             case R.id.actionbar_favstar:

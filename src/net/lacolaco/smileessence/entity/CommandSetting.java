@@ -27,6 +27,9 @@ package net.lacolaco.smileessence.entity;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
+
+import java.util.List;
 
 @Table(name = "Commands")
 public class CommandSetting extends Model
@@ -36,19 +39,26 @@ public class CommandSetting extends Model
     public int commandKey;
     @Column(name = "Visibility")
     public boolean visibility;
-    @Column(name = "Ordinal")
-    public int ordinal;
 
     public CommandSetting()
     {
         super();
     }
 
-    public CommandSetting(int commandKey, boolean visibility, int order)
+    public CommandSetting(int commandKey, boolean visibility)
     {
         super();
         this.commandKey = commandKey;
         this.visibility = visibility;
-        this.ordinal = order;
+    }
+
+    public static List<CommandSetting> getAll()
+    {
+        return new Select().from(CommandSetting.class).execute();
+    }
+
+    public static CommandSetting selectByKey(int key)
+    {
+        return new Select().from(CommandSetting.class).where("CommandKey = ?", key).executeSingle();
     }
 }

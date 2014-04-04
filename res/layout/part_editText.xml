@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ The MIT License (MIT)
   ~
@@ -23,19 +24,16 @@
   ~ SOFTWARE.
   -->
 
-<resources>
-    <item name="actionbar_add_page" type="id"/>
-    <item name="actionbar_settings" type="id"/>
-    <item name="actionbar_setting" type="id"/>
-    <item name="actionbar_edit_templates" type="id"/>
-    <item name="actionbar_edit_extraction" type="id"/>
-    <item name="actionbar_edit_commands" type="id"/>
-    <item name="actionbar_services" type="id"/>
-    <item name="actionbar_report" type="id"/>
-    <item name="actionbar_favstar" type="id"/>
-    <item name="actionbar_aclog" type="id"/>
-    <item name="actionbar_twilog" type="id"/>
-    <item name="fragment_setting" type="id"/>
-    <item name="menu_edit_list_add" type="id"/>
-    <item name="menu_edit_command_all_on" type="id"/>
-</resources>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/part_editText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:inputType="text"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"/>
+
+</FrameLayout>

@@ -25,6 +25,13 @@
 package net.lacolaco.smileessence.command;
 
 import android.app.Activity;
+import net.lacolaco.smileessence.command.message.MessageCommandDelete;
+import net.lacolaco.smileessence.command.message.MessageCommandReply;
+import net.lacolaco.smileessence.command.status.*;
+import net.lacolaco.smileessence.command.user.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Command
 {
@@ -53,4 +60,40 @@ public abstract class Command
     public abstract boolean execute();
 
     public abstract boolean isEnabled();
+
+    public static List<Command> getAll(Activity activity)
+    {
+        List<Command> commands = new ArrayList<>();
+        //Status
+        commands.add(new StatusCommandReply(activity, null));
+        commands.add(new StatusCommandReplyToAll(activity, null, null));
+        commands.add(new StatusCommandFavorite(activity, null, null));
+        commands.add(new StatusCommandRetweet(activity, null, null));
+        commands.add(new StatusCommandDelete(activity, null, null));
+        commands.add(new StatusCommandFavAndRT(activity, null, null));
+        commands.add(new StatusCommandQuote(activity, null));
+        commands.add(new StatusCommandShare(activity, null));
+        commands.add(new StatusCommandOpenInBrowser(activity, null));
+        commands.add(new StatusCommandClipboard(activity, null));
+        commands.add(new StatusCommandTofuBuster(activity, null));
+        commands.add(new StatusCommandNanigaja(activity, null, null));
+        commands.add(new StatusCommandMakeAnonymous(activity, null, null));
+        //User
+        commands.add(new UserCommandReply(activity, null));
+        commands.add(new UserCommandAddToReply(activity, null));
+        commands.add(new UserCommandSendMessage(activity, null));
+        commands.add(new UserCommandFollow(activity, null, null));
+        commands.add(new UserCommandUnfollow(activity, null, null));
+        commands.add(new UserCommandBlock(activity, null, null));
+        commands.add(new UserCommandUnblock(activity, null, null));
+        commands.add(new UserCommandReportForSpam(activity, null, null));
+        commands.add(new UserCommandOpenFavstar(activity, null));
+        commands.add(new UserCommandOpenAclog(activity, null));
+        commands.add(new UserCommandOpenTwilog(activity, null));
+        commands.add(new UserCommandIntroduce(activity, null));
+        //Message
+        commands.add(new MessageCommandReply(activity, null));
+        commands.add(new MessageCommandDelete(activity, null, null));
+        return commands;
+    }
 }
