@@ -34,18 +34,18 @@ public class Template extends Model
 
     @Column(name = "Text", notNull = true)
     public String text;
-    @Column(name = "Ordinal")
-    public int ordinal;
+    @Column(name = "Count")
+    public int count;
 
     public Template()
     {
         super();
     }
 
-    public Template(String text, int ordinal)
+    public Template(String text, int count)
     {
         super();
         this.text = text;
-        this.ordinal = ordinal;
+        this.count = count;
     }
 }
