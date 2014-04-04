@@ -61,7 +61,9 @@
             android:configChanges="keyboardHidden|orientation"/>
         <activity
             android:name=".activity.SettingActivity"
-            android:configChanges="keyboardHidden|orientation"/>
+            android:label="@string/activity_setting"
+            android:configChanges="keyboardHidden|orientation"
+            android:parentActivityName="net.lacolaco.smileessence.activity.MainActivity"/>
         <activity
             android:name=".activity.EditTemplateActivity"
             android:configChanges="keyboardHidden|orientation"

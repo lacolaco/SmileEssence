@@ -24,9 +24,14 @@
 
 package net.lacolaco.smileessence.activity;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.view.MenuItem;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.preference.UserPreferenceHelper;
+import net.lacolaco.smileessence.util.Themes;
 
 public class SettingActivity extends Activity
 {
@@ -34,7 +39,24 @@ public class SettingActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        setTheme(Themes.getTheme(new UserPreferenceHelper(this).getValue(R.string.key_setting_theme, 0)));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting);
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch(item.getItemId())
+        {
+            case android.R.id.home:
+            {
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            }
+        }
+        return true;
     }
 }

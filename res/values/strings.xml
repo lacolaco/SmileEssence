@@ -161,4 +161,5 @@
     <string name="alert_dialog_cancel">Cancel</string>
     <string name="dialog_title_add">Add</string>
     <string name="dialog_title_edit">Edit</string>
+    <string name="activity_setting">App Setting</string>
 </resources>

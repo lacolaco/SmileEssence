@@ -161,4 +161,5 @@
     <string name="dialog_title_edit">編集</string>
     <string name="dialog_title_add">新規作成</string>
     <string name="alert_dialog_cancel">キャンセル</string>
+    <string name="activity_setting">アプリ設定</string>
 </resources>
