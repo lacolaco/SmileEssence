@@ -157,4 +157,8 @@
     <string name="actionbar_edit_extraction">Edit extraction</string>
     <string name="actionbar_edit_commands">Edit commands</string>
     <string name="text_message_to_author">" #SmileEssence @laco0416 [%s]"</string>
+    <string name="activity_edit_template">Templates Setting</string>
+    <string name="alert_dialog_cancel">Cancel</string>
+    <string name="dialog_title_add">Add</string>
+    <string name="dialog_title_edit">Edit</string>
 </resources>

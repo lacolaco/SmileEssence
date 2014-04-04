@@ -58,11 +58,14 @@
         </activity>
         <activity
             android:name=".activity.WebViewActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:launchMode="standard"/>
+            android:configChanges="keyboardHidden|orientation"/>
         <activity
             android:name=".activity.SettingActivity"
+            android:configChanges="keyboardHidden|orientation"/>
+        <activity
+            android:name=".activity.EditTemplateActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:launchMode="standard"/>
+            android:label="@string/activity_edit_template"
+            android:parentActivityName="net.lacolaco.smileessence.activity.MainActivity"/>
     </application>
 </manifest>

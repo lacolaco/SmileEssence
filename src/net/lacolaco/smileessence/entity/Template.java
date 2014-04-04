@@ -24,12 +24,21 @@
 
 package net.lacolaco.smileessence.entity;
 
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.viewmodel.IViewModel;
+
+import java.util.List;
 
 @Table(name = "Templates")
-public class Template extends Model
+public class Template extends Model implements IViewModel
 {
 
     @Column(name = "Text", notNull = true)
@@ -47,5 +56,22 @@ public class Template extends Model
         super();
         this.text = text;
         this.count = count;
+    }
+
+    @Override
+    public View getView(Context context, LayoutInflater inflater, View convertedView)
+    {
+        if(convertedView == null)
+        {
+            convertedView = inflater.inflate(R.layout.menu_item_simple_text, null);
+        }
+        TextView textView = (TextView)convertedView.findViewById(R.id.textView_menuItem_simple);
+        textView.setText(this.text);
+        return convertedView;
+    }
+
+    public static List<Model> getAll()
+    {
+        return new Select().from(Template.class).orderBy("COUNT DESC").execute();
     }
 }

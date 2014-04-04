@@ -22,28 +22,33 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.view;
+package net.lacolaco.smileessence.util;
 
-import android.app.ListFragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListAdapter;
-import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.logging.Logger;
 
-public class CustomListFragment extends ListFragment
+public class Themes
 {
 
-    public static final String FRAGMENT_INDEX = "fragmentIndex";
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public static int getTheme(int index)
     {
-        Bundle args = getArguments();
-        int fragmentIndex = args.getInt(FRAGMENT_INDEX);
-        ListAdapter adapter = ((MainActivity)getActivity()).getListAdapter(fragmentIndex);
-        setListAdapter(adapter);
-        return super.onCreateView(inflater, container, savedInstanceState);    //To change body of overridden methods use File | Settings | File Templates.
+        switch(index)
+        {
+            case 0:
+            {
+                Logger.debug("Theme:Dark");
+                return R.style.theme_dark;
+            }
+            case 1:
+            {
+                Logger.debug("Theme:Light");
+                return R.style.theme_light;
+            }
+            default:
+            {
+                Logger.debug("Theme:Default");
+                return R.style.theme_dark;
+            }
+        }
     }
 }

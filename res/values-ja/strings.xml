@@ -157,4 +157,8 @@
     <string name="command_open_status_detail">ツイート詳細</string>
     <string name="notice_error_show_status">ツイートを表示できませんでした</string>
     <string name="text_message_to_author">" #SmileEssence @laco0416 [ver.%s]"</string>
+    <string name="activity_edit_template">定型文設定</string>
+    <string name="dialog_title_edit">編集</string>
+    <string name="dialog_title_add">新規作成</string>
+    <string name="alert_dialog_cancel">キャンセル</string>
 </resources>

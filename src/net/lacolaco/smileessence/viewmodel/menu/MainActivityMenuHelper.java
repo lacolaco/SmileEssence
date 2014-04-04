@@ -29,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.activity.EditTemplateActivity;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.activity.SettingActivity;
 import net.lacolaco.smileessence.command.CommandOpenURL;
@@ -82,7 +83,8 @@ public class MainActivityMenuHelper
             }
             case R.id.actionbar_edit_templates:
             {
-                //TODO start edit templates activity
+                Intent intent = new Intent(activity, EditTemplateActivity.class);
+                activity.startActivity(intent);
                 break;
             }
             case R.id.actionbar_edit_extraction:

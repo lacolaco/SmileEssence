@@ -44,6 +44,7 @@ import net.lacolaco.smileessence.twitter.OAuthSession;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.UserStreamListener;
 import net.lacolaco.smileessence.util.NetworkHelper;
+import net.lacolaco.smileessence.util.Themes;
 import net.lacolaco.smileessence.view.CustomListFragment;
 import net.lacolaco.smileessence.view.PostFragment;
 import net.lacolaco.smileessence.view.adapter.*;
@@ -206,28 +207,8 @@ public class MainActivity extends Activity
 
     private void setTheme()
     {
-        //TODO on release switch(userPref.getValue(R.string.key_setting_theme, 0))
-        switch(1)
-        {
-            case 0:
-            {
-                setTheme(R.style.theme_dark);
-                Logger.debug("Theme:Dark");
-                break;
-            }
-            case 1:
-            {
-                setTheme(R.style.theme_light);
-                Logger.debug("Theme:Light");
-                break;
-            }
-            default:
-            {
-                setTheme(R.style.theme_dark);
-                Logger.debug("Theme:Default");
-                break;
-            }
-        }
+        //TODO on release userPref.getValue(R.string.key_setting_theme, 0)
+        setTheme(Themes.getTheme(1));
     }
 
 
