@@ -29,6 +29,9 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.command.CommandOpenURL;
+import net.lacolaco.smileessence.twitter.util.TwitterUtils;
+import net.lacolaco.smileessence.view.adapter.PostState;
 
 public class MainActivityMenuHelper
 {
@@ -91,22 +94,26 @@ public class MainActivityMenuHelper
             }
             case R.id.actionbar_favstar:
             {
-                //TODO open favstar
+                new CommandOpenURL(activity, TwitterUtils.getFavstarRecentURL(activity.getCurrentAccount().screenName)).execute();
                 break;
             }
             case R.id.actionbar_aclog:
             {
-                //TODO open aclog
+                new CommandOpenURL(activity, TwitterUtils.getAclogTimelineURL(activity.getCurrentAccount().screenName)).execute();
                 break;
             }
             case R.id.actionbar_twilog:
             {
-                //TODO open twilog
+                new CommandOpenURL(activity, TwitterUtils.getTwilogURL(activity.getCurrentAccount().screenName)).execute();
                 break;
             }
             case R.id.actionbar_report:
             {
-                //TODO execute report command
+                PostState.newState().beginTransaction()
+                         .setCursor(0)
+                         .setText(activity.getString(R.string.text_message_to_author, activity.getVersion()))
+                         .requestOpenPage(true)
+                         .commit();
                 break;
             }
         }

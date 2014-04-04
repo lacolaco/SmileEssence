@@ -156,4 +156,5 @@
     <string name="notice_error_show_user">ユーザーを表示できませんでした</string>
     <string name="command_open_status_detail">ツイート詳細</string>
     <string name="notice_error_show_status">ツイートを表示できませんでした</string>
+    <string name="text_message_to_author">" #SmileEssence @laco0416 [ver.%s]"</string>
 </resources>

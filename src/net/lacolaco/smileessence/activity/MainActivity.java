@@ -254,7 +254,7 @@ public class MainActivity extends Activity
         }
     }
 
-    private String getVersion()
+    public String getVersion()
     {
         return getString(R.string.app_version);
     }
