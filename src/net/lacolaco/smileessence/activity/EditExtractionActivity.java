@@ -55,8 +55,7 @@ public class EditExtractionActivity extends Activity implements AdapterView.OnIt
     protected void onCreate(Bundle savedInstanceState)
     {
         UserPreferenceHelper userPreferenceHelper = new UserPreferenceHelper(this);
-        //        setTheme(Themes.getTheme(userPreferenceHelper.getValue(R.string.key_setting_theme, 0)));
-        setTheme(Themes.getTheme(1));
+        setTheme(Themes.getTheme(userPreferenceHelper.getValue(R.string.key_setting_theme, 0)));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_edit_list);
         ActionBar actionBar = getActionBar();
