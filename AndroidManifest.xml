@@ -69,5 +69,10 @@
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/activity_edit_template"
             android:parentActivityName="net.lacolaco.smileessence.activity.MainActivity"/>
+        <activity
+            android:name=".activity.EditExtractionActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/activity_edit_extraction"
+            android:parentActivityName="net.lacolaco.smileessence.activity.MainActivity"/>
     </application>
 </manifest>

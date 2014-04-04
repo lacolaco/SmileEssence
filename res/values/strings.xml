@@ -162,4 +162,5 @@
     <string name="dialog_title_add">Add</string>
     <string name="dialog_title_edit">Edit</string>
     <string name="activity_setting">App Setting</string>
+    <string name="activity_edit_extraction">Extraction Setting</string>
 </resources>
