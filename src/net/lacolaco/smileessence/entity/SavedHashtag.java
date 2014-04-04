@@ -34,18 +34,18 @@ public class SavedHashtag extends Model
 
     @Column(name = "Text", notNull = true)
     public String text;
-    @Column(name = "Ordinal")
-    public int ordinal;
+    @Column(name = "Count")
+    public int count;
 
     public SavedHashtag()
     {
         super();
     }
 
-    public SavedHashtag(String text, int ordinal)
+    public SavedHashtag(String text, int count)
     {
         super();
         this.text = text;
-        this.ordinal = ordinal;
+        this.count = count;
     }
 }
