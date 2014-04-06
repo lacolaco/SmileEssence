@@ -5,12 +5,12 @@
   "screen_name":"laco0416",
   "location":"戦地 福岡",
   "description":"C#とかPythonとかJavaとか書きます\n\nhttps:\/\/t.co\/HaZ2B8rGTH\nお問い合せはこちらから。\nhttp:\/\/t.co\/sHp1REsW9I",
-  "screenName":"http:\/\/t.co\/xf9c1YjWDo",
+  "url":"http:\/\/t.co\/xf9c1YjWDo",
   "entities":{
-    "screenName":{
+    "url":{
       "urls":[
         {
-          "screenName":"http:\/\/t.co\/xf9c1YjWDo",
+          "url":"http:\/\/t.co\/xf9c1YjWDo",
           "expanded_url":"http:\/\/lacolaco.net",
           "display_url":"lacolaco.net",
           "indices":[
@@ -23,7 +23,7 @@
     "description":{
       "urls":[
         {
-          "screenName":"https:\/\/t.co\/HaZ2B8rGTH",
+          "url":"https:\/\/t.co\/HaZ2B8rGTH",
           "expanded_url":"https:\/\/twitter.com\/laco0416\/status\/441249190841032704",
           "display_url":"twitter.com\/laco0416\/statu…",
           "indices":[
@@ -32,7 +32,7 @@
           ]
         },
         {
-          "screenName":"http:\/\/t.co\/sHp1REsW9I",
+          "url":"http:\/\/t.co\/sHp1REsW9I",
           "expanded_url":"http:\/\/www.amazon.co.jp\/registry\/wishlist\/2FH7EWIU281C",
           "display_url":"amazon.co.jp\/registry\/wishl…",
           "indices":[
@@ -44,22 +44,22 @@
     }
   },
   "protected":false,
-  "followers_count":2674,
-  "friends_count":468,
-  "listed_count":203,
+  "followers_count":2710,
+  "friends_count":466,
+  "listed_count":206,
   "created_at":"Tue Feb 21 07:00:56 +0000 2012",
-  "favourites_count":60294,
+  "favourites_count":60016,
   "utc_offset":32400,
   "time_zone":"Irkutsk",
   "geo_enabled":false,
   "verified":false,
-  "statuses_count":178568,
+  "statuses_count":182229,
   "lang":"ja",
   "status":{
-    "created_at":"Thu Mar 20 14:34:07 +0000 2014",
-    "id":446655931942580224,
-    "id_str":"446655931942580224",
-    "text":"test",
+    "created_at":"Sun Apr 06 02:06:35 +0000 2014",
+    "id":452628403242291200,
+    "id_str":"452628403242291200",
+    "text":"はて",
     "source":"<a href=\"http:\/\/youjo.manaita.info\/\" rel=\"nofollow\">Meltykiss<\/a>",
     "truncated":false,
     "in_reply_to_status_id":null,
@@ -72,24 +72,24 @@
     "place":null,
     "contributors":null,
     "retweet_count":0,
-    "favorite_count":1,
+    "favorite_count":0,
     "entities":{
       "hashtags":[
-
+        
       ],
       "symbols":[
-
+        
       ],
       "urls":[
-
+        
       ],
       "user_mentions":[
-
+        
       ]
     },
     "favorited":false,
     "retweeted":false,
-    "lang":"und"
+    "lang":"ja"
   },
   "contributors_enabled":false,
   "is_translator":false,
@@ -98,8 +98,8 @@
   "profile_background_image_url":"http:\/\/pbs.twimg.com\/profile_background_images\/378800000034417975\/1a1c3c452a855698d8a1a56c2eeb5c12.jpeg",
   "profile_background_image_url_https":"https:\/\/pbs.twimg.com\/profile_background_images\/378800000034417975\/1a1c3c452a855698d8a1a56c2eeb5c12.jpeg",
   "profile_background_tile":false,
-  "profile_image_url":"http:\/\/pbs.twimg.com\/profile_images\/427034943533772800\/5AAJv835_normal.png",
-  "profile_image_url_https":"https:\/\/pbs.twimg.com\/profile_images\/427034943533772800\/5AAJv835_normal.png",
+  "profile_image_url":"http:\/\/pbs.twimg.com\/profile_images\/451026853189275648\/_brGSjJ-_normal.png",
+  "profile_image_url_https":"https:\/\/pbs.twimg.com\/profile_images\/451026853189275648\/_brGSjJ-_normal.png",
   "profile_banner_url":"https:\/\/pbs.twimg.com\/profile_banners\/498602690\/1392430720",
   "profile_link_color":"0084B4",
   "profile_sidebar_border_color":"FFFFFF",
