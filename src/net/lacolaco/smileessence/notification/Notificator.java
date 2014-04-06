@@ -104,12 +104,12 @@ public class Notificator
         {
             case INFO:
             {
-                style.setBackgroundColor(Style.holoBlueLight);
+                style.setBackgroundColorValue(Style.holoBlueLight);
                 break;
             }
             case ALERT:
             {
-                style.setBackgroundColor(Style.holoRedLight);
+                style.setBackgroundColorValue(Style.holoRedLight);
                 break;
             }
         }

@@ -58,6 +58,7 @@
         </activity>
         <activity
             android:name=".activity.WebViewActivity"
+            android:label="@string/activity_authenticate"
             android:configChanges="keyboardHidden|orientation"/>
         <activity
             android:name=".activity.SettingActivity"

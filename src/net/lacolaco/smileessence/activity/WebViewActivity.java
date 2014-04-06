@@ -48,6 +48,7 @@ public class WebViewActivity extends Activity
         if(uri == null)
         {
             finish();
+            return;
         }
 
         webView.setWebViewClient(new WebViewClient()
@@ -60,7 +61,7 @@ public class WebViewActivity extends Activity
                 {
                     Intent intent = new Intent();
                     intent.setData(Uri.parse(url));
-                    setResult(MainActivity.REQUEST_OAUTH);
+                    setResult(RESULT_OK, intent);
                     finish();
                 }
             }

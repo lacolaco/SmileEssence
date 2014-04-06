@@ -168,4 +168,9 @@
     <string name="notice_error_get_home">Failed to get home timeline</string>
     <string name="notice_error_get_mentions">Failed to get mentions</string>
     <string name="notice_error_get_messages">Failed to get direct messages</string>
+    <string name="notice_error_authenticate">Failed to authenticate. Please try later again.</string>
+    <string name="activity_authenticate">Authenticate</string>
+    <string name="notice_stream_connect">Connect to stream</string>
+    <string name="notice_stream_disconnect">Disconnect from stream</string>
+    <string name="notice_error_authenticate_request">Failed to prepare for authentication. Please check internet access.</string>
 </resources>

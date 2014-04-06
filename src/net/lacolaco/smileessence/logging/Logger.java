@@ -31,28 +31,28 @@ public class Logger
 
     private static final String TAG = "SmileEssence";
 
-    public static void debug(String message)
+    public static void debug(Object message)
     {
-        Log.d(TAG, message);
+        Log.d(TAG, String.valueOf(message));
     }
 
-    public static void info(String message)
+    public static void info(Object message)
     {
-        Log.i(TAG, message);
+        Log.i(TAG, String.valueOf(message));
     }
 
-    public static void error(String message)
+    public static void error(Object message)
     {
-        Log.e(TAG, message);
+        Log.e(TAG, String.valueOf(message));
     }
 
-    public static void warn(String message)
+    public static void warn(Object message)
     {
-        Log.w(TAG, message);
+        Log.w(TAG, String.valueOf(message));
     }
 
-    public static void verbose(String message)
+    public static void verbose(Object message)
     {
-        Log.v(TAG, message);
+        Log.v(TAG, String.valueOf(message));
     }
 }

@@ -29,6 +29,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.ListFragment;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -39,6 +40,7 @@ import android.widget.ImageView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.logging.Logger;
+import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.preference.AppPreferenceHelper;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.twitter.OAuthSession;
@@ -60,10 +62,10 @@ import net.lacolaco.smileessence.viewmodel.menu.MainActivityMenuHelper;
 import twitter4j.*;
 import twitter4j.auth.AccessToken;
 
-import java.io.IOException;
-
 public class MainActivity extends Activity
 {
+
+    // ------------------------------ FIELDS ------------------------------
 
     public static final int REQUEST_OAUTH = 10;
     public static final int PAGE_POST = 0;
@@ -71,6 +73,7 @@ public class MainActivity extends Activity
     public static final int PAGE_MENTIONS = 2;
     public static final int PAGE_MESSAGES = 3;
     public static final int PAGE_HISTORY = 4;
+    private final String lastUsedAccountIDKey = "lastUsedAccountID";
     private UserPreferenceHelper userPref;
     private AppPreferenceHelper appPref;
     private ViewPager viewPager;
@@ -80,65 +83,30 @@ public class MainActivity extends Activity
     private TwitterStream stream;
     private SparseArray<CustomListAdapter<?>> adapterSparseArray = new SparseArray<>();
 
-    /**
-     * Called when the activity is first created.
-     */
-    @Override
-    public void onCreate(Bundle savedInstanceState)
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    public Account getCurrentAccount()
     {
-        try
-        {
-            setupHelpers();
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-            finish();
-        }
-        setTheme();
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        initializeView();
-        //TODO account check
-        initializePages();
-        Logger.debug("MainActivity:onCreate");
+        return currentAccount;
     }
 
-    @Override
-    protected void onResume()
+    public void setCurrentAccount(Account account)
     {
-        super.onResume();
-        Logger.debug("MainActivity:onResume");
-        //        //account check
-        //        long id = getLastUsedAccountID();
-        //        if(id < 0)
-        //        {
-        //            oauthSession = new OAuthSession();
-        //            String url = oauthSession.getAuthorizationURL();
-        //            if(!TextUtils.isEmpty(url))
-        //            {
-        //                Intent intent = new Intent(this, WebViewActivity.class);
-        //                intent.setData(Uri.parse(url));
-        //                startActivityForResult(intent, REQUEST_OAUTH);
-        //            }
-        //            else
-        //            {
-        //                //TODO Notify auth error
-        //            }
-        //        }
-        //        else
-        //        {
-        //            //Login and initialize
-        //            Account account = Account.load(Account.class, id);
-        //            setCurrentAccount(account);
-        //            if(isFirstLaunchThisVersion())
-        //            {
-        //                //TODO Show change log
-        //            }
-        //            initializeTimelines();
-        //        }
-
+        this.currentAccount = account;
+        appPref.putValue(lastUsedAccountIDKey, account.getId());
     }
+
+    public PageListAdapter getPagerAdapter()
+    {
+        return pagerAdapter;
+    }
+
+    public ViewPager getViewPager()
+    {
+        return viewPager;
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -149,7 +117,8 @@ public class MainActivity extends Activity
             {
                 if(resultCode != RESULT_OK)
                 {
-                    //TODO Notify error
+                    Logger.error(requestCode);
+                    new Notificator(this, R.string.notice_error_authenticate).publish();
                     finish();
                 }
                 else
@@ -158,59 +127,47 @@ public class MainActivity extends Activity
                     Account account = new Account(token.getToken(), token.getTokenSecret(), token.getUserId(), token.getScreenName());
                     account.save();
                     setCurrentAccount(account);
+                    startMainLogic();
                 }
             }
         }
     }
 
     @Override
-    protected void onPause()
+    public void onCreate(Bundle savedInstanceState)
     {
-        super.onPause();
-        Logger.debug("MainActivity:onPause");
-    }
-
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-        if(stream != null)
+        setupHelpers();
+        setTheme();
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        if(isAuthorized())
         {
-            stream.shutdown();
+            setupAccount();
+            startMainLogic();
         }
-        Logger.debug("MainActivity:onDestroy");
+        else
+        {
+            startOAuthSession();
+        }
+        Logger.debug("MainActivity:onCreate");
     }
 
-    @Override
-    protected void onStop()
+    private boolean isAuthorized()
     {
-        super.onStop();
-        Logger.debug("MainActivity:onStop");
+        return getLastUsedAccountID() >= 0;
     }
 
-    @Override
-    protected void onNewIntent(Intent intent)
+    private long getLastUsedAccountID()
     {
-        super.onNewIntent(intent);    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        MainActivityMenuHelper.addItemsToMenu(this, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        return MainActivityMenuHelper.onItemSelected(this, item);
-    }
-
-    private void setupHelpers() throws IOException
-    {
-        userPref = new UserPreferenceHelper(this);
-        appPref = new AppPreferenceHelper(this);
+        String id = appPref.getValue(lastUsedAccountIDKey, "");
+        if(TextUtils.isEmpty(id))
+        {
+            return -1;
+        }
+        else
+        {
+            return Long.parseLong(id);
+        }
     }
 
     private void setTheme()
@@ -219,6 +176,18 @@ public class MainActivity extends Activity
         setTheme(Themes.getTheme(1));
     }
 
+    private void setupHelpers()
+    {
+        userPref = new UserPreferenceHelper(this);
+        appPref = new AppPreferenceHelper(this);
+    }
+
+    public void startMainLogic()
+    {
+        initializeView();
+        versionCheck();
+        startTwitter();
+    }
 
     private void initializeView()
     {
@@ -228,56 +197,38 @@ public class MainActivity extends Activity
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         viewPager = (ViewPager)findViewById(R.id.viewPager);
         pagerAdapter = new PageListAdapter(this, viewPager);
+        initializePages();
     }
 
-    private long getLastUsedAccountID()
+    private void initializePages()
     {
-        String id = appPref.getValue("lastUsedAccountID", "");
-        if(TextUtils.isEmpty(id))
+        addPage(getString(R.string.page_name_post), PostFragment.class, null, true);
+        StatusListAdapter homeAdapter = new StatusListAdapter(this);
+        StatusListAdapter mentionsAdapter = new StatusListAdapter(this);
+        MessageListAdapter messagesAdapter = new MessageListAdapter(this);
+        EventListAdapter historyAdapter = new EventListAdapter(this);
+        addListPage(getString(R.string.page_name_home), CustomListFragment.class, homeAdapter, false);
+        addListPage(getString(R.string.page_name_mentions), CustomListFragment.class, mentionsAdapter, false);
+        addListPage(getString(R.string.page_name_messages), CustomListFragment.class, messagesAdapter, false);
+        addListPage(getString(R.string.page_name_history), CustomListFragment.class, historyAdapter, false);
+        pagerAdapter.notifyDataSetChanged();
+        PostState.newState().beginTransaction().commit();
+        setSelectedPageIndex(PAGE_HOME);
+    }
+
+    public boolean addListPage(String name, Class<? extends ListFragment> fragmentClass, CustomListAdapter<?> adapter, boolean withNotify)
+    {
+        int nextPosition = pagerAdapter.getCount();
+        Bundle args = new Bundle();
+        args.putInt(CustomListFragment.FRAGMENT_INDEX, nextPosition);
+        if(addPage(name, fragmentClass, args, withNotify))
         {
-            return -1;
+            adapterSparseArray.append(nextPosition, adapter);
+            return true;
         }
-        else
-        {
-            return Long.getLong(id);
-        }
+        return false;
     }
 
-    public String getVersion()
-    {
-        return getString(R.string.app_version);
-    }
-
-    private boolean isFirstLaunchThisVersion()
-    {
-        return !getVersion().contentEquals(appPref.getValue("app.version", ""));
-    }
-
-    public ViewPager getViewPager()
-    {
-        return viewPager;
-    }
-
-    public PageListAdapter getPagerAdapter()
-    {
-        return pagerAdapter;
-    }
-
-    public Account getCurrentAccount()
-    {
-        return currentAccount;
-    }
-
-    public void setCurrentAccount(Account currentAccount)
-    {
-        this.currentAccount = currentAccount;
-    }
-
-    /**
-     * Add page.
-     *
-     * @see PageListAdapter#addPage(String, Class, android.os.Bundle)
-     */
     public boolean addPage(String name, Class<? extends Fragment> fragmentClass, Bundle args, boolean withNotify)
     {
         if(withNotify)
@@ -290,55 +241,15 @@ public class MainActivity extends Activity
         }
     }
 
-    /**
-     * Remove page.
-     *
-     * @see PageListAdapter#removePage(int)
-     */
-    public boolean removePage(int position)
-    {
-        return this.pagerAdapter.removePage(position);
-    }
-
-    /**
-     * Remove current page.
-     *
-     * @return successfully
-     */
-    public boolean removeCurrentPage()
-    {
-        return this.pagerAdapter.removePage(getCurrentPageIndex());
-    }
-
-    /**
-     * Get current page index.
-     *
-     * @return page index
-     */
-    public int getCurrentPageIndex()
-    {
-        return this.viewPager.getCurrentItem();
-    }
-
-    /**
-     * Get PageInfo at position.
-     *
-     * @param position page position
-     * @return PageInfo
-     */
-    public PageListAdapter.PageInfo getPageInfo(int position)
-    {
-        return pagerAdapter.getPage(position);
-    }
-
     public void setSelectedPageIndex(int position)
     {
         getActionBar().setSelectedNavigationItem(position);
     }
 
-    public int getPageCount()
+    private void setupAccount()
     {
-        return pagerAdapter.getCount();
+        Account account = Account.load(Account.class, getLastUsedAccountID());
+        setCurrentAccount(account);
     }
 
     public boolean startTwitter()
@@ -410,46 +321,112 @@ public class MainActivity extends Activity
         return true;
     }
 
-    /**
-     * Initialize basic pages.
-     */
-    public void initializePages()
+    private void versionCheck()
     {
-        addPostPage();
-        StatusListAdapter homeAdapter = new StatusListAdapter(this);
-        StatusListAdapter mentionsAdapter = new StatusListAdapter(this);
-        MessageListAdapter messagesAdapter = new MessageListAdapter(this);
-        EventListAdapter historyAdapter = new EventListAdapter(this);
-        addListPage(getString(R.string.page_name_home), CustomListFragment.class, homeAdapter, false);
-        addListPage(getString(R.string.page_name_mentions), CustomListFragment.class, mentionsAdapter, false);
-        addListPage(getString(R.string.page_name_messages), CustomListFragment.class, messagesAdapter, false);
-        addListPage(getString(R.string.page_name_history), CustomListFragment.class, historyAdapter, false);
-        pagerAdapter.notifyDataSetChanged();
-        PostState.newState().beginTransaction().commit();
-        setSelectedPageIndex(PAGE_HOME);
-    }
-
-    public boolean addPostPage()
-    {
-        return addPage(getString(R.string.page_name_post), PostFragment.class, null, true);
-    }
-
-    public boolean addListPage(String name, Class<? extends ListFragment> fragmentClass, CustomListAdapter<?> adapter, boolean withNotify)
-    {
-        int nextPosition = pagerAdapter.getCount();
-        Bundle args = new Bundle();
-        args.putInt(CustomListFragment.FRAGMENT_INDEX, nextPosition);
-        if(addPage(name, fragmentClass, args, withNotify))
+        if(isFirstLaunchThisVersion())
         {
-            adapterSparseArray.append(nextPosition, adapter);
-            return true;
+            //TODO Show change log
         }
-        return false;
     }
+
+    private boolean isFirstLaunchThisVersion()
+    {
+        return !getVersion().contentEquals(appPref.getValue("app.version", ""));
+    }
+
+    private void startOAuthSession()
+    {
+        oauthSession = new OAuthSession();
+        String url = oauthSession.getAuthorizationURL();
+        if(!TextUtils.isEmpty(url))
+        {
+            Intent intent = new Intent(this, WebViewActivity.class);
+            intent.setData(Uri.parse(url));
+            startActivityForResult(intent, REQUEST_OAUTH);
+        }
+        else
+        {
+            new Notificator(this, R.string.notice_error_authenticate_request).makeToast().show();
+            finish();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MainActivityMenuHelper.addItemsToMenu(this, menu);
+        return true;
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        if(stream != null)
+        {
+            stream.shutdown();
+        }
+        Logger.debug("MainActivity:onDestroy");
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
+        super.onNewIntent(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        return MainActivityMenuHelper.onItemSelected(this, item);
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        Logger.debug("MainActivity:onPause");
+        Notificator.stopNotification();
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        Logger.debug("MainActivity:onResume");
+        Notificator.startNotification();
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
 
     public CustomListAdapter<?> getListAdapter(int i)
     {
         return adapterSparseArray.get(i);
+    }
+
+    public int getPageCount()
+    {
+        return pagerAdapter.getCount();
+    }
+
+    public String getVersion()
+    {
+        return getString(R.string.app_version);
+    }
+
+    public boolean removeCurrentPage()
+    {
+        return this.pagerAdapter.removePage(getCurrentPageIndex());
+    }
+
+    public int getCurrentPageIndex()
+    {
+        return this.viewPager.getCurrentItem();
+    }
+
+    public boolean removePage(int position)
+    {
+        return this.pagerAdapter.removePage(position);
     }
 
     public boolean updateActionBarIcon()

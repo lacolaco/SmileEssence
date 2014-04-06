@@ -26,7 +26,6 @@ package net.lacolaco.smileessence.activity;
 
 import android.app.ListFragment;
 import android.test.ActivityInstrumentationTestCase2;
-import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.util.TwitterMock;
@@ -105,32 +104,6 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         });
     }
 
-    public void testRemovePageTest() throws Exception
-    {
-        getActivity().runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                getActivity().initializePages();
-                assertTrue(getActivity().removePage(0));
-            }
-        });
-    }
-
-    public void testRemoveCurrentPageTest() throws Exception
-    {
-        getActivity().runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                getActivity().initializePages();
-                assertTrue(getActivity().removeCurrentPage());
-            }
-        });
-    }
-
     public void testStartStream() throws Exception
     {
         TwitterMock mock = new TwitterMock(getInstrumentation().getContext());
@@ -182,51 +155,5 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
                 assertEquals(adapter, getActivity().getListAdapter(getActivity().getPageCount() - 1));
             }
         });
-    }
-
-    public void testInitializeTimelines() throws Exception
-    {
-        getActivity().runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                getActivity().initializePages();
-                assertEquals(getActivity().getString(R.string.page_name_post), getActivity().getPageInfo(0).getName());
-                assertEquals(getActivity().getString(R.string.page_name_home), getActivity().getPageInfo(1).getName());
-                assertEquals(getActivity().getString(R.string.page_name_mentions), getActivity().getPageInfo(2).getName());
-                assertEquals(getActivity().getString(R.string.page_name_messages), getActivity().getPageInfo(3).getName());
-                assertEquals(getActivity().getString(R.string.page_name_history), getActivity().getPageInfo(4).getName());
-                assertNull(getActivity().getListAdapter(0));
-                assertNotNull(getActivity().getListAdapter(1));
-                assertNotNull(getActivity().getListAdapter(2));
-                assertNotNull(getActivity().getListAdapter(3));
-                assertNotNull(getActivity().getListAdapter(4));
-            }
-        });
-    }
-
-    public void testMovePage() throws Exception
-    {
-        getActivity().runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                getActivity().initializePages();
-            }
-        });
-        Thread.sleep(1000);
-        assertEquals(MainActivity.PAGE_HOME, getActivity().getCurrentPageIndex());
-        getActivity().runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                getActivity().setSelectedPageIndex(MainActivity.PAGE_POST);
-            }
-        });
-        Thread.sleep(1000);
-        assertEquals(MainActivity.PAGE_POST, getActivity().getCurrentPageIndex());
     }
 }

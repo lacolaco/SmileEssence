@@ -168,4 +168,9 @@
     <string name="notice_error_get_home">ホームの取得に失敗しました</string>
     <string name="notice_error_get_mentions">メンションの取得に失敗しました</string>
     <string name="notice_error_get_messages">メッセージの取得に失敗しました</string>
+    <string name="notice_error_authenticate">認証に失敗しました。後でもう一度お試しください</string>
+    <string name="activity_authenticate">認証</string>
+    <string name="notice_stream_connect">接続しました</string>
+    <string name="notice_stream_disconnect">切断しました</string>
+    <string name="notice_error_authenticate_request">認証の準備に失敗しました。インターネット接続を確認して下さい</string>
 </resources>

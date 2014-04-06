@@ -24,6 +24,7 @@
 
 package net.lacolaco.smileessence.twitter;
 
+import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.notification.Notificator;
@@ -49,13 +50,14 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onConnect()
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        new Notificator(activity, R.string.notice_stream_connect).publish();
     }
 
     @Override
     public void onDisconnect()
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        new Notificator(activity, R.string.notice_stream_disconnect).publish();
+        activity.startStream();
     }
 
     @Override
