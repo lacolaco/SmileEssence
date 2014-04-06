@@ -82,18 +82,13 @@ public class MainActivity extends Activity
     private Account currentAccount;
     private TwitterStream stream;
     private SparseArray<CustomListAdapter<?>> adapterSparseArray = new SparseArray<>();
+    private boolean streaming = false;
 
     // --------------------- GETTER / SETTER METHODS ---------------------
 
     public Account getCurrentAccount()
     {
         return currentAccount;
-    }
-
-    public void setCurrentAccount(Account account)
-    {
-        this.currentAccount = account;
-        appPref.putValue(lastUsedAccountIDKey, account.getId());
     }
 
     public PageListAdapter getPagerAdapter()
@@ -104,6 +99,16 @@ public class MainActivity extends Activity
     public ViewPager getViewPager()
     {
         return viewPager;
+    }
+
+    public boolean isStreaming()
+    {
+        return streaming;
+    }
+
+    public void setStreaming(boolean streaming)
+    {
+        this.streaming = streaming;
     }
 
     // ------------------------ OVERRIDE METHODS ------------------------
@@ -133,53 +138,10 @@ public class MainActivity extends Activity
         }
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState)
+    public void setCurrentAccount(Account account)
     {
-        setupHelpers();
-        setTheme();
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        if(isAuthorized())
-        {
-            setupAccount();
-            startMainLogic();
-        }
-        else
-        {
-            startOAuthSession();
-        }
-        Logger.debug("MainActivity:onCreate");
-    }
-
-    private boolean isAuthorized()
-    {
-        return getLastUsedAccountID() >= 0;
-    }
-
-    private long getLastUsedAccountID()
-    {
-        String id = appPref.getValue(lastUsedAccountIDKey, "");
-        if(TextUtils.isEmpty(id))
-        {
-            return -1;
-        }
-        else
-        {
-            return Long.parseLong(id);
-        }
-    }
-
-    private void setTheme()
-    {
-        //TODO on release userPref.getValue(R.string.key_setting_theme, 0)
-        setTheme(Themes.getTheme(1));
-    }
-
-    private void setupHelpers()
-    {
-        userPref = new UserPreferenceHelper(this);
-        appPref = new AppPreferenceHelper(this);
+        this.currentAccount = account;
+        appPref.putValue(lastUsedAccountIDKey, account.getId());
     }
 
     public void startMainLogic()
@@ -244,12 +206,6 @@ public class MainActivity extends Activity
     public void setSelectedPageIndex(int position)
     {
         getActionBar().setSelectedNavigationItem(position);
-    }
-
-    private void setupAccount()
-    {
-        Account account = Account.load(Account.class, getLastUsedAccountID());
-        setCurrentAccount(account);
     }
 
     public boolean startTwitter()
@@ -322,6 +278,27 @@ public class MainActivity extends Activity
         return true;
     }
 
+    public boolean updateActionBarIcon()
+    {
+        Twitter twitter = new TwitterApi(currentAccount).getTwitter();
+        final ImageView homeIcon = (ImageView)findViewById(android.R.id.home);
+        ShowUserTask userTask = new ShowUserTask(twitter, currentAccount.userID)
+        {
+            @Override
+            protected void onPostExecute(User user)
+            {
+                super.onPostExecute(user);
+                if(user != null)
+                {
+                    String urlHttps = user.getProfileImageURLHttps();
+                    new BitmapURLTask(urlHttps, homeIcon).execute();
+                }
+            }
+        };
+        userTask.execute();
+        return true;
+    }
+
     private void versionCheck()
     {
         if(isFirstLaunchThisVersion())
@@ -333,6 +310,61 @@ public class MainActivity extends Activity
     private boolean isFirstLaunchThisVersion()
     {
         return !getVersion().contentEquals(appPref.getValue("app.version", ""));
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        setupHelpers();
+        setTheme();
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        if(isAuthorized())
+        {
+            setupAccount();
+            startMainLogic();
+        }
+        else
+        {
+            startOAuthSession();
+        }
+        Logger.debug("MainActivity:onCreate");
+    }
+
+    private boolean isAuthorized()
+    {
+        return getLastUsedAccountID() >= 0;
+    }
+
+    private long getLastUsedAccountID()
+    {
+        String id = appPref.getValue(lastUsedAccountIDKey, "");
+        if(TextUtils.isEmpty(id))
+        {
+            return -1;
+        }
+        else
+        {
+            return Long.parseLong(id);
+        }
+    }
+
+    private void setTheme()
+    {
+        //TODO on release userPref.getValue(R.string.key_setting_theme, 0)
+        setTheme(Themes.getTheme(1));
+    }
+
+    private void setupAccount()
+    {
+        Account account = Account.load(Account.class, getLastUsedAccountID());
+        setCurrentAccount(account);
+    }
+
+    private void setupHelpers()
+    {
+        userPref = new UserPreferenceHelper(this);
+        appPref = new AppPreferenceHelper(this);
     }
 
     private void startOAuthSession()
@@ -428,26 +460,5 @@ public class MainActivity extends Activity
     public boolean removePage(int position)
     {
         return this.pagerAdapter.removePage(position);
-    }
-
-    public boolean updateActionBarIcon()
-    {
-        Twitter twitter = new TwitterApi(currentAccount).getTwitter();
-        final ImageView homeIcon = (ImageView)findViewById(android.R.id.home);
-        ShowUserTask userTask = new ShowUserTask(twitter, currentAccount.userID)
-        {
-            @Override
-            protected void onPostExecute(User user)
-            {
-                super.onPostExecute(user);
-                if(user != null)
-                {
-                    String urlHttps = user.getProfileImageURLHttps();
-                    new BitmapURLTask(urlHttps, homeIcon).execute();
-                }
-            }
-        };
-        userTask.execute();
-        return true;
     }
 }

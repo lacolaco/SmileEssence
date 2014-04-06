@@ -40,22 +40,33 @@ import twitter4j.*;
 public class UserStreamListener implements twitter4j.UserStreamListener, ConnectionLifeCycleListener
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final MainActivity activity;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public UserStreamListener(MainActivity activity)
     {
         this.activity = activity;
     }
 
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface ConnectionLifeCycleListener ---------------------
+
     @Override
     public void onConnect()
     {
+        activity.setStreaming(true);
         new Notificator(activity, R.string.notice_stream_connect).publish();
     }
 
     @Override
     public void onDisconnect()
     {
+        activity.setStreaming(false);
         new Notificator(activity, R.string.notice_stream_disconnect).publish();
         activity.startStream();
     }
@@ -64,6 +75,79 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     public void onCleanUp()
     {
     }
+
+    // --------------------- Interface StatusListener ---------------------
+
+
+    @Override
+    public void onStatus(Status status)
+    {
+        StatusCache.getInstance().put(status);
+        CustomListAdapter<?> home = activity.getListAdapter(MainActivity.PAGE_HOME);
+        StatusViewModel viewModel = new StatusViewModel(status);
+        home.addToTop(viewModel);
+        if(status.isRetweet())
+        {
+            if(viewModel.isRetweetOfMe(activity.getCurrentAccount().userID))
+            {
+                viewModel.setRetweetOfMe(true);
+                CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
+                EventViewModel retweeted = new EventViewModel(EnumEvent.RETWEETED, status.getUser(), status);
+                new Notificator(activity, retweeted.getFormattedString(activity)).publish();
+                history.addToTop(retweeted);
+            }
+        }
+        else if(viewModel.isMention(activity.getCurrentAccount().screenName))
+        {
+            viewModel.setMention(true);
+            CustomListAdapter<?> mentions = activity.getListAdapter(MainActivity.PAGE_MENTIONS);
+            mentions.addToTop(viewModel);
+            CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
+            EventViewModel mentioned = new EventViewModel(EnumEvent.MENTIONED, status.getUser(), status);
+            new Notificator(activity, mentioned.getFormattedString(activity)).publish();
+            history.addToTop(mentioned);
+        }
+    }
+
+    @Override
+    public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice)
+    {
+        for(int i = 0; i < activity.getPageCount(); i++)
+        {
+            CustomListAdapter adapter = activity.getListAdapter(i);
+            if(adapter != null && adapter instanceof StatusListAdapter)
+            {
+                StatusListAdapter statusListAdapter = (StatusListAdapter)adapter;
+                statusListAdapter.removeByStatusID(statusDeletionNotice.getStatusId());
+            }
+        }
+    }
+
+    @Override
+    public void onTrackLimitationNotice(int numberOfLimitedStatuses)
+    {
+    }
+
+    @Override
+    public void onScrubGeo(long userId, long upToStatusId)
+    {
+    }
+
+    @Override
+    public void onStallWarning(StallWarning warning)
+    {
+    }
+
+    // --------------------- Interface StreamListener ---------------------
+
+
+    @Override
+    public void onException(Exception ex)
+    {
+    }
+
+    // --------------------- Interface UserStreamListener ---------------------
+
 
     @Override
     public void onDeletionNotice(long directMessageId, long userId)
@@ -192,69 +276,5 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
             new Notificator(activity, event.getFormattedString(activity)).publish();
             history.addToTop(event);
         }
-    }
-
-    @Override
-    public void onStatus(Status status)
-    {
-        StatusCache.getInstance().put(status);
-        CustomListAdapter<?> home = activity.getListAdapter(MainActivity.PAGE_HOME);
-        StatusViewModel viewModel = new StatusViewModel(status);
-        home.addToTop(viewModel);
-        if(status.isRetweet())
-        {
-            if(viewModel.isRetweetOfMe(activity.getCurrentAccount().userID))
-            {
-                viewModel.setRetweetOfMe(true);
-                CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
-                EventViewModel retweeted = new EventViewModel(EnumEvent.RETWEETED, status.getUser(), status);
-                new Notificator(activity, retweeted.getFormattedString(activity)).publish();
-                history.addToTop(retweeted);
-            }
-        }
-        else if(viewModel.isMention(activity.getCurrentAccount().screenName))
-        {
-            viewModel.setMention(true);
-            CustomListAdapter<?> mentions = activity.getListAdapter(MainActivity.PAGE_MENTIONS);
-            mentions.addToTop(viewModel);
-            CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
-            EventViewModel mentioned = new EventViewModel(EnumEvent.MENTIONED, status.getUser(), status);
-            new Notificator(activity, mentioned.getFormattedString(activity)).publish();
-            history.addToTop(mentioned);
-        }
-    }
-
-    @Override
-    public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice)
-    {
-        for(int i = 0; i < activity.getPageCount(); i++)
-        {
-            CustomListAdapter adapter = activity.getListAdapter(i);
-            if(adapter != null && adapter instanceof StatusListAdapter)
-            {
-                StatusListAdapter statusListAdapter = (StatusListAdapter)adapter;
-                statusListAdapter.removeByStatusID(statusDeletionNotice.getStatusId());
-            }
-        }
-    }
-
-    @Override
-    public void onTrackLimitationNotice(int numberOfLimitedStatuses)
-    {
-    }
-
-    @Override
-    public void onScrubGeo(long userId, long upToStatusId)
-    {
-    }
-
-    @Override
-    public void onStallWarning(StallWarning warning)
-    {
-    }
-
-    @Override
-    public void onException(Exception ex)
-    {
     }
 }
