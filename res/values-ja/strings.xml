@@ -173,4 +173,5 @@
     <string name="notice_stream_connect">接続しました</string>
     <string name="notice_stream_disconnect">切断しました</string>
     <string name="notice_error_authenticate_request">認証の準備に失敗しました。インターネット接続を確認して下さい</string>
+    <string name="notice_timeline_new">%s件の新着があります</string>
 </resources>

@@ -26,6 +26,7 @@ package net.lacolaco.smileessence.command.user;
 
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.view.adapter.PostState;
 import twitter4j.User;
 
@@ -50,8 +51,8 @@ public class UserCommandSendMessage extends UserCommand
                  .beginTransaction()
                  .setDirectMessage(true)
                  .setInReplyToScreenName(getUser().getScreenName())
-                 .requestOpenPage(true)
                  .commit();
+        ((MainActivity)getActivity()).setSelectedPageIndex(MainActivity.PAGE_POST);
         return true;
     }
 

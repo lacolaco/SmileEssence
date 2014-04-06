@@ -39,6 +39,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
@@ -48,138 +49,18 @@ import net.lacolaco.smileessence.view.adapter.PostState;
 public class PostFragment extends Fragment implements TextWatcher, View.OnFocusChangeListener, View.OnClickListener, PostState.OnPostStateChangeListener
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private EditText editText;
     private TextView textViewCount;
     private Button buttonTweet;
     private LinearLayout viewGroupReply;
     private ViewGroup viewGroupMedia;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-    }
+    // ------------------------ INTERFACE METHODS ------------------------
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        MainActivity activity = (MainActivity)getActivity();
-        UserPreferenceHelper preferenceHelper = new UserPreferenceHelper(activity);
-        PostState state = PostState.getState();
 
-        View v = inflater.inflate(R.layout.fragment_post, null);
-        buttonTweet = (Button)v.findViewById(R.id.post_tweet_button);
-        buttonTweet.setOnClickListener(this);
-        editText = (EditText)v.findViewById(R.id.post_edit_text);
-        textViewCount = (TextView)v.findViewById(R.id.post_text_count);
-        int textSize = preferenceHelper.getValue(R.string.key_setting_text_size, 10);
-        editText.addTextChangedListener(this);
-        editText.setOnFocusChangeListener(this);
-        editText.setText(state.getText());
-        editText.setTextSize(textSize + 4);
-        editText.setMovementMethod(new ArrowKeyMovementMethod()
-        {
-            @Override
-            protected boolean right(TextView widget, Spannable buffer)
-            {
-                //Don't back to Home
-                return widget.getSelectionEnd() == widget.length() || super.right(widget, buffer);
-            }
-        });
-        ImageButton imageButtonDeleteText = (ImageButton)v.findViewById(R.id.post_delete);
-        imageButtonDeleteText.setOnClickListener(this);
-        ImageButton imageButtonMedia = (ImageButton)v.findViewById(R.id.post_media);
-        imageButtonMedia.setOnClickListener(this);
-        ImageButton imageButtonMenu = (ImageButton)v.findViewById(R.id.post_menu);
-        imageButtonMenu.setOnClickListener(this);
-        //Reply view
-        viewGroupReply = (LinearLayout)v.findViewById(R.id.post_inreplyto_parent);
-        TextView textViewReply = (TextView)viewGroupReply.findViewById(R.id.post_reply_text);
-        ImageButton imageButtonDeleteReply = (ImageButton)viewGroupReply.findViewById(R.id.post_reply_delete);
-        imageButtonDeleteReply.setOnClickListener(this);
-        if(TextUtils.isEmpty(state.getInReplyToScreenName()))
-        {
-            viewGroupReply.setVisibility(View.GONE);
-        }
-        else
-        {
-            viewGroupReply.setVisibility(View.VISIBLE);
-            textViewReply.setText(String.format("%s: %s", state.getInReplyToScreenName(), state.getInReplyToText()));
-        }
-        //Media view
-        viewGroupMedia = (LinearLayout)v.findViewById(R.id.post_media_parent);
-        ImageView imageViewMedia = (ImageView)viewGroupMedia.findViewById(R.id.post_media_image);
-        ImageButton imageButtonDeleteMedia = (ImageButton)viewGroupMedia.findViewById(R.id.post_media_delete);
-        imageViewMedia.setOnClickListener(this);
-        imageButtonDeleteMedia.setOnClickListener(this);
-        if(TextUtils.isEmpty(state.getMediaFilePath()))
-        {
-            viewGroupMedia.setVisibility(View.GONE);
-        }
-        else
-        {
-            viewGroupMedia.setVisibility(View.VISIBLE);
-            new BitmapFileTask(state.getMediaFilePath(), imageViewMedia).execute();
-        }
-        state.setListener(this);
-        return v;
-    }
-
-    @Override
-    public void onDestroyView()
-    {
-        super.onDestroy();
-        PostState.getState().removeListener();
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after)
-    {
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count)
-    {
-        int remainingCount = 140 - TwitterUtils.getFixedTextLength(s.toString());
-        textViewCount.setText(String.valueOf(remainingCount));
-        if(remainingCount == 140)
-        {
-            textViewCount.setTextColor(getResources().getColor(R.color.red));
-            buttonTweet.setEnabled(false);
-        }
-        else if(remainingCount < 0)
-        {
-            textViewCount.setTextColor(getResources().getColor(R.color.red));
-            buttonTweet.setEnabled(false);
-        }
-        else
-        {
-            textViewCount.setTextAppearance(getActivity(), android.R.style.TextAppearance_Widget_TextView);
-            buttonTweet.setEnabled(true);
-        }
-    }
-
-    @Override
-    public void afterTextChanged(Editable s)
-    {
-    }
-
-    @Override
-    public void onFocusChange(View v, boolean hasFocus)
-    {
-        if(hasFocus)
-        {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(v, 0);
-        }
-        else
-        {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-            PostState.getState().beginTransaction().setText(editText.getText().toString()).commit();
-        }
-    }
+    // --------------------- Interface OnClickListener ---------------------
 
     @Override
     public void onClick(View v)
@@ -228,9 +109,158 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         }
     }
 
+    // --------------------- Interface OnFocusChangeListener ---------------------
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus)
+    {
+        if(hasFocus)
+        {
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(v, 0);
+        }
+        else
+        {
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }
+    }
+
+    // --------------------- Interface TextWatcher ---------------------
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after)
+    {
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count)
+    {
+        int remainingCount = 140 - TwitterUtils.getFixedTextLength(s.toString());
+        textViewCount.setText(String.valueOf(remainingCount));
+        if(remainingCount == 140)
+        {
+            textViewCount.setTextColor(getResources().getColor(R.color.red));
+            buttonTweet.setEnabled(false);
+        }
+        else if(remainingCount < 0)
+        {
+            textViewCount.setTextColor(getResources().getColor(R.color.red));
+            buttonTweet.setEnabled(false);
+        }
+        else
+        {
+            textViewCount.setTextAppearance(getActivity(), android.R.style.TextAppearance_Widget_TextView);
+            buttonTweet.setEnabled(true);
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable s)
+    {
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        Logger.debug("PostFragment Create");
+        super.onCreate(savedInstanceState);
+        PostState.getState().setListener(this);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        Logger.debug("PostFragment CreateView");
+        MainActivity activity = (MainActivity)getActivity();
+        UserPreferenceHelper preferenceHelper = new UserPreferenceHelper(activity);
+        View v = inflater.inflate(R.layout.fragment_post, null);
+        buttonTweet = getTweetButton(v);
+        buttonTweet.setOnClickListener(this);
+        editText = getEditText(v);
+        textViewCount = getCountTextView(v);
+        int textSize = preferenceHelper.getValue(R.string.key_setting_text_size, 10);
+        editText.addTextChangedListener(this);
+        editText.setOnFocusChangeListener(this);
+        editText.setTextSize(textSize + 4);
+        editText.setMovementMethod(new ArrowKeyMovementMethod()
+        {
+            @Override
+            protected boolean right(TextView widget, Spannable buffer)
+            {
+                //Don't back to Home
+                return widget.getSelectionEnd() == widget.length() || super.right(widget, buffer);
+            }
+        });
+        ImageButton imageButtonDeleteText = (ImageButton)v.findViewById(R.id.post_delete);
+        imageButtonDeleteText.setOnClickListener(this);
+        ImageButton imageButtonMedia = (ImageButton)v.findViewById(R.id.post_media);
+        imageButtonMedia.setOnClickListener(this);
+        ImageButton imageButtonMenu = (ImageButton)v.findViewById(R.id.post_menu);
+        imageButtonMenu.setOnClickListener(this);
+        //Reply view
+        viewGroupReply = getReplyViewGroup(v);
+        TextView textViewReply = (TextView)viewGroupReply.findViewById(R.id.post_reply_text);
+        ImageButton imageButtonDeleteReply = (ImageButton)viewGroupReply.findViewById(R.id.post_reply_delete);
+        imageButtonDeleteReply.setOnClickListener(this);
+        //Media view
+        viewGroupMedia = getMediaViewGroup(v);
+        ImageView imageViewMedia = (ImageView)viewGroupMedia.findViewById(R.id.post_media_image);
+        ImageButton imageButtonDeleteMedia = (ImageButton)viewGroupMedia.findViewById(R.id.post_media_delete);
+        imageViewMedia.setOnClickListener(this);
+        imageButtonDeleteMedia.setOnClickListener(this);
+        return v;
+    }
+
+    private TextView getCountTextView(View v)
+    {
+        return (TextView)v.findViewById(R.id.post_text_count);
+    }
+
+    private EditText getEditText(View v)
+    {
+        return (EditText)v.findViewById(R.id.post_edit_text);
+    }
+
+    private LinearLayout getMediaViewGroup(View v)
+    {
+        return (LinearLayout)v.findViewById(R.id.post_media_parent);
+    }
+
+    private LinearLayout getReplyViewGroup(View v)
+    {
+        return (LinearLayout)v.findViewById(R.id.post_inreplyto_parent);
+    }
+
+    private Button getTweetButton(View v)
+    {
+        return (Button)v.findViewById(R.id.post_tweet_button);
+    }
+
+    @Override
+    public void onDestroyView()
+    {
+        Logger.debug("PostFragment DestroyView");
+        super.onDestroyView();
+        PostState.getState().beginTransaction().setText(editText.getText().toString()).commit();
+        PostState.getState().removeListener();
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState)
+    {
+        Logger.debug("PostFragment ViewStateRestored");
+        super.onViewStateRestored(savedInstanceState);
+        PostState state = PostState.getState();
+        onPostStateChange(state);
+    }
+
     @Override
     public void onPostStateChange(PostState postState)
     {
+        Logger.debug("PostFragment PostStateChange");
         if(editText != null)
         {
             editText.setText(postState.getText());
@@ -261,10 +291,6 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
                 viewGroupMedia.setVisibility(View.VISIBLE);
                 new BitmapFileTask(postState.getMediaFilePath(), imageViewMedia).execute();
             }
-        }
-        if(postState.isRequestedToOpen())
-        {
-            ((MainActivity)getActivity()).setSelectedPageIndex(MainActivity.PAGE_POST);
         }
     }
 }

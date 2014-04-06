@@ -27,6 +27,8 @@ package net.lacolaco.smileessence.view.adapter;
 public class PostState
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private static PostState instance = new PostState();
     private String text = "";
     private long inReplyToStatusID = -1L;
@@ -34,14 +36,11 @@ public class PostState
     private String inReplyToText = "";
     private String mediaFilePath = "";
     private boolean directMessage = false;
-    private boolean requestedToOpen = false;
     private OnPostStateChangeListener listener;
     private int selectionStart = -1;
     private int selectionEnd = -1;
 
-    private PostState()
-    {
-    }
+    // -------------------------- STATIC METHODS --------------------------
 
     public static PostState getState()
     {
@@ -53,19 +52,28 @@ public class PostState
         return instance = new PostState().setListener(instance.listener);
     }
 
-    public String getText()
+    public PostState setListener(OnPostStateChangeListener listener)
     {
-        return text;
+        this.listener = listener;
+        return this;
+    }
+
+    // --------------------------- CONSTRUCTORS ---------------------------
+
+    private PostState()
+    {
+    }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    public String getInReplyToScreenName()
+    {
+        return inReplyToScreenName;
     }
 
     public long getInReplyToStatusID()
     {
         return inReplyToStatusID;
-    }
-
-    public String getInReplyToScreenName()
-    {
-        return inReplyToScreenName;
     }
 
     public String getInReplyToText()
@@ -78,14 +86,13 @@ public class PostState
         return mediaFilePath;
     }
 
-    public boolean isDirectMessage()
+    public int getSelectionEnd()
     {
-        return directMessage;
-    }
-
-    public boolean isRequestedToOpen()
-    {
-        return requestedToOpen;
+        if(selectionEnd < 0)
+        {
+            return text.length();
+        }
+        return selectionEnd;
     }
 
     public int getSelectionStart()
@@ -97,37 +104,26 @@ public class PostState
         return selectionStart;
     }
 
-    public int getSelectionEnd()
+    public String getText()
     {
-        if(selectionEnd < 0)
-        {
-            return text.length();
-        }
-        return selectionEnd;
+        return text;
     }
 
-    private void postStateChange()
+    public boolean isDirectMessage()
     {
-        if(listener != null)
-        {
-            listener.onPostStateChange(this);
-        }
+        return directMessage;
     }
 
-    public PostState setListener(OnPostStateChangeListener listener)
+    // -------------------------- OTHER METHODS --------------------------
+
+    public PostStateTransaction beginTransaction()
     {
-        this.listener = listener;
-        return this;
+        return new PostStateTransaction(this);
     }
 
     public void removeListener()
     {
         this.listener = null;
-    }
-
-    public PostStateTransaction beginTransaction()
-    {
-        return new PostStateTransaction(this);
     }
 
     private PostState copy(PostState another)
@@ -138,12 +134,21 @@ public class PostState
         this.inReplyToText = another.inReplyToText;
         this.mediaFilePath = another.mediaFilePath;
         this.directMessage = another.directMessage;
-        this.requestedToOpen = another.requestedToOpen;
         this.selectionStart = another.selectionStart;
         this.selectionEnd = another.selectionEnd;
         this.listener = another.listener;
         return this;
     }
+
+    private void postStateChange()
+    {
+        if(listener != null)
+        {
+            listener.onPostStateChange(this);
+        }
+    }
+
+    // -------------------------- INNER CLASSES --------------------------
 
     public static class PostStateTransaction
     {
@@ -215,12 +220,6 @@ public class PostState
         {
             state.selectionStart = start;
             state.selectionEnd = end;
-            return this;
-        }
-
-        public PostStateTransaction requestOpenPage(boolean openPageRequest)
-        {
-            state.requestedToOpen = openPageRequest;
             return this;
         }
 

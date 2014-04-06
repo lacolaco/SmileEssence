@@ -78,8 +78,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="top"
                     android:inputType="text|textMultiLine"
-                    android:minHeight="60dp"
-                    android:freezesText="true"/>
+                    android:minHeight="60dp"/>
             </FrameLayout>
 
             <RelativeLayout

@@ -25,26 +25,30 @@
 package net.lacolaco.smileessence.view.adapter;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.widget.ArrayAdapter;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.logging.Logger;
 
 import java.util.ArrayList;
 
 public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPager.OnPageChangeListener, ActionBar.OnNavigationListener
 {
 
-    private final Context context;
+    // ------------------------------ FIELDS ------------------------------
+
+    private final MainActivity context;
     private final ActionBar actionBar;
     private final ViewPager viewPager;
     private final ArrayList<PageInfo> pages = new ArrayList<>();
 
-    public PageListAdapter(Activity activity, ViewPager viewPager)
+    // --------------------------- CONSTRUCTORS ---------------------------
+
+    public PageListAdapter(MainActivity activity, ViewPager viewPager)
     {
         super(activity.getFragmentManager());
         this.context = activity;
@@ -54,17 +58,40 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
         viewPager.setOnPageChangeListener(this);
     }
 
-    public PageInfo getPage(int position)
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface OnNavigationListener ---------------------
+
+    @Override
+    public synchronized boolean onNavigationItemSelected(int itemPosition, long itemId)
     {
-        return pages.get(position);
+        viewPager.setCurrentItem(itemPosition, true);
+        return true;
+    }
+
+    // --------------------- Interface OnPageChangeListener ---------------------
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+    {
     }
 
     @Override
-    public void notifyDataSetChanged()
+    public synchronized void onPageSelected(int position)
     {
-        refreshListNavigation();
-        super.notifyDataSetChanged();
+        //Synchronize pager and navigation.
+        Logger.debug(String.format("Page selected:%d", position));
+        actionBar.setSelectedNavigationItem(position);
     }
+
+    @Override
+    public void onPageScrollStateChanged(int state)
+    {
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
 
     /**
      * Add new tab and new page
@@ -74,11 +101,11 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
      * @param args Bundle for Fragment instantiate
      * @return True if adding is complete successfully
      */
-    public boolean addPage(String name, Class<? extends Fragment> clss, Bundle args)
+    public synchronized boolean addPage(String name, Class<? extends Fragment> clss, Bundle args)
     {
         if(addPageWithoutNotify(name, clss, args))
         {
-            notifyDataSetChanged();
+            refreshListNavigation();
             return true;
         }
         return false;
@@ -93,40 +120,13 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
      * @param args Bundle for Fragment instantiate
      * @return True if adding is complete successfully
      */
-    public boolean addPageWithoutNotify(String name, Class<? extends Fragment> clss, Bundle args)
+    public synchronized boolean addPageWithoutNotify(String name, Class<? extends Fragment> clss, Bundle args)
     {
         PageInfo info = new PageInfo(name, clss, args);
         return pages.add(info);
     }
 
-    /**
-     * Remove page by position.
-     *
-     * @param position
-     * @return True if removing is complete successfully
-     */
-    public boolean removePage(int position)
-    {
-        if(removePageWithoutNotify(position))
-        {
-            notifyDataSetChanged();
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Remove page by position without notify.
-     *
-     * @param position
-     * @return True if removing is complete successfully
-     */
-    private boolean removePageWithoutNotify(int position)
-    {
-        return pages.remove(position) != null;
-    }
-
-    private void refreshListNavigation()
+    public synchronized void refreshListNavigation()
     {
         ArrayList<String> itemList = new ArrayList<>();
         for(PageInfo page : pages)
@@ -135,44 +135,43 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.navigation_list_item, R.id.navigation_list_item_text, itemList);
         actionBar.setListNavigationCallbacks(adapter, this);
+        notifyDataSetChanged();
     }
 
     @Override
-    public Fragment getItem(int position)
-    {
-        PageInfo info = pages.get(position);
-        return Fragment.instantiate(context, info.fragmentClass.getName(), info.args);
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
-    {
-    }
-
-    @Override
-    public void onPageSelected(int position)
-    {
-        //Synchronize pager and navigation.
-        actionBar.setSelectedNavigationItem(position);
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state)
-    {
-    }
-
-    @Override
-    public int getCount()
+    public synchronized int getCount()
     {
         return pages.size();
     }
 
     @Override
-    public boolean onNavigationItemSelected(int itemPosition, long itemId)
+    public synchronized Fragment getItem(int position)
     {
-        viewPager.setCurrentItem(itemPosition);
-        return true;
+        PageInfo info = pages.get(position);
+        return Fragment.instantiate(context, info.fragmentClass.getName(), info.args);
     }
+
+    public synchronized PageInfo getPage(int position)
+    {
+        return pages.get(position);
+    }
+
+    public synchronized boolean removePage(int position)
+    {
+        if(removePageWithoutNotify(position))
+        {
+            refreshListNavigation();
+            return true;
+        }
+        return false;
+    }
+
+    private synchronized boolean removePageWithoutNotify(int position)
+    {
+        return pages.remove(position) != null;
+    }
+
+    // -------------------------- INNER CLASSES --------------------------
 
     public static final class PageInfo
     {

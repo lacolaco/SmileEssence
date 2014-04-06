@@ -26,6 +26,7 @@ package net.lacolaco.smileessence.command.status;
 
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.twitter.TweetBuilder;
 import net.lacolaco.smileessence.view.adapter.PostState;
 import twitter4j.Status;
@@ -56,8 +57,8 @@ public class StatusCommandQuote extends StatusCommand
                  .setInReplyToScreenName(getStatus().getUser().getScreenName())
                  .setInReplyToStatusID(getStatus().getId())
                  .setCursor(0)
-                 .requestOpenPage(true)
                  .commit();
+        ((MainActivity)getActivity()).setSelectedPageIndex(MainActivity.PAGE_POST);
         return true;
     }
 

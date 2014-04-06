@@ -117,8 +117,8 @@ public class MainActivityMenuHelper
                 PostState.newState().beginTransaction()
                          .setCursor(0)
                          .setText(activity.getString(R.string.text_message_to_author, activity.getVersion()))
-                         .requestOpenPage(true)
                          .commit();
+                activity.setSelectedPageIndex(MainActivity.PAGE_POST);
                 break;
             }
         }

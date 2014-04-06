@@ -27,7 +27,6 @@ package net.lacolaco.smileessence.activity;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.ListFragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -160,6 +159,7 @@ public class MainActivity extends Activity
         viewPager = (ViewPager)findViewById(R.id.viewPager);
         pagerAdapter = new PageListAdapter(this, viewPager);
         initializePages();
+        //viewPager.setOffscreenPageLimit(viewPager.getChildCount());
     }
 
     private void initializePages()
@@ -173,12 +173,12 @@ public class MainActivity extends Activity
         addListPage(getString(R.string.page_name_mentions), CustomListFragment.class, mentionsAdapter, false);
         addListPage(getString(R.string.page_name_messages), CustomListFragment.class, messagesAdapter, false);
         addListPage(getString(R.string.page_name_history), CustomListFragment.class, historyAdapter, false);
-        pagerAdapter.notifyDataSetChanged();
+        pagerAdapter.refreshListNavigation();
         PostState.newState().beginTransaction().commit();
         setSelectedPageIndex(PAGE_HOME);
     }
 
-    public boolean addListPage(String name, Class<? extends ListFragment> fragmentClass, CustomListAdapter<?> adapter, boolean withNotify)
+    public boolean addListPage(String name, Class<? extends CustomListFragment> fragmentClass, CustomListAdapter<?> adapter, boolean withNotify)
     {
         int nextPosition = pagerAdapter.getCount();
         Bundle args = new Bundle();
@@ -291,6 +291,7 @@ public class MainActivity extends Activity
                 if(user != null)
                 {
                     String urlHttps = user.getProfileImageURLHttps();
+                    homeIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     new BitmapURLTask(urlHttps, homeIcon).execute();
                 }
             }
