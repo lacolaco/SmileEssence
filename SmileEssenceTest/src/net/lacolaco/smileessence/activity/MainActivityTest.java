@@ -78,16 +78,6 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     }
 
-    public void testGetPreferenceHelper() throws Exception
-    {
-        assertNotNull(getActivity().getUserPref());
-    }
-
-    public void testGetPropertyHelper() throws Exception
-    {
-        assertNotNull(getActivity().getAppPref());
-    }
-
     public void testGetActionBar() throws Exception
     {
         assertNotNull(getActivity().getActionBar());
@@ -175,6 +165,8 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
                 assertTrue(getActivity().startTwitter());
             }
         });
+        Thread.sleep(3000);
+        assertNotSame(0, getActivity().getListAdapter(MainActivity.PAGE_HOME).getCount());
     }
 
     public void testRegisterListPage() throws Exception

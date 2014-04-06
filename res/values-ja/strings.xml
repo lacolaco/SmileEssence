@@ -165,4 +165,7 @@
     <string name="activity_edit_extraction">抽出設定</string>
     <string name="actionbar_edit_command_all_on">Enable all</string>
     <string name="activity_edit_command">コマンド設定</string>
+    <string name="notice_error_get_home">ホームの取得に失敗しました</string>
+    <string name="notice_error_get_mentions">メンションの取得に失敗しました</string>
+    <string name="notice_error_get_messages">メッセージの取得に失敗しました</string>
 </resources>

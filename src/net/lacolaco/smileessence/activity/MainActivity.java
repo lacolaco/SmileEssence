@@ -43,12 +43,20 @@ import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.twitter.OAuthSession;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.UserStreamListener;
+import net.lacolaco.smileessence.twitter.task.DirectMessagesTask;
+import net.lacolaco.smileessence.twitter.task.HomeTimelineTask;
+import net.lacolaco.smileessence.twitter.task.MentionsTimelineTask;
 import net.lacolaco.smileessence.util.NetworkHelper;
 import net.lacolaco.smileessence.util.Themes;
 import net.lacolaco.smileessence.view.CustomListFragment;
 import net.lacolaco.smileessence.view.PostFragment;
 import net.lacolaco.smileessence.view.adapter.*;
+import net.lacolaco.smileessence.viewmodel.MessageViewModel;
+import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 import net.lacolaco.smileessence.viewmodel.menu.MainActivityMenuHelper;
+import twitter4j.DirectMessage;
+import twitter4j.Paging;
+import twitter4j.Twitter;
 import twitter4j.TwitterStream;
 import twitter4j.auth.AccessToken;
 
@@ -245,16 +253,6 @@ public class MainActivity extends Activity
         return !getVersion().contentEquals(appPref.getValue("app.version", ""));
     }
 
-    public UserPreferenceHelper getUserPref()
-    {
-        return userPref;
-    }
-
-    public AppPreferenceHelper getAppPref()
-    {
-        return appPref;
-    }
-
     public ViewPager getViewPager()
     {
         return viewPager;
@@ -349,7 +347,48 @@ public class MainActivity extends Activity
         {
             return false;
         }
-
+        int count = userPref.getValue(R.string.key_setting_timelines, 20);
+        Twitter twitter = new TwitterApi(currentAccount).getTwitter();
+        Paging paging = new Paging().count(count);
+        HomeTimelineTask homeTask = new HomeTimelineTask(twitter, this, paging)
+        {
+            @Override
+            protected void onPostExecute(twitter4j.Status[] statuses)
+            {
+                super.onPostExecute(statuses);
+                for(twitter4j.Status status : statuses)
+                {
+                    getListAdapter(PAGE_HOME).addToBottom(new StatusViewModel(status));
+                }
+            }
+        };
+        MentionsTimelineTask mentionsTask = new MentionsTimelineTask(twitter, this, paging)
+        {
+            @Override
+            protected void onPostExecute(twitter4j.Status[] statuses)
+            {
+                super.onPostExecute(statuses);
+                for(twitter4j.Status status : statuses)
+                {
+                    getListAdapter(PAGE_MENTIONS).addToBottom(new StatusViewModel(status));
+                }
+            }
+        };
+        DirectMessagesTask messagesTask = new DirectMessagesTask(twitter, this, paging)
+        {
+            @Override
+            protected void onPostExecute(DirectMessage[] directMessages)
+            {
+                super.onPostExecute(directMessages);
+                for(DirectMessage message : directMessages)
+                {
+                    getListAdapter(PAGE_MESSAGES).addToBottom(new MessageViewModel(message));
+                }
+            }
+        };
+        homeTask.execute();
+        mentionsTask.execute();
+        messagesTask.execute();
         return true;
     }
 

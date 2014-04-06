@@ -24,16 +24,22 @@
 
 package net.lacolaco.smileessence.twitter.task;
 
-import android.test.InstrumentationTestCase;
+import android.test.ActivityInstrumentationTestCase2;
+import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.util.TwitterMock;
 import twitter4j.Paging;
 import twitter4j.Twitter;
 
-public class MentionsTimelineTaskTest extends InstrumentationTestCase
+public class MentionsTimelineTaskTest extends ActivityInstrumentationTestCase2<MainActivity>
 {
 
     Twitter twitter;
+
+    public MentionsTimelineTaskTest()
+    {
+        super(MainActivity.class);
+    }
 
     @Override
     public void setUp() throws Exception
@@ -44,7 +50,7 @@ public class MentionsTimelineTaskTest extends InstrumentationTestCase
 
     public void testGetDefaultMentions() throws Exception
     {
-        MentionsTimelineTask task = new MentionsTimelineTask(twitter);
+        MentionsTimelineTask task = new MentionsTimelineTask(twitter, getActivity());
         task.execute();
         assertNotNull(task.get());
     }
@@ -52,7 +58,7 @@ public class MentionsTimelineTaskTest extends InstrumentationTestCase
     public void testPagingMentions() throws Exception
     {
         int count = 50;
-        MentionsTimelineTask task = new MentionsTimelineTask(twitter, new Paging(1).count(count));
+        MentionsTimelineTask task = new MentionsTimelineTask(twitter, getActivity(), new Paging(1).count(count));
         task.execute();
         assertNotSame(20, task.get().length);
     }

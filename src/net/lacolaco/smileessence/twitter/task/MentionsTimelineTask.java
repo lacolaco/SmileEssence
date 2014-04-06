@@ -24,7 +24,12 @@
 
 package net.lacolaco.smileessence.twitter.task;
 
+import android.app.Activity;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.logging.Logger;
+import net.lacolaco.smileessence.notification.NotificationType;
+import net.lacolaco.smileessence.notification.Notificator;
 import twitter4j.*;
 
 import java.util.Collections;
@@ -32,16 +37,18 @@ import java.util.Collections;
 public class MentionsTimelineTask extends TwitterTask<Status[]>
 {
 
+    private final Activity activity;
     private final Paging paging;
 
-    protected MentionsTimelineTask(Twitter twitter)
+    protected MentionsTimelineTask(Twitter twitter, Activity activity)
     {
-        this(twitter, null);
+        this(twitter, activity, null);
     }
 
-    public MentionsTimelineTask(Twitter twitter, Paging paging)
+    public MentionsTimelineTask(Twitter twitter, Activity activity, Paging paging)
     {
         super(twitter);
+        this.activity = activity;
         this.paging = paging;
     }
 
@@ -64,9 +71,23 @@ public class MentionsTimelineTask extends TwitterTask<Status[]>
         {
             e.printStackTrace();
             Logger.error(e.toString());
-            return null;
+            return new twitter4j.Status[0];
         }
         Collections.reverse(responseList);
-        return responseList.toArray(new twitter4j.Status[0]);
+        return responseList.toArray(new twitter4j.Status[responseList.size()]);
+    }
+
+    @Override
+    protected void onPostExecute(twitter4j.Status[] statuses)
+    {
+        if(statuses.length == 0)
+        {
+            new Notificator(activity, R.string.notice_error_get_mentions, NotificationType.ALERT).publish();
+            return;
+        }
+        for(twitter4j.Status status : statuses)
+        {
+            StatusCache.getInstance().put(status);
+        }
     }
 }

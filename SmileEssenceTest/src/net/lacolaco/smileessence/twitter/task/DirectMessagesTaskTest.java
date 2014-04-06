@@ -24,16 +24,22 @@
 
 package net.lacolaco.smileessence.twitter.task;
 
-import android.test.InstrumentationTestCase;
+import android.test.ActivityInstrumentationTestCase2;
+import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.util.TwitterMock;
 import twitter4j.Paging;
 import twitter4j.Twitter;
 
-public class DirectMessagesTaskTest extends InstrumentationTestCase
+public class DirectMessagesTaskTest extends ActivityInstrumentationTestCase2<MainActivity>
 {
 
     Twitter twitter;
+
+    public DirectMessagesTaskTest()
+    {
+        super(MainActivity.class);
+    }
 
     @Override
     public void setUp() throws Exception
@@ -44,14 +50,14 @@ public class DirectMessagesTaskTest extends InstrumentationTestCase
 
     public void testGetMessages() throws Exception
     {
-        DirectMessagesTask task = new DirectMessagesTask(twitter);
+        DirectMessagesTask task = new DirectMessagesTask(twitter, getActivity());
         task.execute();
         assertNotNull(task.get());
     }
 
     public void testPaging() throws Exception
     {
-        DirectMessagesTask task = new DirectMessagesTask(twitter, new Paging(1).count(30));
+        DirectMessagesTask task = new DirectMessagesTask(twitter, getActivity(), new Paging(1).count(30));
         task.execute();
         assertNotSame(20, task.get().length);
     }

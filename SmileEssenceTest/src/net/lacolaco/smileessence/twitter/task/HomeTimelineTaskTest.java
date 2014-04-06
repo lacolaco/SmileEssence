@@ -24,16 +24,22 @@
 
 package net.lacolaco.smileessence.twitter.task;
 
-import android.test.InstrumentationTestCase;
+import android.test.ActivityInstrumentationTestCase2;
+import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.util.TwitterMock;
 import twitter4j.Paging;
 import twitter4j.Twitter;
 
-public class HomeTimelineTaskTest extends InstrumentationTestCase
+public class HomeTimelineTaskTest extends ActivityInstrumentationTestCase2<MainActivity>
 {
 
     Twitter twitter;
+
+    public HomeTimelineTaskTest()
+    {
+        super(MainActivity.class);
+    }
 
     @Override
     public void setUp() throws Exception
@@ -44,7 +50,7 @@ public class HomeTimelineTaskTest extends InstrumentationTestCase
 
     public void testGetDefaultHome() throws Exception
     {
-        HomeTimelineTask task = new HomeTimelineTask(twitter);
+        HomeTimelineTask task = new HomeTimelineTask(twitter, getActivity());
         task.execute();
         assertNotNull(task.get());
     }
@@ -52,7 +58,7 @@ public class HomeTimelineTaskTest extends InstrumentationTestCase
     public void testPagingHome() throws Exception
     {
         Paging paging = new Paging(1).count(50);
-        HomeTimelineTask task = new HomeTimelineTask(twitter, paging);
+        HomeTimelineTask task = new HomeTimelineTask(twitter, getActivity(), paging);
         task.execute();
         assertNotSame(20, task.get().length);
     }
