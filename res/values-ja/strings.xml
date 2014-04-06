@@ -163,7 +163,7 @@
     <string name="alert_dialog_cancel">キャンセル</string>
     <string name="activity_setting">アプリ設定</string>
     <string name="activity_edit_extraction">抽出設定</string>
-    <string name="actionbar_edit_command_all_on">Enable all</string>
+    <string name="actionbar_edit_command_all_on">すべて有効にする</string>
     <string name="activity_edit_command">コマンド設定</string>
     <string name="notice_error_get_home">ホームの取得に失敗しました</string>
     <string name="notice_error_get_mentions">メンションの取得に失敗しました</string>
