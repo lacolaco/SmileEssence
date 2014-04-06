@@ -35,6 +35,7 @@ import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.logging.Logger;
@@ -46,6 +47,8 @@ import net.lacolaco.smileessence.twitter.UserStreamListener;
 import net.lacolaco.smileessence.twitter.task.DirectMessagesTask;
 import net.lacolaco.smileessence.twitter.task.HomeTimelineTask;
 import net.lacolaco.smileessence.twitter.task.MentionsTimelineTask;
+import net.lacolaco.smileessence.twitter.task.ShowUserTask;
+import net.lacolaco.smileessence.util.BitmapURLTask;
 import net.lacolaco.smileessence.util.NetworkHelper;
 import net.lacolaco.smileessence.util.Themes;
 import net.lacolaco.smileessence.view.CustomListFragment;
@@ -54,10 +57,7 @@ import net.lacolaco.smileessence.view.adapter.*;
 import net.lacolaco.smileessence.viewmodel.MessageViewModel;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 import net.lacolaco.smileessence.viewmodel.menu.MainActivityMenuHelper;
-import twitter4j.DirectMessage;
-import twitter4j.Paging;
-import twitter4j.Twitter;
-import twitter4j.TwitterStream;
+import twitter4j.*;
 import twitter4j.auth.AccessToken;
 
 import java.io.IOException;
@@ -450,5 +450,26 @@ public class MainActivity extends Activity
     public CustomListAdapter<?> getListAdapter(int i)
     {
         return adapterSparseArray.get(i);
+    }
+
+    public boolean updateActionBarIcon()
+    {
+        Twitter twitter = new TwitterApi(currentAccount).getTwitter();
+        final ImageView homeIcon = (ImageView)findViewById(android.R.id.home);
+        ShowUserTask userTask = new ShowUserTask(twitter, currentAccount.userID)
+        {
+            @Override
+            protected void onPostExecute(User user)
+            {
+                super.onPostExecute(user);
+                if(user != null)
+                {
+                    String urlHttps = user.getProfileImageURLHttps();
+                    new BitmapURLTask(urlHttps, homeIcon).execute();
+                }
+            }
+        };
+        userTask.execute();
+        return true;
     }
 }

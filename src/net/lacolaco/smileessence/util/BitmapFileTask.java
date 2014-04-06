@@ -46,13 +46,15 @@ public class BitmapFileTask extends AsyncTask<Void, Void, Bitmap>
     {
         BitmapFactory.Options opt = new BitmapFactory.Options();
         opt.inPurgeable = true; // GC可能にする
-        opt.inSampleSize = 2;
         return BitmapFactory.decodeFile(filePath, opt);
     }
 
     @Override
     protected void onPostExecute(Bitmap bitmap)
     {
-        imageView.setImageBitmap(bitmap);
+        if(imageView != null)
+        {
+            imageView.setImageBitmap(bitmap);
+        }
     }
 }

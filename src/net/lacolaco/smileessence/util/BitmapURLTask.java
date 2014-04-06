@@ -22,62 +22,51 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.twitter.task;
+package net.lacolaco.smileessence.util;
 
-import net.lacolaco.smileessence.data.UserCache;
-import net.lacolaco.smileessence.logging.Logger;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.User;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.widget.ImageView;
 
-public class ShowUserTask extends TwitterTask<User>
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
+public class BitmapURLTask extends AsyncTask<Void, Void, Bitmap>
 {
 
-    private final long userID;
-    private final String screenName;
+    private final String url;
+    private final ImageView imageView;
 
-    public ShowUserTask(Twitter twitter, long userID)
+    public BitmapURLTask(String url, ImageView imageView)
     {
-        super(twitter);
-        this.userID = userID;
-        this.screenName = null;
-    }
-
-    public ShowUserTask(Twitter twitter, String screenName)
-    {
-        super(twitter);
-        this.screenName = screenName;
-        this.userID = -1;
+        this.url = url;
+        this.imageView = imageView;
     }
 
     @Override
-    protected User doInBackground(Void... params)
+    protected Bitmap doInBackground(Void... params)
     {
-        try
+        try(InputStream inputStream = new URL(url).openStream())
         {
-            if(screenName != null)
-            {
-                return twitter.users().showUser(screenName);
-            }
-            else
-            {
-                return twitter.users().showUser(userID);
-            }
+            BitmapFactory.Options opt = new BitmapFactory.Options();
+            opt.inPurgeable = true; // GC可能にする
+            return BitmapFactory.decodeStream(inputStream, null, opt);
         }
-        catch(TwitterException e)
+        catch(IOException e)
         {
             e.printStackTrace();
-            Logger.error(e.toString());
             return null;
         }
     }
 
     @Override
-    protected void onPostExecute(User user)
+    protected void onPostExecute(Bitmap bitmap)
     {
-        if(user != null)
+        if(imageView != null)
         {
-            UserCache.getInstance().put(user);
+            imageView.setImageBitmap(bitmap);
         }
     }
 }

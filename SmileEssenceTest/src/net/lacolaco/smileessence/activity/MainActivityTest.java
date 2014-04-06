@@ -167,6 +167,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         });
         Thread.sleep(3000);
         assertNotSame(0, getActivity().getListAdapter(MainActivity.PAGE_HOME).getCount());
+        assertTrue(getActivity().updateActionBarIcon());
     }
 
     public void testRegisterListPage() throws Exception
