@@ -300,6 +300,7 @@ public class MainActivity extends Activity
         homeTask.execute();
         mentionsTask.execute();
         messagesTask.execute();
+        updateActionBarIcon();
         return true;
     }
 
