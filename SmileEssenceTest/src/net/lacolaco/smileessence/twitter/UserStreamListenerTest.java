@@ -68,7 +68,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
             {
                 Account account = new Account(token, secret, user.getId(), user.getScreenName());
                 getActivity().setCurrentAccount(account);
-                getActivity().initializePages();
+                getActivity().startMainLogic();
                 listener.onStatus(status);
             }
         });
@@ -87,7 +87,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
             {
                 Account account = new Account(token, secret, user.getId(), user.getScreenName());
                 getActivity().setCurrentAccount(account);
-                getActivity().initializePages();
+                getActivity().startMainLogic();
                 listener.onStatus(status);
                 listener.onDeletionNotice(new StatusDeletionNotice()
                 {
@@ -125,7 +125,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
             {
                 Account account = new Account(token, secret, user.getId(), user.getScreenName());
                 getActivity().setCurrentAccount(account);
-                getActivity().initializePages();
+                getActivity().startMainLogic();
                 listener.onStatus(status);
             }
         });
@@ -144,7 +144,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
             {
                 Account account = new Account(token, secret, user.getId(), user.getScreenName());
                 getActivity().setCurrentAccount(account);
-                getActivity().initializePages();
+                getActivity().startMainLogic();
                 listener.onStatus(status);
             }
         });
@@ -164,7 +164,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
             {
                 Account account = new Account(token, secret, user.getId(), user.getScreenName());
                 getActivity().setCurrentAccount(account);
-                getActivity().initializePages();
+                getActivity().startMainLogic();
                 listener.onFavorite(source, user, status);
                 listener.onUnfavorite(source, user, status);
             }
@@ -183,7 +183,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
             {
                 Account account = new Account(token, secret, user.getId(), user.getScreenName());
                 getActivity().setCurrentAccount(account);
-                getActivity().initializePages();
+                getActivity().startMainLogic();
                 listener.onFollow(source, user);
             }
         });
@@ -201,7 +201,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
             {
                 Account account = new Account(token, secret, user.getId(), user.getScreenName());
                 getActivity().setCurrentAccount(account);
-                getActivity().initializePages();
+                getActivity().startMainLogic();
                 listener.onBlock(source, user);
                 listener.onUnblock(source, user);
             }
@@ -220,7 +220,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
             {
                 Account account = new Account(token, secret, user.getId(), user.getScreenName());
                 getActivity().setCurrentAccount(account);
-                getActivity().initializePages();
+                getActivity().startMainLogic();
                 listener.onDirectMessage(message);
             }
         });

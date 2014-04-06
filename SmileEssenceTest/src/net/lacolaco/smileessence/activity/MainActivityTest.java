@@ -24,11 +24,11 @@
 
 package net.lacolaco.smileessence.activity;
 
-import android.app.ListFragment;
 import android.test.ActivityInstrumentationTestCase2;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.util.TwitterMock;
+import net.lacolaco.smileessence.view.CustomListFragment;
 import net.lacolaco.smileessence.view.TestFragment;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
@@ -110,16 +110,10 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         final String token = mock.getAccessToken();
         final String secret = mock.getAccessTokenSecret();
         final User user = mock.getUserMock();
-        getActivity().runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                Account account = new Account(token, secret, user.getId(), user.getScreenName());
-                getActivity().setCurrentAccount(account);
-                assertTrue(getActivity().startStream());
-            }
-        });
+        Account account = new Account(token, secret, user.getId(), user.getScreenName());
+        getActivity().setCurrentAccount(account);
+        assertTrue(getActivity().startStream());
+
     }
 
     public void testStartTwitter() throws Exception
@@ -135,7 +129,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
             {
                 Account account = new Account(token, secret, user.getId(), user.getScreenName());
                 getActivity().setCurrentAccount(account);
-                assertTrue(getActivity().startTwitter());
+                getActivity().startMainLogic();
             }
         });
         Thread.sleep(3000);
@@ -151,7 +145,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
             public void run()
             {
                 CustomListAdapter<StatusViewModel> adapter = new CustomListAdapter<>(getActivity(), StatusViewModel.class);
-                assertTrue(getActivity().addListPage("", ListFragment.class, adapter, true));
+                assertTrue(getActivity().addListPage("", CustomListFragment.class, adapter, true));
                 assertEquals(adapter, getActivity().getListAdapter(getActivity().getPageCount() - 1));
             }
         });

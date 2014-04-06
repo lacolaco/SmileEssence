@@ -17,7 +17,7 @@
       "screen_name":"laco0416_2",
       "location":"",
       "description":"規制垢だよバカヤロウ \r\n@laco0416",
-      "screenName":null,
+      "url":null,
       "entities":{
         "description":{
           "urls":[
@@ -78,7 +78,7 @@
       ],
       "urls":[
         {
-          "screenName":"http:\/\/t.co\/nd7Bzal2EU",
+          "url":"http:\/\/t.co\/nd7Bzal2EU",
           "expanded_url":"http:\/\/www.google.com",
           "display_url":"google.com",
           "indices":[
@@ -109,7 +109,7 @@
           ],
           "media_url":"http:\/\/pbs.twimg.com\/media\/BjLX2JRCQAE27mw.png",
           "media_url_https":"https:\/\/pbs.twimg.com\/media\/BjLX2JRCQAE27mw.png",
-          "screenName":"http:\/\/t.co\/yANfRHC4KW",
+          "url":"http:\/\/t.co\/yANfRHC4KW",
           "display_url":"pic.twitter.com\/yANfRHC4KW",
           "expanded_url":"http:\/\/twitter.com\/laco0416_2\/status\/446656638397583361\/photo\/1",
           "type":"photo",

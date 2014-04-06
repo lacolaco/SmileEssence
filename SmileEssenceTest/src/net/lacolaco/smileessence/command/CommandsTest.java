@@ -63,58 +63,77 @@ public class CommandsTest extends ActivityInstrumentationTestCase2<MainActivity>
 
     public void testStatusCommand() throws Exception
     {
-        Activity activity = getActivity();
-        Account account = new Account(mock.getAccessToken(), mock.getAccessTokenSecret(), mock.getUserMock().getId(), mock.getUserMock().getScreenName());
-        Status status = mock.getStatusMock();
+        final Activity activity = getActivity();
+        final Account account = new Account(mock.getAccessToken(), mock.getAccessTokenSecret(), mock.getUserMock().getId(), mock.getUserMock().getScreenName());
+        final Status status = mock.getStatusMock();
         StatusCache.getInstance().put(status);
-
-        StatusCommand reply = new StatusCommandReply(activity, status);
-        assertTrue(reply.isEnabled());
-        assertEquals(R.id.key_command_status_reply, reply.getKey());
-        assertEquals(activity.getString(R.string.command_status_reply), reply.getText());
-        assertTrue(reply.execute());
-        assertEquals("@laco0416_2 ", PostState.getState().getText());
-        assertEquals(status.getId(), PostState.getState().getInReplyToStatusID());
-        assertEquals(status.getUser().getScreenName(), PostState.getState().getInReplyToScreenName());
-        assertEquals(status.getText(), PostState.getState().getInReplyToText());
-        StatusCommandNanigaja nanigaja = new StatusCommandNanigaja(activity, status, account);
-        assertEquals("@laco0416_2 な～にがテスト #test http://t.co/nd7Bzal2EU http://t.co/yANfRHC4KWじゃ", StatusCommandNanigaja.build(activity, status, account));
-        assertEquals("？？？「テスト #test http://t.co/nd7Bzal2EU http://t.co/yANfRHC4KW」", StatusCommandMakeAnonymous.build(activity, status, account));
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                StatusCommand reply = new StatusCommandReply(activity, status);
+                assertTrue(reply.isEnabled());
+                assertEquals(R.id.key_command_status_reply, reply.getKey());
+                assertEquals(activity.getString(R.string.command_status_reply), reply.getText());
+                assertTrue(reply.execute());
+                assertEquals("@laco0416_2 ", PostState.getState().getText());
+                assertEquals(status.getId(), PostState.getState().getInReplyToStatusID());
+                assertEquals(status.getUser().getScreenName(), PostState.getState().getInReplyToScreenName());
+                assertEquals(status.getText(), PostState.getState().getInReplyToText());
+                StatusCommandNanigaja nanigaja = new StatusCommandNanigaja(activity, status, account);
+                assertEquals("@laco0416_2 な～にがテスト #test http://t.co/nd7Bzal2EU http://t.co/yANfRHC4KWじゃ", StatusCommandNanigaja.build(activity, status, account));
+                assertEquals("？？？「テスト #test http://t.co/nd7Bzal2EU http://t.co/yANfRHC4KW」", StatusCommandMakeAnonymous.build(activity, status, account));
+            }
+        });
     }
 
     public void testUserCommand() throws Exception
     {
-        Activity activity = getActivity();
+        final Activity activity = getActivity();
         Account account = new Account(mock.getAccessToken(), mock.getAccessTokenSecret(), mock.getUserMock().getId(), mock.getUserMock().getScreenName());
-        User user = mock.getUserMock();
-        PostState.getState().removeListener();
-        UserCommand reply = new UserCommandReply(activity, user);
-        assertTrue(reply.isEnabled());
-        assertEquals(activity.getString(R.string.command_user_reply), reply.getText());
-        assertTrue(reply.execute());
-        assertEquals("@laco0416 ", PostState.getState().getText());
-        assertEquals(-1, PostState.getState().getInReplyToStatusID());
-        assertEquals(user.getScreenName(), PostState.getState().getInReplyToScreenName());
-        assertEquals("", PostState.getState().getInReplyToText());
-        UserCommandAddToReply addToReply = new UserCommandAddToReply(activity, user);
-        addToReply.execute();
-        assertEquals("@laco0416 @laco0416 ", PostState.getState().getText());
+        final User user = mock.getUserMock();
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                UserCommand reply = new UserCommandReply(activity, user);
+                assertTrue(reply.isEnabled());
+                assertEquals(activity.getString(R.string.command_user_reply), reply.getText());
+                assertTrue(reply.execute());
+                assertEquals("@laco0416 ", PostState.getState().getText());
+                assertEquals(-1, PostState.getState().getInReplyToStatusID());
+                assertEquals(user.getScreenName(), PostState.getState().getInReplyToScreenName());
+                assertEquals("", PostState.getState().getInReplyToText());
+                UserCommandAddToReply addToReply = new UserCommandAddToReply(activity, user);
+                addToReply.execute();
+                assertEquals("@laco0416 @laco0416 ", PostState.getState().getText());
+            }
+        });
     }
 
     public void testMessageCommand() throws Exception
     {
-        Activity activity = getActivity();
+        final Activity activity = getActivity();
         Account account = new Account(mock.getAccessToken(), mock.getAccessTokenSecret(), mock.getUserMock().getId(), mock.getUserMock().getScreenName());
-        DirectMessage message = mock.getDirectMessageMock();
+        final DirectMessage message = mock.getDirectMessageMock();
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                MessageCommand reply = new MessageCommandReply(activity, message);
+                assertTrue(reply.isEnabled());
+                assertEquals(activity.getString(R.string.command_message_reply), reply.getText());
+                assertTrue(reply.execute());
+                assertEquals("", PostState.getState().getText());
+                assertEquals(-1, PostState.getState().getInReplyToStatusID());
+                assertEquals(message.getSenderScreenName(), PostState.getState().getInReplyToScreenName());
+                assertTrue(PostState.getState().isDirectMessage());
+                assertEquals(message.getText(), PostState.getState().getInReplyToText());
+            }
+        });
 
-        MessageCommand reply = new MessageCommandReply(activity, message);
-        assertTrue(reply.isEnabled());
-        assertEquals(activity.getString(R.string.command_message_reply), reply.getText());
-        assertTrue(reply.execute());
-        assertEquals("", PostState.getState().getText());
-        assertEquals(-1, PostState.getState().getInReplyToStatusID());
-        assertEquals(message.getSenderScreenName(), PostState.getState().getInReplyToScreenName());
-        assertTrue(PostState.getState().isDirectMessage());
-        assertEquals(message.getText(), PostState.getState().getInReplyToText());
     }
 }

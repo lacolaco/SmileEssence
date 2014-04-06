@@ -72,9 +72,7 @@ public class MainActivity extends Activity
     public static final int PAGE_MENTIONS = 2;
     public static final int PAGE_MESSAGES = 3;
     public static final int PAGE_HISTORY = 4;
-    private final String lastUsedAccountIDKey = "lastUsedAccountID";
-    private UserPreferenceHelper userPref;
-    private AppPreferenceHelper appPref;
+    private static final String lastUsedAccountIDKey = "lastUsedAccountID";
     private ViewPager viewPager;
     private PageListAdapter pagerAdapter;
     private OAuthSession oauthSession;
@@ -131,6 +129,7 @@ public class MainActivity extends Activity
                     Account account = new Account(token.getToken(), token.getTokenSecret(), token.getUserId(), token.getScreenName());
                     account.save();
                     setCurrentAccount(account);
+                    getAppPreferenceHelper().putValue(lastUsedAccountIDKey, account.getId());
                     startMainLogic();
                 }
             }
@@ -140,7 +139,6 @@ public class MainActivity extends Activity
     public void setCurrentAccount(Account account)
     {
         this.currentAccount = account;
-        appPref.putValue(lastUsedAccountIDKey, account.getId());
     }
 
     public void startMainLogic()
@@ -214,7 +212,7 @@ public class MainActivity extends Activity
         {
             return false;
         }
-        int count = userPref.getValue(R.string.key_setting_timelines, 20);
+        int count = getUserPreferenceHelper().getValue(R.string.key_setting_timelines, 20);
         Twitter twitter = new TwitterApi(currentAccount).getTwitter();
         Paging paging = new Paging().count(count);
         HomeTimelineTask homeTask = new HomeTimelineTask(twitter, this, paging)
@@ -223,10 +221,12 @@ public class MainActivity extends Activity
             protected void onPostExecute(twitter4j.Status[] statuses)
             {
                 super.onPostExecute(statuses);
+                CustomListAdapter<?> adapter = getListAdapter(PAGE_HOME);
                 for(twitter4j.Status status : statuses)
                 {
-                    getListAdapter(PAGE_HOME).addToBottom(new StatusViewModel(status));
+                    adapter.addToBottom(new StatusViewModel(status));
                 }
+                adapter.notifyDataSetChanged();
             }
         };
         MentionsTimelineTask mentionsTask = new MentionsTimelineTask(twitter, this, paging)
@@ -235,10 +235,12 @@ public class MainActivity extends Activity
             protected void onPostExecute(twitter4j.Status[] statuses)
             {
                 super.onPostExecute(statuses);
+                CustomListAdapter<?> adapter = getListAdapter(PAGE_MENTIONS);
                 for(twitter4j.Status status : statuses)
                 {
-                    getListAdapter(PAGE_MENTIONS).addToBottom(new StatusViewModel(status));
+                    adapter.addToBottom(new StatusViewModel(status));
                 }
+                adapter.notifyDataSetChanged();
             }
         };
         DirectMessagesTask messagesTask = new DirectMessagesTask(twitter, this, paging)
@@ -247,10 +249,12 @@ public class MainActivity extends Activity
             protected void onPostExecute(DirectMessage[] directMessages)
             {
                 super.onPostExecute(directMessages);
+                CustomListAdapter<?> adapter = getListAdapter(PAGE_MESSAGES);
                 for(DirectMessage message : directMessages)
                 {
-                    getListAdapter(PAGE_MESSAGES).addToBottom(new MessageViewModel(message));
+                    adapter.addToBottom(new MessageViewModel(message));
                 }
+                adapter.notifyDataSetChanged();
             }
         };
         homeTask.execute();
@@ -310,13 +314,12 @@ public class MainActivity extends Activity
 
     private boolean isFirstLaunchThisVersion()
     {
-        return !getVersion().contentEquals(appPref.getValue("app.version", ""));
+        return !getVersion().contentEquals(getAppPreferenceHelper().getValue("app.version", ""));
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-        setupHelpers();
         setTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
@@ -339,7 +342,7 @@ public class MainActivity extends Activity
 
     private long getLastUsedAccountID()
     {
-        String id = appPref.getValue(lastUsedAccountIDKey, "");
+        String id = getAppPreferenceHelper().getValue(lastUsedAccountIDKey, "");
         if(TextUtils.isEmpty(id))
         {
             return -1;
@@ -360,12 +363,6 @@ public class MainActivity extends Activity
     {
         Account account = Account.load(Account.class, getLastUsedAccountID());
         setCurrentAccount(account);
-    }
-
-    private void setupHelpers()
-    {
-        userPref = new UserPreferenceHelper(this);
-        appPref = new AppPreferenceHelper(this);
     }
 
     private void startOAuthSession()
@@ -461,5 +458,15 @@ public class MainActivity extends Activity
     public boolean removePage(int position)
     {
         return this.pagerAdapter.removePage(position);
+    }
+
+    private AppPreferenceHelper getAppPreferenceHelper()
+    {
+        return new AppPreferenceHelper(this);
+    }
+
+    private UserPreferenceHelper getUserPreferenceHelper()
+    {
+        return new UserPreferenceHelper(this);
     }
 }
