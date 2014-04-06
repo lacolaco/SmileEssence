@@ -7,3 +7,5 @@ out
 /proguard-project.txt
 /SmileEssenceTest/local.properties
 /SmileEssenceTest/proguard-project.txt
+/src/twitter4j.properties
+/SmileEssenceTest/assets/tokens.json
