@@ -71,7 +71,7 @@ public class HomeTimelineTask extends TwitterTask<Status[]>
         {
             e.printStackTrace();
             Logger.error(e.toString());
-            return null;
+            return new twitter4j.Status[0];
         }
 
         Collections.reverse(responseList);
