@@ -66,7 +66,7 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
         super.onViewStateRestored(savedInstanceState);
         if(savedInstanceState != null)
         {
-            int fragmentIndex = savedInstanceState.getInt(FRAGMENT_INDEX);
+            fragmentIndex = savedInstanceState.getInt(FRAGMENT_INDEX);
         }
     }
 
@@ -75,6 +75,8 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
     {
         View page = inflater.inflate(R.layout.fragment_list, container, false);
         SwipeRefreshLayout refreshLayout = getRefreshLayout(page);
+        Bundle args = getArguments();
+        int fragmentIndex = args.getInt(FRAGMENT_INDEX);
         ListView listView = getListView(page);
         ListAdapter adapter = getListAdapter(fragmentIndex);
         listView.setAdapter(adapter);
@@ -101,6 +103,8 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
     @Override
     public void onScrollStateChanged(AbsListView absListView, int scrollState)
     {
+        Bundle args = getArguments();
+        fragmentIndex = args.getInt(FRAGMENT_INDEX);
         CustomListAdapter<?> adapter = getListAdapter(fragmentIndex);
         adapter.setNotifiable(false);
 

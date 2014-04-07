@@ -22,37 +22,31 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.view.adapter;
+package net.lacolaco.smileessence.util;
 
-import android.app.Activity;
-import net.lacolaco.smileessence.viewmodel.MessageViewModel;
-
-import java.util.Iterator;
-
-public class MessageListAdapter extends CustomListAdapter<MessageViewModel>
+public class NameStyles
 {
 
-    public MessageListAdapter(Activity activity)
+    public static String getNameString(int style, String screenName, String name)
     {
-        super(activity, MessageViewModel.class);
-    }
-
-    public MessageViewModel removeByStatusID(long messageID)
-    {
-        synchronized(this.LOCK)
+        switch(style)
         {
-            Iterator<MessageViewModel> iterator = this.list.iterator();
-            while(iterator.hasNext())
+            case 1:
             {
-                MessageViewModel message = iterator.next();
-                if(message.getID() == messageID)
-                {
-                    iterator.remove();
-                    update();
-                    return message;
-                }
+                return String.format("%s / %s", name, screenName);
             }
-            return null;
+            case 2:
+            {
+                return String.format("%s", screenName);
+            }
+            case 3:
+            {
+                return String.format("%s", name);
+            }
+            default:
+            {
+                return String.format("%s / %s", screenName, name);
+            }
         }
     }
 }

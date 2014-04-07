@@ -81,7 +81,7 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
             {
                 list.add(item);
             }
-            updateAdapter();
+            update();
         }
     }
 
@@ -95,7 +95,7 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
             {
                 list.add(0, item);
             }
-            updateAdapter();
+            update();
         }
     }
 
@@ -106,7 +106,7 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
             T removed = list.remove(position);
             if(removed != null)
             {
-                updateAdapter();
+                update();
             }
             return removed;
         }
@@ -118,13 +118,13 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
         {
             if(list.remove(item))
             {
-                updateAdapter();
+                update();
             }
             return true;
         }
     }
 
-    public void updateAdapter()
+    public void update()
     {
         if(isNotifiable)
         {

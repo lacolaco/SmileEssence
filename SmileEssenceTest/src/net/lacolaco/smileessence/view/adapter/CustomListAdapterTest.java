@@ -49,28 +49,28 @@ public class CustomListAdapterTest extends ActivityInstrumentationTestCase2<Main
 
     public void testAddItem() throws Exception
     {
-        adapter.addToBottom(new StatusViewModel(mock.getStatusMock()));
+        adapter.addToBottom(new StatusViewModel(mock.getStatusMock(), ));
         assertEquals(1, adapter.getCount());
     }
 
     public void testAddItems() throws Exception
     {
-        StatusViewModel viewModel1 = new StatusViewModel(mock.getStatusMock());
-        StatusViewModel viewModel2 = new StatusViewModel(mock.getStatusMock());
+        StatusViewModel viewModel1 = new StatusViewModel(mock.getStatusMock(), );
+        StatusViewModel viewModel2 = new StatusViewModel(mock.getStatusMock(), );
         adapter.addToBottom(viewModel1, viewModel2);
         assertEquals(2, adapter.getCount());
     }
 
     public void testRemoveItem() throws Exception
     {
-        StatusViewModel viewModel = new StatusViewModel(mock.getStatusMock());
+        StatusViewModel viewModel = new StatusViewModel(mock.getStatusMock(), );
         adapter.addToBottom(viewModel, viewModel);
         assertTrue(adapter.removeItem(0) == viewModel);
     }
 
     public void testGetView() throws Exception
     {
-        final StatusViewModel viewModel = new StatusViewModel(mock.getStatusMock());
+        final StatusViewModel viewModel = new StatusViewModel(mock.getStatusMock(), );
         getActivity().runOnUiThread(new Runnable()
         {
             @Override
@@ -84,8 +84,8 @@ public class CustomListAdapterTest extends ActivityInstrumentationTestCase2<Main
 
     public void testAddPosition() throws Exception
     {
-        StatusViewModel status1 = new StatusViewModel(mock.getStatusMock());
-        StatusViewModel status2 = new StatusViewModel(mock.getStatusMock());
+        StatusViewModel status1 = new StatusViewModel(mock.getStatusMock(), );
+        StatusViewModel status2 = new StatusViewModel(mock.getStatusMock(), );
         adapter.addToBottom(status1);
         adapter.addToTop(status2);
         assertEquals(status2, adapter.getItem(0));

@@ -32,4 +32,5 @@
     <attr name="button_blue_foreground" format="color"/>
     <attr name="button_round_blue" format="reference"/>
     <attr name="custom_button_transparent" format="reference"/>
+    <attr name="icon_status_favorite_on" format="reference"/>
 </resources>

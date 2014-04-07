@@ -25,15 +25,26 @@
 package net.lacolaco.smileessence.viewmodel;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import com.android.volley.toolbox.NetworkImageView;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.data.ImageCache;
+import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.preference.UserPreferenceHelper;
+import net.lacolaco.smileessence.util.NameStyles;
+import net.lacolaco.smileessence.util.StringUtils;
 import twitter4j.*;
 
 import java.util.Date;
 
 public class StatusViewModel implements IViewModel
 {
+
+    // ------------------------------ FIELDS ------------------------------
 
     private long id;
     private long userID;
@@ -51,14 +62,17 @@ public class StatusViewModel implements IViewModel
     private MediaEntity[] media;
     private URLEntity[] urls;
     private SymbolEntity[] symbols;
+    private boolean isMyStatus;
     private boolean isMention;
     private boolean isRetweetOfMe;
 
-    public StatusViewModel(Status status)
+    // --------------------------- CONSTRUCTORS ---------------------------
+
+    public StatusViewModel(Status status, Account account)
     {
         if(status.isRetweet())
         {
-            retweetedStatus = new StatusViewModel(status.getRetweetedStatus());
+            retweetedStatus = new StatusViewModel(status.getRetweetedStatus(), account);
         }
         id = status.getId();
         text = status.getText();
@@ -76,91 +90,9 @@ public class StatusViewModel implements IViewModel
         name = user.getName();
         iconURL = user.getProfileImageURLHttps();
         isProtected = user.isProtected();
-    }
-
-    public long getID()
-    {
-        return id;
-    }
-
-    public String getText()
-    {
-        return text;
-    }
-
-    public Date getCreatedAt()
-    {
-        return createdAt;
-    }
-
-    public String getSource()
-    {
-        return source;
-    }
-
-    public boolean isFavorited()
-    {
-        return isFavorited;
-    }
-
-    public StatusViewModel getRetweetedStatus()
-    {
-        return retweetedStatus;
-    }
-
-    public UserMentionEntity[] getMentions()
-    {
-        return mentions;
-    }
-
-    public HashtagEntity[] getHashtags()
-    {
-        return hashtags;
-    }
-
-    public MediaEntity[] getMedia()
-    {
-        return media;
-    }
-
-    public URLEntity[] getURLs()
-    {
-        return urls;
-    }
-
-    public SymbolEntity[] getSymbols()
-    {
-        return symbols;
-    }
-
-    public long getUserID()
-    {
-        return userID;
-    }
-
-    public String getScreenName()
-    {
-        return screenName;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public String getIconURL()
-    {
-        return iconURL;
-    }
-
-    public boolean isProtected()
-    {
-        return isProtected;
-    }
-
-    public boolean isMention()
-    {
-        return isMention;
+        setMention(isMention(account.screenName));
+        setMyStatus(isMyStatus(account.userID));
+        setRetweetOfMe(isRetweetOfMe(account.userID));
     }
 
     public boolean isMention(String screenName)
@@ -168,14 +100,9 @@ public class StatusViewModel implements IViewModel
         return text.contains(String.format("@%s", screenName));
     }
 
-    public void setMention(boolean mention)
+    public boolean isMyStatus(long userID)
     {
-        isMention = mention;
-    }
-
-    public boolean isRetweetOfMe()
-    {
-        return isRetweetOfMe;
+        return this.userID == userID;
     }
 
     public boolean isRetweetOfMe(long userID)
@@ -183,16 +110,218 @@ public class StatusViewModel implements IViewModel
         return retweetedStatus != null && retweetedStatus.getUserID() == userID;
     }
 
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    public Date getCreatedAt()
+    {
+        if(isRetweet())
+        {
+            return retweetedStatus.createdAt;
+        }
+        return createdAt;
+    }
+
+    public HashtagEntity[] getHashtags()
+    {
+        if(isRetweet())
+        {
+            return retweetedStatus.hashtags;
+        }
+        return hashtags;
+    }
+
+    public String getIconURL()
+    {
+        if(isRetweet())
+        {
+            return retweetedStatus.iconURL;
+        }
+        return iconURL;
+    }
+
+    public long getID()
+    {
+        return id;
+    }
+
+    public MediaEntity[] getMedia()
+    {
+        if(isRetweet())
+        {
+            return retweetedStatus.media;
+        }
+        return media;
+    }
+
+    public UserMentionEntity[] getMentions()
+    {
+        if(isRetweet())
+        {
+            return retweetedStatus.mentions;
+        }
+        return mentions;
+    }
+
+    public String getName()
+    {
+        if(isRetweet())
+        {
+            return retweetedStatus.name;
+        }
+        return name;
+    }
+
+    public StatusViewModel getRetweetedStatus()
+    {
+        return retweetedStatus;
+    }
+
+    public String getScreenName()
+    {
+        if(isRetweet())
+        {
+            return retweetedStatus.screenName;
+        }
+        return screenName;
+    }
+
+    public String getSource()
+    {
+        if(isRetweet())
+        {
+            return retweetedStatus.source;
+        }
+        return source;
+    }
+
+    public SymbolEntity[] getSymbols()
+    {
+        return symbols;
+    }
+
+    public String getText()
+    {
+        if(isRetweet())
+        {
+            return retweetedStatus.text;
+        }
+        return text;
+    }
+
+    public URLEntity[] getURLs()
+    {
+        return urls;
+    }
+
+    public long getUserID()
+    {
+        return userID;
+    }
+
+    public boolean isFavorited()
+    {
+        if(isRetweet())
+        {
+            return retweetedStatus.isFavorited;
+        }
+        return isFavorited;
+    }
+
+    public boolean isMention()
+    {
+        if(isRetweet())
+        {
+            return retweetedStatus.isMention;
+        }
+        return isMention;
+    }
+
+    public void setMention(boolean mention)
+    {
+        isMention = mention;
+    }
+
+    public boolean isMyStatus()
+    {
+        if(isRetweet())
+        {
+            return retweetedStatus.isMyStatus;
+        }
+        return isMyStatus;
+    }
+
+    public void setMyStatus(boolean myStatus)
+    {
+        isMyStatus = myStatus;
+    }
+
+    public boolean isProtected()
+    {
+        if(isRetweet())
+        {
+            return retweetedStatus.isProtected;
+        }
+        return isProtected;
+    }
+
+    private boolean isRetweet()
+    {
+        return retweetedStatus != null;
+    }
+
+    public boolean isRetweetOfMe()
+    {
+        if(isRetweet())
+        {
+            return retweetedStatus.isRetweetOfMe;
+        }
+        return isRetweetOfMe;
+    }
+
     public void setRetweetOfMe(boolean retweet)
     {
         this.isRetweetOfMe = retweet;
     }
 
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface IViewModel ---------------------
+
     @Override
     public View getView(Context context, LayoutInflater inflater, View convertedView)
     {
-        return new TextView(context);
+        if(convertedView == null)
+        {
+            convertedView = inflater.inflate(R.layout.list_item_status, null);
+        }
+        UserPreferenceHelper preferenceHelper = new UserPreferenceHelper(context);
+        int textSize = preferenceHelper.getValue(R.string.key_setting_text_size, 10);
+        int nameStyle = preferenceHelper.getValue(R.string.key_setting_namestyle, 0);
+        NetworkImageView icon = (NetworkImageView)convertedView.findViewById(R.id.imageview_status_icon);
+        ImageCache.getInstance().setImageToView(getIconURL(), icon);
+        TextView header = (TextView)convertedView.findViewById(R.id.textview_status_header);
+        header.setTextSize(textSize);
+        header.setText(NameStyles.getNameString(nameStyle, getScreenName(), getName()));
+        TextView content = (TextView)convertedView.findViewById(R.id.textview_status_text);
+        content.setTextSize(textSize);
+        content.setText(getText());
+        TextView footer = (TextView)convertedView.findViewById(R.id.textview_status_footer);
+        footer.setTextSize(textSize);
+        StringBuilder builder = new StringBuilder();
+        if(isRetweet())
+        {
+            builder.append("(RT: ");
+            builder.append(this.screenName);
+            builder.append(") ");
+        }
+        builder.append(StringUtils.dateToString(getCreatedAt()));
+        builder.append(" via ");
+        builder.append(Html.fromHtml(getSource()));
+        footer.setText(builder.toString());
+        ImageView favorited = (ImageView)convertedView.findViewById(R.id.imageview_status_favorited);
+        favorited.setVisibility(isFavorited() ? View.VISIBLE : View.GONE);
+
+        return convertedView;
     }
-
-
 }

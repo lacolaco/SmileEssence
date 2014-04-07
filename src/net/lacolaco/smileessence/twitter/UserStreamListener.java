@@ -78,34 +78,36 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
 
     // --------------------- Interface StatusListener ---------------------
 
-
     @Override
     public void onStatus(Status status)
     {
         StatusCache.getInstance().put(status);
         CustomListAdapter<?> home = activity.getListAdapter(MainActivity.PAGE_HOME);
-        StatusViewModel viewModel = new StatusViewModel(status);
+        StatusViewModel viewModel = new StatusViewModel(status, activity.getCurrentAccount());
         home.addToTop(viewModel);
+        home.update();
         if(status.isRetweet())
         {
-            if(viewModel.isRetweetOfMe(activity.getCurrentAccount().userID))
+            if(viewModel.isRetweetOfMe())
             {
-                viewModel.setRetweetOfMe(true);
                 CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
                 EventViewModel retweeted = new EventViewModel(EnumEvent.RETWEETED, status.getUser(), status);
                 new Notificator(activity, retweeted.getFormattedString(activity)).publish();
                 history.addToTop(retweeted);
+                history.update();
             }
         }
-        else if(viewModel.isMention(activity.getCurrentAccount().screenName))
+        else if(viewModel.isMention())
         {
-            viewModel.setMention(true);
             CustomListAdapter<?> mentions = activity.getListAdapter(MainActivity.PAGE_MENTIONS);
             mentions.addToTop(viewModel);
+            mentions.update();
             CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
             EventViewModel mentioned = new EventViewModel(EnumEvent.MENTIONED, status.getUser(), status);
             new Notificator(activity, mentioned.getFormattedString(activity)).publish();
             history.addToTop(mentioned);
+            history.update();
+
         }
     }
 
@@ -140,14 +142,12 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
 
     // --------------------- Interface StreamListener ---------------------
 
-
     @Override
     public void onException(Exception ex)
     {
     }
 
     // --------------------- Interface UserStreamListener ---------------------
-
 
     @Override
     public void onDeletionNotice(long directMessageId, long userId)
@@ -170,6 +170,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
             CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
             new Notificator(activity, event.getFormattedString(activity)).publish();
             history.addToTop(event);
+            history.update();
         }
     }
 
@@ -182,6 +183,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
             CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
             new Notificator(activity, event.getFormattedString(activity)).publish();
             history.addToTop(event);
+            history.update();
         }
     }
 
@@ -194,6 +196,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
             CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
             new Notificator(activity, event.getFormattedString(activity)).publish();
             history.addToTop(event);
+            history.update();
         }
     }
 
@@ -209,9 +212,11 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
         new Notificator(activity, event.getFormattedString(activity)).publish();
         history.addToTop(event);
+        history.update();
         MessageViewModel message = new MessageViewModel(directMessage);
         CustomListAdapter<?> messages = activity.getListAdapter(MainActivity.PAGE_MESSAGES);
         messages.addToTop(message);
+        messages.update();
     }
 
     @Override
@@ -263,6 +268,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
             CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
             new Notificator(activity, event.getFormattedString(activity)).publish();
             history.addToTop(event);
+            history.update();
         }
     }
 
@@ -275,6 +281,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
             CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
             new Notificator(activity, event.getFormattedString(activity)).publish();
             history.addToTop(event);
+            history.update();
         }
     }
 }

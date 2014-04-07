@@ -34,6 +34,7 @@
         <item name="button_blue_foreground">@color/white</item>
         <item name="button_round_blue">@drawable/button_round_blue</item>
         <item name="custom_button_transparent">@style/custom_button_transparent</item>
+        <item name="icon_status_favorite_on">@drawable/icon_favorite_on</item>
     </style>
 
     <style name="theme_light" parent="@android:style/Theme.Holo.Light.DarkActionBar">
@@ -45,6 +46,7 @@
         <item name="button_blue_foreground">@color/white</item>
         <item name="button_round_blue">@drawable/button_round_blue_light</item>
         <item name="custom_button_transparent">@style/custom_button_transparent</item>
+        <item name="icon_status_favorite_on">@drawable/icon_favorite_on</item>
     </style>
 
     <style name="custom_button_transparent">

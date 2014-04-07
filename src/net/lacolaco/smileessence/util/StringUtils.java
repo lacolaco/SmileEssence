@@ -22,37 +22,40 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.view.adapter;
+package net.lacolaco.smileessence.util;
 
-import android.app.Activity;
-import net.lacolaco.smileessence.viewmodel.MessageViewModel;
+import java.util.Calendar;
+import java.util.Date;
 
-import java.util.Iterator;
-
-public class MessageListAdapter extends CustomListAdapter<MessageViewModel>
+public class StringUtils
 {
 
-    public MessageListAdapter(Activity activity)
+    public static String dateToString(Date date)
     {
-        super(activity, MessageViewModel.class);
-    }
+        Calendar cal = Calendar.getInstance();
+        Calendar calToday = Calendar.getInstance();
 
-    public MessageViewModel removeByStatusID(long messageID)
-    {
-        synchronized(this.LOCK)
+        cal.setTime(date);
+
+        int y = cal.get(Calendar.YEAR);
+        int m = cal.get(Calendar.MONTH);
+        int d = cal.get(Calendar.DATE);
+        int h = cal.get(Calendar.HOUR_OF_DAY);
+        int min = cal.get(Calendar.MINUTE);
+        int s = cal.get(Calendar.SECOND);
+
+        StringBuilder builder = new StringBuilder();
+
+        if(cal.get(Calendar.YEAR) != calToday.get(Calendar.YEAR))
         {
-            Iterator<MessageViewModel> iterator = this.list.iterator();
-            while(iterator.hasNext())
-            {
-                MessageViewModel message = iterator.next();
-                if(message.getID() == messageID)
-                {
-                    iterator.remove();
-                    update();
-                    return message;
-                }
-            }
-            return null;
+            builder.append(y).append("/");
         }
+        if(cal.get(Calendar.DAY_OF_YEAR) != calToday.get(Calendar.DAY_OF_YEAR))
+        {
+            builder.append(String.format("%02d", m + 1)).append("/").append(String.format("%02d", d)).append(" ");
+        }
+        builder.append(String.format("%02d", h)).append(":").append(String.format("%02d", min)).append(":").append(String.format("%02d", s));
+
+        return builder.toString();
     }
 }

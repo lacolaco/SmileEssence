@@ -48,7 +48,7 @@ public final class StatusListAdapter extends CustomListAdapter<StatusViewModel>
                 if(statusViewModel.getID() == statusID)
                 {
                     iterator.remove();
-                    updateAdapter();
+                    update();
                     return statusViewModel;
                 }
             }

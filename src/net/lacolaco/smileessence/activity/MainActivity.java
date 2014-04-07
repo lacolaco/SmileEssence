@@ -224,7 +224,7 @@ public class MainActivity extends Activity
                 CustomListAdapter<?> adapter = getListAdapter(PAGE_HOME);
                 for(twitter4j.Status status : statuses)
                 {
-                    adapter.addToBottom(new StatusViewModel(status));
+                    adapter.addToBottom(new StatusViewModel(status, currentAccount));
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -238,7 +238,7 @@ public class MainActivity extends Activity
                 CustomListAdapter<?> adapter = getListAdapter(PAGE_MENTIONS);
                 for(twitter4j.Status status : statuses)
                 {
-                    adapter.addToBottom(new StatusViewModel(status));
+                    adapter.addToBottom(new StatusViewModel(status, currentAccount));
                 }
                 adapter.notifyDataSetChanged();
             }
