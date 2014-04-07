@@ -28,7 +28,9 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 import com.google.common.collect.Iterables;
+import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.util.UIHandler;
 import net.lacolaco.smileessence.viewmodel.IViewModel;
 
@@ -46,6 +48,7 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
     protected Class<T> clss;
     protected ArrayList<T> list = new ArrayList<>();
     protected T[] array;
+    protected int count;
     protected boolean isNotifiable = true;
     protected Activity activity;
 
@@ -67,11 +70,7 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
     @Override
     public int getCount()
     {
-        if(array == null)
-        {
-            return 0;
-        }
-        return array.length;
+        return count;
     }
 
     public boolean isNotifiable()
@@ -111,6 +110,7 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
     public View getView(int position, View convertView, ViewGroup parent)
     {
         View view = ((T)getItem(position)).getView(activity, activity.getLayoutInflater(), convertView);
+        ((TextView)view.findViewById(R.id.textview_status_header)).setText(String.valueOf(position));
         return view;
     }
 
@@ -120,6 +120,7 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
     public void notifyDataSetChanged()
     {
         array = Iterables.toArray(list, clss);
+        count = array.length;
         super.notifyDataSetChanged();
     }
 
@@ -129,11 +130,7 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
     {
         synchronized(LOCK)
         {
-            for(T item : items)
-            {
-                list.add(item);
-            }
-            update();
+            Collections.addAll(list, items);
         }
     }
 
@@ -147,14 +144,17 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
 
     public void updateForce()
     {
-        new UIHandler()
+        synchronized(LOCK)
         {
-            @Override
-            public void run()
+            new UIHandler()
             {
-                notifyDataSetChanged();
-            }
-        }.post();
+                @Override
+                public void run()
+                {
+                    notifyDataSetChanged();
+                }
+            }.post();
+        }
     }
 
     public void addToTop(T... items)
@@ -167,7 +167,6 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
             {
                 list.add(0, item);
             }
-            update();
         }
     }
 
@@ -175,12 +174,7 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
     {
         synchronized(LOCK)
         {
-            T removed = list.remove(position);
-            if(removed != null)
-            {
-                update();
-            }
-            return removed;
+            return list.remove(position);
         }
     }
 
@@ -188,11 +182,7 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
     {
         synchronized(LOCK)
         {
-            if(list.remove(item))
-            {
-                update();
-            }
-            return true;
+            return list.remove(item);
         }
     }
 }

@@ -37,6 +37,8 @@
             android:id="@+id/fragment_list_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:overScrollMode="ifContentScrolls"
+            android:fastScrollEnabled="true"
             android:clickable="false"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

@@ -41,9 +41,62 @@ import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 public class CustomListFragment extends Fragment implements AbsListView.OnScrollListener, SwipeRefreshLayout.OnRefreshListener
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     public static final String FRAGMENT_INDEX = "fragmentIndex";
 
     private int fragmentIndex;
+
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface OnRefreshListener ---------------------
+
+    @Override
+    public void onRefresh()
+    {
+        getRefreshLayout(getView()).setRefreshing(false);
+    }
+
+    // --------------------- Interface OnScrollListener ---------------------
+
+    @Override
+    public void onScrollStateChanged(AbsListView absListView, int scrollState)
+    {
+        Bundle args = getArguments();
+        fragmentIndex = args.getInt(FRAGMENT_INDEX);
+        CustomListAdapter<?> adapter = getListAdapter(fragmentIndex);
+        adapter.setNotifiable(false);
+
+        if(absListView.getFirstVisiblePosition() == 0 && absListView.getChildAt(0) != null && absListView.getChildAt(0).getTop() == 0)
+        {
+            if(scrollState == SCROLL_STATE_IDLE)
+            {
+                int before = adapter.getCount();
+                adapter.notifyDataSetChanged(); // synchronized call (not adapter#updateForce())
+                int after = adapter.getCount();
+                int addCount = after - before;
+                if(addCount > 0)
+                {
+                    adapter.setNotifiable(false);
+                    new Notificator(getActivity(), getString(R.string.notice_timeline_new, addCount)).publish();
+                    absListView.setSelection(addCount);
+                    absListView.smoothScrollToPositionFromTop(addCount - 1, 0, 1500);
+                }
+                else
+                {
+                    adapter.setNotifiable(true);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onScroll(AbsListView absListView, int i, int i2, int i3)
+    {
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -51,23 +104,6 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         int fragmentIndex = args.getInt(FRAGMENT_INDEX);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-        outState.putInt(FRAGMENT_INDEX, fragmentIndex);
-    }
-
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState)
-    {
-        super.onViewStateRestored(savedInstanceState);
-        if(savedInstanceState != null)
-        {
-            fragmentIndex = savedInstanceState.getInt(FRAGMENT_INDEX);
-        }
     }
 
     @Override
@@ -85,11 +121,6 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
         return page;
     }
 
-    private SwipeRefreshLayout getRefreshLayout(View page)
-    {
-        return (SwipeRefreshLayout)page.findViewById(R.id.fragment_list_refreshview);
-    }
-
     private CustomListAdapter<?> getListAdapter(int fragmentIndex)
     {
         return ((MainActivity)getActivity()).getListAdapter(fragmentIndex);
@@ -100,41 +131,25 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
         return (ListView)page.findViewById(R.id.fragment_list_listview);
     }
 
-    @Override
-    public void onScrollStateChanged(AbsListView absListView, int scrollState)
+    private SwipeRefreshLayout getRefreshLayout(View page)
     {
-        Bundle args = getArguments();
-        fragmentIndex = args.getInt(FRAGMENT_INDEX);
-        CustomListAdapter<?> adapter = getListAdapter(fragmentIndex);
-        adapter.setNotifiable(false);
+        return (SwipeRefreshLayout)page.findViewById(R.id.fragment_list_refreshview);
+    }
 
-        if(absListView.getFirstVisiblePosition() == 0 && absListView.getChildAt(0) != null && absListView.getChildAt(0).getTop() == 0)
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putInt(FRAGMENT_INDEX, fragmentIndex);
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState)
+    {
+        super.onViewStateRestored(savedInstanceState);
+        if(savedInstanceState != null)
         {
-            if(scrollState == SCROLL_STATE_IDLE)
-            {
-                adapter.setNotifiable(true);
-                int before = adapter.getCount();
-                adapter.updateForce();
-                int after = adapter.getCount();
-                int addCount = after - before;
-                if(addCount > 0)
-                {
-                    absListView.setSelection(addCount + 1);
-                    adapter.setNotifiable(false);
-                    new Notificator(getActivity(), getString(R.string.notice_timeline_new, addCount)).publish();
-                }
-            }
+            fragmentIndex = savedInstanceState.getInt(FRAGMENT_INDEX);
         }
-    }
-
-    @Override
-    public void onScroll(AbsListView absListView, int i, int i2, int i3)
-    {
-    }
-
-    @Override
-    public void onRefresh()
-    {
-        getRefreshLayout(getView()).setRefreshing(false);
     }
 }
