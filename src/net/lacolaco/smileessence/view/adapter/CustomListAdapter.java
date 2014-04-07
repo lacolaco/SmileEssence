@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import com.google.common.collect.Iterables;
+import net.lacolaco.smileessence.util.UIHandler;
 import net.lacolaco.smileessence.viewmodel.IViewModel;
 
 import java.util.ArrayList;
@@ -39,6 +40,8 @@ import java.util.List;
 public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     protected final Object LOCK = new Object();
     protected Class<T> clss;
     protected ArrayList<T> list = new ArrayList<>();
@@ -46,15 +49,29 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
     protected boolean isNotifiable = true;
     protected Activity activity;
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public CustomListAdapter(Activity activity, Class<T> clss)
     {
         this.activity = activity;
         this.clss = clss;
     }
 
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
     public Activity getActivity()
     {
         return activity;
+    }
+
+    @Override
+    public int getCount()
+    {
+        if(array == null)
+        {
+            return 0;
+        }
+        return array.length;
     }
 
     public boolean isNotifiable()
@@ -73,6 +90,41 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
         }
     }
 
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface Adapter ---------------------
+
+    @Override
+    public Object getItem(int position)
+    {
+        return array[position];
+    }
+
+    @Override
+    public long getItemId(int position)
+    {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
+        View view = ((T)getItem(position)).getView(activity, activity.getLayoutInflater(), convertView);
+        return view;
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    public void notifyDataSetChanged()
+    {
+        array = Iterables.toArray(list, clss);
+        super.notifyDataSetChanged();
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
     public void addToBottom(T... items)
     {
         synchronized(LOCK)
@@ -83,6 +135,26 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
             }
             update();
         }
+    }
+
+    public void update()
+    {
+        if(isNotifiable)
+        {
+            updateForce();
+        }
+    }
+
+    public void updateForce()
+    {
+        new UIHandler()
+        {
+            @Override
+            public void run()
+            {
+                notifyDataSetChanged();
+            }
+        }.post();
     }
 
     public void addToTop(T... items)
@@ -122,49 +194,5 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
             }
             return true;
         }
-    }
-
-    public void update()
-    {
-        if(isNotifiable)
-        {
-            notifyDataSetChanged();
-        }
-    }
-
-    @Override
-    public void notifyDataSetChanged()
-    {
-        array = Iterables.toArray(list, clss);
-        super.notifyDataSetChanged();
-    }
-
-    @Override
-    public int getCount()
-    {
-        if(array == null)
-        {
-            return 0;
-        }
-        return array.length;
-    }
-
-    @Override
-    public Object getItem(int position)
-    {
-        return array[position];
-    }
-
-    @Override
-    public long getItemId(int position)
-    {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent)
-    {
-        View view = ((T)getItem(position)).getView(activity, activity.getLayoutInflater(), convertView);
-        return view;
     }
 }

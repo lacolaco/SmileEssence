@@ -27,7 +27,15 @@ package net.lacolaco.smileessence.viewmodel;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import com.android.volley.toolbox.NetworkImageView;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.data.ImageCache;
+import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.preference.UserPreferenceHelper;
+import net.lacolaco.smileessence.util.NameStyles;
+import net.lacolaco.smileessence.util.StringUtils;
 import twitter4j.DirectMessage;
 
 import java.util.Date;
@@ -35,21 +43,41 @@ import java.util.Date;
 public class MessageViewModel implements IViewModel
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private long id;
     private long senderID;
     private String senderScreenName;
+    private String senderName;
     private String senderIconURL;
     private String text;
     private Date createdAt;
+    private boolean myMessage;
 
-    public MessageViewModel(DirectMessage directMessage)
+    // --------------------------- CONSTRUCTORS ---------------------------
+
+    public MessageViewModel(DirectMessage directMessage, Account account)
     {
         id = directMessage.getId();
         senderID = directMessage.getSenderId();
         senderScreenName = directMessage.getSenderScreenName();
+        senderName = directMessage.getSender().getName();
         senderIconURL = directMessage.getSender().getProfileImageURL();
         text = directMessage.getText();
         createdAt = directMessage.getCreatedAt();
+        myMessage = isMyMessage(account);
+    }
+
+    private boolean isMyMessage(Account account)
+    {
+        return senderID == account.userID;
+    }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    public Date getCreatedAt()
+    {
+        return createdAt;
     }
 
     public long getID()
@@ -57,9 +85,19 @@ public class MessageViewModel implements IViewModel
         return id;
     }
 
+    public String getSenderIconURL()
+    {
+        return senderIconURL;
+    }
+
     public long getSenderID()
     {
         return senderID;
+    }
+
+    public String getSenderName()
+    {
+        return senderName;
     }
 
     public String getSenderScreenName()
@@ -67,24 +105,45 @@ public class MessageViewModel implements IViewModel
         return senderScreenName;
     }
 
-    public String getSenderIconURL()
-    {
-        return senderIconURL;
-    }
-
     public String getText()
     {
         return text;
     }
 
-    public Date getCreatedAt()
+    public boolean isMyMessage()
     {
-        return createdAt;
+        return myMessage;
     }
+
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface IViewModel ---------------------
 
     @Override
     public View getView(Context context, LayoutInflater inflater, View convertedView)
     {
-        return new TextView(context);
+        if(convertedView == null)
+        {
+            convertedView = inflater.inflate(R.layout.list_item_status, null);
+        }
+        UserPreferenceHelper preferenceHelper = new UserPreferenceHelper(context);
+        int textSize = preferenceHelper.getValue(R.string.key_setting_text_size, 10);
+        int nameStyle = preferenceHelper.getValue(R.string.key_setting_namestyle, 0);
+        NetworkImageView icon = (NetworkImageView)convertedView.findViewById(R.id.imageview_status_icon);
+        ImageCache.getInstance().setImageToView(getSenderIconURL(), icon);
+        TextView header = (TextView)convertedView.findViewById(R.id.textview_status_header);
+        header.setTextSize(textSize);
+        header.setText(NameStyles.getNameString(nameStyle, getSenderScreenName(), getSenderName()));
+        TextView content = (TextView)convertedView.findViewById(R.id.textview_status_text);
+        content.setTextSize(textSize);
+        content.setText(getText());
+        TextView footer = (TextView)convertedView.findViewById(R.id.textview_status_footer);
+        footer.setTextSize(textSize);
+        footer.setText(StringUtils.dateToString(getCreatedAt()));
+        ImageView favorited = (ImageView)convertedView.findViewById(R.id.imageview_status_favorited);
+        favorited.setVisibility(View.GONE);
+
+        return convertedView;
     }
 }

@@ -114,7 +114,7 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
             {
                 adapter.setNotifiable(true);
                 int before = adapter.getCount();
-                adapter.notifyDataSetChanged();
+                adapter.updateForce();
                 int after = adapter.getCount();
                 int addCount = after - before;
                 if(addCount > 0)

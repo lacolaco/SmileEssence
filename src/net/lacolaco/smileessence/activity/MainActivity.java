@@ -226,7 +226,7 @@ public class MainActivity extends Activity
                 {
                     adapter.addToBottom(new StatusViewModel(status, currentAccount));
                 }
-                adapter.notifyDataSetChanged();
+                adapter.updateForce();
             }
         };
         MentionsTimelineTask mentionsTask = new MentionsTimelineTask(twitter, this, paging)
@@ -240,7 +240,7 @@ public class MainActivity extends Activity
                 {
                     adapter.addToBottom(new StatusViewModel(status, currentAccount));
                 }
-                adapter.notifyDataSetChanged();
+                adapter.updateForce();
             }
         };
         DirectMessagesTask messagesTask = new DirectMessagesTask(twitter, this, paging)
@@ -252,9 +252,9 @@ public class MainActivity extends Activity
                 CustomListAdapter<?> adapter = getListAdapter(PAGE_MESSAGES);
                 for(DirectMessage message : directMessages)
                 {
-                    adapter.addToBottom(new MessageViewModel(message));
+                    adapter.addToBottom(new MessageViewModel(message, currentAccount));
                 }
-                adapter.notifyDataSetChanged();
+                adapter.updateForce();
             }
         };
         homeTask.execute();

@@ -67,8 +67,10 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     public void onDisconnect()
     {
         activity.setStreaming(false);
-        new Notificator(activity, R.string.notice_stream_disconnect).publish();
-        activity.startStream();
+        if(!activity.startStream())
+        {
+            new Notificator(activity, R.string.notice_stream_disconnect).publish();
+        }
     }
 
     @Override
@@ -145,6 +147,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onException(Exception ex)
     {
+        net.lacolaco.smileessence.logging.Logger.error(ex.toString());
     }
 
     // --------------------- Interface UserStreamListener ---------------------
@@ -213,7 +216,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         new Notificator(activity, event.getFormattedString(activity)).publish();
         history.addToTop(event);
         history.update();
-        MessageViewModel message = new MessageViewModel(directMessage);
+        MessageViewModel message = new MessageViewModel(directMessage, activity.getCurrentAccount());
         CustomListAdapter<?> messages = activity.getListAdapter(MainActivity.PAGE_MESSAGES);
         messages.addToTop(message);
         messages.update();
