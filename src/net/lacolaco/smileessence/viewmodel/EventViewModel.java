@@ -27,36 +27,66 @@ package net.lacolaco.smileessence.viewmodel;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import com.android.volley.toolbox.NetworkImageView;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.data.ImageCache;
+import net.lacolaco.smileessence.preference.UserPreferenceHelper;
+import net.lacolaco.smileessence.util.StringUtils;
 import twitter4j.Status;
 import twitter4j.User;
 
+import java.util.Date;
+
 public class EventViewModel implements IViewModel
 {
+
+    // ------------------------------ FIELDS ------------------------------
 
     private EnumEvent event;
     private long sourceUserID;
     private long targetStatusID;
     private String sourceScreenName;
+    private String sourceName;
+    private String iconURL;
+    private String targetText;
+    private Date createdAt;
 
-    public EventViewModel(EnumEvent event, User source, Status status)
-    {
-        this.event = event;
-        this.sourceUserID = source.getId();
-        this.sourceScreenName = source.getScreenName();
-        if(status != null)
-        {
-            targetStatusID = status.getId();
-        }
-        else
-        {
-            targetStatusID = -1L;
-        }
-    }
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public EventViewModel(EnumEvent event, User source)
     {
         this(event, source, null);
+    }
+
+    public EventViewModel(EnumEvent event, User source, Status status)
+    {
+        this.event = event;
+        this.createdAt = new Date();
+        this.sourceUserID = source.getId();
+        this.sourceScreenName = source.getScreenName();
+        this.sourceName = source.getName();
+
+        if(status != null)
+        {
+            this.targetStatusID = status.getId();
+            this.targetText = status.getText();
+            this.iconURL = status.getUser().getProfileImageURL();
+        }
+        else
+        {
+            this.targetStatusID = -1L;
+            this.targetText = "";
+            this.iconURL = source.getProfileImageURL();
+        }
+    }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    public Date getCreatedAt()
+    {
+        return createdAt;
     }
 
     public EnumEvent getEvent()
@@ -64,9 +94,14 @@ public class EventViewModel implements IViewModel
         return event;
     }
 
-    public long getSourceUserID()
+    public String getIconURL()
     {
-        return sourceUserID;
+        return iconURL;
+    }
+
+    public String getSourceName()
+    {
+        return sourceName;
     }
 
     public String getSourceScreenName()
@@ -74,9 +109,19 @@ public class EventViewModel implements IViewModel
         return sourceScreenName;
     }
 
+    public long getSourceUserID()
+    {
+        return sourceUserID;
+    }
+
     public long getTargetStatusID()
     {
         return targetStatusID;
+    }
+
+    public String getTargetText()
+    {
+        return targetText;
     }
 
     public boolean isStatusEvent()
@@ -84,14 +129,42 @@ public class EventViewModel implements IViewModel
         return targetStatusID != -1L;
     }
 
-    public String getFormattedString(Context context)
-    {
-        return context.getString(event.getTextFormatResourceID(), sourceScreenName);
-    }
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface IViewModel ---------------------
 
     @Override
     public View getView(Context context, LayoutInflater inflater, View convertedView)
     {
-        return new TextView(context);
+        if(convertedView == null)
+        {
+            convertedView = inflater.inflate(R.layout.list_item_status, null);
+        }
+        UserPreferenceHelper preferenceHelper = new UserPreferenceHelper(context);
+        int textSize = preferenceHelper.getValue(R.string.key_setting_text_size, 10);
+        int nameStyle = preferenceHelper.getValue(R.string.key_setting_namestyle, 0);
+        NetworkImageView icon = (NetworkImageView)convertedView.findViewById(R.id.imageview_status_icon);
+        ImageCache.getInstance().setImageToView(getIconURL(), icon);
+        TextView header = (TextView)convertedView.findViewById(R.id.textview_status_header);
+        header.setTextSize(textSize);
+        header.setText(getFormattedString(context));
+        TextView content = (TextView)convertedView.findViewById(R.id.textview_status_text);
+        content.setTextSize(textSize);
+        content.setText(getTargetText());
+        TextView footer = (TextView)convertedView.findViewById(R.id.textview_status_footer);
+        footer.setTextSize(textSize);
+        footer.setText(StringUtils.dateToString(getCreatedAt()));
+        ImageView favorited = (ImageView)convertedView.findViewById(R.id.imageview_status_favorited);
+        favorited.setVisibility(View.GONE);
+
+        return convertedView;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    public String getFormattedString(Context context)
+    {
+        return context.getString(event.getTextFormatResourceID(), sourceScreenName);
     }
 }
