@@ -30,6 +30,7 @@ import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import net.lacolaco.smileessence.logging.Logger;
+import net.lacolaco.smileessence.util.UIHandler;
 
 public class Notificator
 {
@@ -82,16 +83,23 @@ public class Notificator
         {
             return;
         }
-        if(isRunning)
+        new UIHandler()
         {
-            Logger.debug(String.format("notify by crouton %s", text));
-            makeCrouton().show();
-        }
-        else
-        {
-            Logger.debug(String.format("notify by toast %s", text));
-            makeToast().show();
-        }
+            @Override
+            public void run()
+            {
+                if(isRunning)
+                {
+                    Logger.debug(String.format("notify by crouton %s", text));
+                    makeCrouton().show();
+                }
+                else
+                {
+                    Logger.debug(String.format("notify by toast %s", text));
+                    makeToast().show();
+                }
+            }
+        }.post();
     }
 
     private Style getStyle()
