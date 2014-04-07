@@ -28,9 +28,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 import com.google.common.collect.Iterables;
-import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.util.UIHandler;
 import net.lacolaco.smileessence.viewmodel.IViewModel;
 
@@ -110,7 +108,6 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
     public View getView(int position, View convertView, ViewGroup parent)
     {
         View view = ((T)getItem(position)).getView(activity, activity.getLayoutInflater(), convertView);
-        ((TextView)view.findViewById(R.id.textview_status_header)).setText(String.valueOf(position));
         return view;
     }
 
