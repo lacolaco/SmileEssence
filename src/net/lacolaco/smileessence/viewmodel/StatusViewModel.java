@@ -33,6 +33,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.data.ImageCache;
+import net.lacolaco.smileessence.data.UserCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.util.NameStyles;
@@ -85,6 +86,7 @@ public class StatusViewModel implements IViewModel
         urls = status.getURLEntities();
         symbols = status.getSymbolEntities();
         User user = status.getUser();
+        UserCache.getInstance().put(user);
         userID = user.getId();
         screenName = user.getScreenName();
         name = user.getName();
