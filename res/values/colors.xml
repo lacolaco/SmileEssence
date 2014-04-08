@@ -45,4 +45,7 @@
     <color name="dark_red">#ff3b0405</color>
     <color name="yellow_brown">#FFB100</color>
     <color name="transparent">#00000000</color>
+    <color name="orange_light">#fff0c5a2</color>
+    <color name="orange">#ffc66b15</color>
+    <color name="orange_dark">#ff4f2f14</color>
 </resources>

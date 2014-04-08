@@ -43,6 +43,8 @@
         <item name="color_status_bg_retweet">@color/dark_blue_dark</item>
         <item name="color_status_bg_mention">@color/dark_red</item>
         <item name="color_list_divider">@color/gray_dark_dark</item>
+        <item name="color_message_text_header">@color/orange</item>
+        <item name="color_message_bg_normal">@color/orange_dark</item>
     </style>
 
     <style name="theme_light" parent="@android:style/Theme.Holo.Light.DarkActionBar">
@@ -63,6 +65,8 @@
         <item name="color_status_bg_retweet">@color/light_blue</item>
         <item name="color_status_bg_mention">@color/light_red</item>
         <item name="color_list_divider">@color/gray_light_light</item>
+        <item name="color_message_text_header">@color/orange</item>
+        <item name="color_message_bg_normal">@color/orange_light</item>
     </style>
 
     <style name="custom_button_transparent">

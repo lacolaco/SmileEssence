@@ -41,4 +41,6 @@
     <attr name="color_status_bg_mention" format="color"/>
     <attr name="color_status_bg_normal" format="color"/>
     <attr name="color_list_divider" format="color"/>
+    <attr name="color_message_text_header" format="color"/>
+    <attr name="color_message_bg_normal" format="color"/>
 </resources>
