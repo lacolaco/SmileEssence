@@ -24,7 +24,7 @@
 
 package net.lacolaco.smileessence.viewmodel;
 
-import android.content.Context;
+import android.app.Activity;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,12 +32,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.data.ImageCache;
 import net.lacolaco.smileessence.data.UserCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.util.NameStyles;
 import net.lacolaco.smileessence.util.StringUtils;
+import net.lacolaco.smileessence.util.Themes;
 import twitter4j.*;
 
 import java.util.Date;
@@ -121,6 +123,19 @@ public class StatusViewModel implements IViewModel
             return retweetedStatus.createdAt;
         }
         return createdAt;
+    }
+
+    private String getFooterText()
+    {
+        StringBuilder builder = new StringBuilder();
+        if(isRetweet())
+        {
+            builder.append("(RT: ").append(this.screenName).append(") ");
+        }
+        builder.append(StringUtils.dateToString(getCreatedAt()));
+        builder.append(" via ");
+        builder.append(Html.fromHtml(getSource()));
+        return builder.toString();
     }
 
     public HashtagEntity[] getHashtags()
@@ -291,39 +306,51 @@ public class StatusViewModel implements IViewModel
     // --------------------- Interface IViewModel ---------------------
 
     @Override
-    public View getView(Context context, LayoutInflater inflater, View convertedView)
+    public View getView(Activity activity, LayoutInflater inflater, View convertedView)
     {
         if(convertedView == null)
         {
             convertedView = inflater.inflate(R.layout.list_item_status, null);
         }
-        UserPreferenceHelper preferenceHelper = new UserPreferenceHelper(context);
+        UserPreferenceHelper preferenceHelper = new UserPreferenceHelper(activity);
         int textSize = preferenceHelper.getValue(R.string.key_setting_text_size, 10);
         int nameStyle = preferenceHelper.getValue(R.string.key_setting_namestyle, 0);
+        int theme = ((MainActivity)activity).getThemeIndex();
         NetworkImageView icon = (NetworkImageView)convertedView.findViewById(R.id.imageview_status_icon);
         ImageCache.getInstance().setImageToView(getIconURL(), icon);
         TextView header = (TextView)convertedView.findViewById(R.id.textview_status_header);
         header.setTextSize(textSize);
+        int colorHeader = Themes.getStyledColor(activity, theme, R.attr.color_status_text_header, 0);
+        int colorMineHeader = Themes.getStyledColor(activity, theme, R.attr.color_status_text_mine, 0);
+        header.setTextColor(isMyStatus() ? colorMineHeader : colorHeader);
         header.setText(NameStyles.getNameString(nameStyle, getScreenName(), getName()));
         TextView content = (TextView)convertedView.findViewById(R.id.textview_status_text);
         content.setTextSize(textSize);
+        int colorNormal = Themes.getStyledColor(activity, theme, R.attr.color_status_text_normal, 0);
+        content.setTextColor(colorNormal);
         content.setText(getText());
         TextView footer = (TextView)convertedView.findViewById(R.id.textview_status_footer);
-        footer.setTextSize(textSize);
-        StringBuilder builder = new StringBuilder();
-        if(isRetweet())
-        {
-            builder.append("(RT: ");
-            builder.append(this.screenName);
-            builder.append(") ");
-        }
-        builder.append(StringUtils.dateToString(getCreatedAt()));
-        builder.append(" via ");
-        builder.append(Html.fromHtml(getSource()));
-        footer.setText(builder.toString());
+        footer.setTextSize(textSize - 2);
+        int colorFooter = Themes.getStyledColor(activity, theme, R.attr.color_status_text_footer, 0);
+        footer.setTextColor(colorFooter);
+        footer.setText(getFooterText());
         ImageView favorited = (ImageView)convertedView.findViewById(R.id.imageview_status_favorited);
         favorited.setVisibility(isFavorited() ? View.VISIBLE : View.GONE);
-
+        if(isRetweet())
+        {
+            int colorBgRetweet = Themes.getStyledColor(activity, theme, R.attr.color_status_bg_retweet, 0);
+            convertedView.setBackgroundColor(colorBgRetweet);
+        }
+        else if(isMention())
+        {
+            int colorBgMention = Themes.getStyledColor(activity, theme, R.attr.color_status_bg_mention, 0);
+            convertedView.setBackgroundColor(colorBgMention);
+        }
+        else
+        {
+            int colorBgNormal = Themes.getStyledColor(activity, theme, R.attr.color_status_bg_normal, 0);
+            convertedView.setBackgroundColor(colorBgNormal);
+        }
         return convertedView;
     }
 }

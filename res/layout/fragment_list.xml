@@ -39,6 +39,8 @@
             android:layout_height="match_parent"
             android:overScrollMode="ifContentScrolls"
             android:fastScrollEnabled="true"
+            android:dividerHeight="1px"
+            android:divider="?attr/color_list_divider"
             android:clickable="false"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

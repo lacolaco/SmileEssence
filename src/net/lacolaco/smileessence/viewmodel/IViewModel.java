@@ -24,12 +24,12 @@
 
 package net.lacolaco.smileessence.viewmodel;
 
-import android.content.Context;
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 
 public interface IViewModel
 {
 
-    View getView(Context context, LayoutInflater inflater, View convertedView);
+    View getView(Activity activity, LayoutInflater inflater, View convertedView);
 }

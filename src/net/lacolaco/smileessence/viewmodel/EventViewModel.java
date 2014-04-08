@@ -24,6 +24,7 @@
 
 package net.lacolaco.smileessence.viewmodel;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -135,25 +136,25 @@ public class EventViewModel implements IViewModel
     // --------------------- Interface IViewModel ---------------------
 
     @Override
-    public View getView(Context context, LayoutInflater inflater, View convertedView)
+    public View getView(Activity activity, LayoutInflater inflater, View convertedView)
     {
         if(convertedView == null)
         {
             convertedView = inflater.inflate(R.layout.list_item_status, null);
         }
-        UserPreferenceHelper preferenceHelper = new UserPreferenceHelper(context);
+        UserPreferenceHelper preferenceHelper = new UserPreferenceHelper(activity);
         int textSize = preferenceHelper.getValue(R.string.key_setting_text_size, 10);
         int nameStyle = preferenceHelper.getValue(R.string.key_setting_namestyle, 0);
         NetworkImageView icon = (NetworkImageView)convertedView.findViewById(R.id.imageview_status_icon);
         ImageCache.getInstance().setImageToView(getIconURL(), icon);
         TextView header = (TextView)convertedView.findViewById(R.id.textview_status_header);
         header.setTextSize(textSize);
-        header.setText(getFormattedString(context));
+        header.setText(getFormattedString(activity));
         TextView content = (TextView)convertedView.findViewById(R.id.textview_status_text);
         content.setTextSize(textSize);
         content.setText(getTargetText());
         TextView footer = (TextView)convertedView.findViewById(R.id.textview_status_footer);
-        footer.setTextSize(textSize);
+        footer.setTextSize(textSize - 2);
         footer.setText(StringUtils.dateToString(getCreatedAt()));
         ImageView favorited = (ImageView)convertedView.findViewById(R.id.imageview_status_favorited);
         favorited.setVisibility(View.GONE);

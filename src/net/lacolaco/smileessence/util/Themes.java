@@ -24,22 +24,27 @@
 
 package net.lacolaco.smileessence.util;
 
+import android.content.Context;
+import android.content.res.TypedArray;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.logging.Logger;
 
 public class Themes
 {
 
+    public static final int THEME_DARK = 0;
+    public static final int THEME_LIGHT = 1;
+
     public static int getTheme(int index)
     {
         switch(index)
         {
-            case 0:
+            case THEME_DARK:
             {
                 Logger.debug("Theme:Dark");
                 return R.style.theme_dark;
             }
-            case 1:
+            case THEME_LIGHT:
             {
                 Logger.debug("Theme:Light");
                 return R.style.theme_light;
@@ -50,5 +55,14 @@ public class Themes
                 return R.style.theme_dark;
             }
         }
+    }
+
+    public static int getStyledColor(Context context, int theme, int attribute, int defaultColor)
+    {
+        int styleResID = theme == THEME_LIGHT ? R.style.theme_light : R.style.theme_dark;
+        TypedArray array = context.obtainStyledAttributes(styleResID, new int[]{attribute});
+        int color = array.getColor(0, defaultColor);
+        array.recycle();
+        return color;
     }
 }

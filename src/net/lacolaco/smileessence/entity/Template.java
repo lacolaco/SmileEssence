@@ -24,7 +24,7 @@
 
 package net.lacolaco.smileessence.entity;
 
-import android.content.Context;
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -59,7 +59,7 @@ public class Template extends Model implements IViewModel
     }
 
     @Override
-    public View getView(Context context, LayoutInflater inflater, View convertedView)
+    public View getView(Activity activity, LayoutInflater inflater, View convertedView)
     {
         if(convertedView == null)
         {

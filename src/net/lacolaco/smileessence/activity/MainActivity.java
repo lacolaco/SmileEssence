@@ -80,6 +80,7 @@ public class MainActivity extends Activity
     private TwitterStream stream;
     private SparseArray<CustomListAdapter<?>> adapterSparseArray = new SparseArray<>();
     private boolean streaming = false;
+    private int themeIndex;
 
     // --------------------- GETTER / SETTER METHODS ---------------------
 
@@ -355,8 +356,9 @@ public class MainActivity extends Activity
 
     private void setTheme()
     {
-        //TODO on release userPref.getValue(R.string.key_setting_theme, 0)
-        setTheme(Themes.getTheme(1));
+        themeIndex = getUserPreferenceHelper().getValue(R.string.key_setting_theme, 0);
+        setTheme(Themes.getTheme(themeIndex));
+        //        setTheme(Themes.getTheme(0));
     }
 
     private void setupAccount()
@@ -468,5 +470,10 @@ public class MainActivity extends Activity
     private UserPreferenceHelper getUserPreferenceHelper()
     {
         return new UserPreferenceHelper(this);
+    }
+
+    public int getThemeIndex()
+    {
+        return themeIndex;
     }
 }

@@ -33,4 +33,12 @@
     <attr name="button_round_blue" format="reference"/>
     <attr name="custom_button_transparent" format="reference"/>
     <attr name="icon_status_favorite_on" format="reference"/>
+    <attr name="color_status_text_header" format="color"/>
+    <attr name="color_status_text_normal" format="color"/>
+    <attr name="color_status_text_footer" format="color"/>
+    <attr name="color_status_text_mine" format="color"/>
+    <attr name="color_status_bg_retweet" format="color"/>
+    <attr name="color_status_bg_mention" format="color"/>
+    <attr name="color_status_bg_normal" format="color"/>
+    <attr name="color_list_divider" format="color"/>
 </resources>

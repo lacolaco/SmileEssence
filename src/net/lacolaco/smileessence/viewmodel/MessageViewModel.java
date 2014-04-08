@@ -24,7 +24,7 @@
 
 package net.lacolaco.smileessence.viewmodel;
 
-import android.content.Context;
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -123,13 +123,13 @@ public class MessageViewModel implements IViewModel
     // --------------------- Interface IViewModel ---------------------
 
     @Override
-    public View getView(Context context, LayoutInflater inflater, View convertedView)
+    public View getView(Activity activity, LayoutInflater inflater, View convertedView)
     {
         if(convertedView == null)
         {
             convertedView = inflater.inflate(R.layout.list_item_status, null);
         }
-        UserPreferenceHelper preferenceHelper = new UserPreferenceHelper(context);
+        UserPreferenceHelper preferenceHelper = new UserPreferenceHelper(activity);
         int textSize = preferenceHelper.getValue(R.string.key_setting_text_size, 10);
         int nameStyle = preferenceHelper.getValue(R.string.key_setting_namestyle, 0);
         NetworkImageView icon = (NetworkImageView)convertedView.findViewById(R.id.imageview_status_icon);
@@ -141,7 +141,7 @@ public class MessageViewModel implements IViewModel
         content.setTextSize(textSize);
         content.setText(getText());
         TextView footer = (TextView)convertedView.findViewById(R.id.textview_status_footer);
-        footer.setTextSize(textSize);
+        footer.setTextSize(textSize - 2);
         footer.setText(StringUtils.dateToString(getCreatedAt()));
         ImageView favorited = (ImageView)convertedView.findViewById(R.id.imageview_status_favorited);
         favorited.setVisibility(View.GONE);

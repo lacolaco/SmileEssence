@@ -35,6 +35,14 @@
         <item name="button_round_blue">@drawable/button_round_blue</item>
         <item name="custom_button_transparent">@style/custom_button_transparent</item>
         <item name="icon_status_favorite_on">@drawable/icon_favorite_on</item>
+        <item name="color_status_text_header">@color/dark_green</item>
+        <item name="color_status_text_normal">@color/gray_light_light</item>
+        <item name="color_status_text_footer">@color/gray_light</item>
+        <item name="color_status_text_mine">@color/dark_blue</item>
+        <item name="color_status_bg_normal">@color/gray_dark_dark</item>
+        <item name="color_status_bg_retweet">@color/dark_blue_dark</item>
+        <item name="color_status_bg_mention">@color/dark_red</item>
+        <item name="color_list_divider">@color/gray_dark_dark</item>
     </style>
 
     <style name="theme_light" parent="@android:style/Theme.Holo.Light.DarkActionBar">
@@ -47,6 +55,14 @@
         <item name="button_round_blue">@drawable/button_round_blue_light</item>
         <item name="custom_button_transparent">@style/custom_button_transparent</item>
         <item name="icon_status_favorite_on">@drawable/icon_favorite_on</item>
+        <item name="color_status_text_header">@color/dark_green</item>
+        <item name="color_status_text_normal">@color/gray_dark</item>
+        <item name="color_status_text_footer">@color/gray_dark_light</item>
+        <item name="color_status_text_mine">@color/dark_blue</item>
+        <item name="color_status_bg_normal">@color/white</item>
+        <item name="color_status_bg_retweet">@color/light_blue</item>
+        <item name="color_status_bg_mention">@color/light_red</item>
+        <item name="color_list_divider">@color/gray_light_light</item>
     </style>
 
     <style name="custom_button_transparent">
