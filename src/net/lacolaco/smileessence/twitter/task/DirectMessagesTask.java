@@ -32,8 +32,6 @@ import net.lacolaco.smileessence.notification.NotificationType;
 import net.lacolaco.smileessence.notification.Notificator;
 import twitter4j.*;
 
-import java.util.Collections;
-
 public class DirectMessagesTask extends TwitterTask<DirectMessage[]>
 {
 
@@ -73,7 +71,6 @@ public class DirectMessagesTask extends TwitterTask<DirectMessage[]>
             Logger.error(e.toString());
             return new DirectMessage[0];
         }
-        Collections.reverse(responseList);
         return responseList.toArray(new DirectMessage[responseList.size()]);
     }
 

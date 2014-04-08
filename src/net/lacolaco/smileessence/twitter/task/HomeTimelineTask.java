@@ -32,8 +32,6 @@ import net.lacolaco.smileessence.notification.NotificationType;
 import net.lacolaco.smileessence.notification.Notificator;
 import twitter4j.*;
 
-import java.util.Collections;
-
 public class HomeTimelineTask extends TwitterTask<Status[]>
 {
 
@@ -73,8 +71,6 @@ public class HomeTimelineTask extends TwitterTask<Status[]>
             Logger.error(e.toString());
             return new twitter4j.Status[0];
         }
-
-        Collections.reverse(responseList);
         return responseList.toArray(new twitter4j.Status[responseList.size()]);
     }
 
