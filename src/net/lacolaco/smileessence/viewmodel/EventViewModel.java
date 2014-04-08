@@ -32,9 +32,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.data.ImageCache;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.util.StringUtils;
+import net.lacolaco.smileessence.util.Themes;
 import twitter4j.Status;
 import twitter4j.User;
 
@@ -145,20 +147,28 @@ public class EventViewModel implements IViewModel
         UserPreferenceHelper preferenceHelper = new UserPreferenceHelper(activity);
         int textSize = preferenceHelper.getValue(R.string.key_setting_text_size, 10);
         int nameStyle = preferenceHelper.getValue(R.string.key_setting_namestyle, 0);
+        int theme = ((MainActivity)activity).getThemeIndex();
         NetworkImageView icon = (NetworkImageView)convertedView.findViewById(R.id.imageview_status_icon);
         ImageCache.getInstance().setImageToView(getIconURL(), icon);
         TextView header = (TextView)convertedView.findViewById(R.id.textview_status_header);
         header.setTextSize(textSize);
+        int colorHeader = Themes.getStyledColor(activity, theme, R.attr.color_status_text_mine, 0);
+        header.setTextColor(colorHeader);
         header.setText(getFormattedString(activity));
         TextView content = (TextView)convertedView.findViewById(R.id.textview_status_text);
         content.setTextSize(textSize);
+        int colorNormal = Themes.getStyledColor(activity, theme, R.attr.color_status_text_normal, 0);
+        content.setTextColor(colorNormal);
         content.setText(getTargetText());
         TextView footer = (TextView)convertedView.findViewById(R.id.textview_status_footer);
         footer.setTextSize(textSize - 2);
+        int colorFooter = Themes.getStyledColor(activity, theme, R.attr.color_status_text_footer, 0);
+        footer.setTextColor(colorFooter);
         footer.setText(StringUtils.dateToString(getCreatedAt()));
         ImageView favorited = (ImageView)convertedView.findViewById(R.id.imageview_status_favorited);
         favorited.setVisibility(View.GONE);
-
+        int colorBgNormal = Themes.getStyledColor(activity, theme, R.attr.color_status_bg_normal, 0);
+        convertedView.setBackgroundColor(colorBgNormal);
         return convertedView;
     }
 
