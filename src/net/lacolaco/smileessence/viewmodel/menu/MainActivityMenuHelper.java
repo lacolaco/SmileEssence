@@ -46,7 +46,7 @@ public class MainActivityMenuHelper
         //Settings
         SubMenu settings = menu.addSubMenu(Menu.NONE, R.id.actionbar_settings, Menu.NONE, activity.getString(R.string.actionbar_settings));
         settings.setIcon(R.drawable.ic_action_settings);
-        settings.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        settings.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         settings.add(Menu.NONE, R.id.actionbar_setting, Menu.NONE, activity.getString(R.string.actionbar_setting));
         settings.add(Menu.NONE, R.id.actionbar_edit_templates, Menu.NONE, activity.getString(R.string.actionbar_edit_templates));
         settings.add(Menu.NONE, R.id.actionbar_edit_extraction, Menu.NONE, activity.getString(R.string.actionbar_edit_extraction));
@@ -54,7 +54,7 @@ public class MainActivityMenuHelper
         //External services
         SubMenu services = menu.addSubMenu(Menu.NONE, R.id.actionbar_services, Menu.NONE, activity.getString(R.string.actionbar_services));
         services.setIcon(R.drawable.ic_action_web_site);
-        services.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        services.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         services.add(Menu.NONE, R.id.actionbar_favstar, Menu.NONE, activity.getString(R.string.actionbar_favstar));
         services.add(Menu.NONE, R.id.actionbar_aclog, Menu.NONE, activity.getString(R.string.actionbar_aclog));
         services.add(Menu.NONE, R.id.actionbar_twilog, Menu.NONE, activity.getString(R.string.actionbar_twilog));
