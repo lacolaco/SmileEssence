@@ -97,6 +97,7 @@ public class EditExtractionActivity extends Activity implements AdapterView.OnIt
         adapter = new CustomListAdapter<>(this, ExtractionWord.class);
         listView.setAdapter(adapter);
         adapter.addToTop(getExtractionWords());
+        adapter.update();
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         listView.setOnItemClickListener(this);
         listView.setMultiChoiceModeListener(this);

@@ -97,6 +97,7 @@ public class EditTemplateActivity extends Activity implements AdapterView.OnItem
         adapter = new CustomListAdapter<>(this, Template.class);
         listView.setAdapter(adapter);
         adapter.addToTop(getTemplates());
+        adapter.update();
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         listView.setOnItemClickListener(this);
         listView.setMultiChoiceModeListener(this);

@@ -114,6 +114,7 @@ public class EditCommandActivity extends Activity
         adapter = new CustomListAdapter<>(this, CheckBoxModel.class);
         listView.setAdapter(adapter);
         adapter.addToTop(getCheckBoxItems());
+        adapter.update();
     }
 
     private CheckBoxModel[] getCheckBoxItems()
