@@ -28,14 +28,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.notification.NotificationType;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.ShowStatusTask;
-import twitter4j.Status;
-
-import java.util.concurrent.ExecutionException;
 
 public class CommandOpenStatusDetail extends Command
 {
@@ -59,25 +55,25 @@ public class CommandOpenStatusDetail extends Command
     @Override
     public boolean execute()
     {
-        ProgressDialog progressDialog = ProgressDialog.show(getActivity(), null, getActivity().getString(R.string.dialog_message_now_loading));
-        ShowStatusTask task = new ShowStatusTask(new TwitterApi(account).getTwitter(), statusID);
+        final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), null, getActivity().getString(R.string.dialog_message_now_loading), true);
+        ShowStatusTask task = new ShowStatusTask(new TwitterApi(account).getTwitter(), statusID)
+        {
+            @Override
+            protected void onPostExecute(twitter4j.Status status)
+            {
+                super.onPostExecute(status);
+                progressDialog.dismiss();
+                if(status != null)
+                {
+                    //TODO status detail
+                }
+                else
+                {
+                    new Notificator(getActivity(), R.string.notice_error_show_status, NotificationType.ALERT).publish();
+                }
+            }
+        };
         task.execute();
-        try
-        {
-            Status status = task.get();
-        }
-        catch(InterruptedException | ExecutionException e)
-        {
-            e.printStackTrace();
-            Logger.error(e.toString());
-            new Notificator(getActivity(), R.string.notice_error_show_status, NotificationType.ALERT).publish();
-            return false;
-        }
-        finally
-        {
-            progressDialog.dismiss();
-        }
-        //TODO status dialog
         return true;
     }
 
