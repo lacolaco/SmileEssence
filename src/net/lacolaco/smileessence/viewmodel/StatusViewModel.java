@@ -36,11 +36,12 @@ import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.data.ImageCache;
 import net.lacolaco.smileessence.data.UserCache;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.util.NameStyles;
 import net.lacolaco.smileessence.util.StringUtils;
 import net.lacolaco.smileessence.util.Themes;
+import net.lacolaco.smileessence.view.dialog.DialogHelper;
+import net.lacolaco.smileessence.view.dialog.StatusMenuDialogFragment;
 import net.lacolaco.smileessence.view.listener.ListItemClickListener;
 import twitter4j.*;
 
@@ -308,7 +309,7 @@ public class StatusViewModel implements IViewModel
     // --------------------- Interface IViewModel ---------------------
 
     @Override
-    public View getView(Activity activity, LayoutInflater inflater, View convertedView)
+    public View getView(final Activity activity, LayoutInflater inflater, View convertedView)
     {
         if(convertedView == null)
         {
@@ -358,7 +359,9 @@ public class StatusViewModel implements IViewModel
             @Override
             public void run()
             {
-                Logger.debug("status clicked");
+                StatusMenuDialogFragment fragment = new StatusMenuDialogFragment();
+                fragment.setStatusID(getID());
+                new DialogHelper(activity, fragment).show();
             }
         }));
         return convertedView;

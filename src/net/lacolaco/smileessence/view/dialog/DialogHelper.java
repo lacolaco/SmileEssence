@@ -53,4 +53,13 @@ public class DialogHelper
         transaction.addToBackStack(null);
         dialogFragment.show(transaction, TAG_DIALOG);
     }
+
+    public static void close(Activity activity)
+    {
+        DialogFragment oldDialog = (DialogFragment)activity.getFragmentManager().findFragmentByTag(TAG_DIALOG);
+        if(oldDialog != null)
+        {
+            oldDialog.dismiss();
+        }
+    }
 }

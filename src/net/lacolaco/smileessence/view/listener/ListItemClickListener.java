@@ -57,6 +57,6 @@ public class ListItemClickListener implements View.OnClickListener
                 v.setBackgroundColor(currentBgColor);
                 callback.run();
             }
-        }.postDelayed(20);
+        }.post();
     }
 }

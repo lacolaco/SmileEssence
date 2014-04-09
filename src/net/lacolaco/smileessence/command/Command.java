@@ -25,41 +25,28 @@
 package net.lacolaco.smileessence.command;
 
 import android.app.Activity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
+import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.command.message.MessageCommandDelete;
 import net.lacolaco.smileessence.command.message.MessageCommandReply;
 import net.lacolaco.smileessence.command.status.*;
 import net.lacolaco.smileessence.command.user.*;
+import net.lacolaco.smileessence.viewmodel.IViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Command
+public abstract class Command implements IViewModel
 {
+
+    // ------------------------------ FIELDS ------------------------------
 
     private final int key;
     private final Activity activity;
 
-    public Command(int key, Activity activity)
-    {
-        this.key = key;
-        this.activity = activity;
-    }
-
-    public int getKey()
-    {
-        return key;
-    }
-
-    public Activity getActivity()
-    {
-        return activity;
-    }
-
-    public abstract String getText();
-
-    public abstract boolean execute();
-
-    public abstract boolean isEnabled();
+    // -------------------------- STATIC METHODS --------------------------
 
     public static List<Command> getAll(Activity activity)
     {
@@ -96,4 +83,49 @@ public abstract class Command
         commands.add(new MessageCommandDelete(activity, null, null));
         return commands;
     }
+
+    // --------------------------- CONSTRUCTORS ---------------------------
+
+    public Command(int key, Activity activity)
+    {
+        this.key = key;
+        this.activity = activity;
+    }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    public Activity getActivity()
+    {
+        return activity;
+    }
+
+    public int getKey()
+    {
+        return key;
+    }
+
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface IViewModel ---------------------
+
+    @Override
+    public View getView(Activity activity, LayoutInflater inflater, View convertedView)
+    {
+        if(convertedView == null)
+        {
+            convertedView = inflater.inflate(R.layout.menu_item_simple_text, null);
+        }
+        TextView textView = (TextView)convertedView.findViewById(R.id.textView_menuItem_simple);
+        textView.setText(getText());
+        return convertedView;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    public abstract boolean execute();
+
+    public abstract String getText();
+
+    public abstract boolean isEnabled();
 }

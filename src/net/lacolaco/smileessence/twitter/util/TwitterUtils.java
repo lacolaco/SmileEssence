@@ -138,11 +138,11 @@ public class TwitterUtils
     /**
      * Get array of screenName in own text
      *
-     * @param status  status
-     * @param account own account(excluded in result)
+     * @param status            status
+     * @param excludeScreenName
      * @return
      */
-    public static Collection<String> getScreenNames(Status status, Account account)
+    public static Collection<String> getScreenNames(Status status, String excludeScreenName)
     {
         ArrayList<String> names = new ArrayList<>();
         names.add(status.getUser().getScreenName());
@@ -150,7 +150,7 @@ public class TwitterUtils
         {
             for(UserMentionEntity entity : status.getUserMentionEntities())
             {
-                if(entity.getScreenName().equals(account.screenName))
+                if(excludeScreenName != null && entity.getScreenName().equals(excludeScreenName))
                 {
                     continue;
                 }
