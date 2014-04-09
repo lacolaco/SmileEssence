@@ -43,4 +43,9 @@ public abstract class StatusCommand extends Command
     {
         return status;
     }
+
+    protected final Status getOriginalStatus()
+    {
+        return status.isRetweet() ? status.getRetweetedStatus() : status;
+    }
 }

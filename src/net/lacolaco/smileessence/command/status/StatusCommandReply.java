@@ -48,15 +48,14 @@ public class StatusCommandReply extends StatusCommand
     @Override
     public boolean execute()
     {
-        Status status = getStatus().isRetweet() ? getStatus().getRetweetedStatus() : getStatus();
-        TweetBuilder builder = new TweetBuilder().addScreenName(status.getUser().getScreenName());
+        TweetBuilder builder = new TweetBuilder().addScreenName(getOriginalStatus().getUser().getScreenName());
 
         PostState.newState()
                  .beginTransaction()
                  .setText(builder.buildText())
-                 .setInReplyToText(status.getText())
-                 .setInReplyToScreenName(status.getUser().getScreenName())
-                 .setInReplyToStatusID(status.getId())
+                 .setInReplyToText(getOriginalStatus().getText())
+                 .setInReplyToScreenName(getOriginalStatus().getUser().getScreenName())
+                 .setInReplyToStatusID(getOriginalStatus().getId())
                  .commit();
         ((MainActivity)getActivity()).setSelectedPageIndex(MainActivity.PAGE_POST);
         return true;
