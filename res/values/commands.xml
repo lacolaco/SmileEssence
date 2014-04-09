@@ -51,4 +51,5 @@
     <item name="key_command_user_send_message" type="id"/>
     <item name="key_command_message_reply" type="id"/>
     <item name="key_command_message_delete" type="id"/>
+    <item name="key_command_status_add_to_reply" type="id"/>
 </resources>

@@ -53,6 +53,7 @@ public abstract class Command implements IViewModel
         List<Command> commands = new ArrayList<>();
         //Status
         commands.add(new StatusCommandReply(activity, null));
+        commands.add(new StatusCommandAddToReply(activity, null));
         commands.add(new StatusCommandReplyToAll(activity, null, null));
         commands.add(new StatusCommandFavorite(activity, null, null));
         commands.add(new StatusCommandRetweet(activity, null, null));

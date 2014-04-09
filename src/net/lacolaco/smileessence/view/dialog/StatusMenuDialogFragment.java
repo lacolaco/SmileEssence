@@ -141,6 +141,7 @@ public class StatusMenuDialogFragment extends DialogFragment
     {
         ArrayList<Command> commands = new ArrayList<>();
         commands.add(new StatusCommandReply(activity, status));
+        commands.add(new StatusCommandAddToReply(activity, status));
         commands.add(new StatusCommandReplyToAll(activity, status, account));
         commands.add(new StatusCommandFavorite(activity, status, account));
         commands.add(new StatusCommandRetweet(activity, status, account));

@@ -174,4 +174,5 @@
     <string name="notice_stream_disconnect">Disconnect from stream</string>
     <string name="notice_error_authenticate_request">Failed to prepare for authentication. Please check internet access.</string>
     <string name="notice_timeline_new">Receive new %s items</string>
+    <string name="command_status_add_to_reply">Add to reply</string>
 </resources>
