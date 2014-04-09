@@ -31,6 +31,7 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import net.lacolaco.smileessence.Application;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.command.message.MessageCommand;
@@ -56,7 +57,7 @@ public class EditCommandActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         UserPreferenceHelper userPreferenceHelper = new UserPreferenceHelper(this);
-        setTheme(Themes.getTheme(userPreferenceHelper.getValue(R.string.key_setting_theme, 0)));
+        setTheme(Themes.getTheme(((Application)getApplication()).getThemeIndex()));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_edit_list);
         ActionBar actionBar = getActionBar();

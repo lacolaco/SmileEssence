@@ -32,7 +32,9 @@ import android.view.ViewGroup;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import net.lacolaco.smileessence.Application;
 import net.lacolaco.smileessence.twitter.OAuthSession;
+import net.lacolaco.smileessence.util.Themes;
 
 public class WebViewActivity extends Activity
 {
@@ -40,6 +42,7 @@ public class WebViewActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        setTheme(Themes.getTheme(((Application)getApplication()).getThemeIndex()));
         super.onCreate(savedInstanceState);
         WebView webView = new WebView(this);
         CookieSyncManager.createInstance(this).resetSync();

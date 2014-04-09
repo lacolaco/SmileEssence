@@ -26,13 +26,13 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
-             android:layout_height="match_parent">
+             android:layout_height="match_parent"
+             android:background="?attr/page_background">
 
     <ListView
         android:id="@+id/listview_edit_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/page_background"
         android:fastScrollEnabled="true">
 
     </ListView>

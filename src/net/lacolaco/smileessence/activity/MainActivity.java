@@ -36,6 +36,7 @@ import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import net.lacolaco.smileessence.Application;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.logging.Logger;
@@ -80,7 +81,6 @@ public class MainActivity extends Activity
     private TwitterStream stream;
     private SparseArray<CustomListAdapter<?>> adapterSparseArray = new SparseArray<>();
     private boolean streaming = false;
-    private int themeIndex;
 
     // --------------------- GETTER / SETTER METHODS ---------------------
 
@@ -356,8 +356,7 @@ public class MainActivity extends Activity
 
     private void setTheme()
     {
-        themeIndex = getUserPreferenceHelper().getValue(R.string.key_setting_theme, 0);
-        setTheme(Themes.getTheme(themeIndex));
+        setTheme(Themes.getTheme(getThemeIndex()));
         //        setTheme(Themes.getTheme(0));
     }
 
@@ -474,6 +473,6 @@ public class MainActivity extends Activity
 
     public int getThemeIndex()
     {
-        return themeIndex;
+        return ((Application)getApplication()).getThemeIndex();
     }
 }

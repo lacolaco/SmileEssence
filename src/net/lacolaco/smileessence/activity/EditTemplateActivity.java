@@ -35,10 +35,10 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.activeandroid.Model;
+import net.lacolaco.smileessence.Application;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Template;
 import net.lacolaco.smileessence.logging.Logger;
-import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.util.Themes;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.view.dialog.DialogHelper;
@@ -54,8 +54,7 @@ public class EditTemplateActivity extends Activity implements AdapterView.OnItem
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        UserPreferenceHelper userPreferenceHelper = new UserPreferenceHelper(this);
-        setTheme(Themes.getTheme(userPreferenceHelper.getValue(R.string.key_setting_theme, 0)));
+        setTheme(Themes.getTheme(((Application)getApplication()).getThemeIndex()));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_edit_list);
         ActionBar actionBar = getActionBar();
