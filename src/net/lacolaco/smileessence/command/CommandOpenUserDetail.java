@@ -53,7 +53,7 @@ public class CommandOpenUserDetail extends Command
     @Override
     public String getText()
     {
-        return screenName;
+        return String.format("@%s", screenName);
     }
 
     @Override
