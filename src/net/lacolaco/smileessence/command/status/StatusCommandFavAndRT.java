@@ -49,13 +49,13 @@ public class StatusCommandFavAndRT extends StatusCommand
     @Override
     public boolean execute()
     {
-        return new StatusCommandFavorite(getActivity(), getStatus(), account).execute() &
-                new StatusCommandRetweet(getActivity(), getStatus(), account).execute();
+        return new StatusCommandFavorite(getActivity(), getOriginalStatus(), account).execute() &
+                new StatusCommandRetweet(getActivity(), getOriginalStatus(), account).execute();
     }
 
     @Override
     public boolean isEnabled()
     {
-        return new StatusCommandRetweet(getActivity(), getStatus(), account).isEnabled();
+        return new StatusCommandRetweet(getActivity(), getOriginalStatus(), account).isEnabled();
     }
 }

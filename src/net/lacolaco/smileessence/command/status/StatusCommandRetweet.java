@@ -52,7 +52,7 @@ public class StatusCommandRetweet extends StatusCommand
     @Override
     public boolean execute()
     {
-        RetweetTask task = new RetweetTask(new TwitterApi(account).getTwitter(), getStatus().getId(), getActivity());
+        RetweetTask task = new RetweetTask(new TwitterApi(account).getTwitter(), getOriginalStatus().getId(), getActivity());
         task.execute();
         return true;
     }

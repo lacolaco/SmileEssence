@@ -48,7 +48,7 @@ public class StatusCommandClipboard extends StatusCommand
     public boolean execute()
     {
         ClipboardManager manager = (ClipboardManager)getActivity().getSystemService(Activity.CLIPBOARD_SERVICE);
-        manager.setPrimaryClip(ClipData.newPlainText("tweet text", getStatus().getText()));
+        manager.setPrimaryClip(ClipData.newPlainText("tweet text", getOriginalStatus().getText()));
         return true;
     }
 

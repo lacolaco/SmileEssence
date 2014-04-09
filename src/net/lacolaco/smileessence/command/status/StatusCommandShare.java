@@ -50,7 +50,7 @@ public class StatusCommandShare extends StatusCommand
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, TwitterUtils.getStatusSummary(getStatus()));
+        intent.putExtra(Intent.EXTRA_TEXT, TwitterUtils.getStatusSummary(getOriginalStatus()));
         getActivity().startActivity(intent);
         return true;
     }

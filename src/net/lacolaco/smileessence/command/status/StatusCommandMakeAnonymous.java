@@ -71,10 +71,10 @@ public class StatusCommandMakeAnonymous extends StatusCommand
     @Override
     public boolean execute()
     {
-        StatusUpdate update = new TweetBuilder().setText(build(getActivity(), getStatus(), account)).build();
+        StatusUpdate update = new TweetBuilder().setText(build(getActivity(), getOriginalStatus(), account)).build();
         Twitter twitter = new TwitterApi(account).getTwitter();
         new TweetTask(twitter, update, getActivity()).execute();
-        new FavoriteTask(twitter, getStatus().getId(), getActivity()).execute();
+        new FavoriteTask(twitter, getOriginalStatus().getId(), getActivity()).execute();
         return true;
     }
 

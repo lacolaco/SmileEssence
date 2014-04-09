@@ -47,7 +47,7 @@ public class StatusCommandOpenInBrowser extends StatusCommand
     @Override
     public boolean execute()
     {
-        return new CommandOpenURL(getActivity(), TwitterUtils.getStatusURL(getStatus())).execute();
+        return new CommandOpenURL(getActivity(), TwitterUtils.getStatusURL(getOriginalStatus())).execute();
     }
 
     @Override

@@ -49,7 +49,7 @@ public class StatusCommandTofuBuster extends StatusCommand
     public boolean execute()
     {
         String ACTION_SHOW_TEXT = "com.product.kanzmrsw.tofubuster.ACTION_SHOW_TEXT";
-        String text = getStatus().getText();
+        String text = getOriginalStatus().getText();
         Intent i = new Intent(ACTION_SHOW_TEXT);
         i.putExtra(Intent.EXTRA_TEXT, text);
         i.putExtra(Intent.EXTRA_SUBJECT, getActivity().getString(R.string.app_name));

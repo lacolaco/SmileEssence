@@ -51,7 +51,7 @@ public class StatusCommandFavorite extends StatusCommand
     @Override
     public boolean execute()
     {
-        FavoriteTask task = new FavoriteTask(new TwitterApi(account).getTwitter(), getStatus().getId(), getActivity());
+        FavoriteTask task = new FavoriteTask(new TwitterApi(account).getTwitter(), getOriginalStatus().getId(), getActivity());
         task.execute();
         return true;
     }
@@ -59,6 +59,6 @@ public class StatusCommandFavorite extends StatusCommand
     @Override
     public boolean isEnabled()
     {
-        return !getStatus().isFavorited();
+        return !getOriginalStatus().isFavorited();
     }
 }

@@ -48,14 +48,14 @@ public class StatusCommandQuote extends StatusCommand
     @Override
     public boolean execute()
     {
-        TweetBuilder builder = new TweetBuilder().setQuotation(getStatus());
+        TweetBuilder builder = new TweetBuilder().setQuotation(getOriginalStatus());
 
         PostState.newState()
                  .beginTransaction()
                  .setText(builder.buildText())
-                 .setInReplyToText(getStatus().getText())
-                 .setInReplyToScreenName(getStatus().getUser().getScreenName())
-                 .setInReplyToStatusID(getStatus().getId())
+                 .setInReplyToText(getOriginalStatus().getText())
+                 .setInReplyToScreenName(getOriginalStatus().getUser().getScreenName())
+                 .setInReplyToStatusID(getOriginalStatus().getId())
                  .setCursor(0)
                  .commit();
         ((MainActivity)getActivity()).setSelectedPageIndex(MainActivity.PAGE_POST);

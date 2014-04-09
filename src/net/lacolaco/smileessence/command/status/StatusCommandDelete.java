@@ -51,7 +51,7 @@ public class StatusCommandDelete extends StatusCommand
     @Override
     public boolean execute()
     {
-        DeleteStatusTask task = new DeleteStatusTask(new TwitterApi(account).getTwitter(), getStatus().getId(), getActivity());
+        DeleteStatusTask task = new DeleteStatusTask(new TwitterApi(account).getTwitter(), getOriginalStatus().getId(), getActivity());
         task.execute();
         return true;
     }
@@ -59,6 +59,6 @@ public class StatusCommandDelete extends StatusCommand
     @Override
     public boolean isEnabled()
     {
-        return getStatus().getUser().getId() == account.userID;
+        return getOriginalStatus().getUser().getId() == account.userID;
     }
 }
