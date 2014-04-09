@@ -34,9 +34,11 @@ import com.android.volley.toolbox.NetworkImageView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.data.ImageCache;
+import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.util.StringUtils;
 import net.lacolaco.smileessence.util.Themes;
+import net.lacolaco.smileessence.view.listener.ListItemClickListener;
 import twitter4j.Status;
 import twitter4j.User;
 
@@ -169,6 +171,14 @@ public class EventViewModel implements IViewModel
         favorited.setVisibility(View.GONE);
         int colorBgNormal = Themes.getStyledColor(activity, theme, R.attr.color_status_bg_normal, 0);
         convertedView.setBackgroundColor(colorBgNormal);
+        convertedView.setOnClickListener(new ListItemClickListener(activity, new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Logger.debug("event clicked");
+            }
+        }));
         return convertedView;
     }
 

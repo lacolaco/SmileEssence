@@ -35,10 +35,12 @@ import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.data.ImageCache;
 import net.lacolaco.smileessence.data.UserCache;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.util.NameStyles;
 import net.lacolaco.smileessence.util.StringUtils;
 import net.lacolaco.smileessence.util.Themes;
+import net.lacolaco.smileessence.view.listener.ListItemClickListener;
 import twitter4j.DirectMessage;
 
 import java.util.Date;
@@ -156,6 +158,14 @@ public class MessageViewModel implements IViewModel
         favorited.setVisibility(View.GONE);
         int colorBgMessage = Themes.getStyledColor(activity, theme, R.attr.color_message_bg_normal, 0);
         convertedView.setBackgroundColor(colorBgMessage);
+        convertedView.setOnClickListener(new ListItemClickListener(activity, new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Logger.debug("message clicked");
+            }
+        }));
         return convertedView;
     }
 }
