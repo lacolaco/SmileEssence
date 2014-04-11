@@ -24,9 +24,12 @@
 
 package net.lacolaco.smileessence.viewmodel;
 
+import android.app.Activity;
+import android.view.LayoutInflater;
+import android.view.View;
 import twitter4j.User;
 
-public class UserViewModel
+public class UserViewModel implements IViewModel
 {
 
     private long id;
@@ -130,5 +133,11 @@ public class UserViewModel
     public boolean isVerified()
     {
         return isVerified;
+    }
+
+    @Override
+    public View getView(Activity activity, LayoutInflater inflater, View convertedView)
+    {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

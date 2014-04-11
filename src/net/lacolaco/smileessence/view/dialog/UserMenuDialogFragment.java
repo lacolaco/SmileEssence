@@ -33,36 +33,34 @@ import android.widget.ListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.Command;
-import net.lacolaco.smileessence.command.CommandOpenStatusDetail;
-import net.lacolaco.smileessence.command.CommandOpenUserDetail;
-import net.lacolaco.smileessence.command.status.*;
+import net.lacolaco.smileessence.command.user.*;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
-import net.lacolaco.smileessence.viewmodel.StatusViewModel;
-import twitter4j.Status;
+import net.lacolaco.smileessence.viewmodel.UserViewModel;
+import twitter4j.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatusMenuDialogFragment extends MenuDialogFragment
+public class UserMenuDialogFragment extends MenuDialogFragment
 {
 
     // ------------------------------ FIELDS ------------------------------
 
-    private static final String KEY_STATUS_ID = "statusID";
+    private static final String KEY_User_ID = "userID";
 
     // --------------------- GETTER / SETTER METHODS ---------------------
 
-    public long getStatusID()
+    public long getUserID()
     {
-        return getArguments().getLong(KEY_STATUS_ID);
+        return getArguments().getLong(KEY_User_ID);
     }
 
-    public void setStatusID(long statusID)
+    public void setUserID(long userID)
     {
         Bundle args = new Bundle();
-        args.putLong(KEY_STATUS_ID, statusID);
+        args.putLong(KEY_User_ID, userID);
         setArguments(args);
     }
 
@@ -73,8 +71,8 @@ public class StatusMenuDialogFragment extends MenuDialogFragment
     {
         MainActivity activity = (MainActivity)getActivity();
         Account account = activity.getCurrentAccount();
-        Status status = TwitterUtils.tryGetStatus(account, getStatusID());
-        List<Command> commands = getCommands(activity, status, account);
+        User user = TwitterUtils.tryGetUser(account, getUserID());
+        List<Command> commands = getCommands(activity, user, account);
         filterCommands(commands);
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
         ListView listView = (ListView)body.findViewById(R.id.listview_dialog_menu_list);
@@ -86,7 +84,7 @@ public class StatusMenuDialogFragment extends MenuDialogFragment
         }
         adapter.update();
         listView.setOnItemClickListener(onItemClickListener);
-        View header = getTitleView(activity, account, status);
+        View header = getTitleView(activity, account, user);
         header.setClickable(false);
 
         return new AlertDialog.Builder(activity)
@@ -96,33 +94,26 @@ public class StatusMenuDialogFragment extends MenuDialogFragment
                 .create();
     }
 
-    private View getTitleView(MainActivity activity, Account account, Status status)
+    private View getTitleView(MainActivity activity, Account account, User user)
     {
-        return new StatusViewModel(status, account).getView(activity, activity.getLayoutInflater(), null);
+        return new UserViewModel(user).getView(activity, activity.getLayoutInflater(), null);
     }
 
-    public List<Command> getCommands(Activity activity, Status status, Account account)
+    public List<Command> getCommands(Activity activity, User user, Account account)
     {
         ArrayList<Command> commands = new ArrayList<>();
-        commands.add(new StatusCommandReply(activity, status));
-        commands.add(new StatusCommandAddToReply(activity, status));
-        commands.add(new StatusCommandReplyToAll(activity, status, account));
-        commands.add(new StatusCommandFavorite(activity, status, account));
-        commands.add(new StatusCommandRetweet(activity, status, account));
-        commands.add(new StatusCommandDelete(activity, status, account));
-        commands.add(new StatusCommandFavAndRT(activity, status, account));
-        commands.add(new StatusCommandQuote(activity, status));
-        commands.add(new StatusCommandShare(activity, status));
-        commands.add(new StatusCommandOpenInBrowser(activity, status));
-        commands.add(new StatusCommandClipboard(activity, status));
-        commands.add(new StatusCommandTofuBuster(activity, status));
-        commands.add(new StatusCommandNanigaja(activity, status, account));
-        commands.add(new StatusCommandMakeAnonymous(activity, status, account));
-        commands.add(new CommandOpenStatusDetail(activity, getStatusID(), account));
-        for(String screenName : TwitterUtils.getScreenNames(status, null))
-        {
-            commands.add(new CommandOpenUserDetail(activity, screenName, account));
-        }
+        commands.add(new UserCommandReply(activity, user));
+        commands.add(new UserCommandAddToReply(activity, user));
+        commands.add(new UserCommandSendMessage(activity, user));
+        commands.add(new UserCommandFollow(activity, user, account));
+        commands.add(new UserCommandUnfollow(activity, user, account));
+        commands.add(new UserCommandBlock(activity, user, account));
+        commands.add(new UserCommandUnblock(activity, user, account));
+        commands.add(new UserCommandReportForSpam(activity, user, account));
+        commands.add(new UserCommandOpenFavstar(activity, user));
+        commands.add(new UserCommandOpenAclog(activity, user));
+        commands.add(new UserCommandOpenTwilog(activity, user));
+        commands.add(new UserCommandIntroduce(activity, user));
         return commands;
     }
 }
