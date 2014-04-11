@@ -37,7 +37,6 @@ import net.lacolaco.smileessence.command.user.*;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
-import net.lacolaco.smileessence.viewmodel.UserViewModel;
 import twitter4j.User;
 
 import java.util.ArrayList;
@@ -48,19 +47,19 @@ public class UserMenuDialogFragment extends MenuDialogFragment
 
     // ------------------------------ FIELDS ------------------------------
 
-    private static final String KEY_User_ID = "userID";
+    private static final String KEY_USER_ID = "userID";
 
     // --------------------- GETTER / SETTER METHODS ---------------------
 
     public long getUserID()
     {
-        return getArguments().getLong(KEY_User_ID);
+        return getArguments().getLong(KEY_USER_ID);
     }
 
     public void setUserID(long userID)
     {
         Bundle args = new Bundle();
-        args.putLong(KEY_User_ID, userID);
+        args.putLong(KEY_USER_ID, userID);
         setArguments(args);
     }
 
@@ -84,19 +83,11 @@ public class UserMenuDialogFragment extends MenuDialogFragment
         }
         adapter.update();
         listView.setOnItemClickListener(onItemClickListener);
-        View header = getTitleView(activity, account, user);
-        header.setClickable(false);
 
         return new AlertDialog.Builder(activity)
-                .setCustomTitle(header)
                 .setView(body)
                 .setCancelable(true)
                 .create();
-    }
-
-    private View getTitleView(MainActivity activity, Account account, User user)
-    {
-        return new UserViewModel(user).getView(activity, activity.getLayoutInflater(), null);
     }
 
     public List<Command> getCommands(Activity activity, User user, Account account)
