@@ -356,6 +356,7 @@ public class MainActivity extends Activity
 
     private void setTheme()
     {
+        ((Application)getApplication()).setThemeIndex(new UserPreferenceHelper(this).getValue(R.string.key_setting_theme, 0));
         setTheme(Themes.getTheme(getThemeIndex()));
         //        setTheme(Themes.getTheme(0));
     }

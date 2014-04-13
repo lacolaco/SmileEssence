@@ -24,18 +24,14 @@
 
 package net.lacolaco.smileessence;
 
-import net.lacolaco.smileessence.preference.UserPreferenceHelper;
-
 public class Application extends com.activeandroid.app.Application
 {
 
     private int themeIndex;
 
-    @Override
-    public void onCreate()
+    public void setThemeIndex(int themeIndex)
     {
-        themeIndex = new UserPreferenceHelper(this).getValue(R.string.key_setting_theme, 0);
-        super.onCreate();
+        this.themeIndex = themeIndex;
     }
 
     public int getThemeIndex()
