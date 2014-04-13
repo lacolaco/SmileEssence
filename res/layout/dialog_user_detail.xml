@@ -114,7 +114,7 @@
                 android:id="@+id/imageview_user_detail_menu"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:src="?attr/icon_post_row"
+                android:src="@drawable/icon_row_w"
                 style="?attr/custom_button_transparent"
                 android:clickable="true"
                 android:contentDescription=""/>
