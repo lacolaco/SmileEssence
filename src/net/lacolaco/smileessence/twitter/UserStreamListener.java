@@ -67,10 +67,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     public void onDisconnect()
     {
         activity.setStreaming(false);
-        if(!activity.startStream())
-        {
-            new Notificator(activity, R.string.notice_stream_disconnect).publish();
-        }
+        new Notificator(activity, R.string.notice_stream_disconnect).publish();
     }
 
     @Override
