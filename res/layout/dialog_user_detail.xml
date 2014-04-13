@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ The MIT License (MIT)
+  ~
+  ~ Copyright (c) 2012-2014 lacolaco.net
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/imageview_user_detail_header"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:layout_gravity="top"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:gravity="center_horizontal"
+            android:background="#a018181a">
+
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/imageview_user_detail_icon"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_margin="5dp"
+                android:background="@android:color/background_light"
+                android:clickable="true"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/textview_user_detail_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="name"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="20dp"/>
+
+                <TextView
+                    android:id="@+id/textview_user_detail_screenname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="screen_name"
+                    android:textColor="@android:color/holo_blue_light"
+                    android:textSize="16dp"
+                    android:clickable="true"/>
+
+                <TextView
+                    android:id="@+id/textview_user_detail_locate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="locate"
+                    android:textColor="@android:color/background_light"/>
+
+                <TextView
+                    android:id="@+id/textview_user_detail_url"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="url"
+                    android:autoLink="web"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:paddingBottom="10dp"
+            android:orientation="vertical"
+            android:gravity="right">
+
+            <ImageView
+                android:id="@+id/imageview_user_detail_menu"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="?attr/icon_post_row"
+                style="?attr/custom_button_transparent"
+                android:clickable="true"
+                android:contentDescription=""/>
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="?attr/color_list_divider"/>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="0,1,2,3"
+        android:paddingTop="5dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textview_user_detail_tweet_count"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:gravity="center_horizontal"
+                android:text="0"
+                android:textSize="20dp"
+                android:textColor="@android:color/holo_blue_light"
+                android:clickable="true"/>
+
+            <TextView
+                android:id="@+id/textview_user_detail_friend_count"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:gravity="center_horizontal"
+                android:text="0"
+                android:textSize="20dp"
+                android:textColor="@android:color/holo_blue_light"
+                android:clickable="true"/>
+
+            <TextView
+                android:id="@+id/textview_user_detail_follower_count"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:gravity="center_horizontal"
+                android:text="0"
+                android:textSize="20dp"
+                android:textColor="@android:color/holo_blue_light"
+                android:clickable="true"/>
+
+            <TextView
+                android:id="@+id/textview_user_detail_favorite_count"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:gravity="center_horizontal"
+                android:text="0"
+                android:textSize="20dp"
+                android:textColor="@android:color/holo_blue_light"
+                android:clickable="true"/>
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:gravity="center_horizontal"
+                android:text="@string/user_detail_tweets"
+                android:textColor="?attr/color_status_text_normal"/>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:gravity="center_horizontal"
+                android:text="@string/user_detail_following"
+                android:textColor="?attr/color_status_text_normal"/>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:gravity="center_horizontal"
+                android:text="@string/user_detail_followers"
+                android:textColor="?attr/color_status_text_normal"/>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:gravity="center_horizontal"
+                android:text="@string/user_detail_favorites"
+                android:textColor="?attr/color_status_text_normal"/>
+        </TableRow>
+
+    </TableLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="?attr/color_list_divider"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="15dp"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:id="@+id/textview_user_detail_followed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="followed"
+                android:textColor="?attr/color_status_text_normal"/>
+
+            <TextView
+                android:id="@+id/texttview_user_detail_protected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/user_detail_protected"
+                android:textColor="?attr/color_status_text_normal"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_user_detail_follow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_detail_follow"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_marginTop="15dp"
+            android:background="?attr/button_round_blue"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            style="?attr/custom_button_transparent"/>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="?attr/color_list_divider"/>
+
+    <TextView
+        android:id="@+id/textview_user_detail_description"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="bio"
+        android:textColor="?attr/color_status_text_normal"/>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="?attr/color_list_divider"/>
+
+    <ListView
+        android:id="@+id/listview_user_detail_timeline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fastScrollEnabled="true"
+        android:dividerHeight="1px"
+        android:divider="?attr/color_list_divider"
+        android:clickable="false"/>
+
+</LinearLayout>

@@ -175,4 +175,10 @@
     <string name="notice_error_authenticate_request">Failed to prepare for authentication. Please check internet access.</string>
     <string name="notice_timeline_new">Receive new %s items</string>
     <string name="command_status_add_to_reply">Add to reply</string>
+    <string name="user_detail_tweets">Tweets</string>
+    <string name="user_detail_following">Following</string>
+    <string name="user_detail_followers">Followers</string>
+    <string name="user_detail_favorites">Favorites</string>
+    <string name="user_detail_protected">Protected</string>
+    <string name="user_detail_follow">Follow</string>
 </resources>

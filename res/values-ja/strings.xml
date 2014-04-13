@@ -175,4 +175,10 @@
     <string name="notice_error_authenticate_request">認証の準備に失敗しました。インターネット接続を確認して下さい</string>
     <string name="notice_timeline_new">%s件の新着があります</string>
     <string name="command_status_add_to_reply">返信に追加</string>
+    <string name="user_detail_tweets">Tweets</string>
+    <string name="user_detail_following">Following</string>
+    <string name="user_detail_followers">Followers</string>
+    <string name="user_detail_favorites">Favorites</string>
+    <string name="user_detail_protected">非公開アカウント</string>
+    <string name="user_detail_follow">フォローする</string>
 </resources>
