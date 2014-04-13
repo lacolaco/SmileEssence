@@ -36,6 +36,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import net.lacolaco.smileessence.R;
@@ -127,6 +128,17 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         buttonFollow.setOnClickListener(this);
         listViewTimeline = (ListView)v.findViewById(R.id.listview_user_detail_timeline);
         setUserData(user, account);
+        TabHost tabHost = (TabHost)v.findViewById(android.R.id.tabhost);
+        tabHost.setup();
+        TabHost.TabSpec tab1 = tabHost.newTabSpec("tab1")
+                                      .setContent(R.id.tab1)
+                                      .setIndicator(getString(R.string.user_detail_tab_info));
+        tabHost.addTab(tab1);
+        TabHost.TabSpec tab2 = tabHost.newTabSpec("tab2")
+                                      .setContent(R.id.tab2)
+                                      .setIndicator(getString(R.string.user_detail_tab_timeline));
+        tabHost.addTab(tab2);
+        tabHost.setCurrentTab(0);
         return new AlertDialog.Builder(activity)
                 .setView(v)
                 .setCancelable(true)

@@ -181,9 +181,11 @@
     <string name="user_detail_favorites">Favorites</string>
     <string name="user_detail_protected">非公開アカウント</string>
     <string name="user_detail_follow">フォローする</string>
-    <string name="user_detail_followed_is_me">This is you</string>
-    <string name="user_detail_unfollow">Unfollow</string>
+    <string name="user_detail_followed_is_me">これはあなたです</string>
+    <string name="user_detail_unfollow">リムーブする</string>
     <string name="user_detail_followed">フォローされています</string>
     <string name="user_detail_not_followed">フォローされていません</string>
-    <string name="user_detail_loading">Loading</string>
+    <string name="user_detail_loading">読み込み中</string>
+    <string name="user_detail_tab_info">Info</string>
+    <string name="user_detail_tab_timeline">Timeline</string>
 </resources>

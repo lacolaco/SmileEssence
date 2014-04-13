@@ -30,10 +30,10 @@
         <item name="icon_post_delete">@drawable/icon_delete_w</item>
         <item name="icon_post_picture">@drawable/icon_picture_w</item>
         <item name="icon_post_row">@drawable/icon_row_w</item>
-        <item name="button_blue_background">@color/black</item>
+        <item name="button_blue_background">@color/gray_dark_dark</item>
         <item name="button_blue_foreground">@color/white</item>
         <item name="button_round_blue">@drawable/button_round_blue</item>
-        <item name="button_red_background">@color/black</item>
+        <item name="button_red_background">@color/gray_dark_dark</item>
         <item name="button_red_foreground">@color/white</item>
         <item name="button_round_red">@drawable/button_round_red</item>
         <item name="custom_button_transparent">@style/custom_button_transparent</item>
@@ -45,7 +45,7 @@
         <item name="color_status_bg_normal">@color/gray_dark_dark</item>
         <item name="color_status_bg_retweet">@color/dark_blue_dark</item>
         <item name="color_status_bg_mention">@color/dark_red</item>
-        <item name="color_list_divider">@color/gray_dark_dark</item>
+        <item name="color_list_divider">@color/gray_dark_light</item>
         <item name="color_message_text_header">@color/orange</item>
         <item name="color_message_bg_normal">@color/orange_dark</item>
     </style>

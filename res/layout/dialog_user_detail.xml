@@ -24,285 +24,308 @@
   ~ SOFTWARE.
   -->
 
-<LinearLayout
+<TabHost
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="?attr/page_background"
+    android:id="@android:id/tabhost">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <com.android.volley.toolbox.NetworkImageView
-            android:id="@+id/imageview_user_detail_header"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            android:layout_gravity="top"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:gravity="center_horizontal"
-            android:background="#a018181a">
+            android:layout_height="wrap_content">
 
             <com.android.volley.toolbox.NetworkImageView
-                android:id="@+id/imageview_user_detail_icon"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:layout_margin="5dp"
-                android:background="@android:color/background_light"
-                android:clickable="true"/>
+                android:id="@+id/imageview_user_detail_header"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:layout_gravity="top"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:gravity="center_horizontal"
+                android:background="#a018181a">
+
+                <com.android.volley.toolbox.NetworkImageView
+                    android:id="@+id/imageview_user_detail_icon"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/background_light"
+                    android:clickable="true"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/textview_user_detail_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="name"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="20dp"/>
+
+                    <TextView
+                        android:id="@+id/textview_user_detail_screenname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="screen_name"
+                        android:textColor="@android:color/holo_blue_light"
+                        android:textSize="16dp"
+                        android:clickable="true"/>
+
+                    <TextView
+                        android:id="@+id/textview_user_detail_locate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="locate"
+                        android:textColor="@android:color/background_light"/>
+
+                    <TextView
+                        android:id="@+id/textview_user_detail_url"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="url"
+                        android:autoLink="web"/>
+                </LinearLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:paddingBottom="10dp"
                 android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:padding="5dp">
+                android:gravity="right">
 
-                <TextView
-                    android:id="@+id/textview_user_detail_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="name"
-                    android:textColor="@android:color/background_light"
-                    android:textSize="20dp"/>
-
-                <TextView
-                    android:id="@+id/textview_user_detail_screenname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="screen_name"
-                    android:textColor="@android:color/holo_blue_light"
-                    android:textSize="16dp"
-                    android:clickable="true"/>
-
-                <TextView
-                    android:id="@+id/textview_user_detail_locate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="locate"
-                    android:textColor="@android:color/background_light"/>
-
-                <TextView
-                    android:id="@+id/textview_user_detail_url"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="url"
-                    android:autoLink="web"/>
+                <ImageView
+                    android:id="@+id/imageview_user_detail_menu"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:src="@drawable/icon_row_w"
+                    style="?attr/custom_button_transparent"
+                    android:clickable="true"
+                    android:contentDescription=""/>
             </LinearLayout>
 
-        </LinearLayout>
+        </FrameLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
-            android:paddingBottom="10dp"
-            android:orientation="vertical"
-            android:gravity="right">
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="?attr/color_list_divider"/>
 
-            <ImageView
-                android:id="@+id/imageview_user_detail_menu"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:src="@drawable/icon_row_w"
-                style="?attr/custom_button_transparent"
-                android:clickable="true"
-                android:contentDescription=""/>
-        </LinearLayout>
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="?attr/color_list_divider"/>
-
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:stretchColumns="0,1,2,3"
-        android:paddingTop="5dp">
-
-        <TableRow
+        <FrameLayout
+            android:id="@android:id/tabcontent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/textview_user_detail_tweet_count"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:gravity="center_horizontal"
-                android:text="0"
-                android:textSize="20dp"
-                android:textColor="@android:color/holo_blue_light"
-                android:clickable="true"/>
+            <ScrollView
+                android:id="@+id/tab1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/textview_user_detail_friend_count"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:gravity="center_horizontal"
-                android:text="0"
-                android:textSize="20dp"
-                android:textColor="@android:color/holo_blue_light"
-                android:clickable="true"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textview_user_detail_follower_count"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:gravity="center_horizontal"
-                android:text="0"
-                android:textSize="20dp"
-                android:textColor="@android:color/holo_blue_light"
-                android:clickable="true"/>
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:stretchColumns="0,1,2,3"
+                        android:paddingTop="5dp">
 
-            <TextView
-                android:id="@+id/textview_user_detail_favorite_count"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="3"
-                android:gravity="center_horizontal"
-                android:text="0"
-                android:textSize="20dp"
-                android:textColor="@android:color/holo_blue_light"
-                android:clickable="true"/>
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-        </TableRow>
+                            <TextView
+                                android:id="@+id/textview_user_detail_tweet_count"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:gravity="center_horizontal"
+                                android:text="0"
+                                android:textSize="20dp"
+                                android:textColor="@android:color/holo_blue_light"
+                                android:clickable="true"/>
 
-        <TableRow>
+                            <TextView
+                                android:id="@+id/textview_user_detail_friend_count"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:gravity="center_horizontal"
+                                android:text="0"
+                                android:textSize="20dp"
+                                android:textColor="@android:color/holo_blue_light"
+                                android:clickable="true"/>
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:gravity="center_horizontal"
-                android:text="@string/user_detail_tweets"
-                android:textColor="?attr/color_status_text_normal"/>
+                            <TextView
+                                android:id="@+id/textview_user_detail_follower_count"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_column="2"
+                                android:gravity="center_horizontal"
+                                android:text="0"
+                                android:textSize="20dp"
+                                android:textColor="@android:color/holo_blue_light"
+                                android:clickable="true"/>
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:gravity="center_horizontal"
-                android:text="@string/user_detail_following"
-                android:textColor="?attr/color_status_text_normal"/>
+                            <TextView
+                                android:id="@+id/textview_user_detail_favorite_count"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_column="3"
+                                android:gravity="center_horizontal"
+                                android:text="0"
+                                android:textSize="20dp"
+                                android:textColor="@android:color/holo_blue_light"
+                                android:clickable="true"/>
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:gravity="center_horizontal"
-                android:text="@string/user_detail_followers"
-                android:textColor="?attr/color_status_text_normal"/>
+                        </TableRow>
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="3"
-                android:gravity="center_horizontal"
-                android:text="@string/user_detail_favorites"
-                android:textColor="?attr/color_status_text_normal"/>
-        </TableRow>
+                        <TableRow>
 
-    </TableLayout>
+                            <TextView
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:gravity="center_horizontal"
+                                android:text="@string/user_detail_tweets"/>
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="5dp"
-        android:background="?attr/color_list_divider"/>
+                            <TextView
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:gravity="center_horizontal"
+                                android:text="@string/user_detail_following"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp">
+                            <TextView
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_column="2"
+                                android:gravity="center_horizontal"
+                                android:text="@string/user_detail_followers"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="15dp"
-            android:layout_centerVertical="true">
+                            <TextView
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_column="3"
+                                android:gravity="center_horizontal"
+                                android:text="@string/user_detail_favorites"/>
+                        </TableRow>
 
-            <TextView
-                android:id="@+id/textview_user_detail_followed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:text="followed"
-                android:textColor="?attr/color_status_text_normal"/>
+                    </TableLayout>
 
-            <TextView
-                android:id="@+id/texttview_user_detail_protected"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@string/user_detail_protected"
-                android:textColor="?attr/color_status_text_normal"/>
-        </LinearLayout>
+                    <FrameLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="1px"
+                        android:layout_marginTop="5dp"
+                        android:background="?attr/color_list_divider"/>
 
-        <Button
-            android:id="@+id/button_user_detail_follow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/user_detail_follow"
-            android:textColor="@color/white"
-            android:textSize="15dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:layout_marginTop="15dp"
-            android:background="?attr/button_round_blue"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            style="?attr/custom_button_transparent"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingRight="10dp"
+                        android:paddingLeft="10dp">
 
-    </RelativeLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginTop="15dp"
+                            android:layout_centerVertical="true">
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="?attr/color_list_divider"/>
+                            <TextView
+                                android:id="@+id/textview_user_detail_followed"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:text="followed"/>
 
-    <TextView
-        android:id="@+id/textview_user_detail_description"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:text="bio"
-        android:textColor="?attr/color_status_text_normal"/>
+                            <TextView
+                                android:id="@+id/texttview_user_detail_protected"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="@string/user_detail_protected"/>
+                        </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="?attr/color_list_divider"/>
+                        <Button
+                            android:id="@+id/button_user_detail_follow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/user_detail_follow"
+                            android:textColor="@color/white"
+                            android:textSize="15dp"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:layout_marginTop="15dp"
+                            android:background="?attr/button_round_blue"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            style="?attr/custom_button_transparent"/>
 
-    <ListView
-        android:id="@+id/listview_user_detail_timeline"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fastScrollEnabled="true"
-        android:dividerHeight="1px"
-        android:divider="?attr/color_list_divider"
-        android:clickable="false"/>
+                    </RelativeLayout>
 
-</LinearLayout>
+                    <FrameLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="1px"
+                        android:background="?attr/color_list_divider"/>
+
+                    <TextView
+                        android:id="@+id/textview_user_detail_description"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="bio"
+                        android:minLines="4"/>
+                </LinearLayout>
+            </ScrollView>
+
+            <FrameLayout
+                android:id="@+id/tab2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ListView
+                    android:id="@+id/listview_user_detail_timeline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:dividerHeight="1px"
+                    android:divider="?attr/color_list_divider"
+                    android:clickable="false"/>
+            </FrameLayout>
+        </FrameLayout>
+    </LinearLayout>
+</TabHost>
