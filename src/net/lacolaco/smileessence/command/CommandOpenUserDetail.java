@@ -25,7 +25,6 @@
 package net.lacolaco.smileessence.command;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.notification.NotificationType;
@@ -58,14 +57,12 @@ public class CommandOpenUserDetail extends Command
     @Override
     public boolean execute()
     {
-        final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), null, getActivity().getString(R.string.dialog_message_now_loading), true);
-        final ShowUserTask task = new ShowUserTask(new TwitterApi(account).getTwitter(), screenName)
+        new ShowUserTask(new TwitterApi(account).getTwitter(), screenName)
         {
             @Override
             protected void onPostExecute(User user)
             {
                 super.onPostExecute(user);
-                progressDialog.dismiss();
                 if(user != null)
                 {
                     UserDetailDialogFragment fragment = new UserDetailDialogFragment();
@@ -77,8 +74,7 @@ public class CommandOpenUserDetail extends Command
                     new Notificator(getActivity(), R.string.notice_error_show_user, NotificationType.ALERT).publish();
                 }
             }
-        };
-        task.execute();
+        }.execute();
 
         return true;
     }

@@ -25,7 +25,6 @@
 package net.lacolaco.smileessence.command;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.notification.NotificationType;
@@ -55,14 +54,12 @@ public class CommandOpenStatusDetail extends Command
     @Override
     public boolean execute()
     {
-        final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), null, getActivity().getString(R.string.dialog_message_now_loading), true);
-        ShowStatusTask task = new ShowStatusTask(new TwitterApi(account).getTwitter(), statusID)
+        new ShowStatusTask(new TwitterApi(account).getTwitter(), statusID)
         {
             @Override
             protected void onPostExecute(twitter4j.Status status)
             {
                 super.onPostExecute(status);
-                progressDialog.dismiss();
                 if(status != null)
                 {
                     //TODO status detail
@@ -72,8 +69,7 @@ public class CommandOpenStatusDetail extends Command
                     new Notificator(getActivity(), R.string.notice_error_show_status, NotificationType.ALERT).publish();
                 }
             }
-        };
-        task.execute();
+        }.execute();
         return true;
     }
 
