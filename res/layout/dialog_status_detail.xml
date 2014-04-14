@@ -32,6 +32,7 @@
     android:orientation="vertical">
 
     <include
+        android:id="@+id/layout_status_header"
         layout="@layout/list_item_status"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>

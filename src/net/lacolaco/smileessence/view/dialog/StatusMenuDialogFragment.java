@@ -29,6 +29,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
@@ -44,7 +45,7 @@ import twitter4j.Status;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatusMenuDialogFragment extends MenuDialogFragment
+public class StatusMenuDialogFragment extends MenuDialogFragment implements View.OnClickListener
 {
 
     // ------------------------------ FIELDS ------------------------------
@@ -97,7 +98,38 @@ public class StatusMenuDialogFragment extends MenuDialogFragment
 
     private View getTitleView(MainActivity activity, Account account, Status status)
     {
-        return new StatusViewModel(status, account).getView(activity, activity.getLayoutInflater(), null);
+        View view = activity.getLayoutInflater().inflate(R.layout.dialog_status_detail, null);
+        View statusHeader = view.findViewById(R.id.layout_status_header);
+        statusHeader = new StatusViewModel(status, account).getView(activity, activity.getLayoutInflater(), statusHeader);
+        ImageButton message = (ImageButton)view.findViewById(R.id.button_status_detail_reply);
+        message.setOnClickListener(this);
+        ImageButton retweet = (ImageButton)view.findViewById(R.id.button_status_detail_retweet);
+        retweet.setTag(status.getCurrentUserRetweetId());
+        if(status.isRetweetedByMe())
+        {
+            retweet.setImageDrawable(getResources().getDrawable(R.drawable.icon_retweet_on));
+        }
+        retweet.setOnClickListener(this);
+        ImageButton favorite = (ImageButton)view.findViewById(R.id.button_status_detail_favorite);
+        favorite.setTag(status.isFavorited());
+        if(status.isFavorited())
+        {
+            favorite.setImageDrawable(getResources().getDrawable(R.drawable.icon_favorite_on));
+        }
+        favorite.setOnClickListener(this);
+        ImageButton delete = (ImageButton)view.findViewById(R.id.button_status_detail_delete);
+        boolean deletable = false;
+        if(!status.isRetweet())
+        {
+            deletable = status.getUser().getId() == account.userID;
+        }
+        else
+        {
+            deletable = status.getRetweetedStatus().getUser().getId() == account.userID;
+        }
+        delete.setVisibility(deletable ? View.VISIBLE : View.GONE);
+        delete.setOnClickListener(this);
+        return view;
     }
 
     public List<Command> getCommands(Activity activity, Status status, Account account)
@@ -123,5 +155,11 @@ public class StatusMenuDialogFragment extends MenuDialogFragment
             commands.add(new CommandOpenUserDetail(activity, screenName, account));
         }
         return commands;
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+
     }
 }
