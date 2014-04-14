@@ -22,60 +22,40 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.command;
+package net.lacolaco.smileessence.command.status;
 
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.notification.NotificationType;
-import net.lacolaco.smileessence.notification.Notificator;
-import net.lacolaco.smileessence.twitter.TwitterApi;
-import net.lacolaco.smileessence.twitter.task.ShowStatusTask;
+import twitter4j.Status;
 
-public class CommandOpenStatusDetail extends Command
+public class StatusCommandOpenChain extends StatusCommand
 {
 
-    private final long statusID;
     private final Account account;
 
-    public CommandOpenStatusDetail(Activity activity, long statusID, Account account)
+    public StatusCommandOpenChain(Activity activity, Status status, Account account)
     {
-        super(-1, activity);
-        this.statusID = statusID;
+        super(R.id.key_command_status_open_chain, activity, status);
         this.account = account;
     }
 
     @Override
     public String getText()
     {
-        return getActivity().getString(R.string.command_open_status_detail);
+        return getActivity().getString(R.string.command_open_status_chain);
     }
 
     @Override
     public boolean execute()
     {
-        new ShowStatusTask(new TwitterApi(account).getTwitter(), statusID)
-        {
-            @Override
-            protected void onPostExecute(twitter4j.Status status)
-            {
-                super.onPostExecute(status);
-                if(status != null)
-                {
-                    //TODO status detail
-                }
-                else
-                {
-                    new Notificator(getActivity(), R.string.notice_error_show_status, NotificationType.ALERT).publish();
-                }
-            }
-        }.execute();
+        //TODO status chain dialog
         return true;
     }
 
     @Override
     public boolean isEnabled()
     {
-        return true;
+        return getStatus().getInReplyToStatusId() >= 0;
     }
 }

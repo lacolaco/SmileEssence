@@ -33,7 +33,6 @@ import android.widget.ListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.Command;
-import net.lacolaco.smileessence.command.CommandOpenStatusDetail;
 import net.lacolaco.smileessence.command.CommandOpenUserDetail;
 import net.lacolaco.smileessence.command.status.*;
 import net.lacolaco.smileessence.entity.Account;
@@ -118,7 +117,7 @@ public class StatusMenuDialogFragment extends MenuDialogFragment
         commands.add(new StatusCommandTofuBuster(activity, status));
         commands.add(new StatusCommandNanigaja(activity, status, account));
         commands.add(new StatusCommandMakeAnonymous(activity, status, account));
-        commands.add(new CommandOpenStatusDetail(activity, getStatusID(), account));
+        commands.add(new StatusCommandOpenChain(activity, getStatusID(), account));
         for(String screenName : TwitterUtils.getScreenNames(status, null))
         {
             commands.add(new CommandOpenUserDetail(activity, screenName, account));
