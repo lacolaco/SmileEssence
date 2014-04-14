@@ -26,7 +26,6 @@ package net.lacolaco.smileessence.view.dialog;
 
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 
 public class DialogHelper
@@ -45,7 +44,7 @@ public class DialogHelper
     public void show()
     {
         FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
-        Fragment oldDialog = activity.getFragmentManager().findFragmentByTag(TAG_DIALOG);
+        DialogFragment oldDialog = (DialogFragment)activity.getFragmentManager().findFragmentByTag(TAG_DIALOG);
         if(oldDialog != null)
         {
             transaction.remove(oldDialog);
@@ -56,10 +55,11 @@ public class DialogHelper
 
     public static void close(Activity activity)
     {
+        FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
         DialogFragment oldDialog = (DialogFragment)activity.getFragmentManager().findFragmentByTag(TAG_DIALOG);
         if(oldDialog != null)
         {
-            oldDialog.dismiss();
+            transaction.remove(oldDialog).commit();
         }
     }
 }

@@ -43,9 +43,9 @@ public abstract class MenuDialogFragment extends DialogFragment
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
         {
-            DialogHelper.close(getActivity());
             Command command = (Command)adapterView.getItemAtPosition(i);
             command.execute();
+            DialogHelper.close(getActivity());
         }
     };
 
