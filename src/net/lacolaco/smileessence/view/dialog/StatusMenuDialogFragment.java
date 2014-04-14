@@ -109,7 +109,7 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         message.setOnClickListener(this);
         ImageButton retweet = (ImageButton)view.findViewById(R.id.button_status_detail_retweet);
         retweet.setTag(status.getCurrentUserRetweetId());
-        if(status.isRetweetedByMe())
+        if(status.isRetweet() && status.getUser().getId() == account.userID)
         {
             retweet.setImageDrawable(getResources().getDrawable(R.drawable.icon_retweet_on));
         }
