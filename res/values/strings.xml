@@ -188,4 +188,6 @@
     <string name="user_detail_loading">Loading</string>
     <string name="user_detail_tab_info">Info</string>
     <string name="user_detail_tab_timeline">Timeline</string>
+    <string name="notice_unfavorite_succeeded">Succeeded to unfavorite</string>
+    <string name="notice_unfavorite_failed">Failed to unfavorite</string>
 </resources>

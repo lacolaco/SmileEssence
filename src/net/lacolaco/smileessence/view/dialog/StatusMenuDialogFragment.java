@@ -37,6 +37,10 @@ import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.command.CommandOpenUserDetail;
 import net.lacolaco.smileessence.command.status.*;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.twitter.TwitterApi;
+import net.lacolaco.smileessence.twitter.task.DeleteStatusTask;
+import net.lacolaco.smileessence.twitter.task.FavoriteTask;
+import net.lacolaco.smileessence.twitter.task.UnfavoriteTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
@@ -160,6 +164,49 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
     @Override
     public void onClick(View v)
     {
-
+        MainActivity activity = (MainActivity)getActivity();
+        Account account = activity.getCurrentAccount();
+        Status status = TwitterUtils.tryGetStatus(account, getStatusID());
+        switch(v.getId())
+        {
+            case R.id.button_status_detail_reply:
+            {
+                new StatusCommandReply(activity, status).execute();
+                break;
+            }
+            case R.id.button_status_detail_retweet:
+            {
+                Long retweetID = (Long)v.getTag();
+                if(retweetID != -1L)
+                {
+                    new DeleteStatusTask(new TwitterApi(account).getTwitter(), retweetID, activity).execute();
+                }
+                else
+                {
+                    new StatusCommandRetweet(activity, status, account).execute();
+                }
+                break;
+            }
+            case R.id.button_status_detail_favorite:
+            {
+                Boolean isFavorited = (Boolean)v.getTag();
+                long statusID = status.isRetweet() ? status.getRetweetedStatus().getId() : status.getId();
+                if(isFavorited)
+                {
+                    new UnfavoriteTask(new TwitterApi(account).getTwitter(), statusID, activity).execute();
+                }
+                else
+                {
+                    new FavoriteTask(new TwitterApi(account).getTwitter(), statusID, activity).execute();
+                }
+                break;
+            }
+            case R.id.button_status_detail_delete:
+            {
+                new StatusCommandDelete(activity, status, account).execute();
+                break;
+            }
+        }
+        dismiss();
     }
 }
