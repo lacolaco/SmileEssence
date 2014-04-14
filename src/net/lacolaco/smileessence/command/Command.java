@@ -66,6 +66,7 @@ public abstract class Command implements IViewModel
         commands.add(new StatusCommandTofuBuster(activity, null));
         commands.add(new StatusCommandNanigaja(activity, null, null));
         commands.add(new StatusCommandMakeAnonymous(activity, null, null));
+        commands.add(new StatusCommandOpenChain(activity, null, null));
         //User
         commands.add(new UserCommandReply(activity, null));
         commands.add(new UserCommandAddToReply(activity, null));
