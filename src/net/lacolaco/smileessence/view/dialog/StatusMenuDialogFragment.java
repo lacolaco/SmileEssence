@@ -112,10 +112,14 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         ImageButton message = (ImageButton)view.findViewById(R.id.button_status_detail_reply);
         message.setOnClickListener(this);
         ImageButton retweet = (ImageButton)view.findViewById(R.id.button_status_detail_retweet);
-        retweet.setTag(status.getCurrentUserRetweetId());
         if(status.isRetweet() && status.getUser().getId() == account.userID)
         {
             retweet.setImageDrawable(getResources().getDrawable(R.drawable.icon_retweet_on));
+            retweet.setTag(status.getId());
+        }
+        else
+        {
+            retweet.setTag(-1L);
         }
         retweet.setOnClickListener(this);
         ImageButton favorite = (ImageButton)view.findViewById(R.id.button_status_detail_favorite);
