@@ -26,22 +26,34 @@ package net.lacolaco.smileessence.command.post;
 
 import android.app.Activity;
 import net.lacolaco.smileessence.command.Command;
+import net.lacolaco.smileessence.view.adapter.PostState;
 
 public abstract class PostCommand extends Command
 {
 
-    private final String originText;
-
-    public PostCommand(Activity activity, String originText)
+    public PostCommand(Activity activity)
     {
         super(-1, activity);
-        this.originText = originText;
     }
 
-    public String getOriginText()
+    public abstract String getReplacedText(String s);
+
+    @Override
+    public boolean execute()
     {
-        return originText;
+        PostState state = PostState.getState();
+        String text = state.getText();
+        int start = state.getSelectionStart();
+        int end = state.getSelectionEnd();
+        if(start == end)
+        {
+            start = 0;
+            end = text.length();
+        }
+        String substring = text.substring(start, end);
+        String replacedText = getReplacedText(substring);
+        StringBuilder builder = new StringBuilder(text);
+        state.beginTransaction().setText(builder.replace(start, end, replacedText).toString()).commit();
+        return true;
     }
-
-    public abstract String build();
 }

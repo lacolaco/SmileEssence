@@ -41,11 +41,13 @@ public class PostCommandsTest extends ActivityInstrumentationTestCase2<MainActiv
     public void testReplace() throws Exception
     {
         String s = "テスト（テスト）";
-        PostCommandMorse morse = new PostCommandMorse(getActivity(), s);
+        PostCommandMorse morse = new PostCommandMorse(getActivity());
+        PostState.getState().removeListener();
+        PostState.getState().beginTransaction().setText(s).commit();
         assertEquals(true, morse instanceof PostCommand);
         assertEquals(true, morse instanceof Command);
-        assertEquals(Morse.jaToMorse(s), morse.build());
+        assertEquals(Morse.jaToMorse(s), morse.getReplacedText(s));
         morse.execute();
-        assertEquals(PostState.getState().getText(), morse.build());
+        assertEquals(PostState.getState().getText(), morse.getReplacedText(s));
     }
 }

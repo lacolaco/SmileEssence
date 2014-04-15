@@ -25,36 +25,33 @@
 package net.lacolaco.smileessence.command.post;
 
 import android.app.Activity;
+import android.text.TextUtils;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.util.Morse;
 
 public class PostCommandMorse extends PostCommand
 {
 
-    public PostCommandMorse(Activity activity, String s)
+    public PostCommandMorse(Activity activity)
     {
-        super(activity, s);
+        super(activity);
     }
 
     @Override
-    public String build()
+    public String getReplacedText(String s)
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public boolean execute()
-    {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return Morse.jaToMorse(s);
     }
 
     @Override
     public String getText()
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getActivity().getString(R.string.command_post_morse);
     }
 
     @Override
     public boolean isEnabled()
     {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return !TextUtils.isEmpty(getText());
     }
 }
