@@ -105,6 +105,7 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         View view = activity.getLayoutInflater().inflate(R.layout.dialog_status_detail, null);
         View statusHeader = view.findViewById(R.id.layout_status_header);
         statusHeader = new StatusViewModel(status, account).getView(activity, activity.getLayoutInflater(), statusHeader);
+        statusHeader.setClickable(false);
         ImageButton message = (ImageButton)view.findViewById(R.id.button_status_detail_reply);
         message.setOnClickListener(this);
         ImageButton retweet = (ImageButton)view.findViewById(R.id.button_status_detail_retweet);
