@@ -67,40 +67,40 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     {
         switch(v.getId())
         {
-            case R.id.post_delete:
+            case R.id.button_post_delete:
             {
                 editText.setText("");
                 break;
             }
-            case R.id.post_media:
+            case R.id.button_post_media:
             {
                 //TODO media dialog
                 new Notificator(getActivity(), "Media").publish();
                 break;
             }
-            case R.id.post_menu:
+            case R.id.button_post_menu:
             {
                 //TODO post menu
                 new Notificator(getActivity(), "Menu").publish();
                 break;
             }
-            case R.id.post_tweet_button:
+            case R.id.button_post_tweet:
             {
                 //TODO tweet
                 new Notificator(getActivity(), "Tweet").publish();
                 break;
             }
-            case R.id.post_reply_delete:
+            case R.id.button_post_reply_delete:
             {
                 viewGroupReply.setVisibility(View.GONE);
                 break;
             }
-            case R.id.post_media_delete:
+            case R.id.button_post_media_delete:
             {
                 viewGroupMedia.setVisibility(View.GONE);
                 break;
             }
-            case R.id.post_media_image:
+            case R.id.image_post_media:
             {
                 //TODO intent for image
                 new Notificator(getActivity(), "Image").publish();
@@ -194,21 +194,21 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
                 return widget.getSelectionEnd() == widget.length() || super.right(widget, buffer);
             }
         });
-        ImageButton imageButtonDeleteText = (ImageButton)v.findViewById(R.id.post_delete);
+        ImageButton imageButtonDeleteText = (ImageButton)v.findViewById(R.id.button_post_delete);
         imageButtonDeleteText.setOnClickListener(this);
-        ImageButton imageButtonMedia = (ImageButton)v.findViewById(R.id.post_media);
+        ImageButton imageButtonMedia = (ImageButton)v.findViewById(R.id.button_post_media);
         imageButtonMedia.setOnClickListener(this);
-        ImageButton imageButtonMenu = (ImageButton)v.findViewById(R.id.post_menu);
+        ImageButton imageButtonMenu = (ImageButton)v.findViewById(R.id.button_post_menu);
         imageButtonMenu.setOnClickListener(this);
         //Reply view
         viewGroupReply = getReplyViewGroup(v);
-        TextView textViewReply = (TextView)viewGroupReply.findViewById(R.id.post_reply_text);
-        ImageButton imageButtonDeleteReply = (ImageButton)viewGroupReply.findViewById(R.id.post_reply_delete);
+        TextView textViewReply = (TextView)viewGroupReply.findViewById(R.id.layout_post_reply_status);
+        ImageButton imageButtonDeleteReply = (ImageButton)viewGroupReply.findViewById(R.id.button_post_reply_delete);
         imageButtonDeleteReply.setOnClickListener(this);
         //Media view
         viewGroupMedia = getMediaViewGroup(v);
-        ImageView imageViewMedia = (ImageView)viewGroupMedia.findViewById(R.id.post_media_image);
-        ImageButton imageButtonDeleteMedia = (ImageButton)viewGroupMedia.findViewById(R.id.post_media_delete);
+        ImageView imageViewMedia = (ImageView)viewGroupMedia.findViewById(R.id.image_post_media);
+        ImageButton imageButtonDeleteMedia = (ImageButton)viewGroupMedia.findViewById(R.id.button_post_media_delete);
         imageViewMedia.setOnClickListener(this);
         imageButtonDeleteMedia.setOnClickListener(this);
         return v;
@@ -236,7 +236,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
 
     private Button getTweetButton(View v)
     {
-        return (Button)v.findViewById(R.id.post_tweet_button);
+        return (Button)v.findViewById(R.id.button_post_tweet);
     }
 
     @Override
@@ -268,7 +268,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         }
         if(viewGroupReply != null)
         {
-            TextView textViewReply = (TextView)viewGroupReply.findViewById(R.id.post_reply_text);
+            TextView textViewReply = (TextView)viewGroupReply.findViewById(R.id.layout_post_reply_status);
             if(TextUtils.isEmpty(postState.getInReplyToScreenName()))
             {
                 viewGroupReply.setVisibility(View.GONE);
@@ -281,7 +281,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         }
         if(viewGroupMedia != null)
         {
-            ImageView imageViewMedia = (ImageView)viewGroupMedia.findViewById(R.id.post_media_image);
+            ImageView imageViewMedia = (ImageView)viewGroupMedia.findViewById(R.id.image_post_media);
             if(TextUtils.isEmpty(postState.getMediaFilePath()))
             {
                 viewGroupMedia.setVisibility(View.GONE);

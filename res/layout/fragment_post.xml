@@ -43,14 +43,15 @@
             android:background="@android:color/holo_orange_dark"
             android:visibility="gone">
 
-            <TextView
-                android:id="@+id/post_reply_text"
+            <include
+                android:id="@+id/layout_post_reply_status"
+                layout="@layout/list_item_status"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"/>
 
             <ImageButton
-                android:id="@+id/post_reply_delete"
+                android:id="@+id/button_post_reply_delete"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -88,7 +89,7 @@
                 >
 
                 <ImageButton
-                    android:id="@+id/post_delete"
+                    android:id="@+id/button_post_delete"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:layout_alignParentTop="true"
@@ -118,7 +119,7 @@
             android:alignmentMode="alignBounds">
 
             <ImageButton
-                android:id="@+id/post_media"
+                android:id="@+id/button_post_media"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
                 style="?attr/custom_button_transparent"
@@ -135,7 +136,7 @@
                 android:layout_column="1"/>
 
             <ImageButton
-                android:id="@+id/post_menu"
+                android:id="@+id/button_post_menu"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
                 style="?attr/custom_button_transparent"
@@ -161,7 +162,7 @@
                 android:background="?attr/button_round_blue">
 
                 <Button
-                    android:id="@+id/post_tweet_button"
+                    android:id="@+id/button_post_tweet"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -179,7 +180,7 @@
             android:visibility="gone">
 
             <ImageView
-                android:id="@+id/post_media_image"
+                android:id="@+id/image_post_media"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -187,7 +188,7 @@
                 android:scaleType="fitCenter"/>
 
             <ImageButton
-                android:id="@+id/post_media_delete"
+                android:id="@+id/button_post_media_delete"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
