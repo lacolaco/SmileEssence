@@ -27,6 +27,7 @@ package net.lacolaco.smileessence.view.dialog;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -106,6 +107,8 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         View statusHeader = view.findViewById(R.id.layout_status_header);
         statusHeader = new StatusViewModel(status, account).getView(activity, activity.getLayoutInflater(), statusHeader);
         statusHeader.setClickable(false);
+        int background = ((ColorDrawable)statusHeader.getBackground()).getColor();
+        view.setBackgroundColor(background);
         ImageButton message = (ImageButton)view.findViewById(R.id.button_status_detail_reply);
         message.setOnClickListener(this);
         ImageButton retweet = (ImageButton)view.findViewById(R.id.button_status_detail_retweet);
