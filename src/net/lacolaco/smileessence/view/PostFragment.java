@@ -201,10 +201,10 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         ImageButton imageButtonMenu = (ImageButton)v.findViewById(R.id.button_post_menu);
         imageButtonMenu.setOnClickListener(this);
         //Reply view
-        viewGroupReply = getReplyViewGroup(v);
-        TextView textViewReply = (TextView)viewGroupReply.findViewById(R.id.layout_post_reply_status);
-        ImageButton imageButtonDeleteReply = (ImageButton)viewGroupReply.findViewById(R.id.button_post_reply_delete);
-        imageButtonDeleteReply.setOnClickListener(this);
+        //        viewGroupReply = getReplyViewGroup(v);
+        //        TextView textViewReply = (TextView)viewGroupReply.findViewById(R.id.layout_post_reply_status);
+        //        ImageButton imageButtonDeleteReply = (ImageButton)viewGroupReply.findViewById(R.id.button_post_reply_delete);
+        //        imageButtonDeleteReply.setOnClickListener(this);
         //Media view
         viewGroupMedia = getMediaViewGroup(v);
         ImageView imageViewMedia = (ImageView)viewGroupMedia.findViewById(R.id.image_post_media);
