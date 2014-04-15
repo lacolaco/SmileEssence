@@ -25,112 +25,25 @@
 package net.lacolaco.smileessence.viewmodel;
 
 import android.test.InstrumentationTestCase;
+import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.util.TwitterMock;
 
 public class StatusViewModelTest extends InstrumentationTestCase
 {
 
     TwitterMock mock;
+    Account account;
 
     @Override
     public void setUp() throws Exception
     {
         mock = new TwitterMock(getInstrumentation().getContext());
+        account = new Account(mock.getAccessToken(), mock.getAccessTokenSecret(), mock.getUserMock().getId(), mock.getUserMock().getScreenName());
     }
 
     public void testID() throws Exception
     {
-        StatusViewModel status = new StatusViewModel(mock.getStatusMock(), );
+        StatusViewModel status = new StatusViewModel(mock.getStatusMock(), account);
         assertNotSame(0L, status.getID());
-    }
-
-    public void testUserID() throws Exception
-    {
-        StatusViewModel status = new StatusViewModel(mock.getStatusMock(), );
-        assertNotSame(0L, status.getUserID());
-    }
-
-    public void testScreenName() throws Exception
-    {
-        StatusViewModel status = new StatusViewModel(mock.getStatusMock(), );
-        assertNotNull(status.getScreenName());
-    }
-
-    public void testName() throws Exception
-    {
-        StatusViewModel status = new StatusViewModel(mock.getStatusMock(), );
-        assertNotNull(status.getName());
-    }
-
-    public void testIconURL() throws Exception
-    {
-        StatusViewModel status = new StatusViewModel(mock.getStatusMock(), );
-        assertNotNull(status.getIconURL());
-    }
-
-    public void testText() throws Exception
-    {
-        StatusViewModel status = new StatusViewModel(mock.getStatusMock(), );
-        assertNotNull(status.getText());
-    }
-
-    public void testCreatedAt() throws Exception
-    {
-        StatusViewModel status = new StatusViewModel(mock.getStatusMock(), );
-        assertNotNull(status.getCreatedAt());
-    }
-
-    public void testSource() throws Exception
-    {
-        StatusViewModel status = new StatusViewModel(mock.getStatusMock(), );
-        assertNotNull(status.getSource());
-    }
-
-    public void testFavorited() throws Exception
-    {
-        StatusViewModel status = new StatusViewModel(mock.getStatusMock(), );
-        assertFalse(status.isFavorited());
-    }
-
-    public void testProtected() throws Exception
-    {
-        StatusViewModel status = new StatusViewModel(mock.getStatusMock(), );
-        assertFalse(status.isProtected());
-    }
-
-    public void testIsRetweet() throws Exception
-    {
-        StatusViewModel status = new StatusViewModel(mock.getRetweetMock(), );
-        assertNotNull(status.getRetweetedStatus());
-    }
-
-    public void testMentions() throws Exception
-    {
-        StatusViewModel status = new StatusViewModel(mock.getStatusMock(), );
-        assertNotNull(status.getMentions());
-    }
-
-    public void testHashtags() throws Exception
-    {
-        StatusViewModel status = new StatusViewModel(mock.getStatusMock(), );
-        assertNotNull(status.getHashtags());
-    }
-
-    public void testMedia() throws Exception
-    {
-        StatusViewModel status = new StatusViewModel(mock.getStatusMock(), );
-        assertNotNull(status.getMedia());
-    }
-
-    public void testURLs() throws Exception
-    {
-        StatusViewModel status = new StatusViewModel(mock.getStatusMock(), );
-        assertNotNull(status.getURLs());
-    }
-
-    public void testSymbol() throws Exception
-    {
-        StatusViewModel status = new StatusViewModel(mock.getStatusMock(), );
-        assertNotNull(status.getSymbols());
     }
 }
