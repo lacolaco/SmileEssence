@@ -36,7 +36,9 @@ public abstract class PostCommand extends Command
         super(-1, activity);
     }
 
-    public abstract String getReplacedText(String s);
+    public abstract String build(String s);
+
+    public abstract boolean isReplaceCommand();
 
     @Override
     public boolean execute()
@@ -45,13 +47,13 @@ public abstract class PostCommand extends Command
         String text = state.getText();
         int start = state.getSelectionStart();
         int end = state.getSelectionEnd();
-        if(start == end)
+        if(start == end && isReplaceCommand())
         {
             start = 0;
             end = text.length();
         }
         String substring = text.substring(start, end);
-        String replacedText = getReplacedText(substring);
+        String replacedText = build(substring);
         StringBuilder builder = new StringBuilder(text);
         state.beginTransaction().setText(builder.replace(start, end, replacedText).toString()).commit();
         return true;

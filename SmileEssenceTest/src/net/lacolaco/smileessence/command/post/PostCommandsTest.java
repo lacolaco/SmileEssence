@@ -43,11 +43,24 @@ public class PostCommandsTest extends ActivityInstrumentationTestCase2<MainActiv
         PostCommandMorse morse = new PostCommandMorse(getActivity());
         PostState.getState().removeListener();
         PostState.getState().beginTransaction().setText(s).commit();
-        assertEquals(Morse.jaToMorse(s), morse.getReplacedText(s));
+        assertEquals(Morse.jaToMorse(s), morse.build(s));
         morse.execute();
-        assertEquals(PostState.getState().getText(), morse.getReplacedText(s));
+        assertEquals(PostState.getState().getText(), morse.build(s));
         PostState.newState().beginTransaction().setText(s).setSelection(0, 3).commit();
         morse.execute();
         assertEquals(Morse.jaToMorse("テスト") + "（テスト）", PostState.getState().getText());
+    }
+
+    public void testInsert() throws Exception
+    {
+        String s = "テスト";
+        String inserted = "AAA";
+        PostCommandInsert insert = new PostCommandInsert(getActivity(), inserted);
+        PostState.getState().removeListener();
+        PostState.getState().beginTransaction().setText(s).commit();
+        assertEquals("テストAAA", insert.build(s));
+        PostState.newState().beginTransaction().setText(s).setCursor(0).commit();
+        insert.execute();
+        assertEquals("AAAテスト", PostState.getState().getText());
     }
 }
