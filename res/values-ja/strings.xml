@@ -191,4 +191,5 @@
     <string name="notice_unfavorite_succeeded">お気に入りを削除しました</string>
     <string name="notice_unfavorite_failed">お気に入りの削除に失敗しました</string>
     <string name="command_post_morse">モールスに変換</string>
+    <string name="command_open_template_list">定型文を挿入</string>
 </resources>
