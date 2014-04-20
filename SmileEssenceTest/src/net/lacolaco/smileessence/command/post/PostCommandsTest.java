@@ -26,7 +26,6 @@ package net.lacolaco.smileessence.command.post;
 
 import android.test.ActivityInstrumentationTestCase2;
 import net.lacolaco.smileessence.activity.MainActivity;
-import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.util.Morse;
 import net.lacolaco.smileessence.view.adapter.PostState;
 
@@ -44,10 +43,11 @@ public class PostCommandsTest extends ActivityInstrumentationTestCase2<MainActiv
         PostCommandMorse morse = new PostCommandMorse(getActivity());
         PostState.getState().removeListener();
         PostState.getState().beginTransaction().setText(s).commit();
-        assertEquals(true, morse instanceof PostCommand);
-        assertEquals(true, morse instanceof Command);
         assertEquals(Morse.jaToMorse(s), morse.getReplacedText(s));
         morse.execute();
         assertEquals(PostState.getState().getText(), morse.getReplacedText(s));
+        PostState.newState().beginTransaction().setText(s).setSelection(0, 3).commit();
+        morse.execute();
+        assertEquals(Morse.jaToMorse("テスト") + "（テスト）", PostState.getState().getText());
     }
 }
