@@ -72,6 +72,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
             case R.id.button_post_delete:
             {
                 editText.setText("");
+                PostState.getState().beginTransaction().setText("").setCursor(0).commit();
                 break;
             }
             case R.id.button_post_media:
@@ -82,6 +83,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
             }
             case R.id.button_post_menu:
             {
+                setStateFromView();
                 PostMenuDialogFragment menuDialogFragment = new PostMenuDialogFragment();
                 new DialogHelper(getActivity(), menuDialogFragment).show();
                 break;
@@ -109,6 +111,14 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
                 break;
             }
         }
+    }
+
+    private void setStateFromView()
+    {
+        PostState.getState().beginTransaction()
+                 .setText(editText.getText().toString())
+                 .setSelection(editText.getSelectionStart(), editText.getSelectionEnd())
+                 .commit();
     }
 
     // --------------------- Interface OnFocusChangeListener ---------------------
