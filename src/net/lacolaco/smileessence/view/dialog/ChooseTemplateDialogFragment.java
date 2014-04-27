@@ -33,16 +33,15 @@ import android.widget.ListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.Command;
-import net.lacolaco.smileessence.command.CommandOpenTemplateList;
-import net.lacolaco.smileessence.command.post.PostCommandInsert;
-import net.lacolaco.smileessence.command.post.PostCommandMorse;
+import net.lacolaco.smileessence.command.post.PostCommandUseTemplate;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.entity.Template;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostMenuDialogFragment extends MenuDialogFragment
+public class ChooseTemplateDialogFragment extends MenuDialogFragment
 {
 
     // ------------------------ OVERRIDE METHODS ------------------------
@@ -53,7 +52,6 @@ public class PostMenuDialogFragment extends MenuDialogFragment
         MainActivity activity = (MainActivity)getActivity();
         Account account = activity.getCurrentAccount();
         List<Command> commands = getCommands(activity);
-        filterCommands(commands);
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
         ListView listView = (ListView)body.findViewById(R.id.listview_dialog_menu_list);
         CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);
@@ -73,10 +71,12 @@ public class PostMenuDialogFragment extends MenuDialogFragment
 
     public List<Command> getCommands(Activity activity)
     {
-        ArrayList<Command> commands = new ArrayList<>();
-        commands.add(new CommandOpenTemplateList(activity));
-        commands.add(new PostCommandMorse(activity));
-        commands.add(new PostCommandInsert(activity, "test"));
-        return commands;
+        ArrayList<Command> list = new ArrayList<>();
+        List<Template> templates = Template.getAll();
+        for(Template template : templates)
+        {
+            list.add(new PostCommandUseTemplate(activity, template));
+        }
+        return list;
     }
 }

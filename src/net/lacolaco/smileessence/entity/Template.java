@@ -70,7 +70,7 @@ public class Template extends Model implements IViewModel
         return convertedView;
     }
 
-    public static List<Model> getAll()
+    public static List<Template> getAll()
     {
         return new Select().from(Template.class).orderBy("COUNT DESC").execute();
     }

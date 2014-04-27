@@ -22,38 +22,27 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.command;
+package net.lacolaco.smileessence.command.post;
 
 import android.app.Activity;
-import net.lacolaco.smileessence.R;
-import net.lacolaco.smileessence.view.dialog.ChooseTemplateDialogFragment;
-import net.lacolaco.smileessence.view.dialog.DialogHelper;
+import net.lacolaco.smileessence.entity.Template;
 
-public class CommandOpenTemplateList extends Command
+public class PostCommandUseTemplate extends PostCommandInsert
 {
 
-    public CommandOpenTemplateList(Activity activity)
+    private final Template template;
+
+    public PostCommandUseTemplate(Activity activity, Template template)
     {
-        super(-1, activity);
+        super(activity, template.text);
+        this.template = template;
     }
 
     @Override
     public boolean execute()
     {
-        ChooseTemplateDialogFragment fragment = new ChooseTemplateDialogFragment();
-        new DialogHelper(getActivity(), fragment).show();
-        return true;
-    }
-
-    @Override
-    public String getText()
-    {
-        return getActivity().getString(R.string.command_open_template_list);
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
-        return true;
+        template.count++;
+        template.save();
+        return super.execute();
     }
 }

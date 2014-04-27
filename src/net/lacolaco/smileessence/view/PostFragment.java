@@ -45,6 +45,8 @@ import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.util.BitmapFileTask;
 import net.lacolaco.smileessence.view.adapter.PostState;
+import net.lacolaco.smileessence.view.dialog.DialogHelper;
+import net.lacolaco.smileessence.view.dialog.PostMenuDialogFragment;
 
 public class PostFragment extends Fragment implements TextWatcher, View.OnFocusChangeListener, View.OnClickListener, PostState.OnPostStateChangeListener
 {
@@ -80,8 +82,8 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
             }
             case R.id.button_post_menu:
             {
-                //TODO post menu
-                new Notificator(getActivity(), "Menu").publish();
+                PostMenuDialogFragment menuDialogFragment = new PostMenuDialogFragment();
+                new DialogHelper(getActivity(), menuDialogFragment).show();
                 break;
             }
             case R.id.button_post_tweet:

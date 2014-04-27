@@ -34,7 +34,6 @@ import android.view.*;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import com.activeandroid.Model;
 import net.lacolaco.smileessence.Application;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Template;
@@ -105,7 +104,7 @@ public class EditTemplateActivity extends Activity implements AdapterView.OnItem
 
     private Template[] getTemplates()
     {
-        List<Model> all = Template.getAll();
+        List<Template> all = Template.getAll();
         return all.toArray(new Template[all.size()]);
     }
 
