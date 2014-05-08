@@ -42,13 +42,17 @@ import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
+import net.lacolaco.smileessence.twitter.TwitterApi;
+import net.lacolaco.smileessence.twitter.task.TweetTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.util.BitmapFileTask;
 import net.lacolaco.smileessence.view.adapter.PostState;
 import net.lacolaco.smileessence.view.dialog.DialogHelper;
 import net.lacolaco.smileessence.view.dialog.PostMenuDialogFragment;
+import twitter4j.StatusUpdate;
 
-public class PostFragment extends Fragment implements TextWatcher, View.OnFocusChangeListener, View.OnClickListener, PostState.OnPostStateChangeListener
+public class PostFragment extends Fragment implements TextWatcher, View.OnFocusChangeListener, View.OnClickListener,
+        PostState.OnPostStateChangeListener
 {
 
     // ------------------------------ FIELDS ------------------------------
@@ -90,8 +94,12 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
             }
             case R.id.button_post_tweet:
             {
-                //TODO tweet
-                new Notificator(getActivity(), "Tweet").publish();
+                setStateFromView();
+                StatusUpdate statusUpdate = PostState.getState().toStatusUpdate();
+                MainActivity mainActivity = (MainActivity) getActivity();
+                TweetTask tweetTask = new TweetTask(new TwitterApi(mainActivity.getCurrentAccount()).getTwitter(), statusUpdate, mainActivity);
+                tweetTask.execute();
+                PostState.newState().beginTransaction().commit();
                 break;
             }
             case R.id.button_post_reply_delete:
@@ -128,12 +136,12 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     {
         if(hasFocus)
         {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(v, 0);
         }
         else
         {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }
     }
@@ -186,7 +194,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         Logger.debug("PostFragment CreateView");
-        MainActivity activity = (MainActivity)getActivity();
+        MainActivity activity = (MainActivity) getActivity();
         UserPreferenceHelper preferenceHelper = new UserPreferenceHelper(activity);
         View v = inflater.inflate(R.layout.fragment_post, null);
         buttonTweet = getTweetButton(v);
@@ -206,11 +214,11 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
                 return widget.getSelectionEnd() == widget.length() || super.right(widget, buffer);
             }
         });
-        ImageButton imageButtonDeleteText = (ImageButton)v.findViewById(R.id.button_post_delete);
+        ImageButton imageButtonDeleteText = (ImageButton) v.findViewById(R.id.button_post_delete);
         imageButtonDeleteText.setOnClickListener(this);
-        ImageButton imageButtonMedia = (ImageButton)v.findViewById(R.id.button_post_media);
+        ImageButton imageButtonMedia = (ImageButton) v.findViewById(R.id.button_post_media);
         imageButtonMedia.setOnClickListener(this);
-        ImageButton imageButtonMenu = (ImageButton)v.findViewById(R.id.button_post_menu);
+        ImageButton imageButtonMenu = (ImageButton) v.findViewById(R.id.button_post_menu);
         imageButtonMenu.setOnClickListener(this);
         //Reply view
         //        viewGroupReply = getReplyViewGroup(v);
@@ -219,8 +227,8 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         //        imageButtonDeleteReply.setOnClickListener(this);
         //Media view
         viewGroupMedia = getMediaViewGroup(v);
-        ImageView imageViewMedia = (ImageView)viewGroupMedia.findViewById(R.id.image_post_media);
-        ImageButton imageButtonDeleteMedia = (ImageButton)viewGroupMedia.findViewById(R.id.button_post_media_delete);
+        ImageView imageViewMedia = (ImageView) viewGroupMedia.findViewById(R.id.image_post_media);
+        ImageButton imageButtonDeleteMedia = (ImageButton) viewGroupMedia.findViewById(R.id.button_post_media_delete);
         imageViewMedia.setOnClickListener(this);
         imageButtonDeleteMedia.setOnClickListener(this);
         return v;
@@ -228,27 +236,27 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
 
     private TextView getCountTextView(View v)
     {
-        return (TextView)v.findViewById(R.id.post_text_count);
+        return (TextView) v.findViewById(R.id.post_text_count);
     }
 
     private EditText getEditText(View v)
     {
-        return (EditText)v.findViewById(R.id.post_edit_text);
+        return (EditText) v.findViewById(R.id.post_edit_text);
     }
 
     private LinearLayout getMediaViewGroup(View v)
     {
-        return (LinearLayout)v.findViewById(R.id.post_media_parent);
+        return (LinearLayout) v.findViewById(R.id.post_media_parent);
     }
 
     private LinearLayout getReplyViewGroup(View v)
     {
-        return (LinearLayout)v.findViewById(R.id.post_inreplyto_parent);
+        return (LinearLayout) v.findViewById(R.id.post_inreplyto_parent);
     }
 
     private Button getTweetButton(View v)
     {
-        return (Button)v.findViewById(R.id.button_post_tweet);
+        return (Button) v.findViewById(R.id.button_post_tweet);
     }
 
     @Override
@@ -280,7 +288,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         }
         if(viewGroupReply != null)
         {
-            TextView textViewReply = (TextView)viewGroupReply.findViewById(R.id.layout_post_reply_status);
+            TextView textViewReply = (TextView) viewGroupReply.findViewById(R.id.layout_post_reply_status);
             if(TextUtils.isEmpty(postState.getInReplyToScreenName()))
             {
                 viewGroupReply.setVisibility(View.GONE);
@@ -293,7 +301,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         }
         if(viewGroupMedia != null)
         {
-            ImageView imageViewMedia = (ImageView)viewGroupMedia.findViewById(R.id.image_post_media);
+            ImageView imageViewMedia = (ImageView) viewGroupMedia.findViewById(R.id.image_post_media);
             if(TextUtils.isEmpty(postState.getMediaFilePath()))
             {
                 viewGroupMedia.setVisibility(View.GONE);

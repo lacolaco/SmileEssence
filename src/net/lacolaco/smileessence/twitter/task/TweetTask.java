@@ -28,6 +28,7 @@ import android.app.Activity;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.logging.Logger;
+import net.lacolaco.smileessence.notification.NotificationType;
 import net.lacolaco.smileessence.notification.Notificator;
 import twitter4j.Status;
 import twitter4j.StatusUpdate;
@@ -72,7 +73,7 @@ public class TweetTask extends TwitterTask<Status>
         }
         else
         {
-            new Notificator(activity, R.string.notice_tweet_failed).publish();
+            new Notificator(activity, R.string.notice_tweet_failed, NotificationType.ALERT).publish();
         }
     }
 }
