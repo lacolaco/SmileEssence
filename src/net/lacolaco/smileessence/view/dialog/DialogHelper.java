@@ -43,23 +43,20 @@ public class DialogHelper
 
     public void show()
     {
-        FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
-        DialogFragment oldDialog = (DialogFragment)activity.getFragmentManager().findFragmentByTag(TAG_DIALOG);
-        if(oldDialog != null)
-        {
-            transaction.remove(oldDialog);
-        }
-        transaction.addToBackStack(null);
-        dialogFragment.show(transaction, TAG_DIALOG);
+        close(activity);
+        dialogFragment.show(activity.getFragmentManager().beginTransaction(), TAG_DIALOG);
     }
 
     public static void close(Activity activity)
     {
         FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
-        DialogFragment oldDialog = (DialogFragment)activity.getFragmentManager().findFragmentByTag(TAG_DIALOG);
+        DialogFragment oldDialog = (DialogFragment) activity.getFragmentManager().findFragmentByTag(TAG_DIALOG);
         if(oldDialog != null)
         {
-            transaction.remove(oldDialog).commit();
+            transaction.remove(oldDialog);
+            //            oldDialog.dismiss();
         }
+        //        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
