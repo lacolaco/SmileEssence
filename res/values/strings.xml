@@ -77,7 +77,7 @@
     <string name="setting_delete_authentication_title">Delete authentication</string>
     <string name="setting_delete_authentication_summary">Please authenticate again on next launch</string>
     <string name="setting_category_account_title">Account</string>
-    <string name="setting_application_information_title">Application infomation</string>
+    <string name="setting_application_information_title">Application information</string>
     <string name="setting_licenses_title">Licenses</string>
     <string name="error_setting_text_size_range">Must be between 8\-24</string>
     <string name="error_setting_text_size_not_number">Given value is not number</string>
@@ -183,8 +183,8 @@
     <string name="user_detail_follow">Follow</string>
     <string name="user_detail_followed_is_me">This is you</string>
     <string name="user_detail_unfollow">Unfollow</string>
-    <string name="user_detail_followed">フォローされています</string>
-    <string name="user_detail_not_followed">フォローされていません</string>
+    <string name="user_detail_followed">Followed</string>
+    <string name="user_detail_not_followed">Not Followed</string>
     <string name="user_detail_loading">Loading</string>
     <string name="user_detail_tab_info">Info</string>
     <string name="user_detail_tab_timeline">Timeline</string>
@@ -192,4 +192,5 @@
     <string name="notice_unfavorite_failed">Failed to unfavorite</string>
     <string name="command_post_morse">Parse to morse</string>
     <string name="command_open_template_list">Insert Templates</string>
+    <string name="dialog_confirm_finish_app">OK to close?</string>
 </resources>

@@ -33,6 +33,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.SparseArray;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -56,6 +57,7 @@ import net.lacolaco.smileessence.util.Themes;
 import net.lacolaco.smileessence.view.CustomListFragment;
 import net.lacolaco.smileessence.view.PostFragment;
 import net.lacolaco.smileessence.view.adapter.*;
+import net.lacolaco.smileessence.view.dialog.ConfirmDialogFragment;
 import net.lacolaco.smileessence.viewmodel.MessageViewModel;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 import net.lacolaco.smileessence.viewmodel.menu.MainActivityMenuHelper;
@@ -84,9 +86,42 @@ public class MainActivity extends Activity
 
     // --------------------- GETTER / SETTER METHODS ---------------------
 
+    private AppPreferenceHelper getAppPreferenceHelper()
+    {
+        return new AppPreferenceHelper(this);
+    }
+
     public Account getCurrentAccount()
     {
         return currentAccount;
+    }
+
+    public void setCurrentAccount(Account account)
+    {
+        this.currentAccount = account;
+    }
+
+    public int getCurrentPageIndex()
+    {
+        return this.viewPager.getCurrentItem();
+    }
+
+    private long getLastUsedAccountID()
+    {
+        String id = getAppPreferenceHelper().getValue(lastUsedAccountIDKey, "");
+        if(TextUtils.isEmpty(id))
+        {
+            return -1;
+        }
+        else
+        {
+            return Long.parseLong(id);
+        }
+    }
+
+    public int getPageCount()
+    {
+        return pagerAdapter.getCount();
     }
 
     public PageListAdapter getPagerAdapter()
@@ -94,9 +129,34 @@ public class MainActivity extends Activity
         return pagerAdapter;
     }
 
+    public int getThemeIndex()
+    {
+        return ((Application) getApplication()).getThemeIndex();
+    }
+
+    private UserPreferenceHelper getUserPreferenceHelper()
+    {
+        return new UserPreferenceHelper(this);
+    }
+
+    public String getVersion()
+    {
+        return getString(R.string.app_version);
+    }
+
     public ViewPager getViewPager()
     {
         return viewPager;
+    }
+
+    private boolean isAuthorized()
+    {
+        return getLastUsedAccountID() >= 0;
+    }
+
+    private boolean isFirstLaunchThisVersion()
+    {
+        return !getVersion().contentEquals(getAppPreferenceHelper().getValue("app.version", ""));
     }
 
     public boolean isStreaming()
@@ -107,6 +167,32 @@ public class MainActivity extends Activity
     public void setStreaming(boolean streaming)
     {
         this.streaming = streaming;
+    }
+
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface Callback ---------------------
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event)
+    {
+        if(event.getAction() != KeyEvent.ACTION_DOWN)
+        {
+            return super.dispatchKeyEvent(event);
+        }
+        switch(event.getKeyCode())
+        {
+            case KeyEvent.KEYCODE_BACK:
+            {
+                finish();
+                return false;
+            }
+            default:
+            {
+                return super.dispatchKeyEvent(event);
+            }
+        }
     }
 
     // ------------------------ OVERRIDE METHODS ------------------------
@@ -137,9 +223,17 @@ public class MainActivity extends Activity
         }
     }
 
-    public void setCurrentAccount(Account account)
+    @Override
+    public void finish()
     {
-        this.currentAccount = account;
+        if(getCurrentPageIndex() != PAGE_HOME)
+        {
+            getViewPager().setCurrentItem(1, true);
+        }
+        else
+        {
+            finish(getUserPreferenceHelper().getValue(R.string.key_setting_show_confirm_dialog, true));
+        }
     }
 
     public void startMainLogic()
@@ -155,7 +249,7 @@ public class MainActivity extends Activity
         bar.setDisplayShowHomeEnabled(true);
         bar.setDisplayShowTitleEnabled(false);
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        viewPager = (ViewPager)findViewById(R.id.viewPager);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
         pagerAdapter = new PageListAdapter(this, viewPager);
         initializePages();
         //viewPager.setOffscreenPageLimit(viewPager.getChildCount());
@@ -265,6 +359,11 @@ public class MainActivity extends Activity
         return true;
     }
 
+    public CustomListAdapter<?> getListAdapter(int i)
+    {
+        return adapterSparseArray.get(i);
+    }
+
     public boolean startStream()
     {
         if(!new NetworkHelper(this).canConnect())
@@ -286,7 +385,7 @@ public class MainActivity extends Activity
     public boolean updateActionBarIcon()
     {
         Twitter twitter = new TwitterApi(currentAccount).getTwitter();
-        final ImageView homeIcon = (ImageView)findViewById(android.R.id.home);
+        final ImageView homeIcon = (ImageView) findViewById(android.R.id.home);
         ShowUserTask userTask = new ShowUserTask(twitter, currentAccount.userID)
         {
             @Override
@@ -313,11 +412,6 @@ public class MainActivity extends Activity
         }
     }
 
-    private boolean isFirstLaunchThisVersion()
-    {
-        return !getVersion().contentEquals(getAppPreferenceHelper().getValue("app.version", ""));
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -336,27 +430,9 @@ public class MainActivity extends Activity
         Logger.debug("MainActivity:onCreate");
     }
 
-    private boolean isAuthorized()
-    {
-        return getLastUsedAccountID() >= 0;
-    }
-
-    private long getLastUsedAccountID()
-    {
-        String id = getAppPreferenceHelper().getValue(lastUsedAccountIDKey, "");
-        if(TextUtils.isEmpty(id))
-        {
-            return -1;
-        }
-        else
-        {
-            return Long.parseLong(id);
-        }
-    }
-
     private void setTheme()
     {
-        ((Application)getApplication()).setThemeIndex(new UserPreferenceHelper(this).getValue(R.string.key_setting_theme, 0));
+        ((Application) getApplication()).setThemeIndex(getUserPreferenceHelper().getValue(R.string.key_setting_theme, 0));
         setTheme(Themes.getTheme(getThemeIndex()));
         //        setTheme(Themes.getTheme(0));
     }
@@ -432,19 +508,29 @@ public class MainActivity extends Activity
 
     // -------------------------- OTHER METHODS --------------------------
 
-    public CustomListAdapter<?> getListAdapter(int i)
+    public void finish(boolean needConfirmDialog)
     {
-        return adapterSparseArray.get(i);
+        if(needConfirmDialog)
+        {
+            ConfirmDialogFragment.show(this, getString(R.string.dialog_confirm_finish_app), new Runnable()
+            {
+
+                @Override
+                public void run()
+                {
+                    forceFinish();
+                }
+            });
+        }
+        else
+        {
+            forceFinish();
+        }
     }
 
-    public int getPageCount()
+    private void forceFinish()
     {
-        return pagerAdapter.getCount();
-    }
-
-    public String getVersion()
-    {
-        return getString(R.string.app_version);
+        super.finish();
     }
 
     public boolean removeCurrentPage()
@@ -452,28 +538,8 @@ public class MainActivity extends Activity
         return this.pagerAdapter.removePage(getCurrentPageIndex());
     }
 
-    public int getCurrentPageIndex()
-    {
-        return this.viewPager.getCurrentItem();
-    }
-
     public boolean removePage(int position)
     {
         return this.pagerAdapter.removePage(position);
-    }
-
-    private AppPreferenceHelper getAppPreferenceHelper()
-    {
-        return new AppPreferenceHelper(this);
-    }
-
-    private UserPreferenceHelper getUserPreferenceHelper()
-    {
-        return new UserPreferenceHelper(this);
-    }
-
-    public int getThemeIndex()
-    {
-        return ((Application)getApplication()).getThemeIndex();
     }
 }

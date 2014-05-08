@@ -48,7 +48,7 @@ public class SharedPreferenceHelper
 
     public boolean getValue(String key, boolean defaultValue)
     {
-        return Boolean.valueOf(getPref().getString(key, String.valueOf(defaultValue)));
+        return getPref().getBoolean(key, defaultValue);
     }
 
     public int getValue(String key, int defaultValue)
