@@ -268,7 +268,7 @@ public class MainActivity extends Activity
         addListPage(getString(R.string.page_name_history), CustomListFragment.class, historyAdapter, false);
         pagerAdapter.refreshListNavigation();
         PostState.newState().beginTransaction().commit();
-        setSelectedPageIndex(PAGE_HOME);
+        setSelectedPageIndex(PAGE_HOME, false);
     }
 
     public boolean addListPage(String name, Class<? extends CustomListFragment> fragmentClass, CustomListAdapter<?> adapter, boolean withNotify)
@@ -298,7 +298,12 @@ public class MainActivity extends Activity
 
     public void setSelectedPageIndex(int position)
     {
-        getActionBar().setSelectedNavigationItem(position);
+        getViewPager().setCurrentItem(position, true);
+    }
+
+    public void setSelectedPageIndex(int position, boolean smooth)
+    {
+        getViewPager().setCurrentItem(position, smooth);
     }
 
     public boolean startTwitter()
