@@ -50,6 +50,7 @@ import net.lacolaco.smileessence.util.BitmapFileTask;
 import net.lacolaco.smileessence.view.adapter.PostState;
 import net.lacolaco.smileessence.view.dialog.DialogHelper;
 import net.lacolaco.smileessence.view.dialog.PostMenuDialogFragment;
+import net.lacolaco.smileessence.view.dialog.SelectImageDialogFragment;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 import twitter4j.Status;
 import twitter4j.StatusUpdate;
@@ -85,8 +86,9 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
             }
             case R.id.button_post_media:
             {
-                //TODO media dialog
-                new Notificator(getActivity(), "Media").publish();
+                setStateFromView();
+                SelectImageDialogFragment selectImageDialogFragment = new SelectImageDialogFragment();
+                new DialogHelper(getActivity(), selectImageDialogFragment).show();
                 break;
             }
             case R.id.button_post_menu:

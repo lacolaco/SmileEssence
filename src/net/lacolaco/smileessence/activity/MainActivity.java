@@ -28,8 +28,10 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.SparseArray;
@@ -70,6 +72,8 @@ public class MainActivity extends Activity
     // ------------------------------ FIELDS ------------------------------
 
     public static final int REQUEST_OAUTH = 10;
+    public static final int REQUEST_GET_PICTURE_FROM_GALLERY = 11;
+    public static final int REQUEST_GET_PICTURE_FROM_CAMERA = 12;
     public static final int PAGE_POST = 0;
     public static final int PAGE_HOME = 1;
     public static final int PAGE_MENTIONS = 2;
@@ -83,6 +87,7 @@ public class MainActivity extends Activity
     private TwitterStream stream;
     private SparseArray<CustomListAdapter<?>> adapterSparseArray = new SparseArray<>();
     private boolean streaming = false;
+    private Uri cameraTempFilePath;
 
     // --------------------- GETTER / SETTER METHODS ---------------------
 
@@ -218,6 +223,33 @@ public class MainActivity extends Activity
                     setCurrentAccount(account);
                     getAppPreferenceHelper().putValue(lastUsedAccountIDKey, account.getId());
                     startMainLogic();
+                }
+            }
+            case REQUEST_GET_PICTURE_FROM_GALLERY:
+            case REQUEST_GET_PICTURE_FROM_CAMERA:
+            {
+                try
+                {
+                    Uri uri;
+                    if(requestCode == REQUEST_GET_PICTURE_FROM_GALLERY)
+                    {
+                        uri = data.getData();
+                    }
+                    else
+                    {
+                        uri = cameraTempFilePath;
+                    }
+                    Cursor c = getContentResolver().query(uri, null, null, null, null);
+                    c.moveToFirst();
+                    String path = c.getString(c.getColumnIndex(MediaStore.MediaColumns.DATA));
+                    PostState.getState().beginTransaction().setMediaFilePath(path).commit();
+                    setSelectedPageIndex(PAGE_POST);
+                    new Notificator(this, R.string.notice_select_image_succeeded).publish();
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                    new Notificator(this, R.string.notice_select_image_failed).publish();
                 }
             }
         }
@@ -546,5 +578,15 @@ public class MainActivity extends Activity
     public boolean removePage(int position)
     {
         return this.pagerAdapter.removePage(position);
+    }
+
+    public Uri getCameraTempFilePath()
+    {
+        return cameraTempFilePath;
+    }
+
+    public void setCameraTempFilePath(Uri cameraTempFilePath)
+    {
+        this.cameraTempFilePath = cameraTempFilePath;
     }
 }

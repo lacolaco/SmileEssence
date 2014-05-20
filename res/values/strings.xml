@@ -193,4 +193,9 @@
     <string name="command_post_morse">Parse to morse</string>
     <string name="command_open_template_list">Insert Templates</string>
     <string name="dialog_confirm_finish_app">OK to close?</string>
+    <string name="command_select_image_from_gallery">From gallery</string>
+    <string name="command_select_image_from_camera">From camera</string>
+    <string name="dialog_title_select_image">Select image</string>
+    <string name="notice_select_image_succeeded">Succeed to select image</string>
+    <string name="notice_select_image_failed">Failed to select image</string>
 </resources>

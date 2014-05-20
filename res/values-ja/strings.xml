@@ -193,4 +193,9 @@
     <string name="command_post_morse">モールスに変換</string>
     <string name="command_open_template_list">定型文を挿入</string>
     <string name="dialog_confirm_finish_app">終了しますか？</string>
+    <string name="command_select_image_from_gallery">ギャラリーから選択する</string>
+    <string name="command_select_image_from_camera">カメラを起動する</string>
+    <string name="dialog_title_select_image">画像を選択</string>
+    <string name="notice_select_image_succeeded">画像を選択しました</string>
+    <string name="notice_select_image_failed">画像の選択に失敗しました</string>
 </resources>
