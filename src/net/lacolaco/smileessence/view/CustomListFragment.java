@@ -26,19 +26,21 @@ package net.lacolaco.smileessence.view;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 
-public class CustomListFragment extends Fragment implements AbsListView.OnScrollListener, SwipeRefreshLayout.OnRefreshListener
+public class CustomListFragment extends Fragment implements AbsListView.OnScrollListener,
+        PullToRefreshBase.OnRefreshListener2<ListView>
 {
 
     // ------------------------------ FIELDS ------------------------------
@@ -50,12 +52,19 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
     // ------------------------ INTERFACE METHODS ------------------------
 
 
-    // --------------------- Interface OnRefreshListener ---------------------
+    // --------------------- Interface OnRefreshListener2 ---------------------
+
 
     @Override
-    public void onRefresh()
+    public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView)
     {
-        getRefreshLayout(getView()).setRefreshing(false);
+
+    }
+
+    @Override
+    public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView)
+    {
+
     }
 
     // --------------------- Interface OnScrollListener ---------------------
@@ -68,7 +77,8 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
         CustomListAdapter<?> adapter = getListAdapter(fragmentIndex);
         adapter.setNotifiable(false);
 
-        if(absListView.getFirstVisiblePosition() == 0 && absListView.getChildAt(0) != null && absListView.getChildAt(0).getTop() == 0)
+        if(absListView.getFirstVisiblePosition() == 0 && absListView.getChildAt(0) != null && absListView.getChildAt(0)
+                                                                                                         .getTop() == 0)
         {
             if(scrollState == SCROLL_STATE_IDLE)
             {
@@ -110,30 +120,24 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View page = inflater.inflate(R.layout.fragment_list, container, false);
-        SwipeRefreshLayout refreshLayout = getRefreshLayout(page);
         Bundle args = getArguments();
         int fragmentIndex = args.getInt(FRAGMENT_INDEX);
-        ListView listView = getListView(page);
+        PullToRefreshListView listView = getListView(page);
         ListAdapter adapter = getListAdapter(fragmentIndex);
         listView.setAdapter(adapter);
         listView.setOnScrollListener(this);
-        refreshLayout.setOnRefreshListener(this);
+        listView.setOnRefreshListener(this);
         return page;
     }
 
     private CustomListAdapter<?> getListAdapter(int fragmentIndex)
     {
-        return ((MainActivity)getActivity()).getListAdapter(fragmentIndex);
+        return ((MainActivity) getActivity()).getListAdapter(fragmentIndex);
     }
 
-    private ListView getListView(View page)
+    private PullToRefreshListView getListView(View page)
     {
-        return (ListView)page.findViewById(R.id.fragment_list_listview);
-    }
-
-    private SwipeRefreshLayout getRefreshLayout(View page)
-    {
-        return (SwipeRefreshLayout)page.findViewById(R.id.fragment_list_refreshview);
+        return (PullToRefreshListView) page.findViewById(R.id.fragment_list_listview);
     }
 
     @Override

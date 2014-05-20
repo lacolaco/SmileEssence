@@ -22,6 +22,7 @@
     <orderEntry type="library" exported="" name="guava" level="application" />
     <orderEntry type="module" module-name="Crouton" exported="" />
     <orderEntry type="module" module-name="volley" exported="" />
+    <orderEntry type="module" module-name="PullToRefresh" exported="" />
   </component>
 </module>
 

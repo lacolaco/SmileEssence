@@ -28,19 +28,15 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/fragment_list_refreshview"
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        xmlns:ptr="http://schemas.android.com/apk/res/net.lacolaco.smileessence"
+        android:id="@+id/fragment_list_listview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ListView
-            android:id="@+id/fragment_list_listview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="ifContentScrolls"
-            android:fastScrollEnabled="true"
-            android:dividerHeight="1px"
-            android:divider="?attr/color_list_divider"
-            android:clickable="false"/>
-    </android.support.v4.widget.SwipeRefreshLayout>
+        android:layout_height="match_parent"
+        ptr:ptrMode="both"
+        ptr:ptrShowIndicator="false"
+        android:overScrollMode="never"
+        android:fastScrollEnabled="true"
+        android:dividerHeight="1px"
+        android:divider="?attr/color_list_divider"/>
 </FrameLayout>
