@@ -115,7 +115,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
             }
             case R.id.button_post_media_delete:
             {
-                viewGroupMedia.setVisibility(View.GONE);
+                removeImage();
                 break;
             }
             case R.id.image_post_media:
@@ -125,6 +125,13 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
                 break;
             }
         }
+    }
+
+    private void removeImage()
+    {
+        viewGroupMedia.setVisibility(View.GONE);
+        ((ImageView) viewGroupMedia.findViewById(R.id.image_post_media)).setImageBitmap(null);
+        PostState.getState().beginTransaction().setMediaFilePath("").commit();
     }
 
     private void setStateFromView()

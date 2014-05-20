@@ -209,49 +209,61 @@ public class MainActivity extends Activity
         {
             case REQUEST_OAUTH:
             {
-                if(resultCode != RESULT_OK)
-                {
-                    Logger.error(requestCode);
-                    new Notificator(this, R.string.notice_error_authenticate).publish();
-                    finish();
-                }
-                else
-                {
-                    AccessToken token = oauthSession.getAccessToken(data.getData());
-                    Account account = new Account(token.getToken(), token.getTokenSecret(), token.getUserId(), token.getScreenName());
-                    account.save();
-                    setCurrentAccount(account);
-                    getAppPreferenceHelper().putValue(lastUsedAccountIDKey, account.getId());
-                    startMainLogic();
-                }
+                receiveOAuth(requestCode, resultCode, data);
+                break;
             }
             case REQUEST_GET_PICTURE_FROM_GALLERY:
             case REQUEST_GET_PICTURE_FROM_CAMERA:
             {
-                try
-                {
-                    Uri uri;
-                    if(requestCode == REQUEST_GET_PICTURE_FROM_GALLERY)
-                    {
-                        uri = data.getData();
-                    }
-                    else
-                    {
-                        uri = cameraTempFilePath;
-                    }
-                    Cursor c = getContentResolver().query(uri, null, null, null, null);
-                    c.moveToFirst();
-                    String path = c.getString(c.getColumnIndex(MediaStore.MediaColumns.DATA));
-                    PostState.getState().beginTransaction().setMediaFilePath(path).commit();
-                    setSelectedPageIndex(PAGE_POST);
-                    new Notificator(this, R.string.notice_select_image_succeeded).publish();
-                }
-                catch(Exception e)
-                {
-                    e.printStackTrace();
-                    new Notificator(this, R.string.notice_select_image_failed).publish();
-                }
+                getImageUri(requestCode, data);
+                break;
             }
+        }
+    }
+
+    private void receiveOAuth(int requestCode, int resultCode, Intent data)
+    {
+        if(resultCode != RESULT_OK)
+        {
+            Logger.error(requestCode);
+            new Notificator(this, R.string.notice_error_authenticate).publish();
+            finish();
+        }
+        else
+        {
+            AccessToken token = oauthSession.getAccessToken(data.getData());
+            Account account = new Account(token.getToken(), token.getTokenSecret(), token.getUserId(), token.getScreenName());
+            account.save();
+            setCurrentAccount(account);
+            getAppPreferenceHelper().putValue(lastUsedAccountIDKey, account.getId());
+            startMainLogic();
+        }
+    }
+
+    private void getImageUri(int requestCode, Intent data)
+    {
+        try
+        {
+            Uri uri;
+            if(requestCode == REQUEST_GET_PICTURE_FROM_GALLERY)
+            {
+                uri = data.getData();
+            }
+            else
+            {
+                uri = cameraTempFilePath;
+            }
+            Cursor c = getContentResolver().query(uri, null, null, null, null);
+            c.moveToFirst();
+            String path = c.getString(c.getColumnIndex(MediaStore.MediaColumns.DATA));
+            PostState.getState().beginTransaction().setMediaFilePath(path).commit();
+            setSelectedPageIndex(PAGE_POST);
+            new Notificator(this, R.string.notice_select_image_succeeded).publish();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            new Notificator(this, R.string.notice_select_image_failed).publish();
         }
     }
 

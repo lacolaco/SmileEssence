@@ -40,7 +40,7 @@
             android:id="@+id/post_inreplyto_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_orange_light"
+            android:background="@android:color/holo_orange_dark"
             android:visibility="gone">
 
             <include
@@ -177,6 +177,7 @@
             android:id="@+id/post_media_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:visibility="gone">
 
             <ImageView
@@ -185,13 +186,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:clickable="true"
-                android:scaleType="fitCenter"/>
+                android:scaleType="centerCrop"/>
 
             <ImageButton
                 android:id="@+id/button_post_media_delete"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:layout_gravity="top"
                 style="?attr/custom_button_transparent"
                 android:src="?attr/icon_post_delete"
                 android:scaleType="fitCenter"/>
