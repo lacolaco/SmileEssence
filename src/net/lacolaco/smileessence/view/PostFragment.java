@@ -80,6 +80,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
             {
                 editText.setText("");
                 PostState.getState().beginTransaction().setText("").setCursor(0).commit();
+                viewGroupReply.setVisibility(View.GONE);
                 break;
             }
             case R.id.button_post_media:
