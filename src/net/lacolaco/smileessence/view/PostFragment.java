@@ -39,6 +39,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
@@ -49,6 +50,8 @@ import net.lacolaco.smileessence.util.BitmapFileTask;
 import net.lacolaco.smileessence.view.adapter.PostState;
 import net.lacolaco.smileessence.view.dialog.DialogHelper;
 import net.lacolaco.smileessence.view.dialog.PostMenuDialogFragment;
+import net.lacolaco.smileessence.viewmodel.StatusViewModel;
+import twitter4j.Status;
 import twitter4j.StatusUpdate;
 
 public class PostFragment extends Fragment implements TextWatcher, View.OnFocusChangeListener, View.OnClickListener,
@@ -123,10 +126,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
 
     private void setStateFromView()
     {
-        PostState.getState().beginTransaction()
-                 .setText(editText.getText().toString())
-                 .setSelection(editText.getSelectionStart(), editText.getSelectionEnd())
-                 .commit();
+        PostState.getState().beginTransaction().setText(editText.getText().toString()).setSelection(editText.getSelectionStart(), editText.getSelectionEnd()).commit();
     }
 
     // --------------------- Interface OnFocusChangeListener ---------------------
@@ -221,10 +221,9 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         ImageButton imageButtonMenu = (ImageButton) v.findViewById(R.id.button_post_menu);
         imageButtonMenu.setOnClickListener(this);
         //Reply view
-        //        viewGroupReply = getReplyViewGroup(v);
-        //        TextView textViewReply = (TextView)viewGroupReply.findViewById(R.id.layout_post_reply_status);
-        //        ImageButton imageButtonDeleteReply = (ImageButton)viewGroupReply.findViewById(R.id.button_post_reply_delete);
-        //        imageButtonDeleteReply.setOnClickListener(this);
+        viewGroupReply = getReplyViewGroup(v);
+        ImageButton imageButtonDeleteReply = (ImageButton) viewGroupReply.findViewById(R.id.button_post_reply_delete);
+        imageButtonDeleteReply.setOnClickListener(this);
         //Media view
         viewGroupMedia = getMediaViewGroup(v);
         ImageView imageViewMedia = (ImageView) viewGroupMedia.findViewById(R.id.image_post_media);
@@ -281,6 +280,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     public void onPostStateChange(PostState postState)
     {
         Logger.debug("PostFragment PostStateChange");
+        MainActivity activity = (MainActivity) getActivity();
         if(editText != null)
         {
             editText.setText(postState.getText());
@@ -288,15 +288,21 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         }
         if(viewGroupReply != null)
         {
-            TextView textViewReply = (TextView) viewGroupReply.findViewById(R.id.layout_post_reply_status);
-            if(TextUtils.isEmpty(postState.getInReplyToScreenName()))
+            if(PostState.getState().getInReplyToStatusID() >= 0)
             {
-                viewGroupReply.setVisibility(View.GONE);
+                viewGroupReply.setVisibility(View.VISIBLE);
+                View statusHeader = viewGroupReply.findViewById(R.id.layout_post_reply_status);
+                Account account = activity.getCurrentAccount();
+                Status status = TwitterUtils.tryGetStatus(account, PostState.getState().getInReplyToStatusID());
+                statusHeader = new StatusViewModel(status, account).getView(activity, activity.getLayoutInflater(), statusHeader);
+                statusHeader.setClickable(false);
+                statusHeader.setBackgroundColor(getResources().getColor(R.color.transparent));
+                ImageButton imageButtonDeleteReply = (ImageButton) viewGroupReply.findViewById(R.id.button_post_reply_delete);
+                imageButtonDeleteReply.setOnClickListener(this);
             }
             else
             {
-                viewGroupReply.setVisibility(View.VISIBLE);
-                textViewReply.setText(String.format("%s: %s", postState.getInReplyToScreenName(), postState.getInReplyToText()));
+                viewGroupReply.setVisibility(View.GONE);
             }
         }
         if(viewGroupMedia != null)
