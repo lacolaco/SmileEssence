@@ -177,7 +177,7 @@
             android:id="@+id/post_media_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:visibility="gone">
 
             <ImageView
@@ -190,13 +190,12 @@
 
             <ImageButton
                 android:id="@+id/button_post_media_delete"
-                android:layout_width="40dp"
+                android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_gravity="top"
                 style="?attr/custom_button_transparent"
                 android:src="?attr/icon_post_delete"
-                android:scaleType="fitCenter"/>
+                android:scaleType="fitStart"/>
         </LinearLayout>
     </LinearLayout>
 
