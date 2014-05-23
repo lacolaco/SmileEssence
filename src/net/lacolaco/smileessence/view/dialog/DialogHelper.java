@@ -41,7 +41,7 @@ public class DialogHelper
         this.dialogFragment = dialogFragment;
     }
 
-    public void show()
+    public static void showDialog(Activity activity, DialogFragment dialogFragment)
     {
         close(activity);
         dialogFragment.show(activity.getFragmentManager().beginTransaction(), TAG_DIALOG);
@@ -58,5 +58,10 @@ public class DialogHelper
         }
         //        transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    public void show()
+    {
+        showDialog(activity, dialogFragment);
     }
 }
