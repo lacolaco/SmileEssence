@@ -26,6 +26,8 @@ package net.lacolaco.smileessence.view;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Spannable;
@@ -41,7 +43,6 @@ import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.logging.Logger;
-import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.TweetTask;
@@ -54,6 +55,8 @@ import net.lacolaco.smileessence.view.dialog.SelectImageDialogFragment;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 import twitter4j.Status;
 import twitter4j.StatusUpdate;
+
+import java.io.File;
 
 public class PostFragment extends Fragment implements TextWatcher, View.OnFocusChangeListener, View.OnClickListener,
         PostState.OnPostStateChangeListener
@@ -79,38 +82,27 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         {
             case R.id.button_post_delete:
             {
-                editText.setText("");
-                PostState.getState().beginTransaction().setText("").setCursor(0).commit();
-                viewGroupReply.setVisibility(View.GONE);
+                deletePost();
                 break;
             }
             case R.id.button_post_media:
             {
-                setStateFromView();
-                SelectImageDialogFragment selectImageDialogFragment = new SelectImageDialogFragment();
-                DialogHelper.showDialog(getActivity(), selectImageDialogFragment);
+                setImage();
                 break;
             }
             case R.id.button_post_menu:
             {
-                setStateFromView();
-                PostMenuDialogFragment menuDialogFragment = new PostMenuDialogFragment();
-                DialogHelper.showDialog(getActivity(), menuDialogFragment);
+                openPostMenu();
                 break;
             }
             case R.id.button_post_tweet:
             {
-                setStateFromView();
-                StatusUpdate statusUpdate = PostState.getState().toStatusUpdate();
-                MainActivity mainActivity = (MainActivity) getActivity();
-                TweetTask tweetTask = new TweetTask(new TwitterApi(mainActivity.getCurrentAccount()).getTwitter(), statusUpdate, mainActivity);
-                tweetTask.execute();
-                PostState.newState().beginTransaction().commit();
+                submitPost();
                 break;
             }
             case R.id.button_post_reply_delete:
             {
-                viewGroupReply.setVisibility(View.GONE);
+                deleteReply();
                 break;
             }
             case R.id.button_post_media_delete:
@@ -120,15 +112,63 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
             }
             case R.id.image_post_media:
             {
-                //TODO intent for image
-                new Notificator(getActivity(), "Image").publish();
+                displayImage();
                 break;
             }
         }
     }
 
+    private void displayImage()
+    {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.setDataAndType(Uri.fromFile(new File(PostState.getState().getMediaFilePath())), "image/*");
+        getActivity().startActivity(intent);
+    }
+
+    private void deleteReply()
+    {
+        viewGroupReply.setVisibility(View.GONE);
+    }
+
+    private void submitPost()
+    {
+        hideIME();
+        setStateFromView();
+        StatusUpdate statusUpdate = PostState.getState().toStatusUpdate();
+        MainActivity mainActivity = (MainActivity) getActivity();
+        TweetTask tweetTask = new TweetTask(new TwitterApi(mainActivity.getCurrentAccount()).getTwitter(), statusUpdate, mainActivity);
+        tweetTask.execute();
+        PostState.newState().beginTransaction().commit();
+    }
+
+    private void openPostMenu()
+    {
+        hideIME();
+        setStateFromView();
+        PostMenuDialogFragment menuDialogFragment = new PostMenuDialogFragment();
+        DialogHelper.showDialog(getActivity(), menuDialogFragment);
+    }
+
+    private void setImage()
+    {
+        hideIME();
+        setStateFromView();
+        SelectImageDialogFragment selectImageDialogFragment = new SelectImageDialogFragment();
+        DialogHelper.showDialog(getActivity(), selectImageDialogFragment);
+    }
+
+    private void deletePost()
+    {
+        editText.setText("");
+        PostState.getState().beginTransaction().setText("").setCursor(0).commit();
+        deleteReply();
+    }
+
     private void removeImage()
     {
+        hideIME();
         viewGroupMedia.setVisibility(View.GONE);
         ((ImageView) viewGroupMedia.findViewById(R.id.image_post_media)).setImageBitmap(null);
         PostState.getState().beginTransaction().setMediaFilePath("").commit();
@@ -146,14 +186,24 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     {
         if(hasFocus)
         {
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(v, 0);
+            showIME();
         }
         else
         {
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            hideIME();
         }
+    }
+
+    private void hideIME()
+    {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
+
+    private void showIME()
+    {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(editText, 0);
     }
 
     // --------------------- Interface TextWatcher ---------------------
