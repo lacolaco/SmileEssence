@@ -67,7 +67,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     private EditText editText;
     private TextView textViewCount;
     private Button buttonTweet;
-    private LinearLayout viewGroupReply;
+    private ViewGroup viewGroupReply;
     private ViewGroup viewGroupMedia;
 
     // ------------------------ INTERFACE METHODS ------------------------
@@ -303,14 +303,14 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         return (EditText) v.findViewById(R.id.post_edit_text);
     }
 
-    private LinearLayout getMediaViewGroup(View v)
+    private ViewGroup getMediaViewGroup(View v)
     {
-        return (LinearLayout) v.findViewById(R.id.post_media_parent);
+        return (ViewGroup) v.findViewById(R.id.post_media_parent);
     }
 
-    private LinearLayout getReplyViewGroup(View v)
+    private ViewGroup getReplyViewGroup(View v)
     {
-        return (LinearLayout) v.findViewById(R.id.post_inreplyto_parent);
+        return (ViewGroup) v.findViewById(R.id.post_inreplyto_parent);
     }
 
     private Button getTweetButton(View v)
@@ -375,8 +375,9 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
             else
             {
                 viewGroupMedia.setVisibility(View.VISIBLE);
-                new BitmapFileTask(postState.getMediaFilePath(), imageViewMedia).execute();
+
             }
+            new BitmapFileTask(activity, postState.getMediaFilePath(), imageViewMedia).execute();
         }
     }
 }

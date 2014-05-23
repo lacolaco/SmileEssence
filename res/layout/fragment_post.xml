@@ -182,17 +182,15 @@
 
             <ImageView
                 android:id="@+id/image_post_media"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:scaleType="centerCrop"/>
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:clickable="true"/>
 
             <ImageButton
                 android:id="@+id/button_post_media_delete"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
                 style="?attr/custom_button_transparent"
                 android:src="?attr/icon_post_delete"
                 android:scaleType="fitStart"/>
