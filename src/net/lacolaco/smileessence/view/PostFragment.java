@@ -88,14 +88,14 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
             {
                 setStateFromView();
                 SelectImageDialogFragment selectImageDialogFragment = new SelectImageDialogFragment();
-                new DialogHelper(getActivity(), selectImageDialogFragment).show();
+                DialogHelper.showDialog(getActivity(), selectImageDialogFragment);
                 break;
             }
             case R.id.button_post_menu:
             {
                 setStateFromView();
                 PostMenuDialogFragment menuDialogFragment = new PostMenuDialogFragment();
-                new DialogHelper(getActivity(), menuDialogFragment).show();
+                DialogHelper.showDialog(getActivity(), menuDialogFragment);
                 break;
             }
             case R.id.button_post_tweet:
