@@ -37,6 +37,7 @@ import net.lacolaco.smileessence.data.ImageCache;
 import net.lacolaco.smileessence.data.UserCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
+import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.util.NameStyles;
 import net.lacolaco.smileessence.util.StringUtils;
 import net.lacolaco.smileessence.util.Themes;
@@ -81,7 +82,7 @@ public class StatusViewModel implements IViewModel
             retweetedStatus = new StatusViewModel(status.getRetweetedStatus(), account);
         }
         id = status.getId();
-        text = status.getText();
+        text = TwitterUtils.replaceURLEntities(status.getText(), status.getURLEntities(), false);
         createdAt = status.getCreatedAt();
         source = status.getSource();
         isFavorited = status.isFavorited();

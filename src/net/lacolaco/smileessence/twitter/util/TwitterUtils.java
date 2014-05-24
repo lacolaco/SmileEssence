@@ -24,6 +24,7 @@
 
 package net.lacolaco.smileessence.twitter.util;
 
+import android.text.TextUtils;
 import com.twitter.Validator;
 import net.lacolaco.smileessence.data.DirectMessageCache;
 import net.lacolaco.smileessence.data.StatusCache;
@@ -34,10 +35,7 @@ import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.ShowDirectMessageTask;
 import net.lacolaco.smileessence.twitter.task.ShowStatusTask;
 import net.lacolaco.smileessence.twitter.task.ShowUserTask;
-import twitter4j.DirectMessage;
-import twitter4j.Status;
-import twitter4j.User;
-import twitter4j.UserMentionEntity;
+import twitter4j.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -204,5 +202,36 @@ public class TwitterUtils
     public static String getStatusSummary(Status status)
     {
         return String.format("@%s: %s", status.getUser().getScreenName(), status.getText());
+    }
+
+    /**
+     * Replace urls by entities
+     *
+     * @param text     raw text
+     * @param entities url entities
+     * @param expand   if true, use expanded url
+     * @return replaced text
+     */
+    public static String replaceURLEntities(String text, URLEntity[] entities, boolean expand)
+    {
+        if(TextUtils.isEmpty(text))
+        {
+            return "";
+        }
+        else if(entities == null)
+        {
+            return text;
+        }
+        StringBuilder builder = new StringBuilder(text);
+        if(entities.length == 0)
+        {
+            return builder.toString();
+        }
+        for(int i = entities.length - 1; i >= 0; i--)
+        {
+            URLEntity entity = entities[i];
+            builder.replace(entity.getStart(), entity.getEnd(), expand ? entity.getExpandedURL() : entity.getDisplayURL());
+        }
+        return builder.toString();
     }
 }
