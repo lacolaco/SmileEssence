@@ -35,6 +35,7 @@ import android.widget.ListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.Command;
+import net.lacolaco.smileessence.command.CommandOpenURL;
 import net.lacolaco.smileessence.command.CommandOpenUserDetail;
 import net.lacolaco.smileessence.command.status.*;
 import net.lacolaco.smileessence.entity.Account;
@@ -46,6 +47,7 @@ import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 import twitter4j.Status;
+import twitter4j.URLEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,13 +78,13 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        MainActivity activity = (MainActivity)getActivity();
+        MainActivity activity = (MainActivity) getActivity();
         Account account = activity.getCurrentAccount();
         Status status = TwitterUtils.tryGetStatus(account, getStatusID());
         List<Command> commands = getCommands(activity, status, account);
         filterCommands(commands);
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
-        ListView listView = (ListView)body.findViewById(R.id.listview_dialog_menu_list);
+        ListView listView = (ListView) body.findViewById(R.id.listview_dialog_menu_list);
         CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);
         listView.setAdapter(adapter);
         for(Command command : commands)
@@ -94,11 +96,7 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         View header = getTitleView(activity, account, status);
         header.setClickable(false);
 
-        return new AlertDialog.Builder(activity)
-                .setCustomTitle(header)
-                .setView(body)
-                .setCancelable(true)
-                .create();
+        return new AlertDialog.Builder(activity).setCustomTitle(header).setView(body).setCancelable(true).create();
     }
 
     private View getTitleView(MainActivity activity, Account account, Status status)
@@ -107,11 +105,11 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         View statusHeader = view.findViewById(R.id.layout_status_header);
         statusHeader = new StatusViewModel(status, account).getView(activity, activity.getLayoutInflater(), statusHeader);
         statusHeader.setClickable(false);
-        int background = ((ColorDrawable)statusHeader.getBackground()).getColor();
+        int background = ((ColorDrawable) statusHeader.getBackground()).getColor();
         view.setBackgroundColor(background);
-        ImageButton message = (ImageButton)view.findViewById(R.id.button_status_detail_reply);
+        ImageButton message = (ImageButton) view.findViewById(R.id.button_status_detail_reply);
         message.setOnClickListener(this);
-        ImageButton retweet = (ImageButton)view.findViewById(R.id.button_status_detail_retweet);
+        ImageButton retweet = (ImageButton) view.findViewById(R.id.button_status_detail_retweet);
         if(status.isRetweet() && status.getUser().getId() == account.userID)
         {
             retweet.setImageDrawable(getResources().getDrawable(R.drawable.icon_retweet_on));
@@ -122,14 +120,14 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
             retweet.setTag(-1L);
         }
         retweet.setOnClickListener(this);
-        ImageButton favorite = (ImageButton)view.findViewById(R.id.button_status_detail_favorite);
+        ImageButton favorite = (ImageButton) view.findViewById(R.id.button_status_detail_favorite);
         favorite.setTag(status.isFavorited());
         if(status.isFavorited())
         {
             favorite.setImageDrawable(getResources().getDrawable(R.drawable.icon_favorite_on));
         }
         favorite.setOnClickListener(this);
-        ImageButton delete = (ImageButton)view.findViewById(R.id.button_status_detail_delete);
+        ImageButton delete = (ImageButton) view.findViewById(R.id.button_status_detail_delete);
         boolean deletable = false;
         if(!status.isRetweet())
         {
@@ -147,6 +145,13 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
     public List<Command> getCommands(Activity activity, Status status, Account account)
     {
         ArrayList<Command> commands = new ArrayList<>();
+        if(status.getURLEntities() != null)
+        {
+            for(URLEntity urlEntity : status.getURLEntities())
+            {
+                commands.add(new CommandOpenURL(activity, urlEntity.getDisplayURL()));
+            }
+        }
         commands.add(new StatusCommandReply(activity, status));
         commands.add(new StatusCommandAddToReply(activity, status));
         commands.add(new StatusCommandReplyToAll(activity, status, account));
@@ -172,7 +177,7 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
     @Override
     public void onClick(View v)
     {
-        MainActivity activity = (MainActivity)getActivity();
+        MainActivity activity = (MainActivity) getActivity();
         Account account = activity.getCurrentAccount();
         Status status = TwitterUtils.tryGetStatus(account, getStatusID());
         switch(v.getId())
@@ -184,7 +189,7 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
             }
             case R.id.button_status_detail_retweet:
             {
-                Long retweetID = (Long)v.getTag();
+                Long retweetID = (Long) v.getTag();
                 if(retweetID != -1L)
                 {
                     new DeleteStatusTask(new TwitterApi(account).getTwitter(), retweetID, activity).execute();
@@ -197,7 +202,7 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
             }
             case R.id.button_status_detail_favorite:
             {
-                Boolean isFavorited = (Boolean)v.getTag();
+                Boolean isFavorited = (Boolean) v.getTag();
                 long statusID = status.isRetweet() ? status.getRetweetedStatus().getId() : status.getId();
                 if(isFavorited)
                 {

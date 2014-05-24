@@ -28,6 +28,7 @@ import android.app.Activity;
 import android.content.Intent;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
+import net.lacolaco.smileessence.util.IntentUtils;
 import twitter4j.Status;
 
 public class StatusCommandShare extends StatusCommand
@@ -51,7 +52,7 @@ public class StatusCommandShare extends StatusCommand
         intent.setAction(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, TwitterUtils.getStatusSummary(getOriginalStatus()));
-        getActivity().startActivity(intent);
+        IntentUtils.startActivityIfFound(getActivity(), intent);
         return true;
     }
 

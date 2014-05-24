@@ -48,6 +48,7 @@ import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.TweetTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.util.BitmapThumbnailTask;
+import net.lacolaco.smileessence.util.IntentUtils;
 import net.lacolaco.smileessence.view.adapter.PostState;
 import net.lacolaco.smileessence.view.dialog.DialogHelper;
 import net.lacolaco.smileessence.view.dialog.PostMenuDialogFragment;
@@ -124,7 +125,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         intent.setAction(Intent.ACTION_VIEW);
         intent.addCategory(Intent.CATEGORY_DEFAULT);
         intent.setDataAndType(Uri.fromFile(new File(PostState.getState().getMediaFilePath())), "image/*");
-        getActivity().startActivity(intent);
+        IntentUtils.startActivityIfFound(getActivity(), intent);
     }
 
     private void deleteReply()

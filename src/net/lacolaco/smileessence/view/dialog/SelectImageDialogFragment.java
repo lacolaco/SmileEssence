@@ -37,6 +37,7 @@ import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.util.IntentUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 
 import java.util.ArrayList;
@@ -119,7 +120,7 @@ public class SelectImageDialogFragment extends MenuDialogFragment
     {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
-        activity.startActivityForResult(intent, MainActivity.REQUEST_GET_PICTURE_FROM_GALLERY);
+        IntentUtils.startActivityForResultIfFound(activity, intent, MainActivity.REQUEST_GET_PICTURE_FROM_GALLERY);
     }
 
     private void startCamera(MainActivity activity)
@@ -135,6 +136,6 @@ public class SelectImageDialogFragment extends MenuDialogFragment
         Intent intent = new Intent();
         intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, tempFilePath);
-        activity.startActivityForResult(intent, MainActivity.REQUEST_GET_PICTURE_FROM_CAMERA);
+        IntentUtils.startActivityForResultIfFound(activity, intent, MainActivity.REQUEST_GET_PICTURE_FROM_CAMERA);
     }
 }
