@@ -57,20 +57,16 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/setting_category_system_title">
         <SwitchPreference
-            android:title="@string/setting_show_confirm_dialog"
+            android:title="@string/setting_safe_mode_title"
+            android:summaryOn="@string/setting_safe_mode_summary_on"
+            android:summaryOff="@string/setting_safe_mode_summary_off"
             android:key="@string/key_setting_show_confirm_dialog"
             android:defaultValue="true"/>
         <SwitchPreference
-            android:title="@string/setting_back_to_home_title"
-            android:key="@string/key_setting_back_to_home"
-            android:defaultValue="true"/>
-        <SwitchPreference
             android:title="@string/setting_notify_on_unfavorited_title"
+            android:summaryOn="@string/setting_notify_on_unfavorited_summary_on"
+            android:summaryOff="@string/setting_notify_on_unfavorited_summary_off"
             android:key="@string/key_setting_notify_on_unfavorited"
-            android:defaultValue="false"/>
-        <SwitchPreference
-            android:title="@string/setting_search_includes_retweets"
-            android:key="@string/key_setting_search_includes_retweets"
             android:defaultValue="false"/>
         <EditTextPreference
             android:title="@string/setting_timelines_title"
