@@ -37,6 +37,7 @@ import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.command.CommandOpenURL;
 import net.lacolaco.smileessence.command.CommandOpenUserDetail;
+import net.lacolaco.smileessence.command.CommandSaveAsTemplate;
 import net.lacolaco.smileessence.command.status.*;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TwitterApi;
@@ -164,6 +165,7 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         commands.add(new StatusCommandTofuBuster(activity, status));
         commands.add(new StatusCommandNanigaja(activity, status, account));
         commands.add(new StatusCommandMakeAnonymous(activity, status, account));
+        commands.add(new CommandSaveAsTemplate(activity, TwitterUtils.getOriginalStatusText(status)));
         commands.add(new StatusCommandOpenChain(activity, status, account));
         for(String screenName : TwitterUtils.getScreenNames(status, null))
         {

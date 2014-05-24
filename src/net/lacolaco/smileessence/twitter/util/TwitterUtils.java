@@ -234,4 +234,9 @@ public class TwitterUtils
         }
         return builder.toString();
     }
+
+    public static String getOriginalStatusText(Status status)
+    {
+        return status.isRetweet()? status.getRetweetedStatus().getText(): status.getText();
+    }
 }
