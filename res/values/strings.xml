@@ -201,4 +201,5 @@
     <string name="notice_select_image_succeeded">Succeed to select image</string>
     <string name="notice_select_image_failed">Failed to select image</string>
     <string name="notice_error_start_activity">Can\'t start any activity</string>
+    <string name="notice_not_implemented_yet">Sorry, this is not implemented yet.</string>
 </resources>

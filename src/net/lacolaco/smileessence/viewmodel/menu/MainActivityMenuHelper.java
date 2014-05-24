@@ -31,6 +31,7 @@ import android.view.SubMenu;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.*;
 import net.lacolaco.smileessence.command.CommandOpenURL;
+import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.PostState;
 
@@ -71,6 +72,7 @@ public class MainActivityMenuHelper
             case R.id.actionbar_add_page:
             {
                 //TODO add page dialog
+                new Notificator(activity, R.string.notice_not_implemented_yet).publish();
                 break;
             }
             case R.id.actionbar_setting:
