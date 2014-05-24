@@ -55,7 +55,14 @@ public abstract class PostCommand extends Command
         String substring = text.substring(start, end);
         String replacedText = build(substring);
         StringBuilder builder = new StringBuilder(text);
-        state.beginTransaction().setText(builder.replace(start, end, replacedText).toString()).commit();
+        String builtString = builder.replace(start, end, replacedText).toString();
+        PostState.PostStateTransaction transaction = state.beginTransaction();
+        int incremental = replacedText.length() - substring.length();
+        if(incremental > 0)
+        {
+            transaction.setCursor(end + incremental);
+        }
+        transaction.setText(builtString).commit();
         return true;
     }
 }

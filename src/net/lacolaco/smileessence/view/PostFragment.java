@@ -141,6 +141,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         TweetTask tweetTask = new TweetTask(new TwitterApi(mainActivity.getCurrentAccount()).getTwitter(), statusUpdate, mainActivity);
         tweetTask.execute();
         PostState.newState().beginTransaction().commit();
+        mainActivity.setSelectedPageIndex(MainActivity.PAGE_HOME);
     }
 
     private void openPostMenu()
