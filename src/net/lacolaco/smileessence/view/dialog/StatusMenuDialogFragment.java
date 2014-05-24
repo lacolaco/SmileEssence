@@ -149,7 +149,7 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         {
             for(URLEntity urlEntity : status.getURLEntities())
             {
-                commands.add(new CommandOpenURL(activity, urlEntity.getDisplayURL()));
+                commands.add(new CommandOpenURL(activity, urlEntity.getExpandedURL()));
             }
         }
         commands.add(new StatusCommandReply(activity, status));
