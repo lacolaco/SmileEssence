@@ -235,6 +235,11 @@ public class TwitterUtils
         return builder.toString();
     }
 
+    /**
+     * Return original status text. If status is not retweet, value is same to a given.
+     * @param status
+     * @return
+     */
     public static String getOriginalStatusText(Status status)
     {
         return status.isRetweet()? status.getRetweetedStatus().getText(): status.getText();
