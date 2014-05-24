@@ -46,6 +46,7 @@ import net.lacolaco.smileessence.twitter.task.UnfavoriteTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
+import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.URLEntity;
 
@@ -145,12 +146,9 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
     public List<Command> getCommands(Activity activity, Status status, Account account)
     {
         ArrayList<Command> commands = new ArrayList<>();
-        if(status.getURLEntities() != null)
+        for(Command command : getURLCommands(activity, status))
         {
-            for(URLEntity urlEntity : status.getURLEntities())
-            {
-                commands.add(new CommandOpenURL(activity, urlEntity.getExpandedURL()));
-            }
+            commands.add(command);
         }
         commands.add(new StatusCommandReply(activity, status));
         commands.add(new StatusCommandAddToReply(activity, status));
@@ -170,6 +168,26 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         for(String screenName : TwitterUtils.getScreenNames(status, null))
         {
             commands.add(new CommandOpenUserDetail(activity, screenName, account));
+        }
+        return commands;
+    }
+
+    private ArrayList<Command> getURLCommands(Activity activity, Status status)
+    {
+        ArrayList<Command> commands = new ArrayList<>();
+        if(status.getURLEntities() != null)
+        {
+            for(URLEntity urlEntity : status.getURLEntities())
+            {
+                commands.add(new CommandOpenURL(activity, urlEntity.getExpandedURL()));
+            }
+        }
+        if(status.getMediaEntities() != null)
+        {
+            for(MediaEntity mediaEntity : status.getMediaEntities())
+            {
+                commands.add(new CommandOpenURL(activity, mediaEntity.getMediaURL()));
+            }
         }
         return commands;
     }
