@@ -47,7 +47,7 @@ import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.TweetTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
-import net.lacolaco.smileessence.util.BitmapFileTask;
+import net.lacolaco.smileessence.util.BitmapThumbnailTask;
 import net.lacolaco.smileessence.view.adapter.PostState;
 import net.lacolaco.smileessence.view.dialog.DialogHelper;
 import net.lacolaco.smileessence.view.dialog.PostMenuDialogFragment;
@@ -378,7 +378,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
                 viewGroupMedia.setVisibility(View.VISIBLE);
 
             }
-            new BitmapFileTask(activity, postState.getMediaFilePath(), imageViewMedia).execute();
+            new BitmapThumbnailTask(activity, postState.getMediaFilePath(), imageViewMedia).execute();
         }
     }
 }

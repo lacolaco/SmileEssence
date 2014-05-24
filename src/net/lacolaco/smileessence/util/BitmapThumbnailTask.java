@@ -33,14 +33,14 @@ import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.widget.ImageView;
 
-public class BitmapFileTask extends AsyncTask<Void, Void, Bitmap>
+public class BitmapThumbnailTask extends AsyncTask<Void, Void, Bitmap>
 {
 
     private final Activity activity;
     private final String filePath;
     private final ImageView imageView;
 
-    public BitmapFileTask(Activity activity, String filePath, ImageView imageView)
+    public BitmapThumbnailTask(Activity activity, String filePath, ImageView imageView)
     {
         this.activity = activity;
         this.filePath = filePath;
