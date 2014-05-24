@@ -27,6 +27,7 @@ package net.lacolaco.smileessence.command.status;
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.notification.Notificator;
 import twitter4j.Status;
 
 public class StatusCommandOpenChain extends StatusCommand
@@ -50,6 +51,7 @@ public class StatusCommandOpenChain extends StatusCommand
     public boolean execute()
     {
         //TODO status chain dialog
+        new Notificator(getActivity(), R.string.notice_not_implemented_yet).publish();
         return true;
     }
 
