@@ -138,7 +138,7 @@ public class MainActivity extends Activity
         return ((Application) getApplication()).getThemeIndex();
     }
 
-    private UserPreferenceHelper getUserPreferenceHelper()
+    public UserPreferenceHelper getUserPreferenceHelper()
     {
         return new UserPreferenceHelper(this);
     }

@@ -26,25 +26,114 @@ package net.lacolaco.smileessence.view;
 
 import android.widget.ListView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.twitter.TwitterApi;
+import net.lacolaco.smileessence.twitter.task.DirectMessagesTask;
+import net.lacolaco.smileessence.view.adapter.MessageListAdapter;
+import net.lacolaco.smileessence.viewmodel.MessageViewModel;
+import twitter4j.DirectMessage;
+import twitter4j.Paging;
+import twitter4j.Twitter;
 
+/**
+ * Fragment of messages list
+ */
 public class MessagesFragment extends CustomListFragment
 {
 
-    @Override
-    public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView)
-    {
-        super.onPullDownToRefresh(refreshView);
-    }
-
-    @Override
-    public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView)
-    {
-        super.onPullUpToRefresh(refreshView);
-    }
+// --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     protected PullToRefreshBase.Mode getRefreshMode()
     {
-        return super.getRefreshMode();
+        return PullToRefreshBase.Mode.BOTH;
+    }
+
+// ------------------------ INTERFACE METHODS ------------------------
+
+
+// --------------------- Interface OnRefreshListener2 ---------------------
+
+    @Override
+    public void onPullDownToRefresh(final PullToRefreshBase<ListView> refreshView)
+    {
+        final MainActivity activity = (MainActivity) getActivity();
+        final Account currentAccount = activity.getCurrentAccount();
+        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        final MessageListAdapter adapter = getListAdapter(activity);
+        Paging paging = getPaging(getPagingCount(activity));
+        if(adapter.getCount() > 0)
+        {
+            paging.setSinceId(getTopID(adapter));
+        }
+        new DirectMessagesTask(twitter, activity, paging)
+        {
+            @Override
+            protected void onPostExecute(DirectMessage[] directMessages)
+            {
+                super.onPostExecute(directMessages);
+                for(int i = directMessages.length - 1; i >= 0; i--)
+                {
+                    adapter.addToTop(new MessageViewModel(directMessages[i], currentAccount));
+                }
+                updateListViewWithNotice(refreshView.getRefreshableView(), adapter, true);
+                refreshView.onRefreshComplete();
+            }
+        }.execute();
+    }
+
+    @Override
+    public void onPullUpToRefresh(final PullToRefreshBase<ListView> refreshView)
+    {
+        final MainActivity activity = (MainActivity) getActivity();
+        final Account currentAccount = activity.getCurrentAccount();
+        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        final MessageListAdapter adapter = getListAdapter(activity);
+        Paging paging = getPaging(getPagingCount(activity));
+        if(adapter.getCount() > 0)
+        {
+            paging.setMaxId(getLastID(adapter));
+        }
+        new DirectMessagesTask(twitter, activity, paging)
+        {
+            @Override
+            protected void onPostExecute(DirectMessage[] directMessages)
+            {
+                super.onPostExecute(directMessages);
+                for(DirectMessage directMessage : directMessages)
+                {
+                    adapter.addToBottom(new MessageViewModel(directMessage, currentAccount));
+                }
+                updateListViewWithNotice(refreshView.getRefreshableView(), adapter, false);
+                refreshView.onRefreshComplete();
+            }
+        }.execute();
+    }
+
+    private long getLastID(MessageListAdapter adapter)
+    {
+        return ((MessageViewModel) adapter.getItem(adapter.getCount() - 1)).getID();
+    }
+
+    private MessageListAdapter getListAdapter(MainActivity activity)
+    {
+        return (MessageListAdapter) activity.getListAdapter(MainActivity.PAGE_MESSAGES);
+    }
+
+    private Paging getPaging(int count)
+    {
+        return new Paging(1).count(count);
+    }
+
+    private int getPagingCount(MainActivity activity)
+    {
+        return activity.getUserPreferenceHelper().getValue(R.string.key_setting_timelines, 20);
+    }
+
+    private long getTopID(MessageListAdapter adapter)
+    {
+        return ((MessageViewModel) adapter.getItem(0)).getID();
     }
 }

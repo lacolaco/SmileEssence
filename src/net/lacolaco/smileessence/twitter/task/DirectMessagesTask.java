@@ -35,8 +35,12 @@ import twitter4j.*;
 public class DirectMessagesTask extends TwitterTask<DirectMessage[]>
 {
 
+// ------------------------------ FIELDS ------------------------------
+
     private final Activity activity;
     private final Paging paging;
+
+// --------------------------- CONSTRUCTORS ---------------------------
 
     protected DirectMessagesTask(Twitter twitter, Activity activity)
     {
@@ -48,6 +52,20 @@ public class DirectMessagesTask extends TwitterTask<DirectMessage[]>
         super(twitter);
         this.activity = activity;
         this.paging = paging;
+    }
+
+// ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(DirectMessage[] directMessages)
+    {
+        if(directMessages.length != 0)
+        {
+            for(DirectMessage message : directMessages)
+            {
+                DirectMessageCache.getInstance().put(message);
+            }
+        }
     }
 
     @Override
@@ -69,22 +87,16 @@ public class DirectMessagesTask extends TwitterTask<DirectMessage[]>
         {
             e.printStackTrace();
             Logger.error(e.toString());
+            if(e.exceededRateLimitation())
+            {
+                Notificator.publish(activity, R.string.notice_error_rate_limit, NotificationType.ALERT);
+            }
+            else
+            {
+                Notificator.publish(activity, R.string.notice_error_get_messages, NotificationType.ALERT);
+            }
             return new DirectMessage[0];
         }
         return responseList.toArray(new DirectMessage[responseList.size()]);
-    }
-
-    @Override
-    protected void onPostExecute(DirectMessage[] directMessages)
-    {
-        if(directMessages.length == 0)
-        {
-            new Notificator(activity, R.string.notice_error_get_messages, NotificationType.ALERT).publish();
-            return;
-        }
-        for(DirectMessage message : directMessages)
-        {
-            DirectMessageCache.getInstance().put(message);
-        }
     }
 }

@@ -35,25 +35,29 @@ import net.lacolaco.smileessence.util.UIHandler;
 public class Notificator
 {
 
+// ------------------------------ FIELDS ------------------------------
+
+    private static final int DURATION = 1000;
+    private static boolean isRunning;
     private Activity activity;
     private String text;
     private NotificationType type;
-    private static boolean isRunning;
-    private static final int DURATION = 1000;
+
+// -------------------------- STATIC METHODS --------------------------
 
     public Notificator(Activity activity, int resID)
     {
         this(activity, resID, NotificationType.INFO);
     }
 
-    public Notificator(Activity activity, int resID, NotificationType type)
-    {
-        this(activity, activity.getString(resID), type);
-    }
-
     public Notificator(Activity activity, String text)
     {
         this(activity, text, NotificationType.INFO);
+    }
+
+    public Notificator(Activity activity, int resID, NotificationType type)
+    {
+        this(activity, activity.getString(resID), type);
     }
 
     public Notificator(Activity activity, String text, NotificationType type)
@@ -72,6 +76,67 @@ public class Notificator
     {
         isRunning = false;
         Crouton.cancelAllCroutons();
+    }
+
+// --------------------------- CONSTRUCTORS ---------------------------
+
+    /**
+     * Notify self on cronton or toast.
+     */
+    public static void publish(Activity activity, int resID)
+    {
+        publish(activity, activity.getString(resID));
+    }
+
+    public static void publish(Activity activity, String text)
+    {
+        new Notificator(activity, text, NotificationType.INFO).publish();
+    }
+
+    public static void publish(Activity activity, int resID, NotificationType type)
+    {
+        publish(activity, activity.getString(resID), type);
+    }
+
+    public static void publish(Activity activity, String text, NotificationType type)
+    {
+        new Notificator(activity, text, type).publish();
+    }
+
+// --------------------- GETTER / SETTER METHODS ---------------------
+
+    private Style getStyle()
+    {
+        Configuration.Builder conf = new Configuration.Builder();
+        conf.setDuration(DURATION);
+        Style.Builder style = new Style.Builder();
+        style.setConfiguration(conf.build());
+        switch(type)
+        {
+            case INFO:
+            {
+                style.setBackgroundColorValue(Style.holoBlueLight);
+                break;
+            }
+            case ALERT:
+            {
+                style.setBackgroundColorValue(Style.holoRedLight);
+                break;
+            }
+        }
+        return style.build();
+    }
+
+// -------------------------- OTHER METHODS --------------------------
+
+    public Crouton makeCrouton()
+    {
+        return Crouton.makeText(activity, text, getStyle());
+    }
+
+    public Toast makeToast()
+    {
+        return Toast.makeText(activity, text, Toast.LENGTH_LONG);
     }
 
     /**
@@ -100,37 +165,5 @@ public class Notificator
                 }
             }
         }.post();
-    }
-
-    private Style getStyle()
-    {
-        Configuration.Builder conf = new Configuration.Builder();
-        conf.setDuration(DURATION);
-        Style.Builder style = new Style.Builder();
-        style.setConfiguration(conf.build());
-        switch(type)
-        {
-            case INFO:
-            {
-                style.setBackgroundColorValue(Style.holoBlueLight);
-                break;
-            }
-            case ALERT:
-            {
-                style.setBackgroundColorValue(Style.holoRedLight);
-                break;
-            }
-        }
-        return style.build();
-    }
-
-    public Crouton makeCrouton()
-    {
-        return Crouton.makeText(activity, text, getStyle());
-    }
-
-    public Toast makeToast()
-    {
-        return Toast.makeText(activity, text, Toast.LENGTH_LONG);
     }
 }

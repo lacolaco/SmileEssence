@@ -204,4 +204,5 @@
     <string name="notice_not_implemented_yet">Sorry, this is not implemented yet.</string>
     <string name="command_save_as_template">Save as template</string>
     <string name="notice_save_as_template">New template is saved</string>
+    <string name="notice_error_rate_limit">Rate limit exceeded</string>
 </resources>

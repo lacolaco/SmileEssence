@@ -204,4 +204,5 @@
     <string name="notice_not_implemented_yet">まだ実装されてないです。ごめんね</string>
     <string name="command_save_as_template">定型文として保存</string>
     <string name="notice_save_as_template">定型文を保存しました</string>
+    <string name="notice_error_rate_limit">レートリミットを超えています</string>
 </resources>
