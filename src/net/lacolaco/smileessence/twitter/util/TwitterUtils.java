@@ -26,6 +26,8 @@ package net.lacolaco.smileessence.twitter.util;
 
 import android.text.TextUtils;
 import com.twitter.Validator;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.data.DirectMessageCache;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.data.UserCache;
@@ -43,6 +45,8 @@ import java.util.concurrent.ExecutionException;
 
 public class TwitterUtils
 {
+
+// -------------------------- STATIC METHODS --------------------------
 
     /**
      * Get twitter style fixed text length
@@ -243,5 +247,15 @@ public class TwitterUtils
     public static String getOriginalStatusText(Status status)
     {
         return status.isRetweet()? status.getRetweetedStatus().getText(): status.getText();
+    }
+
+    public static Paging getPaging(int count)
+    {
+        return new Paging(1).count(count);
+    }
+
+    public static int getPagingCount(MainActivity activity)
+    {
+        return activity.getUserPreferenceHelper().getValue(R.string.key_setting_timelines, 20);
     }
 }

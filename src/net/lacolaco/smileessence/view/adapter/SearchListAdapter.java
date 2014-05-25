@@ -25,50 +25,43 @@
 package net.lacolaco.smileessence.view.adapter;
 
 import android.app.Activity;
-import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 
-import java.util.Iterator;
-
-public class StatusListAdapter extends CustomListAdapter<StatusViewModel>
+public class SearchListAdapter extends StatusListAdapter
 {
+
+// ------------------------------ FIELDS ------------------------------
+
+    private long lastID;
+    private long topID;
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
-    public StatusListAdapter(Activity activity)
+    public SearchListAdapter(Activity activity)
     {
-        super(activity, StatusViewModel.class);
+        super(activity);
     }
 
 // --------------------- GETTER / SETTER METHODS ---------------------
 
+    @Override
     public long getLastID()
     {
-        return ((StatusViewModel) getItem(getCount() - 1)).getID();
+        return lastID;
     }
 
+    public void setLastID(long lastID)
+    {
+        this.lastID = lastID;
+    }
+
+    @Override
     public long getTopID()
     {
-        return ((StatusViewModel) getItem(0)).getID();
+        return topID;
     }
 
-// -------------------------- OTHER METHODS --------------------------
-
-    public StatusViewModel removeByStatusID(long statusID)
+    public void setTopID(long topID)
     {
-        synchronized(this.LOCK)
-        {
-            Iterator<StatusViewModel> iterator = this.list.iterator();
-            while(iterator.hasNext())
-            {
-                StatusViewModel statusViewModel = iterator.next();
-                if(statusViewModel.getID() == statusID)
-                {
-                    iterator.remove();
-                    update();
-                    return statusViewModel;
-                }
-            }
-            return null;
-        }
+        this.topID = topID;
     }
 }

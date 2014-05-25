@@ -27,6 +27,7 @@ package net.lacolaco.smileessence.view.dialog;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 import net.lacolaco.smileessence.R;
@@ -40,6 +41,8 @@ import java.util.List;
 
 public class AddNewPageDialog extends MenuDialogFragment
 {
+
+// ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -69,7 +72,7 @@ public class AddNewPageDialog extends MenuDialogFragment
             @Override
             public boolean execute()
             {
-                openSearchPageCreateDialog(activity);
+                openCreateSearchPageDialog(activity);
                 return true;
             }
 
@@ -88,8 +91,21 @@ public class AddNewPageDialog extends MenuDialogFragment
         return commands;
     }
 
-    private void openSearchPageCreateDialog(MainActivity activity)
+    private void openCreateSearchPageDialog(final MainActivity activity)
     {
-
+        EditTextDialogFragment dialogFragment = new EditTextDialogFragment()
+        {
+            @Override
+            public void onTextInput(String text)
+            {
+                if(TextUtils.isEmpty(text))
+                {
+                    return;
+                }
+                activity.addSearchPage(text);
+            }
+        };
+        dialogFragment.setParams(getString(R.string.dialog_create_search_page), "");
+        DialogHelper.showDialog(activity, dialogFragment);
     }
 }

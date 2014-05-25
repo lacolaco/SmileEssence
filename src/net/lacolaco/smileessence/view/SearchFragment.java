@@ -22,47 +22,36 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.view.adapter;
+package net.lacolaco.smileessence.view;
 
-import android.app.Activity;
-import net.lacolaco.smileessence.viewmodel.MessageViewModel;
+import android.widget.ListView;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
 
-import java.util.Iterator;
-
-public class MessageListAdapter extends CustomListAdapter<MessageViewModel>
+public class SearchFragment extends CustomListFragment
 {
 
-    public MessageListAdapter(Activity activity)
+// --------------------- GETTER / SETTER METHODS ---------------------
+
+    @Override
+    protected PullToRefreshBase.Mode getRefreshMode()
     {
-        super(activity, MessageViewModel.class);
+        return PullToRefreshBase.Mode.BOTH;
     }
 
-    public MessageViewModel removeByStatusID(long messageID)
+// ------------------------ INTERFACE METHODS ------------------------
+
+
+// --------------------- Interface OnRefreshListener2 ---------------------
+
+    @Override
+    public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView)
     {
-        synchronized(this.LOCK)
-        {
-            Iterator<MessageViewModel> iterator = this.list.iterator();
-            while(iterator.hasNext())
-            {
-                MessageViewModel message = iterator.next();
-                if(message.getID() == messageID)
-                {
-                    iterator.remove();
-                    update();
-                    return message;
-                }
-            }
-            return null;
-        }
+        super.onPullDownToRefresh(refreshView);
     }
 
-    public long getLastID()
+    @Override
+    public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView)
     {
-        return ((MessageViewModel) getItem(getCount() - 1)).getID();
-    }
-
-    public long getTopID()
-    {
-        return ((MessageViewModel) getItem(0)).getID();
+        super.onPullUpToRefresh(refreshView);
     }
 }

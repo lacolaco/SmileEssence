@@ -26,11 +26,11 @@ package net.lacolaco.smileessence.view;
 
 import android.widget.ListView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.HomeTimelineTask;
+import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.util.UIHandler;
 import net.lacolaco.smileessence.view.adapter.StatusListAdapter;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
@@ -40,7 +40,7 @@ import twitter4j.Twitter;
 public class HomeFragment extends CustomListFragment
 {
 
-    // --------------------- GETTER / SETTER METHODS ---------------------
+// --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     protected PullToRefreshBase.Mode getRefreshMode()
@@ -48,10 +48,10 @@ public class HomeFragment extends CustomListFragment
         return PullToRefreshBase.Mode.BOTH;
     }
 
-    // ------------------------ INTERFACE METHODS ------------------------
+// ------------------------ INTERFACE METHODS ------------------------
 
 
-    // --------------------- Interface OnRefreshListener2 ---------------------
+// --------------------- Interface OnRefreshListener2 ---------------------
 
     @Override
     public void onPullDownToRefresh(final PullToRefreshBase<ListView> refreshView)
@@ -73,10 +73,10 @@ public class HomeFragment extends CustomListFragment
         final Account currentAccount = activity.getCurrentAccount();
         Twitter twitter = TwitterApi.getTwitter(currentAccount);
         final StatusListAdapter adapter = getListAdapter(activity);
-        Paging paging = getPaging(getPagingCount(activity));
+        Paging paging = TwitterUtils.getPaging(TwitterUtils.getPagingCount(activity));
         if(adapter.getCount() > 0)
         {
-            paging.setSinceId(getTopID(adapter));
+            paging.setSinceId(adapter.getTopID());
         }
         new HomeTimelineTask(twitter, activity, paging)
         {
@@ -102,10 +102,10 @@ public class HomeFragment extends CustomListFragment
         final Account currentAccount = activity.getCurrentAccount();
         Twitter twitter = TwitterApi.getTwitter(currentAccount);
         final StatusListAdapter adapter = getListAdapter(activity);
-        Paging paging = getPaging(getPagingCount(activity));
+        Paging paging = TwitterUtils.getPaging(TwitterUtils.getPagingCount(activity));
         if(adapter.getCount() > 0)
         {
-            paging.setMaxId(getLastID(adapter) - 1);
+            paging.setMaxId(adapter.getLastID() - 1);
         }
         new HomeTimelineTask(twitter, activity, paging)
         {
@@ -123,28 +123,8 @@ public class HomeFragment extends CustomListFragment
         }.execute();
     }
 
-    private long getLastID(StatusListAdapter adapter)
-    {
-        return ((StatusViewModel) adapter.getItem(adapter.getCount() - 1)).getID();
-    }
-
     private StatusListAdapter getListAdapter(MainActivity activity)
     {
         return (StatusListAdapter) activity.getListAdapter(MainActivity.PAGE_HOME);
-    }
-
-    private Paging getPaging(int count)
-    {
-        return new Paging(1).count(count);
-    }
-
-    private int getPagingCount(MainActivity activity)
-    {
-        return activity.getUserPreferenceHelper().getValue(R.string.key_setting_timelines, 20);
-    }
-
-    private long getTopID(StatusListAdapter adapter)
-    {
-        return ((StatusViewModel) adapter.getItem(0)).getID();
     }
 }

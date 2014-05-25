@@ -207,4 +207,6 @@
     <string name="notice_error_rate_limit">Rate limit exceeded</string>
     <string name="dialog_title_add_new_page">Add new page</string>
     <string name="command_create_search_page_dialog">Search page</string>
+    <string name="dialog_create_search_page">Input search query</string>
+    <string name="notice_error_search">Failed to search</string>
 </resources>

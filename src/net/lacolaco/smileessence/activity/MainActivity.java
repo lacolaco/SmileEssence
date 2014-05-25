@@ -42,6 +42,7 @@ import android.widget.ImageView;
 import net.lacolaco.smileessence.Application;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.entity.SearchQuery;
 import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.preference.AppPreferenceHelper;
@@ -49,10 +50,7 @@ import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.twitter.OAuthSession;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.UserStreamListener;
-import net.lacolaco.smileessence.twitter.task.DirectMessagesTask;
-import net.lacolaco.smileessence.twitter.task.HomeTimelineTask;
-import net.lacolaco.smileessence.twitter.task.MentionsTimelineTask;
-import net.lacolaco.smileessence.twitter.task.ShowUserTask;
+import net.lacolaco.smileessence.twitter.task.*;
 import net.lacolaco.smileessence.util.BitmapURLTask;
 import net.lacolaco.smileessence.util.NetworkHelper;
 import net.lacolaco.smileessence.util.Themes;
@@ -68,7 +66,7 @@ import twitter4j.auth.AccessToken;
 public class MainActivity extends Activity
 {
 
-    // ------------------------------ FIELDS ------------------------------
+// ------------------------------ FIELDS ------------------------------
 
     public static final int REQUEST_OAUTH = 10;
     public static final int REQUEST_GET_PICTURE_FROM_GALLERY = 11;
@@ -88,11 +86,21 @@ public class MainActivity extends Activity
     private boolean streaming = false;
     private Uri cameraTempFilePath;
 
-    // --------------------- GETTER / SETTER METHODS ---------------------
+// --------------------- GETTER / SETTER METHODS ---------------------
 
     private AppPreferenceHelper getAppPreferenceHelper()
     {
         return new AppPreferenceHelper(this);
+    }
+
+    public Uri getCameraTempFilePath()
+    {
+        return cameraTempFilePath;
+    }
+
+    public void setCameraTempFilePath(Uri cameraTempFilePath)
+    {
+        this.cameraTempFilePath = cameraTempFilePath;
     }
 
     public Account getCurrentAccount()
@@ -165,6 +173,7 @@ public class MainActivity extends Activity
 
     /**
      * Returns which twitter stream is running
+     *
      * @return
      */
     public boolean isStreaming()
@@ -177,10 +186,10 @@ public class MainActivity extends Activity
         this.streaming = streaming;
     }
 
-    // ------------------------ INTERFACE METHODS ------------------------
+// ------------------------ INTERFACE METHODS ------------------------
 
 
-    // --------------------- Interface Callback ---------------------
+// --------------------- Interface Callback ---------------------
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event)
@@ -203,7 +212,7 @@ public class MainActivity extends Activity
         }
     }
 
-    // ------------------------ OVERRIDE METHODS ------------------------
+// ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -221,25 +230,6 @@ public class MainActivity extends Activity
                 getImageUri(requestCode, data);
                 break;
             }
-        }
-    }
-
-    private void receiveOAuth(int requestCode, int resultCode, Intent data)
-    {
-        if(resultCode != RESULT_OK)
-        {
-            Logger.error(requestCode);
-            new Notificator(this, R.string.notice_error_authenticate).publish();
-            finish();
-        }
-        else
-        {
-            AccessToken token = oauthSession.getAccessToken(data.getData());
-            Account account = new Account(token.getToken(), token.getTokenSecret(), token.getUserId(), token.getScreenName());
-            account.save();
-            setCurrentAccount(account);
-            getAppPreferenceHelper().putValue(lastUsedAccountIDKey, account.getId());
-            startMainLogic();
         }
     }
 
@@ -267,6 +257,30 @@ public class MainActivity extends Activity
         {
             e.printStackTrace();
             new Notificator(this, R.string.notice_select_image_failed).publish();
+        }
+    }
+
+    public void setSelectedPageIndex(int position)
+    {
+        getViewPager().setCurrentItem(position, true);
+    }
+
+    private void receiveOAuth(int requestCode, int resultCode, Intent data)
+    {
+        if(resultCode != RESULT_OK)
+        {
+            Logger.error(requestCode);
+            new Notificator(this, R.string.notice_error_authenticate).publish();
+            finish();
+        }
+        else
+        {
+            AccessToken token = oauthSession.getAccessToken(data.getData());
+            Account account = new Account(token.getToken(), token.getTokenSecret(), token.getUserId(), token.getScreenName());
+            account.save();
+            setCurrentAccount(account);
+            getAppPreferenceHelper().putValue(lastUsedAccountIDKey, account.getId());
+            startMainLogic();
         }
     }
 
@@ -341,11 +355,6 @@ public class MainActivity extends Activity
         {
             return this.pagerAdapter.addPageWithoutNotify(name, fragmentClass, args);
         }
-    }
-
-    public void setSelectedPageIndex(int position)
-    {
-        getViewPager().setCurrentItem(position, true);
     }
 
     public void setSelectedPageIndex(int position, boolean smooth)
@@ -558,7 +567,48 @@ public class MainActivity extends Activity
         Notificator.startNotification();
     }
 
-    // -------------------------- OTHER METHODS --------------------------
+// -------------------------- OTHER METHODS --------------------------
+
+    /**
+     * Add new search page with given query
+     *
+     * @param query
+     */
+    public void addSearchPage(final String query)
+    {
+        new SearchQuery(query).save();
+        final SearchListAdapter searchAdapter = new SearchListAdapter(this);
+        addListPage(query, SearchFragment.class, searchAdapter, true);
+        new SearchTask(TwitterApi.getTwitter(getCurrentAccount()), query, this)
+        {
+            @Override
+            protected void onPostExecute(QueryResult queryResult)
+            {
+                super.onPostExecute(queryResult);
+                if(queryResult != null)
+                {
+                    java.util.List<twitter4j.Status> tweets = queryResult.getTweets();
+                    for(int i = tweets.size() - 1; i >= 0; i--)
+                    {
+                        twitter4j.Status status = tweets.get(i);
+                        if(!status.isRetweet())
+                        {
+                            searchAdapter.addToTop(new StatusViewModel(status, getCurrentAccount()));
+                        }
+                    }
+                    searchAdapter.setLastID(queryResult.getSinceId());
+                    searchAdapter.setTopID(queryResult.getMaxId());
+                    searchAdapter.updateForce();
+                }
+            }
+        }.execute();
+        moveToLastPage();
+    }
+
+    private void moveToLastPage()
+    {
+        setSelectedPageIndex(getPageCount() - 1);
+    }
 
     public void finish(boolean needConfirmDialog)
     {
@@ -593,15 +643,5 @@ public class MainActivity extends Activity
     public boolean removePage(int position)
     {
         return this.pagerAdapter.removePage(position);
-    }
-
-    public Uri getCameraTempFilePath()
-    {
-        return cameraTempFilePath;
-    }
-
-    public void setCameraTempFilePath(Uri cameraTempFilePath)
-    {
-        this.cameraTempFilePath = cameraTempFilePath;
     }
 }

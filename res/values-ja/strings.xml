@@ -207,4 +207,6 @@
     <string name="notice_error_rate_limit">レートリミットを超えています</string>
     <string name="dialog_title_add_new_page">新しいタブを追加</string>
     <string name="command_create_search_page_dialog">検索タブ</string>
+    <string name="dialog_create_search_page">Input search query</string>
+    <string name="notice_error_search">Failed to search</string>
 </resources>
