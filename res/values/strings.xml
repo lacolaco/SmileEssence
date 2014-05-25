@@ -205,4 +205,6 @@
     <string name="command_save_as_template">Save as template</string>
     <string name="notice_save_as_template">New template is saved</string>
     <string name="notice_error_rate_limit">Rate limit exceeded</string>
+    <string name="dialog_title_add_new_page">Add new page</string>
+    <string name="command_create_search_page_dialog">Search page</string>
 </resources>

@@ -205,4 +205,6 @@
     <string name="command_save_as_template">定型文として保存</string>
     <string name="notice_save_as_template">定型文を保存しました</string>
     <string name="notice_error_rate_limit">レートリミットを超えています</string>
+    <string name="dialog_title_add_new_page">新しいタブを追加</string>
+    <string name="command_create_search_page_dialog">検索タブ</string>
 </resources>

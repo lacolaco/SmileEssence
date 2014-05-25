@@ -31,12 +31,15 @@ import android.view.SubMenu;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.*;
 import net.lacolaco.smileessence.command.CommandOpenURL;
-import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.PostState;
+import net.lacolaco.smileessence.view.dialog.AddNewPageDialog;
+import net.lacolaco.smileessence.view.dialog.DialogHelper;
 
 public class MainActivityMenuHelper
 {
+
+    // -------------------------- STATIC METHODS --------------------------
 
     public static void addItemsToMenu(MainActivity activity, Menu menu)
     {
@@ -71,8 +74,7 @@ public class MainActivityMenuHelper
         {
             case R.id.actionbar_add_page:
             {
-                //TODO add page dialog
-                new Notificator(activity, R.string.notice_not_implemented_yet).publish();
+                openNewPageDialog(activity);
                 break;
             }
             case R.id.actionbar_setting:
@@ -116,15 +118,17 @@ public class MainActivityMenuHelper
             }
             case R.id.actionbar_report:
             {
-                PostState.newState().beginTransaction()
-                         .setCursor(0)
-                         .setText(activity.getString(R.string.text_message_to_author, activity.getVersion()))
-                         .commit();
+                PostState.newState().beginTransaction().setCursor(0).setText(activity.getString(R.string.text_message_to_author, activity.getVersion())).commit();
                 activity.setSelectedPageIndex(MainActivity.PAGE_POST);
                 break;
             }
         }
         return true;
+    }
+
+    private static void openNewPageDialog(MainActivity activity)
+    {
+        DialogHelper.showDialog(activity, new AddNewPageDialog());
     }
 
 }
