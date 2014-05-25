@@ -163,6 +163,10 @@ public class MainActivity extends Activity
         return !getVersion().contentEquals(getAppPreferenceHelper().getValue("app.version", ""));
     }
 
+    /**
+     * Returns which twitter stream is running
+     * @return
+     */
     public boolean isStreaming()
     {
         return streaming;

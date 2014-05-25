@@ -26,25 +26,111 @@ package net.lacolaco.smileessence.view;
 
 import android.widget.ListView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.twitter.TwitterApi;
+import net.lacolaco.smileessence.twitter.task.MentionsTimelineTask;
+import net.lacolaco.smileessence.view.adapter.StatusListAdapter;
+import net.lacolaco.smileessence.viewmodel.StatusViewModel;
+import twitter4j.Paging;
+import twitter4j.Twitter;
 
 public class MentionsFragment extends CustomListFragment
 {
 
-    @Override
-    public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView)
-    {
-        super.onPullDownToRefresh(refreshView);
-    }
-
-    @Override
-    public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView)
-    {
-        super.onPullUpToRefresh(refreshView);
-    }
+// --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     protected PullToRefreshBase.Mode getRefreshMode()
     {
-        return super.getRefreshMode();
+        return PullToRefreshBase.Mode.BOTH;
+    }
+
+// ------------------------ INTERFACE METHODS ------------------------
+
+
+// --------------------- Interface OnRefreshListener2 ---------------------
+
+    @Override
+    public void onPullDownToRefresh(final PullToRefreshBase<ListView> refreshView)
+    {
+        final MainActivity activity = (MainActivity) getActivity();
+        final Account currentAccount = activity.getCurrentAccount();
+        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        final StatusListAdapter adapter = getListAdapter(activity);
+        Paging paging = getPaging(getPagingCount(activity));
+        if(adapter.getCount() > 0)
+        {
+            paging.setSinceId(getTopID(adapter));
+        }
+        new MentionsTimelineTask(twitter, activity, paging)
+        {
+            @Override
+            protected void onPostExecute(twitter4j.Status[] statuses)
+            {
+                super.onPostExecute(statuses);
+                for(int i = statuses.length - 1; i >= 0; i--)
+                {
+                    twitter4j.Status status = statuses[i];
+                    adapter.addToTop(new StatusViewModel(status, currentAccount));
+                }
+                updateListViewWithNotice(refreshView.getRefreshableView(), adapter, true);
+                refreshView.onRefreshComplete();
+            }
+        }.execute();
+    }
+
+    @Override
+    public void onPullUpToRefresh(final PullToRefreshBase<ListView> refreshView)
+    {
+        final MainActivity activity = (MainActivity) getActivity();
+        final Account currentAccount = activity.getCurrentAccount();
+        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        final StatusListAdapter adapter = getListAdapter(activity);
+        Paging paging = getPaging(getPagingCount(activity));
+        if(adapter.getCount() > 0)
+        {
+            paging.setMaxId(getLastID(adapter));
+        }
+        new MentionsTimelineTask(twitter, activity, paging)
+        {
+            @Override
+            protected void onPostExecute(twitter4j.Status[] statuses)
+            {
+                super.onPostExecute(statuses);
+                for(twitter4j.Status status : statuses)
+                {
+                    adapter.addToBottom(new StatusViewModel(status, currentAccount));
+                }
+                updateListViewWithNotice(refreshView.getRefreshableView(), adapter, false);
+                refreshView.onRefreshComplete();
+            }
+        }.execute();
+    }
+
+    private long getLastID(StatusListAdapter adapter)
+    {
+        return ((StatusViewModel) adapter.getItem(adapter.getCount() - 1)).getID();
+    }
+
+    private StatusListAdapter getListAdapter(MainActivity activity)
+    {
+        return (StatusListAdapter) activity.getListAdapter(MainActivity.PAGE_MENTIONS);
+    }
+
+    private Paging getPaging(int count)
+    {
+        return new Paging(1).count(count);
+    }
+
+    private int getPagingCount(MainActivity activity)
+    {
+        return activity.getUserPreferenceHelper().getValue(R.string.key_setting_timelines, 20);
+    }
+
+    private long getTopID(StatusListAdapter adapter)
+    {
+        return ((StatusViewModel) adapter.getItem(0)).getID();
     }
 }

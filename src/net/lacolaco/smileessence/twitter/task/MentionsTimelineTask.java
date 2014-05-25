@@ -35,8 +35,12 @@ import twitter4j.*;
 public class MentionsTimelineTask extends TwitterTask<Status[]>
 {
 
+// ------------------------------ FIELDS ------------------------------
+
     private final Activity activity;
     private final Paging paging;
+
+// --------------------------- CONSTRUCTORS ---------------------------
 
     protected MentionsTimelineTask(Twitter twitter, Activity activity)
     {
@@ -48,6 +52,20 @@ public class MentionsTimelineTask extends TwitterTask<Status[]>
         super(twitter);
         this.activity = activity;
         this.paging = paging;
+    }
+
+// ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(twitter4j.Status[] statuses)
+    {
+        if(statuses.length != 0)
+        {
+            for(twitter4j.Status status : statuses)
+            {
+                StatusCache.getInstance().put(status);
+            }
+        }
     }
 
     @Override
@@ -69,22 +87,16 @@ public class MentionsTimelineTask extends TwitterTask<Status[]>
         {
             e.printStackTrace();
             Logger.error(e.toString());
+            if(e.exceededRateLimitation())
+            {
+                Notificator.publish(activity, R.string.notice_error_rate_limit, NotificationType.ALERT);
+            }
+            else
+            {
+                Notificator.publish(activity, R.string.notice_error_get_mentions, NotificationType.ALERT);
+            }
             return new twitter4j.Status[0];
         }
         return responseList.toArray(new twitter4j.Status[responseList.size()]);
-    }
-
-    @Override
-    protected void onPostExecute(twitter4j.Status[] statuses)
-    {
-        if(statuses.length == 0)
-        {
-            new Notificator(activity, R.string.notice_error_get_mentions, NotificationType.ALERT).publish();
-            return;
-        }
-        for(twitter4j.Status status : statuses)
-        {
-            StatusCache.getInstance().put(status);
-        }
     }
 }
