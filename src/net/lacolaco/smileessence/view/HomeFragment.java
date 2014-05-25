@@ -64,6 +64,7 @@ public class HomeFragment extends CustomListFragment
                 @Override
                 public void run()
                 {
+                    getListAdapter(activity).updateForce();
                     refreshView.onRefreshComplete();
                 }
             }.post();
