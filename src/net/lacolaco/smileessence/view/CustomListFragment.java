@@ -127,7 +127,13 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
         listView.setAdapter(adapter);
         listView.setOnScrollListener(this);
         listView.setOnRefreshListener(this);
+        listView.setMode(getRefreshMode());
         return page;
+    }
+
+    protected PullToRefreshBase.Mode getRefreshMode()
+    {
+        return null;
     }
 
     private CustomListAdapter<?> getListAdapter(int fragmentIndex)
