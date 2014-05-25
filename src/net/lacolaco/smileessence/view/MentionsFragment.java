@@ -39,7 +39,7 @@ import twitter4j.Twitter;
 public class MentionsFragment extends CustomListFragment
 {
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     protected PullToRefreshBase.Mode getRefreshMode()
@@ -47,10 +47,10 @@ public class MentionsFragment extends CustomListFragment
         return PullToRefreshBase.Mode.BOTH;
     }
 
-// ------------------------ INTERFACE METHODS ------------------------
+    // ------------------------ INTERFACE METHODS ------------------------
 
 
-// --------------------- Interface OnRefreshListener2 ---------------------
+    // --------------------- Interface OnRefreshListener2 ---------------------
 
     @Override
     public void onPullDownToRefresh(final PullToRefreshBase<ListView> refreshView)
@@ -91,7 +91,7 @@ public class MentionsFragment extends CustomListFragment
         Paging paging = getPaging(getPagingCount(activity));
         if(adapter.getCount() > 0)
         {
-            paging.setMaxId(getLastID(adapter));
+            paging.setMaxId(getLastID(adapter) - 1);
         }
         new MentionsTimelineTask(twitter, activity, paging)
         {

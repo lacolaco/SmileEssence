@@ -104,7 +104,7 @@ public class HomeFragment extends CustomListFragment
         Paging paging = getPaging(getPagingCount(activity));
         if(adapter.getCount() > 0)
         {
-            paging.setMaxId(getLastID(adapter));
+            paging.setMaxId(getLastID(adapter) - 1);
         }
         new HomeTimelineTask(twitter, activity, paging)
         {

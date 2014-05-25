@@ -43,7 +43,7 @@ import twitter4j.Twitter;
 public class MessagesFragment extends CustomListFragment
 {
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     protected PullToRefreshBase.Mode getRefreshMode()
@@ -51,10 +51,10 @@ public class MessagesFragment extends CustomListFragment
         return PullToRefreshBase.Mode.BOTH;
     }
 
-// ------------------------ INTERFACE METHODS ------------------------
+    // ------------------------ INTERFACE METHODS ------------------------
 
 
-// --------------------- Interface OnRefreshListener2 ---------------------
+    // --------------------- Interface OnRefreshListener2 ---------------------
 
     @Override
     public void onPullDownToRefresh(final PullToRefreshBase<ListView> refreshView)
@@ -94,7 +94,7 @@ public class MessagesFragment extends CustomListFragment
         Paging paging = getPaging(getPagingCount(activity));
         if(adapter.getCount() > 0)
         {
-            paging.setMaxId(getLastID(adapter));
+            paging.setMaxId(getLastID(adapter) - 1);
         }
         new DirectMessagesTask(twitter, activity, paging)
         {

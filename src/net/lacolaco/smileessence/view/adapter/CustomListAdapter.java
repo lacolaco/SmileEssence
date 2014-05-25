@@ -107,8 +107,7 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        View view = ((T)getItem(position)).getView(activity, activity.getLayoutInflater(), convertView);
-        return view;
+        return ((T) getItem(position)).getView(activity, activity.getLayoutInflater(), convertView);
     }
 
     // ------------------------ OVERRIDE METHODS ------------------------
@@ -127,7 +126,48 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
     {
         synchronized(LOCK)
         {
-            Collections.addAll(list, items);
+            List<T> buffer = Arrays.asList(items);
+            for(T item : buffer)
+            {
+                if(list.contains(item))
+                {
+                    list.remove(item);
+                }
+                list.add(item);
+            }
+        }
+    }
+
+    public void addToTop(T... items)
+    {
+        synchronized(LOCK)
+        {
+            List<T> buffer = Arrays.asList(items);
+            Collections.reverse(buffer);
+            for(T item : buffer)
+            {
+                if(list.contains(item))
+                {
+                    list.remove(item);
+                }
+                list.add(0, item);
+            }
+        }
+    }
+
+    public T removeItem(int position)
+    {
+        synchronized(LOCK)
+        {
+            return list.remove(position);
+        }
+    }
+
+    public boolean removeItem(T item)
+    {
+        synchronized(LOCK)
+        {
+            return list.remove(item);
         }
     }
 
@@ -151,35 +191,6 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
                     notifyDataSetChanged();
                 }
             }.post();
-        }
-    }
-
-    public void addToTop(T... items)
-    {
-        synchronized(LOCK)
-        {
-            List<T> buffer = Arrays.asList(items);
-            Collections.reverse(buffer);
-            for(T item : buffer)
-            {
-                list.add(0, item);
-            }
-        }
-    }
-
-    public T removeItem(int position)
-    {
-        synchronized(LOCK)
-        {
-            return list.remove(position);
-        }
-    }
-
-    public boolean removeItem(T item)
-    {
-        synchronized(LOCK)
-        {
-            return list.remove(item);
         }
     }
 }
