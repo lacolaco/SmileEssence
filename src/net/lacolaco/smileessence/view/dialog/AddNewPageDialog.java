@@ -102,7 +102,7 @@ public class AddNewPageDialog extends MenuDialogFragment
                 {
                     return;
                 }
-                activity.addSearchPage(text);
+                activity.addSearchPage(text, true);
             }
         };
         dialogFragment.setParams(getString(R.string.dialog_create_search_page), "");

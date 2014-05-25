@@ -31,10 +31,10 @@ public class SearchListAdapter extends StatusListAdapter
 
 // ------------------------------ FIELDS ------------------------------
 
-    private long lastID;
     private long topID;
+    private String query;
 
-// --------------------------- CONSTRUCTORS ---------------------------
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public SearchListAdapter(Activity activity)
     {
@@ -42,17 +42,6 @@ public class SearchListAdapter extends StatusListAdapter
     }
 
 // --------------------- GETTER / SETTER METHODS ---------------------
-
-    @Override
-    public long getLastID()
-    {
-        return lastID;
-    }
-
-    public void setLastID(long lastID)
-    {
-        this.lastID = lastID;
-    }
 
     @Override
     public long getTopID()
@@ -63,5 +52,15 @@ public class SearchListAdapter extends StatusListAdapter
     public void setTopID(long topID)
     {
         this.topID = topID;
+    }
+
+    public String getQuery()
+    {
+        return query;
+    }
+
+    public void setQuery(String query)
+    {
+        this.query = query;
     }
 }

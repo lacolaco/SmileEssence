@@ -66,7 +66,7 @@ import twitter4j.auth.AccessToken;
 public class MainActivity extends Activity
 {
 
-// ------------------------------ FIELDS ------------------------------
+    // ------------------------------ FIELDS ------------------------------
 
     public static final int REQUEST_OAUTH = 10;
     public static final int REQUEST_GET_PICTURE_FROM_GALLERY = 11;
@@ -86,7 +86,7 @@ public class MainActivity extends Activity
     private boolean streaming = false;
     private Uri cameraTempFilePath;
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     private AppPreferenceHelper getAppPreferenceHelper()
     {
@@ -186,10 +186,10 @@ public class MainActivity extends Activity
         this.streaming = streaming;
     }
 
-// ------------------------ INTERFACE METHODS ------------------------
+    // ------------------------ INTERFACE METHODS ------------------------
 
 
-// --------------------- Interface Callback ---------------------
+    // --------------------- Interface Callback ---------------------
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event)
@@ -212,7 +212,7 @@ public class MainActivity extends Activity
         }
     }
 
-// ------------------------ OVERRIDE METHODS ------------------------
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -567,18 +567,19 @@ public class MainActivity extends Activity
         Notificator.startNotification();
     }
 
-// -------------------------- OTHER METHODS --------------------------
+    // -------------------------- OTHER METHODS --------------------------
 
     /**
      * Add new search page with given query
      *
      * @param query
      */
-    public void addSearchPage(final String query)
+    public void addSearchPage(final String query, boolean withNotify)
     {
         new SearchQuery(query).save();
         final SearchListAdapter searchAdapter = new SearchListAdapter(this);
-        addListPage(query, SearchFragment.class, searchAdapter, true);
+        searchAdapter.setQuery(query);
+        addListPage(query, SearchFragment.class, searchAdapter, withNotify);
         new SearchTask(TwitterApi.getTwitter(getCurrentAccount()), query, this)
         {
             @Override
@@ -596,7 +597,6 @@ public class MainActivity extends Activity
                             searchAdapter.addToTop(new StatusViewModel(status, getCurrentAccount()));
                         }
                     }
-                    searchAdapter.setLastID(queryResult.getSinceId());
                     searchAdapter.setTopID(queryResult.getMaxId());
                     searchAdapter.updateForce();
                 }
