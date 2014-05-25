@@ -27,24 +27,33 @@ package net.lacolaco.smileessence.view;
 import android.widget.ListView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 
+/**
+ * Fragment for notice history
+ */
 public class HistoryFragment extends CustomListFragment
 {
 
-    @Override
-    public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView)
-    {
-        super.onPullUpToRefresh(refreshView);
-    }
-
-    @Override
-    public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView)
-    {
-        super.onPullDownToRefresh(refreshView);
-    }
+// --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     protected PullToRefreshBase.Mode getRefreshMode()
     {
-        return super.getRefreshMode();
+        return PullToRefreshBase.Mode.DISABLED;
+    }
+
+// ------------------------ INTERFACE METHODS ------------------------
+
+
+// --------------------- Interface OnRefreshListener2 ---------------------
+
+
+    @Override
+    public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView)
+    {
+    }
+
+    @Override
+    public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView)
+    {
     }
 }
