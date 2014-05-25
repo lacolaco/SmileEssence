@@ -63,10 +63,12 @@ import net.lacolaco.smileessence.viewmodel.menu.MainActivityMenuHelper;
 import twitter4j.*;
 import twitter4j.auth.AccessToken;
 
+import java.util.List;
+
 public class MainActivity extends Activity
 {
 
-    // ------------------------------ FIELDS ------------------------------
+// ------------------------------ FIELDS ------------------------------
 
     public static final int REQUEST_OAUTH = 10;
     public static final int REQUEST_GET_PICTURE_FROM_GALLERY = 11;
@@ -86,7 +88,7 @@ public class MainActivity extends Activity
     private boolean streaming = false;
     private Uri cameraTempFilePath;
 
-    // --------------------- GETTER / SETTER METHODS ---------------------
+// --------------------- GETTER / SETTER METHODS ---------------------
 
     private AppPreferenceHelper getAppPreferenceHelper()
     {
@@ -186,10 +188,10 @@ public class MainActivity extends Activity
         this.streaming = streaming;
     }
 
-    // ------------------------ INTERFACE METHODS ------------------------
+// ------------------------ INTERFACE METHODS ------------------------
 
 
-    // --------------------- Interface Callback ---------------------
+// --------------------- Interface Callback ---------------------
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event)
@@ -212,7 +214,7 @@ public class MainActivity extends Activity
         }
     }
 
-    // ------------------------ OVERRIDE METHODS ------------------------
+// ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -327,6 +329,7 @@ public class MainActivity extends Activity
         addListPage(getString(R.string.page_name_mentions), MentionsFragment.class, mentionsAdapter, false);
         addListPage(getString(R.string.page_name_messages), MessagesFragment.class, messagesAdapter, false);
         addListPage(getString(R.string.page_name_history), HistoryFragment.class, historyAdapter, false);
+        addSearchPages();
         pagerAdapter.refreshListNavigation();
         PostState.newState().beginTransaction().commit();
         setSelectedPageIndex(PAGE_HOME, false);
@@ -355,6 +358,55 @@ public class MainActivity extends Activity
         {
             return this.pagerAdapter.addPageWithoutNotify(name, fragmentClass, args);
         }
+    }
+
+    private void addSearchPages()
+    {
+        List<SearchQuery> searchQueries = SearchQuery.getAll();
+        for(SearchQuery searchQuery : searchQueries)
+        {
+            addSearchPage(searchQuery.query, false);
+        }
+    }
+
+    /**
+     * Add new search page with given query
+     *
+     * @param query
+     */
+    public void addSearchPage(final String query, boolean withNotify)
+    {
+        final SearchListAdapter searchAdapter = new SearchListAdapter(this);
+        searchAdapter.setQuery(query);
+        addListPage(query, SearchFragment.class, searchAdapter, withNotify);
+        new SearchTask(TwitterApi.getTwitter(getCurrentAccount()), query, this)
+        {
+            @Override
+            protected void onPostExecute(QueryResult queryResult)
+            {
+                super.onPostExecute(queryResult);
+                if(queryResult != null)
+                {
+                    java.util.List<twitter4j.Status> tweets = queryResult.getTweets();
+                    for(int i = tweets.size() - 1; i >= 0; i--)
+                    {
+                        twitter4j.Status status = tweets.get(i);
+                        if(!status.isRetweet())
+                        {
+                            searchAdapter.addToTop(new StatusViewModel(status, getCurrentAccount()));
+                        }
+                    }
+                    searchAdapter.setTopID(queryResult.getMaxId());
+                    searchAdapter.updateForce();
+                }
+            }
+        }.execute();
+        moveToLastPage();
+    }
+
+    private void moveToLastPage()
+    {
+        setSelectedPageIndex(getPageCount() - 1);
     }
 
     public void setSelectedPageIndex(int position, boolean smooth)
@@ -567,48 +619,7 @@ public class MainActivity extends Activity
         Notificator.startNotification();
     }
 
-    // -------------------------- OTHER METHODS --------------------------
-
-    /**
-     * Add new search page with given query
-     *
-     * @param query
-     */
-    public void addSearchPage(final String query, boolean withNotify)
-    {
-        new SearchQuery(query).save();
-        final SearchListAdapter searchAdapter = new SearchListAdapter(this);
-        searchAdapter.setQuery(query);
-        addListPage(query, SearchFragment.class, searchAdapter, withNotify);
-        new SearchTask(TwitterApi.getTwitter(getCurrentAccount()), query, this)
-        {
-            @Override
-            protected void onPostExecute(QueryResult queryResult)
-            {
-                super.onPostExecute(queryResult);
-                if(queryResult != null)
-                {
-                    java.util.List<twitter4j.Status> tweets = queryResult.getTweets();
-                    for(int i = tweets.size() - 1; i >= 0; i--)
-                    {
-                        twitter4j.Status status = tweets.get(i);
-                        if(!status.isRetweet())
-                        {
-                            searchAdapter.addToTop(new StatusViewModel(status, getCurrentAccount()));
-                        }
-                    }
-                    searchAdapter.setTopID(queryResult.getMaxId());
-                    searchAdapter.updateForce();
-                }
-            }
-        }.execute();
-        moveToLastPage();
-    }
-
-    private void moveToLastPage()
-    {
-        setSelectedPageIndex(getPageCount() - 1);
-    }
+// -------------------------- OTHER METHODS --------------------------
 
     public void finish(boolean needConfirmDialog)
     {

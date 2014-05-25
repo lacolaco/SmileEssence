@@ -34,6 +34,7 @@ import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.entity.SearchQuery;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ import java.util.List;
 public class AddNewPageDialog extends MenuDialogFragment
 {
 
-// ------------------------ OVERRIDE METHODS ------------------------
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -102,6 +103,7 @@ public class AddNewPageDialog extends MenuDialogFragment
                 {
                     return;
                 }
+                new SearchQuery(text).save();
                 activity.addSearchPage(text, true);
             }
         };
