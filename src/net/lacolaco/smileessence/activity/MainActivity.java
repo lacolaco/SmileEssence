@@ -68,7 +68,7 @@ import java.util.List;
 public class MainActivity extends Activity
 {
 
-// ------------------------------ FIELDS ------------------------------
+    // ------------------------------ FIELDS ------------------------------
 
     public static final int REQUEST_OAUTH = 10;
     public static final int REQUEST_GET_PICTURE_FROM_GALLERY = 11;
@@ -88,7 +88,7 @@ public class MainActivity extends Activity
     private boolean streaming = false;
     private Uri cameraTempFilePath;
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     private AppPreferenceHelper getAppPreferenceHelper()
     {
@@ -188,10 +188,10 @@ public class MainActivity extends Activity
         this.streaming = streaming;
     }
 
-// ------------------------ INTERFACE METHODS ------------------------
+    // ------------------------ INTERFACE METHODS ------------------------
 
 
-// --------------------- Interface Callback ---------------------
+    // --------------------- Interface Callback ---------------------
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event)
@@ -214,7 +214,7 @@ public class MainActivity extends Activity
         }
     }
 
-// ------------------------ OVERRIDE METHODS ------------------------
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -619,7 +619,7 @@ public class MainActivity extends Activity
         Notificator.startNotification();
     }
 
-// -------------------------- OTHER METHODS --------------------------
+    // -------------------------- OTHER METHODS --------------------------
 
     public void finish(boolean needConfirmDialog)
     {
@@ -646,13 +646,34 @@ public class MainActivity extends Activity
         super.finish();
     }
 
-    public boolean removeCurrentPage()
+    public void removeCurrentPage()
     {
-        return this.pagerAdapter.removePage(getCurrentPageIndex());
+        removePage(getCurrentPageIndex());
     }
 
-    public boolean removePage(int position)
+    public void removePage(int position)
     {
-        return this.pagerAdapter.removePage(position);
+        if(getListAdapter(position) != null)
+        {
+            removeListAdapter(position);
+        }
+        this.pagerAdapter.removePage(position);
+        setSelectedPageIndex(position - 1);
+    }
+
+    public void removeListAdapter(int i)
+    {
+        adapterSparseArray.remove(i);
+    }
+
+    /**
+     * Remove search page showing now
+     */
+    public void removeSearchPage()
+    {
+        int pageIndex = getCurrentPageIndex();
+        SearchListAdapter listAdapter = (SearchListAdapter) getListAdapter(pageIndex);
+        SearchQuery.findByQuery(listAdapter.getQuery()).delete();
+        removePage(pageIndex);
     }
 }

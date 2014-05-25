@@ -209,4 +209,6 @@
     <string name="command_create_search_page_dialog">Search page</string>
     <string name="dialog_create_search_page">Input search query</string>
     <string name="notice_error_search">Failed to search</string>
+    <string name="actionbar_remove_page">Remove page</string>
+    <string name="dialog_confirm_remove_page">Remove this page, OK?</string>
 </resources>

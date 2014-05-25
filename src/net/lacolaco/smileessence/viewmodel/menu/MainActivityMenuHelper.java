@@ -75,55 +75,58 @@ public class MainActivityMenuHelper
             case R.id.actionbar_add_page:
             {
                 openNewPageDialog(activity);
-                break;
+                return true;
             }
             case R.id.actionbar_setting:
             {
                 Intent intent = new Intent(activity, SettingActivity.class);
                 activity.startActivity(intent);
-                break;
+                return true;
             }
             case R.id.actionbar_edit_templates:
             {
                 Intent intent = new Intent(activity, EditTemplateActivity.class);
                 activity.startActivity(intent);
-                break;
+                return true;
             }
             case R.id.actionbar_edit_extraction:
             {
                 Intent intent = new Intent(activity, EditExtractionActivity.class);
                 activity.startActivity(intent);
-                break;
+                return true;
             }
             case R.id.actionbar_edit_commands:
             {
                 Intent intent = new Intent(activity, EditCommandActivity.class);
                 activity.startActivity(intent);
-                break;
+                return true;
             }
             case R.id.actionbar_favstar:
             {
                 new CommandOpenURL(activity, TwitterUtils.getFavstarRecentURL(activity.getCurrentAccount().screenName)).execute();
-                break;
+                return true;
             }
             case R.id.actionbar_aclog:
             {
                 new CommandOpenURL(activity, TwitterUtils.getAclogTimelineURL(activity.getCurrentAccount().screenName)).execute();
-                break;
+                return true;
             }
             case R.id.actionbar_twilog:
             {
                 new CommandOpenURL(activity, TwitterUtils.getTwilogURL(activity.getCurrentAccount().screenName)).execute();
-                break;
+                return true;
             }
             case R.id.actionbar_report:
             {
                 PostState.newState().beginTransaction().setCursor(0).setText(activity.getString(R.string.text_message_to_author, activity.getVersion())).commit();
                 activity.setSelectedPageIndex(MainActivity.PAGE_POST);
-                break;
+                return true;
+            }
+            default:
+            {
+                return false;
             }
         }
-        return true;
     }
 
     private static void openNewPageDialog(MainActivity activity)

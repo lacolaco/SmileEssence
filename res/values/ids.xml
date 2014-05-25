@@ -38,4 +38,5 @@
     <item name="fragment_setting" type="id"/>
     <item name="menu_edit_list_add" type="id"/>
     <item name="menu_edit_command_all_on" type="id"/>
+    <item name="actionbar_remove_page" type="id"/>
 </resources>

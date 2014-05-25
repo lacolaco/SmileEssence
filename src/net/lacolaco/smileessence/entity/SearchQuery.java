@@ -35,7 +35,7 @@ import java.util.List;
 public class SearchQuery extends Model
 {
 
-    @Column(name = "Query")
+    @Column(name = "Query", unique = true)
     public String query;
 
     public SearchQuery()
@@ -51,5 +51,10 @@ public class SearchQuery extends Model
     public static List<SearchQuery> getAll()
     {
         return new Select().from(SearchQuery.class).execute();
+    }
+
+    public static SearchQuery findByQuery(String query)
+    {
+        return new Select().from(SearchQuery.class).where("Query = ?", query).executeSingle();
     }
 }
