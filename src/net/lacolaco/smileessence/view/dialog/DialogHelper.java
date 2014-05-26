@@ -47,6 +47,14 @@ public class DialogHelper
         dialogFragment.show(activity.getFragmentManager().beginTransaction(), TAG_DIALOG);
     }
 
+    /**
+     * Please expressly closing
+     */
+    public static void showDialogWithoutClose(Activity activity, DialogFragment dialogFragment)
+    {
+        dialogFragment.show(activity.getFragmentManager().beginTransaction(), "dialog_2");
+    }
+
     public static void close(Activity activity)
     {
         FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();

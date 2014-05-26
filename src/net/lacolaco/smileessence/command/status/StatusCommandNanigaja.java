@@ -26,6 +26,7 @@ package net.lacolaco.smileessence.command.status;
 
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.command.IConfirmable;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TweetBuilder;
 import net.lacolaco.smileessence.twitter.TwitterApi;
@@ -35,8 +36,16 @@ import twitter4j.Status;
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
 
-public class StatusCommandNanigaja extends StatusCommand
+public class StatusCommandNanigaja extends StatusCommand implements IConfirmable
 {
+
+    private final Account account;
+
+    public StatusCommandNanigaja(Activity activity, Status status, Account account)
+    {
+        super(R.id.key_command_status_nanigaja, activity, status);
+        this.account = account;
+    }
 
     public static String build(Activity activity, Status status, Account account)
     {
@@ -53,14 +62,6 @@ public class StatusCommandNanigaja extends StatusCommand
         }
         str = String.format("@%s %s", header, activity.getString(R.string.format_status_command_nanigaja, str)).trim();
         return str;
-    }
-
-    private final Account account;
-
-    public StatusCommandNanigaja(Activity activity, Status status, Account account)
-    {
-        super(R.id.key_command_status_nanigaja, activity, status);
-        this.account = account;
     }
 
     @Override

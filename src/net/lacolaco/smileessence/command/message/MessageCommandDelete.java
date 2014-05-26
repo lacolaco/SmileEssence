@@ -26,12 +26,13 @@ package net.lacolaco.smileessence.command.message;
 
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.command.IConfirmable;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.DeleteMessageTask;
 import twitter4j.DirectMessage;
 
-public class MessageCommandDelete extends MessageCommand
+public class MessageCommandDelete extends MessageCommand implements IConfirmable
 {
 
     private final Account account;

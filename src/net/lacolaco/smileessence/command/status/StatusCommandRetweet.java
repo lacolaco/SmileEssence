@@ -26,13 +26,14 @@ package net.lacolaco.smileessence.command.status;
 
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.command.IConfirmable;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.RetweetTask;
 import twitter4j.Status;
 import twitter4j.User;
 
-public class StatusCommandRetweet extends StatusCommand
+public class StatusCommandRetweet extends StatusCommand implements IConfirmable
 {
 
     private final Account account;

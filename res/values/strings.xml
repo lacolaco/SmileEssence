@@ -215,4 +215,5 @@
     <string name="notice_search_text_empty">Query is empty</string>
     <string name="dialog_title_select_search_query">Select search query</string>
     <string name="actionbar_post">Post</string>
+    <string name="dialog_confirm_commands">Execute, OK?</string>
 </resources>

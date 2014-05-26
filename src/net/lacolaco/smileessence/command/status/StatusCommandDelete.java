@@ -26,12 +26,13 @@ package net.lacolaco.smileessence.command.status;
 
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.command.IConfirmable;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.DeleteStatusTask;
 import twitter4j.Status;
 
-public class StatusCommandDelete extends StatusCommand
+public class StatusCommandDelete extends StatusCommand implements IConfirmable
 {
 
     private final Account account;

@@ -48,6 +48,45 @@ public abstract class ConfirmDialogFragment extends DialogFragment
     private int layoutResourceID;
     private String text;
 
+    public static void show(Activity activity, String text, final Runnable onYes)
+    {
+        show(activity, text, onYes, null);
+    }
+
+    public static void show(Activity activity, String text, final Runnable onOK, final Runnable onCancel)
+    {
+        final ConfirmDialogFragment fragment = new ConfirmDialogFragment()
+        {
+            @Override
+            public void onButtonClick(int which)
+            {
+                switch(which)
+                {
+                    case DialogInterface.BUTTON_POSITIVE:
+                    {
+                        if(onOK != null)
+                        {
+                            this.dismiss();
+                            onOK.run();
+                        }
+                        break;
+                    }
+                    case DialogInterface.BUTTON_NEGATIVE:
+                    {
+                        if(onCancel != null)
+                        {
+                            this.dismiss();
+                            onCancel.run();
+                        }
+                        break;
+                    }
+                }
+            }
+        };
+        fragment.setText(text);
+        DialogHelper.showDialogWithoutClose(activity, fragment);
+    }
+
     public void setText(String text)
     {
         Bundle args = new Bundle();
@@ -77,42 +116,4 @@ public abstract class ConfirmDialogFragment extends DialogFragment
     }
 
     public abstract void onButtonClick(int which);
-
-    public static void show(Activity activity, String text, final Runnable onYes)
-    {
-        show(activity, text, onYes, null);
-    }
-
-    public static void show(Activity activity, String text, final Runnable onOK, final Runnable onCancel)
-    {
-        ConfirmDialogFragment fragment = new ConfirmDialogFragment()
-        {
-            @Override
-            public void onButtonClick(int which)
-            {
-                switch(which)
-                {
-                    case DialogInterface.BUTTON_POSITIVE:
-                    {
-                        if(onOK != null)
-                        {
-                            onOK.run();
-                        }
-                        break;
-                    }
-                    case DialogInterface.BUTTON_NEGATIVE:
-                    {
-                        if(onCancel != null)
-                        {
-                            onCancel.run();
-                        }
-                        break;
-                    }
-                }
-            }
-        };
-        fragment.setText(text);
-        DialogHelper helper = new DialogHelper(activity, fragment);
-        helper.show();
-    }
 }

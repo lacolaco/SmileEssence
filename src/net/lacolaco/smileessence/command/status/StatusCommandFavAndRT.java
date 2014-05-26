@@ -26,10 +26,11 @@ package net.lacolaco.smileessence.command.status;
 
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.command.IConfirmable;
 import net.lacolaco.smileessence.entity.Account;
 import twitter4j.Status;
 
-public class StatusCommandFavAndRT extends StatusCommand
+public class StatusCommandFavAndRT extends StatusCommand implements IConfirmable
 {
 
     private final Account account;

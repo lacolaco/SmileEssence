@@ -150,7 +150,7 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         View header = getTitleView(activity, account, status);
         header.setClickable(false);
 
-        return new AlertDialog.Builder(activity).setCustomTitle(header).setView(body).setCancelable(true).create();
+        return new AlertDialog.Builder(activity).setCustomTitle(header).setView(body).create();
     }
 
     public List<Command> getCommands(Activity activity, Status status, Account account)
