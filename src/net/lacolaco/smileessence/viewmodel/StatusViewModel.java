@@ -362,7 +362,7 @@ public class StatusViewModel implements IViewModel
             {
                 StatusMenuDialogFragment fragment = new StatusMenuDialogFragment();
                 fragment.setStatusID(getID());
-                new DialogHelper(activity, fragment).show();
+                DialogHelper.showDialog(activity, fragment);
             }
         }));
         return convertedView;
