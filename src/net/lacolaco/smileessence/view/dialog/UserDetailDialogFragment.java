@@ -244,7 +244,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
             {
                 UserMenuDialogFragment menuFragment = new UserMenuDialogFragment();
                 menuFragment.setUserID(user.getId());
-                new DialogHelper(activity, menuFragment).show();
+                DialogHelper.showDialog(activity, menuFragment);
                 break;
             }
             case R.id.imageview_user_detail_icon:
