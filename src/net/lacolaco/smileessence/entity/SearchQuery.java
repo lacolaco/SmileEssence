@@ -55,7 +55,7 @@ public class SearchQuery extends Model
 
     public static List<SearchQuery> getAll()
     {
-        return new Select().from(SearchQuery.class).orderBy("CreateAt DESC").execute();
+        return new Select().from(SearchQuery.class).orderBy("CreatedAt DESC").execute();
     }
 
     public static SearchQuery findByQuery(String query)

@@ -40,6 +40,8 @@ import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.SearchTask;
 import net.lacolaco.smileessence.util.UIHandler;
 import net.lacolaco.smileessence.view.adapter.SearchListAdapter;
+import net.lacolaco.smileessence.view.dialog.DialogHelper;
+import net.lacolaco.smileessence.view.dialog.SelectSearchQueryDialogFragment;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -50,11 +52,11 @@ import java.util.List;
 public class SearchFragment extends CustomListFragment implements View.OnClickListener
 {
 
-// ------------------------------ FIELDS ------------------------------
+    // ------------------------------ FIELDS ------------------------------
 
     private EditText editText;
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     private MainActivity getMainActivity()
     {
@@ -67,10 +69,10 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         return PullToRefreshBase.Mode.BOTH;
     }
 
-// ------------------------ INTERFACE METHODS ------------------------
+    // ------------------------ INTERFACE METHODS ------------------------
 
 
-// --------------------- Interface OnClickListener ---------------------
+    // --------------------- Interface OnClickListener ---------------------
 
 
     @Override
@@ -91,7 +93,7 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         }
     }
 
-// --------------------- Interface OnRefreshListener2 ---------------------
+    // --------------------- Interface OnRefreshListener2 ---------------------
 
     @Override
     public void onPullDownToRefresh(final PullToRefreshBase<ListView> refreshView)
@@ -263,7 +265,7 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
 
     private void openSearchQueryDialog(MainActivity mainActivity)
     {
-
+        DialogHelper.showDialog(mainActivity, new SelectSearchQueryDialogFragment());
     }
 
     private void search()

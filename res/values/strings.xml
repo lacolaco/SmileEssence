@@ -213,4 +213,5 @@
     <string name="command_search_on_twitter">Search on Twitter</string>
     <string name="page_name_search">Search</string>
     <string name="notice_search_text_empty">Query is empty</string>
+    <string name="dialog_title_select_search_query">Select search query</string>
 </resources>
