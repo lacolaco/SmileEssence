@@ -42,8 +42,8 @@ public class PostState
     private String mediaFilePath = "";
     private boolean directMessage = false;
     private OnPostStateChangeListener listener;
-    private int selectionStart = -1;
-    private int selectionEnd = -1;
+    private int selectionStart = 0;
+    private int selectionEnd = 0;
 
 // -------------------------- STATIC METHODS --------------------------
 
