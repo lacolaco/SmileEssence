@@ -73,18 +73,25 @@ public class EventViewModel implements IViewModel
         this.sourceUserID = source.getId();
         this.sourceScreenName = source.getScreenName();
         this.sourceName = source.getName();
+        this.iconURL = source.getProfileImageURL();
 
         if(status != null)
         {
-            this.targetStatusID = status.getId();
-            this.targetText = status.getText();
-            this.iconURL = status.getUser().getProfileImageURL();
+            if(event == EnumEvent.RETWEETED)
+            {
+                this.targetStatusID = status.getRetweetedStatus().getId();
+                this.targetText = status.getRetweetedStatus().getText();
+            }
+            else
+            {
+                this.targetStatusID = status.getId();
+                this.targetText = status.getText();
+            }
         }
         else
         {
             this.targetStatusID = -1L;
             this.targetText = "";
-            this.iconURL = source.getProfileImageURL();
         }
     }
 

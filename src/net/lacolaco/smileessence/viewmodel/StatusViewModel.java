@@ -292,10 +292,6 @@ public class StatusViewModel implements IViewModel
 
     public boolean isRetweetOfMe()
     {
-        if(isRetweet())
-        {
-            return retweetedStatus.isRetweetOfMe;
-        }
         return isRetweetOfMe;
     }
 
