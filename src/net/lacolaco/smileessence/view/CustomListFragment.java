@@ -43,24 +43,24 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
         PullToRefreshBase.OnRefreshListener2<ListView>
 {
 
-// ------------------------------ FIELDS ------------------------------
+    // ------------------------------ FIELDS ------------------------------
 
     public static final String ADAPTER_INDEX = "fragmentIndex";
     public static final int SCROLL_DURATION = 1500;
 
     private int fragmentIndex;
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     protected PullToRefreshBase.Mode getRefreshMode()
     {
         return PullToRefreshBase.Mode.DISABLED;
     }
 
-// ------------------------ INTERFACE METHODS ------------------------
+    // ------------------------ INTERFACE METHODS ------------------------
 
 
-// --------------------- Interface OnRefreshListener2 ---------------------
+    // --------------------- Interface OnRefreshListener2 ---------------------
 
     @Override
     public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView)
@@ -74,7 +74,7 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
 
     }
 
-// --------------------- Interface OnScrollListener ---------------------
+    // --------------------- Interface OnScrollListener ---------------------
 
     @Override
     public void onScrollStateChanged(AbsListView absListView, int scrollState)
@@ -98,7 +98,7 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
     {
     }
 
-// ------------------------ OVERRIDE METHODS ------------------------
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -158,16 +158,23 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
         int increments = after - before;
         if(increments > 0)
         {
-            adapter.setNotifiable(false);
-            notifyListUpdated(increments);
-            if(addedToTop)
+            if(increments == 1)
             {
-                absListView.setSelection(increments);
-                absListView.smoothScrollToPositionFromTop(increments - 1, 0, SCROLL_DURATION);
+                adapter.setNotifiable(true);
             }
             else
             {
-                absListView.smoothScrollToPosition(before);
+                adapter.setNotifiable(false);
+            }
+            notifyListUpdated(increments);
+            if(addedToTop)
+            {
+                absListView.setSelection(increments + 1);
+                absListView.smoothScrollToPositionFromTop(increments, 0);
+            }
+            else
+            {
+                absListView.smoothScrollToPositionFromTop(before, 0);
             }
         }
         else
