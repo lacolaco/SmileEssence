@@ -40,7 +40,7 @@ import twitter4j.Twitter;
 public class HomeFragment extends CustomListFragment
 {
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     protected PullToRefreshBase.Mode getRefreshMode()
@@ -48,10 +48,10 @@ public class HomeFragment extends CustomListFragment
         return PullToRefreshBase.Mode.BOTH;
     }
 
-// ------------------------ INTERFACE METHODS ------------------------
+    // ------------------------ INTERFACE METHODS ------------------------
 
 
-// --------------------- Interface OnRefreshListener2 ---------------------
+    // --------------------- Interface OnRefreshListener2 ---------------------
 
     @Override
     public void onPullDownToRefresh(final PullToRefreshBase<ListView> refreshView)
@@ -64,7 +64,8 @@ public class HomeFragment extends CustomListFragment
                 @Override
                 public void run()
                 {
-                    getListAdapter(activity).updateForce();
+                    StatusListAdapter adapter = getListAdapter(activity);
+                    updateListViewWithNotice(refreshView.getRefreshableView(), adapter, true);
                     refreshView.onRefreshComplete();
                 }
             }.post();
