@@ -96,8 +96,6 @@ public class UserMenuDialogFragment extends MenuDialogFragment
         commands.add(new UserCommandReply(activity, user));
         commands.add(new UserCommandAddToReply(activity, user));
         commands.add(new UserCommandSendMessage(activity, user, account));
-        commands.add(new UserCommandFollow(activity, user, account));
-        commands.add(new UserCommandUnfollow(activity, user, account));
         commands.add(new UserCommandBlock(activity, user, account));
         commands.add(new UserCommandUnblock(activity, user, account));
         commands.add(new UserCommandReportForSpam(activity, user, account));
