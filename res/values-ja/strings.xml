@@ -214,6 +214,6 @@
     <string name="page_name_search">検索</string>
     <string name="notice_search_text_empty">クエリが空です</string>
     <string name="dialog_title_select_search_query">検索クエリを選択</string>
-    <string name="actionbar_post">Post</string>
-    <string name="dialog_confirm_commands">Execute, OK?</string>
+    <string name="actionbar_post">投稿</string>
+    <string name="dialog_confirm_commands">実行しますか？</string>
 </resources>
