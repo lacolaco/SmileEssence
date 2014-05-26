@@ -25,6 +25,7 @@
 package net.lacolaco.smileessence.view;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.*;
@@ -140,7 +141,7 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
                             adapter.addToTop(new StatusViewModel(status, currentAccount));
                         }
                     }
-                    updateListViewWithNotice(refreshView.getRefreshableView(), adapter, false);
+                    updateListViewWithNotice(refreshView.getRefreshableView(), adapter, true);
                     adapter.setTopID(queryResult.getMaxId());
                     refreshView.onRefreshComplete();
                 }
@@ -222,8 +223,7 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View page = inflater.inflate(R.layout.fragment_search, container, false);
-        Bundle args = getArguments();
-        int fragmentIndex = args.getInt(ADAPTER_INDEX);
+        int fragmentIndex = getAdapterIndex();
         PullToRefreshListView listView = getListView(page);
         SearchListAdapter adapter = (SearchListAdapter) getListAdapter(fragmentIndex);
         listView.setAdapter(adapter);
@@ -237,6 +237,11 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         editText = getEditText(page);
         editText.setText(adapter.getQuery());
         return page;
+    }
+
+    private int getAdapterIndex()
+    {
+        return getArguments().getInt(ADAPTER_INDEX);
     }
 
     private EditText getEditText(View page)
@@ -265,9 +270,19 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         return (SearchListAdapter) activity.getListAdapter(MainActivity.PAGE_SEARCH);
     }
 
-    private void openSearchQueryDialog(MainActivity mainActivity)
+    private void openSearchQueryDialog(final MainActivity mainActivity)
     {
-        DialogHelper.showDialog(mainActivity, new SelectSearchQueryDialogFragment());
+        DialogHelper.showDialog(mainActivity, new SelectSearchQueryDialogFragment()
+        {
+            @Override
+            public void onDismiss(DialogInterface dialog)
+            {
+                super.onDismiss(dialog);
+                SearchListAdapter adapter = getListAdapter(mainActivity);
+                editText.setText(adapter.getQuery());
+                hideIME();
+            }
+        });
     }
 
     private void search()
