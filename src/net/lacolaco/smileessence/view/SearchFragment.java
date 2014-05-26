@@ -24,9 +24,11 @@
 
 package net.lacolaco.smileessence.view;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.*;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -276,7 +278,14 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
             if(!TextUtils.isEmpty(text))
             {
                 getMainActivity().openSearchPage(text);
+                hideIME();
             }
         }
+    }
+
+    private void hideIME()
+    {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 }
