@@ -41,6 +41,10 @@ public class MainActivityMenuHelper
 
     public static void addItemsToMenu(MainActivity activity, Menu menu)
     {
+        //Post button
+        MenuItem postButton = menu.add(Menu.NONE, R.id.actionbar_post, Menu.NONE, activity.getString(R.string.actionbar_post));
+        postButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        postButton.setIcon(R.drawable.ic_action_edit);
         //Search button
         MenuItem searchButton = menu.add(Menu.NONE, R.id.actionbar_search, Menu.NONE, activity.getString(R.string.actionbar_search));
         searchButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -70,6 +74,11 @@ public class MainActivityMenuHelper
     {
         switch(item.getItemId())
         {
+            case R.id.actionbar_post:
+            {
+                openPostPage(activity);
+                return true;
+            }
             case R.id.actionbar_search:
             {
                 openSearchPage(activity);
@@ -125,6 +134,11 @@ public class MainActivityMenuHelper
                 return false;
             }
         }
+    }
+
+    private static void openPostPage(MainActivity activity)
+    {
+        activity.openPostPage();
     }
 
     private static void openSearchPage(MainActivity activity)

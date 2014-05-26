@@ -34,9 +34,7 @@ import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.ArrowKeyMovementMethod;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import net.lacolaco.smileessence.R;
@@ -208,6 +206,13 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         imm.showSoftInput(editText, 0);
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.removeItem(R.id.actionbar_post);
+    }
+
     // --------------------- Interface TextWatcher ---------------------
 
     @Override
@@ -250,6 +255,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         Logger.debug("PostFragment Create");
         super.onCreate(savedInstanceState);
         PostState.getState().setListener(this);
+        setHasOptionsMenu(true);
     }
 
     @Override
