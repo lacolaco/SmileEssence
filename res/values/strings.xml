@@ -216,4 +216,5 @@
     <string name="dialog_title_select_search_query">Select search query</string>
     <string name="actionbar_post">Post</string>
     <string name="dialog_confirm_commands">Execute, OK?</string>
+    <string name="notice_add_to_reply">Added to reply</string>
 </resources>

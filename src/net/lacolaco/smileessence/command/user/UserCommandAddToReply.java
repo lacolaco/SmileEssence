@@ -26,6 +26,7 @@ package net.lacolaco.smileessence.command.user;
 
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.view.adapter.PostState;
 import twitter4j.User;
 
@@ -50,6 +51,7 @@ public class UserCommandAddToReply extends UserCommand
                  .beginTransaction()
                  .insertText(0, String.format("@%s ", getUser().getScreenName()))
                  .commit();
+        Notificator.publish(getActivity(), R.string.notice_add_to_reply);
         return true;
     }
 
