@@ -35,11 +35,12 @@ import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.data.ImageCache;
 import net.lacolaco.smileessence.data.UserCache;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.util.NameStyles;
 import net.lacolaco.smileessence.util.StringUtils;
 import net.lacolaco.smileessence.util.Themes;
+import net.lacolaco.smileessence.view.dialog.DialogHelper;
+import net.lacolaco.smileessence.view.dialog.MessageMenuDialogFragment;
 import net.lacolaco.smileessence.view.listener.ListItemClickListener;
 import twitter4j.DirectMessage;
 
@@ -48,7 +49,7 @@ import java.util.Date;
 public class MessageViewModel implements IViewModel
 {
 
-    // ------------------------------ FIELDS ------------------------------
+// ------------------------------ FIELDS ------------------------------
 
     private long id;
     private long senderID;
@@ -59,7 +60,7 @@ public class MessageViewModel implements IViewModel
     private Date createdAt;
     private boolean myMessage;
 
-    // --------------------------- CONSTRUCTORS ---------------------------
+// --------------------------- CONSTRUCTORS ---------------------------
 
     public MessageViewModel(DirectMessage directMessage, Account account)
     {
@@ -79,7 +80,7 @@ public class MessageViewModel implements IViewModel
         return senderID == account.userID;
     }
 
-    // --------------------- GETTER / SETTER METHODS ---------------------
+// --------------------- GETTER / SETTER METHODS ---------------------
 
     public Date getCreatedAt()
     {
@@ -121,13 +122,13 @@ public class MessageViewModel implements IViewModel
         return myMessage;
     }
 
-    // ------------------------ INTERFACE METHODS ------------------------
+// ------------------------ INTERFACE METHODS ------------------------
 
 
-    // --------------------- Interface IViewModel ---------------------
+// --------------------- Interface IViewModel ---------------------
 
     @Override
-    public View getView(Activity activity, LayoutInflater inflater, View convertedView)
+    public View getView(final Activity activity, LayoutInflater inflater, View convertedView)
     {
         if(convertedView == null)
         {
@@ -136,25 +137,25 @@ public class MessageViewModel implements IViewModel
         UserPreferenceHelper preferenceHelper = new UserPreferenceHelper(activity);
         int textSize = preferenceHelper.getValue(R.string.key_setting_text_size, 10);
         int nameStyle = preferenceHelper.getValue(R.string.key_setting_namestyle, 0);
-        int theme = ((MainActivity)activity).getThemeIndex();
-        NetworkImageView icon = (NetworkImageView)convertedView.findViewById(R.id.imageview_status_icon);
+        int theme = ((MainActivity) activity).getThemeIndex();
+        NetworkImageView icon = (NetworkImageView) convertedView.findViewById(R.id.imageview_status_icon);
         ImageCache.getInstance().setImageToView(getSenderIconURL(), icon);
-        TextView header = (TextView)convertedView.findViewById(R.id.textview_status_header);
+        TextView header = (TextView) convertedView.findViewById(R.id.textview_status_header);
         header.setTextSize(textSize);
         int colorHeader = Themes.getStyledColor(activity, theme, R.attr.color_message_text_header, 0);
         header.setTextColor(colorHeader);
         header.setText(NameStyles.getNameString(nameStyle, getSenderScreenName(), getSenderName()));
-        TextView content = (TextView)convertedView.findViewById(R.id.textview_status_text);
+        TextView content = (TextView) convertedView.findViewById(R.id.textview_status_text);
         content.setTextSize(textSize);
         int colorNormal = Themes.getStyledColor(activity, theme, R.attr.color_status_text_normal, 0);
         content.setTextColor(colorNormal);
         content.setText(getText());
-        TextView footer = (TextView)convertedView.findViewById(R.id.textview_status_footer);
+        TextView footer = (TextView) convertedView.findViewById(R.id.textview_status_footer);
         footer.setTextSize(textSize - 2);
         int colorFooter = Themes.getStyledColor(activity, theme, R.attr.color_status_text_footer, 0);
         footer.setTextColor(colorFooter);
         footer.setText(StringUtils.dateToString(getCreatedAt()));
-        ImageView favorited = (ImageView)convertedView.findViewById(R.id.imageview_status_favorited);
+        ImageView favorited = (ImageView) convertedView.findViewById(R.id.imageview_status_favorited);
         favorited.setVisibility(View.GONE);
         int colorBgMessage = Themes.getStyledColor(activity, theme, R.attr.color_message_bg_normal, 0);
         convertedView.setBackgroundColor(colorBgMessage);
@@ -163,7 +164,9 @@ public class MessageViewModel implements IViewModel
             @Override
             public void run()
             {
-                Logger.debug("message clicked");
+                MessageMenuDialogFragment dialogFragment = new MessageMenuDialogFragment();
+                dialogFragment.setMessageID(getID());
+                DialogHelper.showDialog(activity, dialogFragment);
             }
         }));
         return convertedView;
