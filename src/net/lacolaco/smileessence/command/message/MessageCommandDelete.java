@@ -59,6 +59,6 @@ public class MessageCommandDelete extends MessageCommand
     @Override
     public boolean isEnabled()
     {
-        return true;
+        return account.userID == getMessage().getSenderId();
     }
 }
