@@ -55,6 +55,11 @@ public class ExtractionWord extends Model implements IViewModel
         this.text = text;
     }
 
+    public static List<ExtractionWord> getAll()
+    {
+        return new Select().from(ExtractionWord.class).execute();
+    }
+
     @Override
     public View getView(Activity activity, LayoutInflater inflater, View convertedView)
     {
@@ -65,10 +70,5 @@ public class ExtractionWord extends Model implements IViewModel
         TextView textView = (TextView)convertedView.findViewById(R.id.textView_menuItem_simple);
         textView.setText(this.text);
         return convertedView;
-    }
-
-    public static List<Model> getAll()
-    {
-        return new Select().from(ExtractionWord.class).execute();
     }
 }

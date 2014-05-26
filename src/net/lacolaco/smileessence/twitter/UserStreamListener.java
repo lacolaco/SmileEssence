@@ -27,6 +27,7 @@ package net.lacolaco.smileessence.twitter;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.data.StatusCache;
+import net.lacolaco.smileessence.entity.ExtractionWord;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.view.adapter.MessageListAdapter;
@@ -89,25 +90,36 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         {
             if(viewModel.isRetweetOfMe())
             {
-                CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
-                EventViewModel retweeted = new EventViewModel(EnumEvent.RETWEETED, status.getUser(), status);
-                new Notificator(activity, retweeted.getFormattedString(activity)).publish();
-                history.addToTop(retweeted);
-                history.update();
+                addToHistory(new EventViewModel(EnumEvent.RETWEETED, status.getUser(), status));
             }
         }
         else if(viewModel.isMention())
         {
-            CustomListAdapter<?> mentions = activity.getListAdapter(MainActivity.PAGE_MENTIONS);
-            mentions.addToTop(viewModel);
-            mentions.update();
-            CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
-            EventViewModel mentioned = new EventViewModel(EnumEvent.MENTIONED, status.getUser(), status);
-            new Notificator(activity, mentioned.getFormattedString(activity)).publish();
-            history.addToTop(mentioned);
-            history.update();
-
+            addToMentions(viewModel);
+            addToHistory(new EventViewModel(EnumEvent.MENTIONED, status.getUser(), status));
         }
+        for(ExtractionWord word : ExtractionWord.getAll())
+        {
+            if(viewModel.getText().contains(word.text))
+            {
+                addToMentions(viewModel);
+            }
+        }
+    }
+
+    private void addToHistory(EventViewModel mentioned)
+    {
+        CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
+        new Notificator(activity, mentioned.getFormattedString(activity)).publish();
+        history.addToTop(mentioned);
+        history.update();
+    }
+
+    private void addToMentions(StatusViewModel viewModel)
+    {
+        CustomListAdapter<?> mentions = activity.getListAdapter(MainActivity.PAGE_MENTIONS);
+        mentions.addToTop(viewModel);
+        mentions.update();
     }
 
     @Override
@@ -118,7 +130,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
             CustomListAdapter adapter = activity.getListAdapter(i);
             if(adapter != null && adapter instanceof StatusListAdapter)
             {
-                StatusListAdapter statusListAdapter = (StatusListAdapter)adapter;
+                StatusListAdapter statusListAdapter = (StatusListAdapter) adapter;
                 statusListAdapter.removeByStatusID(statusDeletionNotice.getStatusId());
             }
         }
@@ -152,7 +164,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onDeletionNotice(long directMessageId, long userId)
     {
-        MessageListAdapter messages = (MessageListAdapter)activity.getListAdapter(MainActivity.PAGE_MESSAGES);
+        MessageListAdapter messages = (MessageListAdapter) activity.getListAdapter(MainActivity.PAGE_MESSAGES);
         messages.removeByStatusID(directMessageId);
     }
 
@@ -166,11 +178,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     {
         if(activity.getCurrentAccount().userID == target.getId())
         {
-            EventViewModel event = new EventViewModel(EnumEvent.FAVORITED, source, favoritedStatus);
-            CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
-            new Notificator(activity, event.getFormattedString(activity)).publish();
-            history.addToTop(event);
-            history.update();
+            addToHistory(new EventViewModel(EnumEvent.FAVORITED, source, favoritedStatus));
         }
     }
 
@@ -179,11 +187,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     {
         if(activity.getCurrentAccount().userID == target.getId())
         {
-            EventViewModel event = new EventViewModel(EnumEvent.UNFAVORITED, source, unfavoritedStatus);
-            CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
-            new Notificator(activity, event.getFormattedString(activity)).publish();
-            history.addToTop(event);
-            history.update();
+            addToHistory(new EventViewModel(EnumEvent.UNFAVORITED, source, unfavoritedStatus));
         }
     }
 
@@ -192,11 +196,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     {
         if(activity.getCurrentAccount().userID == followedUser.getId())
         {
-            EventViewModel event = new EventViewModel(EnumEvent.FOLLOWED, source);
-            CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
-            new Notificator(activity, event.getFormattedString(activity)).publish();
-            history.addToTop(event);
-            history.update();
+            addToHistory(new EventViewModel(EnumEvent.FOLLOWED, source));
         }
     }
 
@@ -208,11 +208,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onDirectMessage(DirectMessage directMessage)
     {
-        EventViewModel event = new EventViewModel(EnumEvent.RECEIVE_MESSAGE, directMessage.getSender());
-        CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
-        new Notificator(activity, event.getFormattedString(activity)).publish();
-        history.addToTop(event);
-        history.update();
+        addToHistory(new EventViewModel(EnumEvent.RECEIVE_MESSAGE, directMessage.getSender()));
         MessageViewModel message = new MessageViewModel(directMessage, activity.getCurrentAccount());
         CustomListAdapter<?> messages = activity.getListAdapter(MainActivity.PAGE_MESSAGES);
         messages.addToTop(message);
@@ -264,11 +260,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     {
         if(activity.getCurrentAccount().userID == blockedUser.getId())
         {
-            EventViewModel event = new EventViewModel(EnumEvent.BLOCKED, source);
-            CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
-            new Notificator(activity, event.getFormattedString(activity)).publish();
-            history.addToTop(event);
-            history.update();
+            addToHistory(new EventViewModel(EnumEvent.BLOCKED, source));
         }
     }
 
@@ -277,11 +269,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     {
         if(activity.getCurrentAccount().userID == unblockedUser.getId())
         {
-            EventViewModel event = new EventViewModel(EnumEvent.UNBLOCKED, source);
-            CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
-            new Notificator(activity, event.getFormattedString(activity)).publish();
-            history.addToTop(event);
-            history.update();
+            addToHistory(new EventViewModel(EnumEvent.UNBLOCKED, source));
         }
     }
 }

@@ -34,7 +34,6 @@ import android.view.*;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import com.activeandroid.Model;
 import net.lacolaco.smileessence.Application;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.ExtractionWord;
@@ -105,7 +104,7 @@ public class EditExtractionActivity extends Activity implements AdapterView.OnIt
 
     private ExtractionWord[] getExtractionWords()
     {
-        List<Model> all = ExtractionWord.getAll();
+        List<ExtractionWord> all = ExtractionWord.getAll();
         return all.toArray(new ExtractionWord[all.size()]);
     }
 
