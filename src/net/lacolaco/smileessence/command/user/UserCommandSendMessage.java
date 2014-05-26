@@ -26,16 +26,19 @@ package net.lacolaco.smileessence.command.user;
 
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
-import net.lacolaco.smileessence.activity.MainActivity;
-import net.lacolaco.smileessence.view.adapter.PostState;
+import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.notification.Notificator;
 import twitter4j.User;
 
 public class UserCommandSendMessage extends UserCommand
 {
 
-    public UserCommandSendMessage(Activity activity, User user)
+    private final Account account;
+
+    public UserCommandSendMessage(Activity activity, User user, Account account)
     {
         super(R.id.key_command_user_send_message, activity, user);
+        this.account = account;
     }
 
     @Override
@@ -47,18 +50,14 @@ public class UserCommandSendMessage extends UserCommand
     @Override
     public boolean execute()
     {
-        PostState.newState()
-                 .beginTransaction()
-                 .setDirectMessage(true)
-                 .setInReplyToScreenName(getUser().getScreenName())
-                 .commit();
-        ((MainActivity)getActivity()).setSelectedPageIndex(MainActivity.PAGE_POST);
+        //TODO open send dm dialog
+        Notificator.publish(getActivity(), R.string.notice_not_implemented_yet);
         return true;
     }
 
     @Override
     public boolean isEnabled()
     {
-        return true;
+        return account.userID != getUser().getId();
     }
 }

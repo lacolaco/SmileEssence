@@ -356,15 +356,15 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         }
         if(viewGroupReply != null)
         {
-            if(PostState.getState().getInReplyToStatusID() >= 0)
+            if(postState.getInReplyToStatusID() >= 0)
             {
                 viewGroupReply.setVisibility(View.VISIBLE);
-                View statusHeader = viewGroupReply.findViewById(R.id.layout_post_reply_status);
+                View header = viewGroupReply.findViewById(R.id.layout_post_reply_status);
                 Account account = activity.getCurrentAccount();
-                Status status = TwitterUtils.tryGetStatus(account, PostState.getState().getInReplyToStatusID());
-                statusHeader = new StatusViewModel(status, account).getView(activity, activity.getLayoutInflater(), statusHeader);
-                statusHeader.setClickable(false);
-                statusHeader.setBackgroundColor(getResources().getColor(R.color.transparent));
+                Status status = TwitterUtils.tryGetStatus(account, postState.getInReplyToStatusID());
+                header = new StatusViewModel(status, account).getView(activity, activity.getLayoutInflater(), header);
+                //                    header.setBackgroundColor(getResources().getColor(R.color.transparent));
+                header.setClickable(false);
                 ImageButton imageButtonDeleteReply = (ImageButton) viewGroupReply.findViewById(R.id.button_post_reply_delete);
                 imageButtonDeleteReply.setOnClickListener(this);
             }

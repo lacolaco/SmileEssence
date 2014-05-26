@@ -26,8 +26,7 @@ package net.lacolaco.smileessence.command.message;
 
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
-import net.lacolaco.smileessence.activity.MainActivity;
-import net.lacolaco.smileessence.view.adapter.PostState;
+import net.lacolaco.smileessence.notification.Notificator;
 import twitter4j.DirectMessage;
 
 public class MessageCommandReply extends MessageCommand
@@ -47,13 +46,8 @@ public class MessageCommandReply extends MessageCommand
     @Override
     public boolean execute()
     {
-        PostState.newState()
-                 .beginTransaction()
-                 .setDirectMessage(true)
-                 .setInReplyToScreenName(getMessage().getSenderScreenName())
-                 .setInReplyToText(getMessage().getText())
-                 .commit();
-        ((MainActivity)getActivity()).setSelectedPageIndex(MainActivity.PAGE_POST);
+        //TODO open send dm dialog
+        Notificator.publish(getActivity(), R.string.notice_not_implemented_yet);
         return true;
     }
 
