@@ -51,4 +51,5 @@
     <attr name="icon_favorite_off" format="reference"/>
     <attr name="icon_garbage" format="reference"/>
     <attr name="icon_search" format="reference"/>
+    <attr name="icon_labels" format="reference"/>
 </resources>

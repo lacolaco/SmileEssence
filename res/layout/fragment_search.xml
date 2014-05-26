@@ -45,7 +45,7 @@
             android:layout_alignParentLeft="true"
             style="?attr/custom_button_transparent"
             android:scaleType="centerCrop"
-            android:src="?attr/icon_post_row"
+            android:src="?attr/icon_labels"
             android:layout_gravity="fill"
             android:adjustViewBounds="false"/>
 
