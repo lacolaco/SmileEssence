@@ -40,7 +40,7 @@ import java.util.List;
 public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
 {
 
-    // ------------------------------ FIELDS ------------------------------
+// ------------------------------ FIELDS ------------------------------
 
     protected final Object LOCK = new Object();
     protected Class<T> clss;
@@ -50,7 +50,7 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
     protected boolean isNotifiable = true;
     protected Activity activity;
 
-    // --------------------------- CONSTRUCTORS ---------------------------
+// --------------------------- CONSTRUCTORS ---------------------------
 
     public CustomListAdapter(Activity activity, Class<T> clss)
     {
@@ -58,7 +58,7 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
         this.clss = clss;
     }
 
-    // --------------------- GETTER / SETTER METHODS ---------------------
+// --------------------- GETTER / SETTER METHODS ---------------------
 
     public Activity getActivity()
     {
@@ -87,10 +87,10 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
         }
     }
 
-    // ------------------------ INTERFACE METHODS ------------------------
+// ------------------------ INTERFACE METHODS ------------------------
 
 
-    // --------------------- Interface Adapter ---------------------
+// --------------------- Interface Adapter ---------------------
 
     @Override
     public Object getItem(int position)
@@ -110,7 +110,7 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
         return ((T) getItem(position)).getView(activity, activity.getLayoutInflater(), convertView);
     }
 
-    // ------------------------ OVERRIDE METHODS ------------------------
+// ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public void notifyDataSetChanged()
@@ -120,7 +120,7 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
         super.notifyDataSetChanged();
     }
 
-    // -------------------------- OTHER METHODS --------------------------
+// -------------------------- OTHER METHODS --------------------------
 
     public void addToBottom(T... items)
     {
@@ -152,6 +152,14 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
                 }
                 list.add(0, item);
             }
+        }
+    }
+
+    public void clear()
+    {
+        synchronized(LOCK)
+        {
+            list.clear();
         }
     }
 

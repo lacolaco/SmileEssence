@@ -22,30 +22,49 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.entity;
+package net.lacolaco.smileessence.command;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
+import android.app.Activity;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.view.adapter.PostState;
 
-@Table(name = "Hashtag")
-public class SavedHashtag extends Model
+public class CommandPasteToPost extends Command
 {
 
-    @Column(name = "Text", notNull = true)
-    public String text;
-    @Column(name = "Count")
-    public int count;
+    // ------------------------------ FIELDS ------------------------------
 
-    public SavedHashtag()
+    private final String text;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
+
+    public CommandPasteToPost(Activity activity, String text)
     {
-        super();
+        super(-1, activity);
+        this.text = text;
     }
 
-    public SavedHashtag(String text, int count)
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    @Override
+    public String getText()
     {
-        super();
-        this.text = text;
-        this.count = count;
+        return getActivity().getString(R.string.command_paste_to_post);
+    }
+
+    @Override
+    public boolean isEnabled()
+    {
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
+    public boolean execute()
+    {
+        PostState.getState().beginTransaction().appendText(" " + text).commit();
+        ((MainActivity) getActivity()).openPostPage();
+        return true;
     }
 }

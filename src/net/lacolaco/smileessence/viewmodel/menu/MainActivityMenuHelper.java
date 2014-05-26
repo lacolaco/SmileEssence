@@ -33,8 +33,6 @@ import net.lacolaco.smileessence.activity.*;
 import net.lacolaco.smileessence.command.CommandOpenURL;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.PostState;
-import net.lacolaco.smileessence.view.dialog.AddNewPageDialog;
-import net.lacolaco.smileessence.view.dialog.DialogHelper;
 
 public class MainActivityMenuHelper
 {
@@ -43,10 +41,10 @@ public class MainActivityMenuHelper
 
     public static void addItemsToMenu(MainActivity activity, Menu menu)
     {
-        //Add button
-        MenuItem addButton = menu.add(Menu.NONE, R.id.actionbar_add_page, Menu.NONE, activity.getString(R.string.actionbar_add_page));
-        addButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        addButton.setIcon(R.drawable.ic_action_new);
+        //Search button
+        MenuItem searchButton = menu.add(Menu.NONE, R.id.actionbar_search, Menu.NONE, activity.getString(R.string.actionbar_search));
+        searchButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        searchButton.setIcon(R.drawable.ic_action_search);
         //Settings
         SubMenu settings = menu.addSubMenu(Menu.NONE, R.id.actionbar_settings, Menu.NONE, activity.getString(R.string.actionbar_settings));
         settings.setIcon(R.drawable.ic_action_settings);
@@ -72,9 +70,9 @@ public class MainActivityMenuHelper
     {
         switch(item.getItemId())
         {
-            case R.id.actionbar_add_page:
+            case R.id.actionbar_search:
             {
-                openNewPageDialog(activity);
+                openSearchPage(activity);
                 return true;
             }
             case R.id.actionbar_setting:
@@ -129,9 +127,9 @@ public class MainActivityMenuHelper
         }
     }
 
-    private static void openNewPageDialog(MainActivity activity)
+    private static void openSearchPage(MainActivity activity)
     {
-        DialogHelper.showDialog(activity, new AddNewPageDialog());
+        activity.openSearchPage();
     }
 
 }

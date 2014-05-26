@@ -45,7 +45,7 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
 
 // ------------------------------ FIELDS ------------------------------
 
-    public static final String FRAGMENT_INDEX = "fragmentIndex";
+    public static final String ADAPTER_INDEX = "fragmentIndex";
     public static final int SCROLL_DURATION = 1500;
 
     private int fragmentIndex;
@@ -80,7 +80,7 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
     public void onScrollStateChanged(AbsListView absListView, int scrollState)
     {
         Bundle args = getArguments();
-        fragmentIndex = args.getInt(FRAGMENT_INDEX);
+        fragmentIndex = args.getInt(ADAPTER_INDEX);
         CustomListAdapter<?> adapter = getListAdapter(fragmentIndex);
         adapter.setNotifiable(false);
 
@@ -105,7 +105,7 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
     {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        int fragmentIndex = args.getInt(FRAGMENT_INDEX);
+        int fragmentIndex = args.getInt(ADAPTER_INDEX);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
     {
         View page = inflater.inflate(R.layout.fragment_list, container, false);
         Bundle args = getArguments();
-        int fragmentIndex = args.getInt(FRAGMENT_INDEX);
+        int fragmentIndex = args.getInt(ADAPTER_INDEX);
         PullToRefreshListView listView = getListView(page);
         ListAdapter adapter = getListAdapter(fragmentIndex);
         listView.setAdapter(adapter);
@@ -137,7 +137,7 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
     public void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putInt(FRAGMENT_INDEX, fragmentIndex);
+        outState.putInt(ADAPTER_INDEX, fragmentIndex);
     }
 
     @Override
@@ -146,7 +146,7 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
         super.onViewStateRestored(savedInstanceState);
         if(savedInstanceState != null)
         {
-            fragmentIndex = savedInstanceState.getInt(FRAGMENT_INDEX);
+            fragmentIndex = savedInstanceState.getInt(ADAPTER_INDEX);
         }
     }
 

@@ -22,62 +22,50 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.entity;
+package net.lacolaco.smileessence.command;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
+import android.app.Activity;
+import net.lacolaco.smileessence.view.dialog.DialogHelper;
+import net.lacolaco.smileessence.view.dialog.HashtagDialogFragment;
+import twitter4j.HashtagEntity;
 
-import java.util.Date;
-import java.util.List;
-
-@Table(name = "SearchQueries")
-public class SearchQuery extends Model
+public class CommandOpenHashtagDialog extends Command
 {
 
-    @Column(name = "Query", unique = true)
-    public String query;
+    // ------------------------------ FIELDS ------------------------------
 
-    @Column(name = "CreatedAt")
-    public Date createdAt;
+    private final HashtagEntity hashtagEntity;
 
-    public SearchQuery()
+    // --------------------------- CONSTRUCTORS ---------------------------
+
+    public CommandOpenHashtagDialog(Activity activity, HashtagEntity hashtagEntity)
     {
-        super();
+        super(-1, activity);
+        this.hashtagEntity = hashtagEntity;
     }
 
-    public SearchQuery(String query, Date createdAt)
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    @Override
+    public String getText()
     {
-        this.query = query;
-        this.createdAt = createdAt;
+        return "#" + hashtagEntity.getText();
     }
 
-    public static List<SearchQuery> getAll()
+    @Override
+    public boolean isEnabled()
     {
-        return new Select().from(SearchQuery.class).orderBy("CreateAt DESC").execute();
+        return true;
     }
 
-    public static SearchQuery findByQuery(String query)
-    {
-        return new Select().from(SearchQuery.class).where("Query = ?", query).executeSingle();
-    }
+    // -------------------------- OTHER METHODS --------------------------
 
-    /**
-     *
-     * @param query
-     * @return
-     */
-    public static boolean saveIfNotFound(String query)
+    @Override
+    public boolean execute()
     {
-        if(findByQuery(query) != null)
-        {
-            return false;
-        }
-        else
-        {
-            new SearchQuery(query, new Date()).save();
-            return true;
-        }
+        HashtagDialogFragment dialogFragment = new HashtagDialogFragment();
+        dialogFragment.setText(hashtagEntity.getText());
+        DialogHelper.showDialog(getActivity(), dialogFragment);
+        return true;
     }
 }

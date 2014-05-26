@@ -24,33 +24,38 @@
 
 package net.lacolaco.smileessence.view.dialog;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.Command;
+import net.lacolaco.smileessence.command.CommandPasteToPost;
+import net.lacolaco.smileessence.command.CommandSaveAsTemplate;
+import net.lacolaco.smileessence.command.CommandSearchOnTwitter;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.entity.SearchQuery;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddNewPageDialog extends MenuDialogFragment
+public class HashtagDialogFragment extends MenuDialogFragment
 {
 
-    // ------------------------ OVERRIDE METHODS ------------------------
+
+    public static final String KEY_TEXT = "text";
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
         MainActivity activity = (MainActivity) getActivity();
         Account account = activity.getCurrentAccount();
-        List<Command> commands = getCommands(activity);
+        String text = getHashtagText();
+        List<Command> commands = getCommands(activity, text);
+        filterCommands(commands);
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
         ListView listView = (ListView) body.findViewById(R.id.listview_dialog_menu_list);
         CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);
@@ -62,52 +67,27 @@ public class AddNewPageDialog extends MenuDialogFragment
         adapter.update();
         listView.setOnItemClickListener(onItemClickListener);
 
-        return new AlertDialog.Builder(activity).setView(body).setTitle(R.string.dialog_title_add_new_page).setCancelable(true).create();
+        return new AlertDialog.Builder(activity).setView(body).setTitle(text).setCancelable(true).create();
     }
 
-    public List<Command> getCommands(final MainActivity activity)
+    private String getHashtagText()
+    {
+        return "#" + (String) getArguments().get(KEY_TEXT);
+    }
+
+    public List<Command> getCommands(Activity activity, String text)
     {
         ArrayList<Command> commands = new ArrayList<>();
-        commands.add(new Command(-1, activity)
-        {
-            @Override
-            public boolean execute()
-            {
-                openCreateSearchPageDialog(activity);
-                return true;
-            }
-
-            @Override
-            public String getText()
-            {
-                return activity.getString(R.string.command_create_search_page_dialog);
-            }
-
-            @Override
-            public boolean isEnabled()
-            {
-                return true;
-            }
-        });
+        commands.add(new CommandSaveAsTemplate(activity, text));
+        commands.add(new CommandPasteToPost(activity, text));
+        commands.add(new CommandSearchOnTwitter(activity, text));
         return commands;
     }
 
-    private void openCreateSearchPageDialog(final MainActivity activity)
+    public void setText(String text)
     {
-        EditTextDialogFragment dialogFragment = new EditTextDialogFragment()
-        {
-            @Override
-            public void onTextInput(String text)
-            {
-                if(TextUtils.isEmpty(text))
-                {
-                    return;
-                }
-                new SearchQuery(text).save();
-                activity.addSearchPage(text, true);
-            }
-        };
-        dialogFragment.setParams(getString(R.string.dialog_create_search_page), "");
-        DialogHelper.showDialog(activity, dialogFragment);
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_TEXT, text);
+        setArguments(bundle);
     }
 }

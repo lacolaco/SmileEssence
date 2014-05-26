@@ -59,8 +59,10 @@ public class SearchListAdapter extends StatusListAdapter
         return query;
     }
 
-    public void setQuery(String query)
+    public void initSearch(String query)
     {
         this.query = query;
+        topID = 0;
     }
+
 }

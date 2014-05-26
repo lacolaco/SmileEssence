@@ -24,20 +24,15 @@
 
 package net.lacolaco.smileessence.view;
 
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.text.TextUtils;
 import android.widget.ListView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.SearchTask;
+import net.lacolaco.smileessence.util.UIHandler;
 import net.lacolaco.smileessence.view.adapter.SearchListAdapter;
-import net.lacolaco.smileessence.view.dialog.ConfirmDialogFragment;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -48,48 +43,12 @@ import java.util.List;
 public class SearchFragment extends CustomListFragment
 {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
+// --------------------- GETTER / SETTER METHODS ---------------------
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    private MainActivity getMainActivity()
     {
-        MenuItem removeMenuItem = menu.add(Menu.NONE, R.id.actionbar_remove_page, Menu.NONE, R.string.actionbar_remove_page);
-        removeMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        removeMenuItem.setIcon(R.drawable.ic_action_remove);
+        return (MainActivity) getActivity();
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        Logger.debug(item.getItemId());
-        switch(item.getItemId())
-        {
-            case R.id.actionbar_remove_page:
-            {
-                final MainActivity mainActivity = getMainActivity();
-                ConfirmDialogFragment.show(mainActivity, getString(R.string.dialog_confirm_remove_page), new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        mainActivity.removeSearchPage();
-                    }
-                });
-                return true;
-            }
-            default:
-            {
-                return super.onOptionsItemSelected(item);
-            }
-        }
-    }
-
-    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     protected PullToRefreshBase.Mode getRefreshMode()
@@ -97,10 +56,10 @@ public class SearchFragment extends CustomListFragment
         return PullToRefreshBase.Mode.BOTH;
     }
 
-    // ------------------------ INTERFACE METHODS ------------------------
+// ------------------------ INTERFACE METHODS ------------------------
 
 
-    // --------------------- Interface OnRefreshListener2 ---------------------
+// --------------------- Interface OnRefreshListener2 ---------------------
 
     @Override
     public void onPullDownToRefresh(final PullToRefreshBase<ListView> refreshView)
@@ -109,7 +68,20 @@ public class SearchFragment extends CustomListFragment
         final Account currentAccount = activity.getCurrentAccount();
         Twitter twitter = TwitterApi.getTwitter(currentAccount);
         final SearchListAdapter adapter = getListAdapter(activity);
-        final Query query = SearchTask.getBaseQuery(activity, adapter.getQuery());
+        String queryString = adapter.getQuery();
+        if(TextUtils.isEmpty(queryString))
+        {
+            new UIHandler()
+            {
+                @Override
+                public void run()
+                {
+                    refreshView.onRefreshComplete();
+                }
+            }.post();
+            return;
+        }
+        final Query query = SearchTask.getBaseQuery(activity, queryString);
         if(adapter.getCount() > 0)
         {
             query.setSinceId(adapter.getTopID());
@@ -139,11 +111,6 @@ public class SearchFragment extends CustomListFragment
         }.execute();
     }
 
-    private MainActivity getMainActivity()
-    {
-        return (MainActivity) getActivity();
-    }
-
     @Override
     public void onPullUpToRefresh(final PullToRefreshBase<ListView> refreshView)
     {
@@ -151,7 +118,20 @@ public class SearchFragment extends CustomListFragment
         final Account currentAccount = activity.getCurrentAccount();
         Twitter twitter = TwitterApi.getTwitter(currentAccount);
         final SearchListAdapter adapter = getListAdapter(activity);
-        final Query query = SearchTask.getBaseQuery(activity, adapter.getQuery());
+        String queryString = adapter.getQuery();
+        if(TextUtils.isEmpty(queryString))
+        {
+            new UIHandler()
+            {
+                @Override
+                public void run()
+                {
+                    refreshView.onRefreshComplete();
+                }
+            }.post();
+            return;
+        }
+        final Query query = SearchTask.getBaseQuery(activity, queryString);
         if(adapter.getCount() > 0)
         {
             query.setMaxId(adapter.getLastID() - 1);
@@ -181,6 +161,6 @@ public class SearchFragment extends CustomListFragment
 
     private SearchListAdapter getListAdapter(MainActivity activity)
     {
-        return (SearchListAdapter) activity.getListAdapter(getArguments().getInt(FRAGMENT_INDEX));
+        return (SearchListAdapter) activity.getListAdapter(MainActivity.PAGE_SEARCH);
     }
 }

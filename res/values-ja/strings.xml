@@ -39,7 +39,7 @@
     <string name="page_name_mentions">メンション</string>
     <string name="page_name_messages">メッセージ</string>
     <string name="page_name_history">通知</string>
-    <string name="actionbar_add_page">ページを追加</string>
+    <string name="actionbar_search">ページを追加</string>
     <string name="actionbar_settings">設定</string>
     <string name="actionbar_setting">アプリ設定</string>
     <string name="actionbar_edit_templates">定型文設定</string>
@@ -209,6 +209,7 @@
     <string name="command_create_search_page_dialog">検索タブ</string>
     <string name="dialog_create_search_page">検索クエリを入力</string>
     <string name="notice_error_search">検索に失敗しました</string>
-    <string name="actionbar_remove_page">ページを削除</string>
-    <string name="dialog_confirm_remove_page">Remove this page, OK?</string>
+    <string name="command_paste_to_post">投稿欄に貼り付け</string>
+    <string name="command_search_on_twitter">Twitterで検索</string>
+    <string name="page_name_search">検索</string>
 </resources>

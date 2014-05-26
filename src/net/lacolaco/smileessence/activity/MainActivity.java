@@ -34,7 +34,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,6 +53,7 @@ import net.lacolaco.smileessence.twitter.task.*;
 import net.lacolaco.smileessence.util.BitmapURLTask;
 import net.lacolaco.smileessence.util.NetworkHelper;
 import net.lacolaco.smileessence.util.Themes;
+import net.lacolaco.smileessence.util.UIHandler;
 import net.lacolaco.smileessence.view.*;
 import net.lacolaco.smileessence.view.adapter.*;
 import net.lacolaco.smileessence.view.dialog.ConfirmDialogFragment;
@@ -63,6 +63,7 @@ import net.lacolaco.smileessence.viewmodel.menu.MainActivityMenuHelper;
 import twitter4j.*;
 import twitter4j.auth.AccessToken;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends Activity
@@ -78,13 +79,15 @@ public class MainActivity extends Activity
     public static final int PAGE_MENTIONS = 2;
     public static final int PAGE_MESSAGES = 3;
     public static final int PAGE_HISTORY = 4;
+    public static final int PAGE_SEARCH = 5;
+    public static final int PAGE_LIST = 6;
     private static final String lastUsedAccountIDKey = "lastUsedAccountID";
     private ViewPager viewPager;
     private PageListAdapter pagerAdapter;
     private OAuthSession oauthSession;
     private Account currentAccount;
     private TwitterStream stream;
-    private SparseArray<CustomListAdapter<?>> adapterSparseArray = new SparseArray<>();
+    private HashMap<Integer, CustomListAdapter<?>> adapterMap = new HashMap<>();
     private boolean streaming = false;
     private Uri cameraTempFilePath;
 
@@ -325,11 +328,12 @@ public class MainActivity extends Activity
         StatusListAdapter mentionsAdapter = new StatusListAdapter(this);
         MessageListAdapter messagesAdapter = new MessageListAdapter(this);
         EventListAdapter historyAdapter = new EventListAdapter(this);
+        SearchListAdapter searchAdapter = new SearchListAdapter(this);
         addListPage(getString(R.string.page_name_home), HomeFragment.class, homeAdapter, false);
         addListPage(getString(R.string.page_name_mentions), MentionsFragment.class, mentionsAdapter, false);
         addListPage(getString(R.string.page_name_messages), MessagesFragment.class, messagesAdapter, false);
         addListPage(getString(R.string.page_name_history), HistoryFragment.class, historyAdapter, false);
-        addSearchPages();
+        addListPage(getString(R.string.page_name_search), SearchFragment.class, searchAdapter, false);
         pagerAdapter.refreshListNavigation();
         PostState.newState().beginTransaction().commit();
         setSelectedPageIndex(PAGE_HOME, false);
@@ -339,10 +343,10 @@ public class MainActivity extends Activity
     {
         int nextPosition = pagerAdapter.getCount();
         Bundle args = new Bundle();
-        args.putInt(CustomListFragment.FRAGMENT_INDEX, nextPosition);
+        args.putInt(CustomListFragment.ADAPTER_INDEX, nextPosition);
         if(addPage(name, fragmentClass, args, withNotify))
         {
-            adapterSparseArray.append(nextPosition, adapter);
+            adapterMap.put(nextPosition, adapter);
             return true;
         }
         return false;
@@ -360,58 +364,16 @@ public class MainActivity extends Activity
         }
     }
 
-    private void addSearchPages()
+    public void setSelectedPageIndex(final int position, final boolean smooth)
     {
-        List<SearchQuery> searchQueries = SearchQuery.getAll();
-        for(SearchQuery searchQuery : searchQueries)
-        {
-            addSearchPage(searchQuery.query, false);
-        }
-    }
-
-    /**
-     * Add new search page with given query
-     *
-     * @param query
-     */
-    public void addSearchPage(final String query, boolean withNotify)
-    {
-        final SearchListAdapter searchAdapter = new SearchListAdapter(this);
-        searchAdapter.setQuery(query);
-        addListPage(query, SearchFragment.class, searchAdapter, withNotify);
-        new SearchTask(TwitterApi.getTwitter(getCurrentAccount()), query, this)
+        new UIHandler()
         {
             @Override
-            protected void onPostExecute(QueryResult queryResult)
+            public void run()
             {
-                super.onPostExecute(queryResult);
-                if(queryResult != null)
-                {
-                    java.util.List<twitter4j.Status> tweets = queryResult.getTweets();
-                    for(int i = tweets.size() - 1; i >= 0; i--)
-                    {
-                        twitter4j.Status status = tweets.get(i);
-                        if(!status.isRetweet())
-                        {
-                            searchAdapter.addToTop(new StatusViewModel(status, getCurrentAccount()));
-                        }
-                    }
-                    searchAdapter.setTopID(queryResult.getMaxId());
-                    searchAdapter.updateForce();
-                }
+                getViewPager().setCurrentItem(position, smooth);
             }
-        }.execute();
-        moveToLastPage();
-    }
-
-    private void moveToLastPage()
-    {
-        setSelectedPageIndex(getPageCount() - 1);
-    }
-
-    public void setSelectedPageIndex(int position, boolean smooth)
-    {
-        getViewPager().setCurrentItem(position, smooth);
+        }.post();
     }
 
     public boolean startTwitter()
@@ -474,7 +436,7 @@ public class MainActivity extends Activity
 
     public CustomListAdapter<?> getListAdapter(int i)
     {
-        return adapterSparseArray.get(i);
+        return adapterMap.get(i);
     }
 
     public boolean startStream()
@@ -646,34 +608,65 @@ public class MainActivity extends Activity
         super.finish();
     }
 
-    public void removeCurrentPage()
+    public void openPostPage()
     {
-        removePage(getCurrentPageIndex());
-    }
-
-    public void removePage(int position)
-    {
-        if(getListAdapter(position) != null)
-        {
-            removeListAdapter(position);
-        }
-        this.pagerAdapter.removePage(position);
-        setSelectedPageIndex(position - 1);
-    }
-
-    public void removeListAdapter(int i)
-    {
-        adapterSparseArray.remove(i);
+        setSelectedPageIndex(MainActivity.PAGE_POST);
     }
 
     /**
-     * Remove search page showing now
+     * Open search page
      */
-    public void removeSearchPage()
+    public void openSearchPage()
     {
-        int pageIndex = getCurrentPageIndex();
-        SearchListAdapter listAdapter = (SearchListAdapter) getListAdapter(pageIndex);
-        SearchQuery.findByQuery(listAdapter.getQuery()).delete();
-        removePage(pageIndex);
+        setSelectedPageIndex(PAGE_SEARCH);
+    }
+
+    /**
+     * Open search page with given query
+     */
+    public void openSearchPage(final String query)
+    {
+        SearchQuery.saveIfNotFound(query);
+        final SearchListAdapter adapter = (SearchListAdapter) getListAdapter(PAGE_SEARCH);
+        adapter.initSearch(query);
+        adapter.clear();
+        adapter.updateForce();
+        new SearchTask(TwitterApi.getTwitter(getCurrentAccount()), query, this)
+        {
+            @Override
+            protected void onPostExecute(QueryResult queryResult)
+            {
+                super.onPostExecute(queryResult);
+                if(queryResult != null)
+                {
+                    List<twitter4j.Status> tweets = queryResult.getTweets();
+                    for(int i = tweets.size() - 1; i >= 0; i--)
+                    {
+                        twitter4j.Status status = tweets.get(i);
+                        if(!status.isRetweet())
+                        {
+                            adapter.addToTop(new StatusViewModel(status, getCurrentAccount()));
+                        }
+                    }
+                    adapter.setTopID(queryResult.getMaxId());
+                    adapter.updateForce();
+                }
+            }
+        }.execute();
+        setSelectedPageIndex(PAGE_SEARCH);
+    }
+
+    private void addSearchPages()
+    {
+        List<SearchQuery> searchQueries = SearchQuery.getAll();
+        for(SearchQuery searchQuery : searchQueries)
+        {
+            openSearchPage(searchQuery.query);
+        }
+    }
+
+    private void moveToLastPage()
+    {
+        setSelectedPageIndex(getPageCount() - 1);
     }
 }
