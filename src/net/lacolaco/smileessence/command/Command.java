@@ -48,6 +48,14 @@ public abstract class Command implements IViewModel
 
     // -------------------------- STATIC METHODS --------------------------
 
+    public Command(int key, Activity activity)
+    {
+        this.key = key;
+        this.activity = activity;
+    }
+
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public static List<Command> getAll(Activity activity)
     {
         List<Command> commands = new ArrayList<>();
@@ -70,7 +78,7 @@ public abstract class Command implements IViewModel
         //User
         commands.add(new UserCommandReply(activity, null));
         commands.add(new UserCommandAddToReply(activity, null));
-        commands.add(new UserCommandSendMessage(activity, null));
+        commands.add(new UserCommandSendMessage(activity, null, null));
         commands.add(new UserCommandFollow(activity, null, null));
         commands.add(new UserCommandUnfollow(activity, null, null));
         commands.add(new UserCommandBlock(activity, null, null));
@@ -84,14 +92,6 @@ public abstract class Command implements IViewModel
         commands.add(new MessageCommandReply(activity, null));
         commands.add(new MessageCommandDelete(activity, null, null));
         return commands;
-    }
-
-    // --------------------------- CONSTRUCTORS ---------------------------
-
-    public Command(int key, Activity activity)
-    {
-        this.key = key;
-        this.activity = activity;
     }
 
     // --------------------- GETTER / SETTER METHODS ---------------------

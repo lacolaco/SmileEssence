@@ -61,7 +61,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         PostState.OnPostStateChangeListener
 {
 
-    // ------------------------------ FIELDS ------------------------------
+// ------------------------------ FIELDS ------------------------------
 
     private EditText editText;
     private TextView textViewCount;
@@ -69,10 +69,10 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     private ViewGroup viewGroupReply;
     private ViewGroup viewGroupMedia;
 
-    // ------------------------ INTERFACE METHODS ------------------------
+// ------------------------ INTERFACE METHODS ------------------------
 
 
-    // --------------------- Interface OnClickListener ---------------------
+// --------------------- Interface OnClickListener ---------------------
 
     @Override
     public void onClick(View v)
@@ -117,69 +117,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         }
     }
 
-    private void displayImage()
-    {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.addCategory(Intent.CATEGORY_DEFAULT);
-        intent.setDataAndType(Uri.fromFile(new File(PostState.getState().getMediaFilePath())), "image/*");
-        IntentUtils.startActivityIfFound(getActivity(), intent);
-    }
-
-    private void deleteReply()
-    {
-        viewGroupReply.setVisibility(View.GONE);
-    }
-
-    private void submitPost()
-    {
-        hideIME();
-        setStateFromView();
-        StatusUpdate statusUpdate = PostState.getState().toStatusUpdate();
-        MainActivity mainActivity = (MainActivity) getActivity();
-        TweetTask tweetTask = new TweetTask(new TwitterApi(mainActivity.getCurrentAccount()).getTwitter(), statusUpdate, mainActivity);
-        tweetTask.execute();
-        PostState.newState().beginTransaction().commit();
-        mainActivity.setSelectedPageIndex(MainActivity.PAGE_HOME);
-    }
-
-    private void openPostMenu()
-    {
-        hideIME();
-        setStateFromView();
-        PostMenuDialogFragment menuDialogFragment = new PostMenuDialogFragment();
-        DialogHelper.showDialog(getActivity(), menuDialogFragment);
-    }
-
-    private void setImage()
-    {
-        hideIME();
-        setStateFromView();
-        SelectImageDialogFragment selectImageDialogFragment = new SelectImageDialogFragment();
-        DialogHelper.showDialog(getActivity(), selectImageDialogFragment);
-    }
-
-    private void deletePost()
-    {
-        editText.setText("");
-        PostState.getState().beginTransaction().setText("").setCursor(0).commit();
-        deleteReply();
-    }
-
-    private void removeImage()
-    {
-        hideIME();
-        viewGroupMedia.setVisibility(View.GONE);
-        ((ImageView) viewGroupMedia.findViewById(R.id.image_post_media)).setImageBitmap(null);
-        PostState.getState().beginTransaction().setMediaFilePath("").commit();
-    }
-
-    private void setStateFromView()
-    {
-        PostState.getState().beginTransaction().setText(editText.getText().toString()).setSelection(editText.getSelectionStart(), editText.getSelectionEnd()).commit();
-    }
-
-    // --------------------- Interface OnFocusChangeListener ---------------------
+// --------------------- Interface OnFocusChangeListener ---------------------
 
     @Override
     public void onFocusChange(View v, boolean hasFocus)
@@ -194,26 +132,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         }
     }
 
-    private void hideIME()
-    {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-    }
-
-    private void showIME()
-    {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(editText, 0);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.removeItem(R.id.actionbar_post);
-    }
-
-    // --------------------- Interface TextWatcher ---------------------
+// --------------------- Interface TextWatcher ---------------------
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after)
@@ -247,7 +166,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     {
     }
 
-    // ------------------------ OVERRIDE METHODS ------------------------
+// ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -256,6 +175,13 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         super.onCreate(savedInstanceState);
         PostState.getState().setListener(this);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.removeItem(R.id.actionbar_post);
     }
 
     @Override
@@ -387,5 +313,80 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
             }
             new BitmapThumbnailTask(activity, postState.getMediaFilePath(), imageViewMedia).execute();
         }
+    }
+
+    private void deletePost()
+    {
+        editText.setText("");
+        PostState.getState().beginTransaction().setText("").setCursor(0).commit();
+        deleteReply();
+    }
+
+    private void deleteReply()
+    {
+        viewGroupReply.setVisibility(View.GONE);
+        PostState.getState().beginTransaction().setInReplyToStatusID(-1).commit();
+    }
+
+    private void displayImage()
+    {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.setDataAndType(Uri.fromFile(new File(PostState.getState().getMediaFilePath())), "image/*");
+        IntentUtils.startActivityIfFound(getActivity(), intent);
+    }
+
+    private void openPostMenu()
+    {
+        hideIME();
+        setStateFromView();
+        PostMenuDialogFragment menuDialogFragment = new PostMenuDialogFragment();
+        DialogHelper.showDialog(getActivity(), menuDialogFragment);
+    }
+
+    private void removeImage()
+    {
+        hideIME();
+        viewGroupMedia.setVisibility(View.GONE);
+        ((ImageView) viewGroupMedia.findViewById(R.id.image_post_media)).setImageBitmap(null);
+        PostState.getState().beginTransaction().setMediaFilePath("").commit();
+    }
+
+    private void setImage()
+    {
+        hideIME();
+        setStateFromView();
+        SelectImageDialogFragment selectImageDialogFragment = new SelectImageDialogFragment();
+        DialogHelper.showDialog(getActivity(), selectImageDialogFragment);
+    }
+
+    private void showIME()
+    {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(editText, 0);
+    }
+
+    private void submitPost()
+    {
+        hideIME();
+        setStateFromView();
+        StatusUpdate statusUpdate = PostState.getState().toStatusUpdate();
+        MainActivity mainActivity = (MainActivity) getActivity();
+        TweetTask tweetTask = new TweetTask(new TwitterApi(mainActivity.getCurrentAccount()).getTwitter(), statusUpdate, mainActivity);
+        tweetTask.execute();
+        PostState.newState().beginTransaction().commit();
+        mainActivity.setSelectedPageIndex(MainActivity.PAGE_HOME);
+    }
+
+    private void hideIME()
+    {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
+
+    private void setStateFromView()
+    {
+        PostState.getState().beginTransaction().setText(editText.getText().toString()).setSelection(editText.getSelectionStart(), editText.getSelectionEnd()).commit();
     }
 }
