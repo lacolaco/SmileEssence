@@ -52,6 +52,7 @@
         <item name="icon_retweet_off">@drawable/icon_retweet_white</item>
         <item name="icon_favorite_off">@drawable/icon_favorite_off_white</item>
         <item name="icon_garbage">@drawable/icon_garbage_white</item>
+        <item name="icon_search">@drawable/icon_search_white</item>
     </style>
 
     <style name="theme_light" parent="@android:style/Theme.Holo.Light.DarkActionBar">
@@ -81,6 +82,7 @@
         <item name="icon_retweet_off">@drawable/icon_retweet_off</item>
         <item name="icon_favorite_off">@drawable/icon_favorite_off</item>
         <item name="icon_garbage">@drawable/icon_garbage</item>
+        <item name="icon_search">@drawable/icon_search</item>
     </style>
 
     <style name="custom_button_transparent">

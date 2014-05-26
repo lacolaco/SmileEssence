@@ -24,11 +24,18 @@
 
 package net.lacolaco.smileessence.view;
 
+import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.*;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.SearchTask;
 import net.lacolaco.smileessence.util.UIHandler;
@@ -40,8 +47,12 @@ import twitter4j.Twitter;
 
 import java.util.List;
 
-public class SearchFragment extends CustomListFragment
+public class SearchFragment extends CustomListFragment implements View.OnClickListener
 {
+
+// ------------------------------ FIELDS ------------------------------
+
+    private EditText editText;
 
 // --------------------- GETTER / SETTER METHODS ---------------------
 
@@ -58,6 +69,27 @@ public class SearchFragment extends CustomListFragment
 
 // ------------------------ INTERFACE METHODS ------------------------
 
+
+// --------------------- Interface OnClickListener ---------------------
+
+
+    @Override
+    public void onClick(View v)
+    {
+        switch(v.getId())
+        {
+            case R.id.button_search_queries:
+            {
+                openSearchQueryDialog(getMainActivity());
+                break;
+            }
+            case R.id.button_search_execute:
+            {
+                search();
+                break;
+            }
+        }
+    }
 
 // --------------------- Interface OnRefreshListener2 ---------------------
 
@@ -76,6 +108,7 @@ public class SearchFragment extends CustomListFragment
                 @Override
                 public void run()
                 {
+                    notifyTextEmpty(activity);
                     refreshView.onRefreshComplete();
                 }
             }.post();
@@ -126,6 +159,7 @@ public class SearchFragment extends CustomListFragment
                 @Override
                 public void run()
                 {
+                    notifyTextEmpty(activity);
                     refreshView.onRefreshComplete();
                 }
             }.post();
@@ -159,8 +193,88 @@ public class SearchFragment extends CustomListFragment
         }.execute();
     }
 
+    private void notifyTextEmpty(MainActivity activity)
+    {
+        Notificator.publish(activity, R.string.notice_search_text_empty);
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.removeItem(R.id.actionbar_search);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View page = inflater.inflate(R.layout.fragment_search, container, false);
+        Bundle args = getArguments();
+        int fragmentIndex = args.getInt(ADAPTER_INDEX);
+        PullToRefreshListView listView = getListView(page);
+        SearchListAdapter adapter = (SearchListAdapter) getListAdapter(fragmentIndex);
+        listView.setAdapter(adapter);
+        listView.setOnScrollListener(this);
+        listView.setOnRefreshListener(this);
+        listView.setMode(getRefreshMode());
+        ImageButton buttonQueries = getQueriesButton(page);
+        buttonQueries.setOnClickListener(this);
+        ImageButton buttonExecute = getExecuteButton(page);
+        buttonExecute.setOnClickListener(this);
+        editText = getEditText(page);
+        editText.setText(adapter.getQuery());
+        return page;
+    }
+
+    private EditText getEditText(View page)
+    {
+        return (EditText) page.findViewById(R.id.edittext_search);
+    }
+
+    private ImageButton getExecuteButton(View page)
+    {
+        return (ImageButton) page.findViewById(R.id.button_search_execute);
+    }
+
+    @Override
+    protected PullToRefreshListView getListView(View page)
+    {
+        return (PullToRefreshListView) page.findViewById(R.id.listview_search);
+    }
+
+    private ImageButton getQueriesButton(View page)
+    {
+        return (ImageButton) page.findViewById(R.id.button_search_queries);
+    }
+
     private SearchListAdapter getListAdapter(MainActivity activity)
     {
         return (SearchListAdapter) activity.getListAdapter(MainActivity.PAGE_SEARCH);
+    }
+
+    private void openSearchQueryDialog(MainActivity mainActivity)
+    {
+
+    }
+
+    private void search()
+    {
+        if(editText != null)
+        {
+            String text = editText.getText().toString();
+            if(!TextUtils.isEmpty(text))
+            {
+                getMainActivity().openSearchPage(text);
+            }
+        }
     }
 }

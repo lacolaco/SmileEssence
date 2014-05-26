@@ -123,12 +123,12 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
         return page;
     }
 
-    private CustomListAdapter<?> getListAdapter(int fragmentIndex)
+    protected CustomListAdapter<?> getListAdapter(int fragmentIndex)
     {
         return ((MainActivity) getActivity()).getListAdapter(fragmentIndex);
     }
 
-    private PullToRefreshListView getListView(View page)
+    protected PullToRefreshListView getListView(View page)
     {
         return (PullToRefreshListView) page.findViewById(R.id.fragment_list_listview);
     }

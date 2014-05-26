@@ -44,7 +44,7 @@ public class MainActivityMenuHelper
         //Search button
         MenuItem searchButton = menu.add(Menu.NONE, R.id.actionbar_search, Menu.NONE, activity.getString(R.string.actionbar_search));
         searchButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        searchButton.setIcon(R.drawable.ic_action_search);
+        searchButton.setIcon(R.drawable.icon_search_white);
         //Settings
         SubMenu settings = menu.addSubMenu(Menu.NONE, R.id.actionbar_settings, Menu.NONE, activity.getString(R.string.actionbar_settings));
         settings.setIcon(R.drawable.ic_action_settings);
