@@ -32,7 +32,7 @@ import java.io.File;
 public class PostState
 {
 
-    // ------------------------------ FIELDS ------------------------------
+// ------------------------------ FIELDS ------------------------------
 
     private static PostState instance = new PostState();
     private String text = "";
@@ -45,7 +45,11 @@ public class PostState
     private int selectionStart = -1;
     private int selectionEnd = -1;
 
-    // -------------------------- STATIC METHODS --------------------------
+// -------------------------- STATIC METHODS --------------------------
+
+    private PostState()
+    {
+    }
 
     public static PostState getState()
     {
@@ -57,19 +61,15 @@ public class PostState
         return instance = new PostState().setListener(instance.listener);
     }
 
+// --------------------------- CONSTRUCTORS ---------------------------
+
     public PostState setListener(OnPostStateChangeListener listener)
     {
         this.listener = listener;
         return this;
     }
 
-    // --------------------------- CONSTRUCTORS ---------------------------
-
-    private PostState()
-    {
-    }
-
-    // --------------------- GETTER / SETTER METHODS ---------------------
+// --------------------- GETTER / SETTER METHODS ---------------------
 
     public String getInReplyToScreenName()
     {
@@ -119,7 +119,7 @@ public class PostState
         return directMessage;
     }
 
-    // -------------------------- OTHER METHODS --------------------------
+// -------------------------- OTHER METHODS --------------------------
 
     public PostStateTransaction beginTransaction()
     {
@@ -129,6 +129,16 @@ public class PostState
     public void removeListener()
     {
         this.listener = null;
+    }
+
+    /**
+     * Convert to StatusUpdate for tweet.
+     *
+     * @return StatusUpdate
+     */
+    public StatusUpdate toStatusUpdate()
+    {
+        return new StatusUpdate(getText()).inReplyToStatusId(getInReplyToStatusID()).media(TextUtils.isEmpty(getMediaFilePath()) ? null : new File(getMediaFilePath()));
     }
 
     private PostState copy(PostState another)
@@ -153,18 +163,13 @@ public class PostState
         }
     }
 
-    /**
-     * Convert to StatusUpdate for tweet.
-     *
-     * @return StatusUpdate
-     */
-    public StatusUpdate toStatusUpdate()
-    {
-        return new StatusUpdate(getText()).inReplyToStatusId(getInReplyToStatusID())
-                                          .media(TextUtils.isEmpty(getMediaFilePath()) ? null : new File(getMediaFilePath()));
-    }
+// -------------------------- INNER CLASSES --------------------------
 
-    // -------------------------- INNER CLASSES --------------------------
+    public static interface OnPostStateChangeListener
+    {
+
+        void onPostStateChange(PostState postState);
+    }
 
     public static class PostStateTransaction
     {
@@ -243,11 +248,11 @@ public class PostState
         {
             PostState.getState().copy(state).postStateChange();
         }
-    }
 
-    public static interface OnPostStateChangeListener
-    {
-
-        void onPostStateChange(PostState postState);
+        public PostStateTransaction moveCursor(int length)
+        {
+            int cursor = state.selectionEnd + length;
+            return setCursor(cursor);
+        }
     }
 }
