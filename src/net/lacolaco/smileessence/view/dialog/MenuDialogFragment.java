@@ -28,6 +28,7 @@ import android.app.DialogFragment;
 import android.view.View;
 import android.widget.AdapterView;
 import net.lacolaco.smileessence.command.Command;
+import net.lacolaco.smileessence.command.IConfirmable;
 import net.lacolaco.smileessence.entity.CommandSetting;
 
 import java.util.Iterator;
@@ -46,6 +47,10 @@ public abstract class MenuDialogFragment extends DialogFragment
             Command command = (Command) adapterView.getItemAtPosition(i);
             if(command != null)
             {
+                if(command instanceof IConfirmable)
+                {
+
+                }
                 DialogHelper.close(getActivity());
                 command.execute();
             }
