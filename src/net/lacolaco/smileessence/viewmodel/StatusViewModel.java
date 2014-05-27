@@ -44,6 +44,7 @@ import net.lacolaco.smileessence.util.StringUtils;
 import net.lacolaco.smileessence.util.Themes;
 import net.lacolaco.smileessence.view.dialog.DialogHelper;
 import net.lacolaco.smileessence.view.dialog.StatusMenuDialogFragment;
+import net.lacolaco.smileessence.view.dialog.UserDetailDialogFragment;
 import net.lacolaco.smileessence.view.listener.ListItemClickListener;
 import twitter4j.*;
 
@@ -318,6 +319,16 @@ public class StatusViewModel implements IViewModel
         int theme = ((MainActivity)activity).getThemeIndex();
         NetworkImageView icon = (NetworkImageView)convertedView.findViewById(R.id.imageview_status_icon);
         ImageCache.getInstance().setImageToView(getIconURL(), icon);
+        icon.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                UserDetailDialogFragment dialogFragment = new UserDetailDialogFragment();
+                dialogFragment.setUserID(isRetweet() ? getRetweetedStatus().userID : userID);
+                DialogHelper.showDialog(activity, dialogFragment);
+            }
+        });
         TextView header = (TextView)convertedView.findViewById(R.id.textview_status_header);
         header.setTextSize(textSize);
         int colorHeader = Themes.getStyledColor(activity, theme, R.attr.color_status_text_header, 0);
