@@ -170,25 +170,33 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onFavorite(User source, User target, Status favoritedStatus)
     {
-        if(activity.getCurrentAccount().userID == target.getId())
+        long myID = activity.getCurrentAccount().userID;
+        if(myID == target.getId())
         {
             addToHistory(new EventViewModel(EnumEvent.FAVORITED, source, favoritedStatus));
         }
-        FavoriteCache.getInstance().put(favoritedStatus, true);
-        activity.getListAdapter(MainActivity.PAGE_HOME).update();
-        activity.getListAdapter(MainActivity.PAGE_MENTIONS).update();
+        else if(myID == source.getId())
+        {
+            FavoriteCache.getInstance().put(favoritedStatus, true);
+            activity.getListAdapter(MainActivity.PAGE_HOME).update();
+            activity.getListAdapter(MainActivity.PAGE_MENTIONS).update();
+        }
     }
 
     @Override
     public void onUnfavorite(User source, User target, Status unfavoritedStatus)
     {
-        if(activity.getCurrentAccount().userID == target.getId())
+        long myID = activity.getCurrentAccount().userID;
+        if(myID == target.getId())
         {
             addToHistory(new EventViewModel(EnumEvent.UNFAVORITED, source, unfavoritedStatus));
         }
-        FavoriteCache.getInstance().put(unfavoritedStatus, false);
-        activity.getListAdapter(MainActivity.PAGE_HOME).update();
-        activity.getListAdapter(MainActivity.PAGE_MENTIONS).update();
+        else if(myID == source.getId())
+        {
+            FavoriteCache.getInstance().put(unfavoritedStatus, false);
+            activity.getListAdapter(MainActivity.PAGE_HOME).update();
+            activity.getListAdapter(MainActivity.PAGE_MENTIONS).update();
+        }
     }
 
     @Override
