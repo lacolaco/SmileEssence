@@ -53,8 +53,6 @@ public class StatusCommandQuote extends StatusCommand
         PostState.newState()
                  .beginTransaction()
                  .setText(builder.buildText())
-                 .setInReplyToText(getOriginalStatus().getText())
-                 .setInReplyToScreenName(getOriginalStatus().getUser().getScreenName())
                  .setInReplyToStatusID(getOriginalStatus().getId())
                  .setCursor(0)
                  .commit();

@@ -207,27 +207,9 @@ public class PostState
             return this;
         }
 
-        public PostStateTransaction setInReplyToScreenName(String inReplyToScreenName)
-        {
-            state.inReplyToScreenName = inReplyToScreenName;
-            return this;
-        }
-
-        public PostStateTransaction setInReplyToText(String inReplyToText)
-        {
-            state.inReplyToText = inReplyToText;
-            return this;
-        }
-
         public PostStateTransaction setMediaFilePath(String mediaFilePath)
         {
             state.mediaFilePath = mediaFilePath;
-            return this;
-        }
-
-        public PostStateTransaction setDirectMessage(boolean directMessage)
-        {
-            state.directMessage = directMessage;
             return this;
         }
 

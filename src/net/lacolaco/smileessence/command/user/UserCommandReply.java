@@ -50,7 +50,6 @@ public class UserCommandReply extends UserCommand
     {
         PostState.newState()
                  .beginTransaction()
-                 .setInReplyToScreenName(getUser().getScreenName())
                  .setText(new TweetBuilder().addScreenName(getUser().getScreenName()).buildText())
                  .commit();
         ((MainActivity)getActivity()).setSelectedPageIndex(MainActivity.PAGE_POST);

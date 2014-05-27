@@ -50,14 +50,9 @@ public class StatusCommandReply extends StatusCommand
     {
         TweetBuilder builder = new TweetBuilder().addScreenName(getOriginalStatus().getUser().getScreenName());
 
-        PostState.newState()
-                 .beginTransaction()
-                 .setText(builder.buildText())
-                 .setInReplyToText(getOriginalStatus().getText())
-                 .setInReplyToScreenName(getOriginalStatus().getUser().getScreenName())
-                 .setInReplyToStatusID(getOriginalStatus().getId())
-                 .commit();
-        ((MainActivity)getActivity()).setSelectedPageIndex(MainActivity.PAGE_POST);
+        String text = builder.buildText();
+        PostState.newState().beginTransaction().setText(text).setInReplyToStatusID(getOriginalStatus().getId()).moveCursor(text.length()).commit();
+        ((MainActivity) getActivity()).setSelectedPageIndex(MainActivity.PAGE_POST);
         return true;
     }
 
