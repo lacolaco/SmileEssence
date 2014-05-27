@@ -40,8 +40,8 @@
             android:id="@+id/post_inreplyto_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_orange_dark"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:background="?attr/button_round_orange">
 
             <include
                 android:id="@+id/layout_post_reply_status"
@@ -57,7 +57,7 @@
                 android:layout_weight="1"
                 style="?attr/custom_button_transparent"
                 android:src="?attr/icon_post_delete"
-                android:scaleType="fitCenter"/>
+                android:scaleType="fitStart"/>
         </LinearLayout>
 
         <LinearLayout

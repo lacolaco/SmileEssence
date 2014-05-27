@@ -62,7 +62,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         PostState.OnPostStateChangeListener
 {
 
-// ------------------------------ FIELDS ------------------------------
+    // ------------------------------ FIELDS ------------------------------
 
     private EditText editText;
     private TextView textViewCount;
@@ -70,10 +70,10 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     private ViewGroup viewGroupReply;
     private ViewGroup viewGroupMedia;
 
-// ------------------------ INTERFACE METHODS ------------------------
+    // ------------------------ INTERFACE METHODS ------------------------
 
 
-// --------------------- Interface OnClickListener ---------------------
+    // --------------------- Interface OnClickListener ---------------------
 
     @Override
     public void onClick(View v)
@@ -118,7 +118,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         }
     }
 
-// --------------------- Interface OnFocusChangeListener ---------------------
+    // --------------------- Interface OnFocusChangeListener ---------------------
 
     @Override
     public void onFocusChange(View v, boolean hasFocus)
@@ -133,7 +133,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         }
     }
 
-// --------------------- Interface TextWatcher ---------------------
+    // --------------------- Interface TextWatcher ---------------------
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after)
@@ -167,7 +167,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     {
     }
 
-// ------------------------ OVERRIDE METHODS ------------------------
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -299,7 +299,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
                 Account account = activity.getCurrentAccount();
                 Status status = TwitterUtils.tryGetStatus(account, postState.getInReplyToStatusID());
                 header = new StatusViewModel(status, account).getView(activity, activity.getLayoutInflater(), header);
-                //                    header.setBackgroundColor(getResources().getColor(R.color.transparent));
+                header.setBackgroundColor(getResources().getColor(R.color.transparent));
                 header.setClickable(false);
                 ImageButton imageButtonDeleteReply = (ImageButton) viewGroupReply.findViewById(R.id.button_post_reply_delete);
                 imageButtonDeleteReply.setOnClickListener(this);

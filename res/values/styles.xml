@@ -36,6 +36,7 @@
         <item name="button_red_background">@color/gray_dark_dark</item>
         <item name="button_red_foreground">@color/white</item>
         <item name="button_round_red">@drawable/button_round_red</item>
+        <item name="button_round_orange">@drawable/button_round_orange</item>
         <item name="custom_button_transparent">@style/custom_button_transparent</item>
         <item name="icon_status_favorite_on">@drawable/icon_favorite_on</item>
         <item name="color_status_text_header">@color/dark_green</item>
@@ -67,6 +68,7 @@
         <item name="button_red_background">@color/red</item>
         <item name="button_red_foreground">@color/white</item>
         <item name="button_round_red">@drawable/button_round_red_light</item>
+        <item name="button_round_orange">@drawable/button_round_orange_light</item>
         <item name="custom_button_transparent">@style/custom_button_transparent</item>
         <item name="icon_status_favorite_on">@drawable/icon_favorite_on</item>
         <item name="color_status_text_header">@color/dark_green</item>
