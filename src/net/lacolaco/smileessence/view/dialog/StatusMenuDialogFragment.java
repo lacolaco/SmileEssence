@@ -55,11 +55,11 @@ import java.util.List;
 public class StatusMenuDialogFragment extends MenuDialogFragment implements View.OnClickListener
 {
 
-// ------------------------------ FIELDS ------------------------------
+    // ------------------------------ FIELDS ------------------------------
 
     private static final String KEY_STATUS_ID = "statusID";
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     public long getStatusID()
     {
@@ -73,35 +73,44 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         setArguments(args);
     }
 
-// ------------------------ INTERFACE METHODS ------------------------
+    // ------------------------ INTERFACE METHODS ------------------------
 
 
-// --------------------- Interface OnClickListener ---------------------
+    // --------------------- Interface OnClickListener ---------------------
 
     @Override
     public void onClick(View v)
     {
-        MainActivity activity = (MainActivity) getActivity();
-        Account account = activity.getCurrentAccount();
-        Status status = TwitterUtils.tryGetStatus(account, getStatusID());
+        final MainActivity activity = (MainActivity) getActivity();
+        final Account account = activity.getCurrentAccount();
+        final Status status = TwitterUtils.tryGetStatus(account, getStatusID());
         switch(v.getId())
         {
             case R.id.button_status_detail_reply:
             {
                 new StatusCommandReply(activity, status).execute();
+                dismiss();
                 break;
             }
             case R.id.button_status_detail_retweet:
             {
-                Long retweetID = (Long) v.getTag();
-                if(retweetID != -1L)
+                final Long retweetID = (Long) v.getTag();
+                confirm(activity, new Runnable()
                 {
-                    new DeleteStatusTask(new TwitterApi(account).getTwitter(), retweetID, activity).execute();
-                }
-                else
-                {
-                    new StatusCommandRetweet(activity, status, account).execute();
-                }
+                    @Override
+                    public void run()
+                    {
+                        if(retweetID != -1L)
+                        {
+                            new DeleteStatusTask(new TwitterApi(account).getTwitter(), retweetID, activity).execute();
+                        }
+                        else
+                        {
+                            new StatusCommandRetweet(activity, status, account).execute();
+                        }
+                        dismiss();
+                    }
+                });
                 break;
             }
             case R.id.button_status_detail_favorite:
@@ -116,18 +125,35 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
                 {
                     new FavoriteTask(new TwitterApi(account).getTwitter(), statusID, activity).execute();
                 }
+                dismiss();
                 break;
             }
             case R.id.button_status_detail_delete:
             {
-                new StatusCommandDelete(activity, status, account).execute();
+                confirm(activity, new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        new StatusCommandDelete(activity, status, account).execute();
+                        dismiss();
+                    }
+                });
                 break;
             }
+            default:
+            {
+                dismiss();
+            }
         }
-        dismiss();
     }
 
-// ------------------------ OVERRIDE METHODS ------------------------
+    private void confirm(MainActivity activity, Runnable onYes)
+    {
+        ConfirmDialogFragment.show(activity, getString(R.string.dialog_confirm_commands), onYes);
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -231,7 +257,11 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         ImageButton message = (ImageButton) view.findViewById(R.id.button_status_detail_reply);
         message.setOnClickListener(this);
         ImageButton retweet = (ImageButton) view.findViewById(R.id.button_status_detail_retweet);
-        if(status.isRetweet() && status.getUser().getId() == account.userID)
+        if(!status.isRetweet() && status.getUser().getId() == account.userID)
+        {
+            retweet.setVisibility(View.GONE);
+        }
+        else if(status.isRetweet() && status.getUser().getId() == account.userID)
         {
             retweet.setImageDrawable(getResources().getDrawable(R.drawable.icon_retweet_on));
             retweet.setTag(status.getId());
