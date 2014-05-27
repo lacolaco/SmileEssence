@@ -37,6 +37,7 @@ import android.text.method.ArrowKeyMovementMethod;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
+import com.twitter.Validator;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.entity.Account;
@@ -144,6 +145,10 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     public void onTextChanged(CharSequence s, int start, int before, int count)
     {
         int remainingCount = 140 - TwitterUtils.getFixedTextLength(s.toString());
+        if(!TextUtils.isEmpty(PostState.getState().getMediaFilePath()))
+        {
+            remainingCount -= new Validator().getShortUrlLength();
+        }
         textViewCount.setText(String.valueOf(remainingCount));
         if(remainingCount == 140)
         {
