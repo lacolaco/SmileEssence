@@ -27,7 +27,6 @@ package net.lacolaco.smileessence.twitter;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.data.StatusCache;
-import net.lacolaco.smileessence.entity.ExtractionWord;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.view.adapter.MessageListAdapter;
@@ -98,13 +97,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
             addToMentions(viewModel);
             addToHistory(new EventViewModel(EnumEvent.MENTIONED, status.getUser(), status));
         }
-        for(ExtractionWord word : ExtractionWord.getAll())
-        {
-            if(viewModel.getText().contains(word.text))
-            {
-                addToMentions(viewModel);
-            }
-        }
+        StatusExtractor.filter(activity, viewModel);
     }
 
     private void addToHistory(EventViewModel mentioned)

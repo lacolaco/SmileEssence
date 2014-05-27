@@ -39,6 +39,7 @@ import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.notification.Notificator;
+import net.lacolaco.smileessence.twitter.StatusExtractor;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.SearchTask;
 import net.lacolaco.smileessence.util.UIHandler;
@@ -138,7 +139,9 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
                         twitter4j.Status status = tweets.get(i);
                         if(!status.isRetweet())
                         {
-                            adapter.addToTop(new StatusViewModel(status, currentAccount));
+                            StatusViewModel viewModel = new StatusViewModel(status, currentAccount);
+                            adapter.addToTop(viewModel);
+                            StatusExtractor.filter(activity, viewModel);
                         }
                     }
                     updateListViewWithNotice(refreshView.getRefreshableView(), adapter, true);
@@ -188,7 +191,9 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
                     {
                         if(!status.isRetweet())
                         {
-                            adapter.addToBottom(new StatusViewModel(status, currentAccount));
+                            StatusViewModel viewModel = new StatusViewModel(status, currentAccount);
+                            adapter.addToBottom(viewModel);
+                            StatusExtractor.filter(activity, viewModel);
                         }
                     }
                     updateListViewWithNotice(refreshView.getRefreshableView(), adapter, false);

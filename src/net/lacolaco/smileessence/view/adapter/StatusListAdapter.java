@@ -27,19 +27,21 @@ package net.lacolaco.smileessence.view.adapter;
 import android.app.Activity;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 public class StatusListAdapter extends CustomListAdapter<StatusViewModel>
 {
 
-// --------------------------- CONSTRUCTORS ---------------------------
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public StatusListAdapter(Activity activity)
     {
         super(activity, StatusViewModel.class);
     }
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     public long getLastID()
     {
@@ -51,7 +53,7 @@ public class StatusListAdapter extends CustomListAdapter<StatusViewModel>
         return ((StatusViewModel) getItem(0)).getID();
     }
 
-// -------------------------- OTHER METHODS --------------------------
+    // -------------------------- OTHER METHODS --------------------------
 
     public StatusViewModel removeByStatusID(long statusID)
     {
@@ -69,6 +71,24 @@ public class StatusListAdapter extends CustomListAdapter<StatusViewModel>
                 }
             }
             return null;
+        }
+    }
+
+    /**
+     * Sort list by Status#createdAt
+     */
+    public void sort()
+    {
+        synchronized(LOCK)
+        {
+            Collections.sort(list, new Comparator<StatusViewModel>()
+            {
+                @Override
+                public int compare(StatusViewModel lhs, StatusViewModel rhs)
+                {
+                    return rhs.getCreatedAt().compareTo(lhs.getCreatedAt());
+                }
+            });
         }
     }
 }

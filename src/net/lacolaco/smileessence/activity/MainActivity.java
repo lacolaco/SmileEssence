@@ -47,6 +47,7 @@ import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.preference.AppPreferenceHelper;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.twitter.OAuthSession;
+import net.lacolaco.smileessence.twitter.StatusExtractor;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.UserStreamListener;
 import net.lacolaco.smileessence.twitter.task.*;
@@ -645,7 +646,9 @@ public class MainActivity extends Activity
                         twitter4j.Status status = tweets.get(i);
                         if(!status.isRetweet())
                         {
-                            adapter.addToTop(new StatusViewModel(status, getCurrentAccount()));
+                            StatusViewModel viewModel = new StatusViewModel(status, getCurrentAccount());
+                            adapter.addToTop(viewModel);
+                            StatusExtractor.filter(MainActivity.this, viewModel);
                         }
                     }
                     adapter.setTopID(queryResult.getMaxId());
