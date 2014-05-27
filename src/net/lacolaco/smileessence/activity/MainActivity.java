@@ -82,6 +82,7 @@ public class MainActivity extends Activity
     public static final int PAGE_HISTORY = 4;
     public static final int PAGE_SEARCH = 5;
     public static final int PAGE_LIST = 6;
+    public static final String KEY_LAST_USED_SEARCH_QUERY = "lastUsedSearchQuery";
     private static final String lastUsedAccountIDKey = "lastUsedAccountID";
     private ViewPager viewPager;
     private PageListAdapter pagerAdapter;
@@ -336,8 +337,28 @@ public class MainActivity extends Activity
         addListPage(getString(R.string.page_name_history), HistoryFragment.class, historyAdapter, false);
         addListPage(getString(R.string.page_name_search), SearchFragment.class, searchAdapter, false);
         pagerAdapter.refreshListNavigation();
-        PostState.newState().beginTransaction().commit();
+        initPostState();
+        initSearch();
         setSelectedPageIndex(PAGE_HOME, false);
+    }
+
+    private void initSearch()
+    {
+        String lastUsedSearchQuery = getLastSearch();
+        if(!TextUtils.isEmpty(lastUsedSearchQuery))
+        {
+            startNewSearch(lastUsedSearchQuery);
+        }
+    }
+
+    private String getLastSearch()
+    {
+        return getAppPreferenceHelper().getValue(KEY_LAST_USED_SEARCH_QUERY, "");
+    }
+
+    private void initPostState()
+    {
+        PostState.newState().beginTransaction().commit();
     }
 
     public boolean addListPage(String name, Class<? extends CustomListFragment> fragmentClass, CustomListAdapter<?> adapter, boolean withNotify)
@@ -627,7 +648,14 @@ public class MainActivity extends Activity
      */
     public void openSearchPage(final String query)
     {
+        startNewSearch(query);
+        setSelectedPageIndex(PAGE_SEARCH);
+    }
+
+    public void startNewSearch(final String query)
+    {
         SearchQuery.saveIfNotFound(query);
+        saveLastSearch(query);
         final SearchListAdapter adapter = (SearchListAdapter) getListAdapter(PAGE_SEARCH);
         adapter.initSearch(query);
         adapter.clear();
@@ -656,7 +684,11 @@ public class MainActivity extends Activity
                 }
             }
         }.execute();
-        setSelectedPageIndex(PAGE_SEARCH);
+    }
+
+    private void saveLastSearch(String query)
+    {
+        getAppPreferenceHelper().putValue(KEY_LAST_USED_SEARCH_QUERY, query);
     }
 
     private void addSearchPages()
