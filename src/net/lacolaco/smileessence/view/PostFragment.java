@@ -47,6 +47,7 @@ import net.lacolaco.smileessence.twitter.task.TweetTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.util.BitmapThumbnailTask;
 import net.lacolaco.smileessence.util.IntentUtils;
+import net.lacolaco.smileessence.util.UIHandler;
 import net.lacolaco.smileessence.view.adapter.PostState;
 import net.lacolaco.smileessence.view.dialog.DialogHelper;
 import net.lacolaco.smileessence.view.dialog.PostMenuDialogFragment;
@@ -271,14 +272,23 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     }
 
     @Override
-    public void onPostStateChange(PostState postState)
+    public void onPostStateChange(final PostState postState)
     {
         Logger.debug("PostFragment PostStateChange");
         MainActivity activity = (MainActivity) getActivity();
         if(editText != null)
         {
             editText.setText(postState.getText());
-            editText.setSelection(postState.getSelectionStart(), postState.getSelectionEnd());
+            final int start = postState.getSelectionStart();
+            final int end = postState.getSelectionEnd();
+            new UIHandler()
+            {
+                @Override
+                public void run()
+                {
+                    editText.setSelection(start, end);
+                }
+            }.post();
         }
         if(viewGroupReply != null)
         {

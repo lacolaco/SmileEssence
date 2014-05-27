@@ -47,10 +47,8 @@ public class UserCommandAddToReply extends UserCommand
     @Override
     public boolean execute()
     {
-        PostState.getState()
-                 .beginTransaction()
-                 .insertText(0, String.format("@%s ", getUser().getScreenName()))
-                 .commit();
+        String text = String.format("@%s ", getUser().getScreenName());
+        PostState.getState().beginTransaction().insertText(0, text).moveCursor(text.length()).commit();
         Notificator.publish(getActivity(), R.string.notice_add_to_reply);
         return true;
     }
