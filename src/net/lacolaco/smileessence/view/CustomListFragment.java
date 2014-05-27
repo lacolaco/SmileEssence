@@ -158,23 +158,22 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
         int increments = after - before;
         if(increments > 0)
         {
-            if(increments == 1)
-            {
-                adapter.setNotifiable(true);
-            }
-            else
-            {
-                adapter.setNotifiable(false);
-            }
+            adapter.setNotifiable(false);
             notifyListUpdated(increments);
             if(addedToTop)
             {
                 absListView.setSelection(increments + 1);
                 absListView.smoothScrollToPositionFromTop(increments, 0);
+                absListView.setSelection(increments);
             }
             else
             {
                 absListView.smoothScrollToPositionFromTop(before, 0);
+            }
+
+            if(increments == 1)
+            {
+                adapter.setNotifiable(true);
             }
         }
         else
