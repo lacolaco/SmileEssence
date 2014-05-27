@@ -26,6 +26,7 @@ package net.lacolaco.smileessence.twitter;
 
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.data.FavoriteCache;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
@@ -97,7 +98,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
             addToMentions(viewModel);
             addToHistory(new EventViewModel(EnumEvent.MENTIONED, status.getUser(), status));
         }
-        StatusExtractor.filter(activity, viewModel);
+        StatusFilter.filter(activity, viewModel);
     }
 
     private void addToHistory(EventViewModel mentioned)
@@ -173,6 +174,9 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         {
             addToHistory(new EventViewModel(EnumEvent.FAVORITED, source, favoritedStatus));
         }
+        FavoriteCache.getInstance().put(favoritedStatus, true);
+        activity.getListAdapter(MainActivity.PAGE_HOME).update();
+        activity.getListAdapter(MainActivity.PAGE_MENTIONS).update();
     }
 
     @Override
@@ -182,6 +186,9 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         {
             addToHistory(new EventViewModel(EnumEvent.UNFAVORITED, source, unfavoritedStatus));
         }
+        FavoriteCache.getInstance().put(unfavoritedStatus, false);
+        activity.getListAdapter(MainActivity.PAGE_HOME).update();
+        activity.getListAdapter(MainActivity.PAGE_MENTIONS).update();
     }
 
     @Override

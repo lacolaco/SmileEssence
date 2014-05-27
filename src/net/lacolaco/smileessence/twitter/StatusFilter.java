@@ -31,10 +31,15 @@ import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 
 import java.util.regex.Pattern;
 
-public class StatusExtractor
+public class StatusFilter
 {
 
     public static void filter(MainActivity activity, StatusViewModel status)
+    {
+        extract(activity, status);
+    }
+
+    private static void extract(MainActivity activity, StatusViewModel status)
     {
         Pattern pattern;
         for(ExtractionWord word : ExtractionWord.getAll())

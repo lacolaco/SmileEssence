@@ -33,6 +33,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.data.FavoriteCache;
 import net.lacolaco.smileessence.data.ImageCache;
 import net.lacolaco.smileessence.data.UserCache;
 import net.lacolaco.smileessence.entity.Account;
@@ -61,7 +62,6 @@ public class StatusViewModel implements IViewModel
     private String text;
     private Date createdAt;
     private String source;
-    private boolean isFavorited;
     private boolean isProtected;
     private StatusViewModel retweetedStatus;
     private UserMentionEntity[] mentions;
@@ -85,7 +85,6 @@ public class StatusViewModel implements IViewModel
         text = TwitterUtils.replaceURLEntities(status.getText(), status.getURLEntities(), false);
         createdAt = status.getCreatedAt();
         source = status.getSource();
-        isFavorited = status.isFavorited();
         mentions = status.getUserMentionEntities();
         hashtags = status.getHashtagEntities();
         media = status.getMediaEntities();
@@ -101,6 +100,7 @@ public class StatusViewModel implements IViewModel
         setMention(isMention(account.screenName));
         setMyStatus(isMyStatus(account.userID));
         setRetweetOfMe(isRetweetOfMe(account.userID));
+        FavoriteCache.getInstance().put(status);
     }
 
     public boolean isMention(String screenName)
@@ -243,9 +243,9 @@ public class StatusViewModel implements IViewModel
     {
         if(isRetweet())
         {
-            return retweetedStatus.isFavorited;
+            return FavoriteCache.getInstance().get(retweetedStatus.id);
         }
-        return isFavorited;
+        return FavoriteCache.getInstance().get(id);
     }
 
     public boolean isMention()

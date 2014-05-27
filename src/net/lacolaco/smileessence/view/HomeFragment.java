@@ -28,7 +28,7 @@ import android.widget.ListView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.twitter.StatusExtractor;
+import net.lacolaco.smileessence.twitter.StatusFilter;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.HomeTimelineTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
@@ -91,7 +91,7 @@ public class HomeFragment extends CustomListFragment
                     twitter4j.Status status = statuses[i];
                     StatusViewModel viewModel = new StatusViewModel(status, currentAccount);
                     adapter.addToTop(viewModel);
-                    StatusExtractor.filter(activity, viewModel);
+                    StatusFilter.filter(activity, viewModel);
                 }
                 updateListViewWithNotice(refreshView.getRefreshableView(), adapter, true);
                 refreshView.onRefreshComplete();
@@ -121,7 +121,7 @@ public class HomeFragment extends CustomListFragment
                 {
                     StatusViewModel viewModel = new StatusViewModel(status, currentAccount);
                     adapter.addToBottom(viewModel);
-                    StatusExtractor.filter(activity, viewModel);
+                    StatusFilter.filter(activity, viewModel);
                 }
                 updateListViewWithNotice(refreshView.getRefreshableView(), adapter, false);
                 refreshView.onRefreshComplete();
