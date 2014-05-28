@@ -52,6 +52,7 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
         textSizePreference.setOnPreferenceChangeListener(this);
         ListPreference themePreference = (ListPreference)findPreference(R.string.key_setting_theme);
         themePreference.setSummary(themePreference.getEntry());
+        themePreference.setOnPreferenceChangeListener(this);
         ListPreference namestylePreference = (ListPreference)findPreference(R.string.key_setting_namestyle);
         namestylePreference.setSummary(namestylePreference.getEntry());
         EditTextPreference timelinesPreference = (EditTextPreference)findPreference(R.string.key_setting_timelines);
@@ -113,11 +114,11 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
                 {
                     return true;
                 }
-                new Notificator(getActivity(), R.string.error_setting_text_size_range).publish();
+                Notificator.publish(getActivity(), R.string.error_setting_text_size_range);
             }
             else
             {
-                new Notificator(getActivity(), R.string.error_setting_text_size_not_number).publish();
+                Notificator.publish(getActivity(), R.string.error_setting_text_size_not_number);
             }
             return false;
         }
@@ -130,13 +131,17 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
                 {
                     return true;
                 }
-                new Notificator(getActivity(), R.string.error_setting_timelines_range).publish();
+                Notificator.publish(getActivity(), R.string.error_setting_timelines_range);
             }
             else
             {
-                new Notificator(getActivity(), R.string.error_setting_timelines_not_number).publish();
+                Notificator.publish(getActivity(), R.string.error_setting_timelines_not_number);
             }
             return false;
+        }
+        else if(preference.getKey().contentEquals(getString(R.string.key_setting_theme)))
+        {
+            Notificator.publish(getActivity(), R.string.notice_theme_changed);
         }
         return true;
     }
@@ -149,14 +154,14 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
             SimpleDialogFragment informationDialog = SimpleDialogFragment.newInstance(
                     R.layout.dialog_app_info,
                     getString(R.string.dialog_title_about));
-            new DialogHelper(getActivity(), informationDialog).show();
+            DialogHelper.showDialog(getActivity(), informationDialog);
         }
         else if(preference.getKey().contentEquals(getString(R.string.key_setting_licenses)))
         {
             SimpleDialogFragment licensesDialog = SimpleDialogFragment.newInstance(
                     R.layout.dialog_licenses,
                     getString(R.string.dialog_title_licenses));
-            new DialogHelper(getActivity(), licensesDialog).show();
+            DialogHelper.showDialog(getActivity(), licensesDialog);
         }
         else if(preference.getKey().contentEquals(getString(R.string.key_setting_delete_authentication)))
         {

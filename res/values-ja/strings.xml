@@ -217,5 +217,5 @@
     <string name="actionbar_post">投稿</string>
     <string name="dialog_confirm_commands">実行しますか？</string>
     <string name="notice_add_to_reply">返信に追加しました</string>
-    <string name="actionbar_history">History</string>
+    <string name="notice_theme_changed">テーマは再起動後に有効になります</string>
 </resources>
