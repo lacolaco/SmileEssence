@@ -34,10 +34,14 @@ import twitter4j.Status;
 public class StatusCommandReply extends StatusCommand
 {
 
+// --------------------------- CONSTRUCTORS ---------------------------
+
     public StatusCommandReply(Activity activity, Status status)
     {
         super(R.id.key_command_status_reply, activity, status);
     }
+
+// --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -46,19 +50,23 @@ public class StatusCommandReply extends StatusCommand
     }
 
     @Override
-    public boolean execute()
+    public boolean isEnabled()
     {
-        TweetBuilder builder = new TweetBuilder().addScreenName(getOriginalStatus().getUser().getScreenName());
-
-        String text = builder.buildText();
-        PostState.newState().beginTransaction().setText(text).setInReplyToStatusID(getOriginalStatus().getId()).moveCursor(text.length()).commit();
-        ((MainActivity) getActivity()).setSelectedPageIndex(MainActivity.PAGE_POST);
         return true;
     }
 
+// -------------------------- OTHER METHODS --------------------------
+
     @Override
-    public boolean isEnabled()
+    public boolean execute()
     {
+        TweetBuilder builder = new TweetBuilder().addScreenName(getOriginalStatus().getUser().getScreenName());
+        String text = builder.buildText();
+        PostState.newState().beginTransaction()
+                 .setText(text)
+                 .setInReplyToStatusID(getOriginalStatus().getId())
+                 .moveCursor(text.length())
+                 .commitWithOpen((MainActivity) getActivity());
         return true;
     }
 }

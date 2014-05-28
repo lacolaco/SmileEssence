@@ -187,6 +187,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     {
         super.onCreateOptionsMenu(menu, inflater);
         menu.removeItem(R.id.actionbar_post);
+        onPostStateChange(PostState.getState());
     }
 
     @Override
@@ -194,6 +195,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     {
         Logger.debug("PostFragment CreateView");
         MainActivity activity = (MainActivity) getActivity();
+        PostState.getState().setListener(this);
         UserPreferenceHelper preferenceHelper = new UserPreferenceHelper(activity);
         View v = inflater.inflate(R.layout.fragment_post, null);
         buttonTweet = getTweetButton(v);
@@ -229,6 +231,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         ImageButton imageButtonDeleteMedia = (ImageButton) viewGroupMedia.findViewById(R.id.button_post_media_delete);
         imageViewMedia.setOnClickListener(this);
         imageButtonDeleteMedia.setOnClickListener(this);
+        editText.requestFocus();
         return v;
     }
 

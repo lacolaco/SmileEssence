@@ -33,10 +33,14 @@ import twitter4j.User;
 public class UserCommandIntroduce extends UserCommand
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public UserCommandIntroduce(Activity activity, User user)
     {
         super(R.id.key_command_user_introduce, activity, user);
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -45,20 +49,20 @@ public class UserCommandIntroduce extends UserCommand
     }
 
     @Override
-    public boolean execute()
+    public boolean isEnabled()
     {
-        PostState.newState()
-                 .beginTransaction()
-                 .setText(String.format(" (@%s)", getUser().getScreenName()))
-                 .setCursor(0)
-                 .commit();
-        ((MainActivity)getActivity()).setSelectedPageIndex(MainActivity.PAGE_POST);
         return true;
     }
 
+    // -------------------------- OTHER METHODS --------------------------
+
     @Override
-    public boolean isEnabled()
+    public boolean execute()
     {
+        PostState.newState().beginTransaction()
+                 .setText(String.format(" (@%s)", getUser().getScreenName()))
+                 .setCursor(0)
+                 .commitWithOpen((MainActivity) getActivity());
         return true;
     }
 }

@@ -36,13 +36,19 @@ import twitter4j.Status;
 public class StatusCommandReplyToAll extends StatusCommand
 {
 
+// ------------------------------ FIELDS ------------------------------
+
     private final Account account;
+
+// --------------------------- CONSTRUCTORS ---------------------------
 
     public StatusCommandReplyToAll(Activity activity, Status status, Account account)
     {
         super(R.id.key_command_status_reply_to_all, activity, status);
         this.account = account;
     }
+
+// --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -51,17 +57,20 @@ public class StatusCommandReplyToAll extends StatusCommand
     }
 
     @Override
-    public boolean execute()
-    {
-        TweetBuilder builder = new TweetBuilder().addScreenNames(TwitterUtils.getScreenNames(getStatus(), account.screenName));
-        PostState.newState().beginTransaction().setText(builder.buildText()).commit();
-        ((MainActivity)getActivity()).setSelectedPageIndex(MainActivity.PAGE_POST);
-        return true;
-    }
-
-    @Override
     public boolean isEnabled()
     {
         return TwitterUtils.getScreenNames(getStatus(), account.screenName).size() > 1;
+    }
+
+// -------------------------- OTHER METHODS --------------------------
+
+    @Override
+    public boolean execute()
+    {
+        TweetBuilder builder = new TweetBuilder().addScreenNames(TwitterUtils.getScreenNames(getStatus(), account.screenName));
+        PostState.newState().beginTransaction()
+                 .setText(builder.buildText())
+                 .commitWithOpen((MainActivity) getActivity());
+        return true;
     }
 }

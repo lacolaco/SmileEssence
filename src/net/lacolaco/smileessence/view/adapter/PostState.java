@@ -25,6 +25,7 @@
 package net.lacolaco.smileessence.view.adapter;
 
 import android.text.TextUtils;
+import net.lacolaco.smileessence.activity.MainActivity;
 import twitter4j.StatusUpdate;
 
 import java.io.File;
@@ -32,7 +33,7 @@ import java.io.File;
 public class PostState
 {
 
-// ------------------------------ FIELDS ------------------------------
+    // ------------------------------ FIELDS ------------------------------
 
     private static PostState instance = new PostState();
     private String text = "";
@@ -45,7 +46,7 @@ public class PostState
     private int selectionStart = 0;
     private int selectionEnd = 0;
 
-// -------------------------- STATIC METHODS --------------------------
+    // -------------------------- STATIC METHODS --------------------------
 
     private PostState()
     {
@@ -61,7 +62,7 @@ public class PostState
         return instance = new PostState().setListener(instance.listener);
     }
 
-// --------------------------- CONSTRUCTORS ---------------------------
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public PostState setListener(OnPostStateChangeListener listener)
     {
@@ -69,7 +70,7 @@ public class PostState
         return this;
     }
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     public String getInReplyToScreenName()
     {
@@ -119,7 +120,7 @@ public class PostState
         return directMessage;
     }
 
-// -------------------------- OTHER METHODS --------------------------
+    // -------------------------- OTHER METHODS --------------------------
 
     public PostStateTransaction beginTransaction()
     {
@@ -163,7 +164,7 @@ public class PostState
         }
     }
 
-// -------------------------- INNER CLASSES --------------------------
+    // -------------------------- INNER CLASSES --------------------------
 
     public static interface OnPostStateChangeListener
     {
@@ -228,6 +229,12 @@ public class PostState
 
         public void commit()
         {
+            PostState.getState().copy(state).postStateChange();
+        }
+
+        public void commitWithOpen(MainActivity activity)
+        {
+            activity.openPostPage();
             PostState.getState().copy(state).postStateChange();
         }
 

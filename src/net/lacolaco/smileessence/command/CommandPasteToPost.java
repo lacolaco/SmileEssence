@@ -63,8 +63,9 @@ public class CommandPasteToPost extends Command
     @Override
     public boolean execute()
     {
-        PostState.getState().beginTransaction().appendText(" " + text).commit();
-        ((MainActivity) getActivity()).openPostPage();
+        PostState.getState().beginTransaction()
+                 .appendText(" " + text)
+                 .commitWithOpen((MainActivity) getActivity());
         return true;
     }
 }

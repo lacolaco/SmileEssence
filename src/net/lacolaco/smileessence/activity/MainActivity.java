@@ -256,8 +256,9 @@ public class MainActivity extends Activity
             Cursor c = getContentResolver().query(uri, null, null, null, null);
             c.moveToFirst();
             String path = c.getString(c.getColumnIndex(MediaStore.MediaColumns.DATA));
-            PostState.getState().beginTransaction().setMediaFilePath(path).commit();
-            setSelectedPageIndex(PAGE_POST);
+            PostState.getState().beginTransaction()
+                     .setMediaFilePath(path)
+                     .commitWithOpen(this);
             new Notificator(this, R.string.notice_select_image_succeeded).publish();
         }
         catch(Exception e)
@@ -269,7 +270,7 @@ public class MainActivity extends Activity
 
     public void setSelectedPageIndex(int position)
     {
-        getViewPager().setCurrentItem(position, true);
+        getViewPager().setCurrentItem(position, false);
     }
 
     private void receiveOAuth(int requestCode, int resultCode, Intent data)

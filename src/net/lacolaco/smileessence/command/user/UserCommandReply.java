@@ -48,11 +48,9 @@ public class UserCommandReply extends UserCommand
     @Override
     public boolean execute()
     {
-        PostState.newState()
-                 .beginTransaction()
+        PostState.newState().beginTransaction()
                  .setText(new TweetBuilder().addScreenName(getUser().getScreenName()).buildText())
-                 .commit();
-        ((MainActivity)getActivity()).setSelectedPageIndex(MainActivity.PAGE_POST);
+                 .commitWithOpen((MainActivity) getActivity());
         return true;
     }
 

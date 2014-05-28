@@ -125,8 +125,10 @@ public class MainActivityMenuHelper
             }
             case R.id.actionbar_report:
             {
-                PostState.newState().beginTransaction().setCursor(0).setText(activity.getString(R.string.text_message_to_author, activity.getVersion())).commit();
-                activity.setSelectedPageIndex(MainActivity.PAGE_POST);
+                PostState.newState().beginTransaction()
+                         .setCursor(0)
+                         .setText(activity.getString(R.string.text_message_to_author, activity.getVersion()))
+                         .commitWithOpen(activity);
                 return true;
             }
             default:
