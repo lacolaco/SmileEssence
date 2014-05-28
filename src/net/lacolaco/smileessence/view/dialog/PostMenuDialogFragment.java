@@ -34,7 +34,7 @@ import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.command.CommandOpenTemplateList;
-import net.lacolaco.smileessence.command.post.PostCommandInsert;
+import net.lacolaco.smileessence.command.post.PostCommandMakeAnonymous;
 import net.lacolaco.smileessence.command.post.PostCommandMorse;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
@@ -76,7 +76,7 @@ public class PostMenuDialogFragment extends MenuDialogFragment
         ArrayList<Command> commands = new ArrayList<>();
         commands.add(new CommandOpenTemplateList(activity));
         commands.add(new PostCommandMorse(activity));
-        commands.add(new PostCommandInsert(activity, "test"));
+        commands.add(new PostCommandMakeAnonymous(activity));
         return commands;
     }
 }
