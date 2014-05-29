@@ -24,6 +24,7 @@
 
 package net.lacolaco.smileessence.view;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
@@ -32,6 +33,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.text.TextUtils;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.activity.LicenseActivity;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
@@ -65,6 +67,8 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
         appInfoPreference.setOnPreferenceClickListener(this);
         Preference clearAccount = findPreference(R.string.key_setting_clear_account);
         clearAccount.setOnPreferenceClickListener(this);
+        Preference license = findPreference(R.string.key_setting_licenses);
+        license.setOnPreferenceClickListener(this);
     }
 
     @Override
@@ -154,21 +158,15 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
     @Override
     public boolean onPreferenceClick(Preference preference)
     {
-        if(preference.getKey().contentEquals(getString(R.string.key_setting_application_information)))
+        String key = preference.getKey();
+        if(key.contentEquals(getString(R.string.key_setting_application_information)))
         {
             SimpleDialogFragment informationDialog = SimpleDialogFragment.newInstance(
                     R.layout.dialog_app_info,
                     getString(R.string.dialog_title_about));
             DialogHelper.showDialog(getActivity(), informationDialog);
         }
-        else if(preference.getKey().contentEquals(getString(R.string.key_setting_licenses)))
-        {
-            SimpleDialogFragment licensesDialog = SimpleDialogFragment.newInstance(
-                    R.layout.dialog_licenses,
-                    getString(R.string.dialog_title_licenses));
-            DialogHelper.showDialog(getActivity(), licensesDialog);
-        }
-        else if(preference.getKey().contentEquals(getString(R.string.key_setting_clear_account)))
+        else if(key.contentEquals(getString(R.string.key_setting_clear_account)))
         {
             ConfirmDialogFragment.show(getActivity(), getString(R.string.dialog_confirm_clear_account), new Runnable()
             {
@@ -181,7 +179,17 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
                 }
             });
         }
+        else if(key.contentEquals(getString(R.string.key_setting_licenses)))
+        {
+            openLicenseActivity();
+        }
         return true;
+    }
+
+    private void openLicenseActivity()
+    {
+        Intent intent = new Intent(getActivity(), LicenseActivity.class);
+        getActivity().startActivity(intent);
     }
 
     private void finishActivity()

@@ -220,4 +220,8 @@
     <string name="notice_theme_changed">Theme will be enabled on next launch</string>
     <string name="dialog_confirm_clear_account">Clear authentication, Really?</string>
     <string name="notice_cleared_account">Authentication was cleared. Please authorize on next launch</string>
+    <string name="library_name_activeandroid">ActiveAndroid</string>
+    <string name="library_name_guava">Guava</string>
+    <string name="library_name_twitter_text">twitter-text</string>
+    <string name="activity_licenses">Licenses</string>
 </resources>

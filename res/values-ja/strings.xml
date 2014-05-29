@@ -94,11 +94,6 @@
     <string name="app_thanks_to">Thanks to</string>
     <string name="dialog_title_about">アプリ情報</string>
     <string name="dialog_licenses_notices_of_files">Notices of files:</string>
-    <string name="dialog_licenses_list_marker">-</string>
-    <string name="library_name_twitter4j">twitter4j</string>
-    <string name="library_name_crouton">Crouton</string>
-    <string name="library_name_volley">Volley</string>
-    <string name="library_name_pull_to_refresh">PullToRefresh</string>
     <string name="dialog_title_licenses">オープンソースライセンス</string>
     <string name="command_status_reply">返信</string>
     <string name="command_user_reply">返信</string>
@@ -220,4 +215,5 @@
     <string name="notice_theme_changed">テーマは再起動後に有効になります</string>
     <string name="dialog_confirm_clear_account">本当に認証を削除しますか？</string>
     <string name="notice_cleared_account">認証情報が削除されました。 再起動後に認証してください</string>
+    <string name="activity_licenses">ライセンス</string>
 </resources>
