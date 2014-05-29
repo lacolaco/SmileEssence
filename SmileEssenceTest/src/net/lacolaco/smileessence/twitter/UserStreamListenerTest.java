@@ -237,4 +237,10 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
         Thread.sleep(1000);
         assertEquals(0, getActivity().getListAdapter(MainActivity.PAGE_MESSAGES).getCount());
     }
+
+    @Override
+    protected void tearDown() throws Exception
+    {
+        getActivity().finish(false);
+    }
 }

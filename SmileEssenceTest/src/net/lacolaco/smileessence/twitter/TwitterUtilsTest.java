@@ -22,40 +22,30 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.twitter.task;
+package net.lacolaco.smileessence.twitter;
 
-import android.test.ActivityInstrumentationTestCase2;
-import net.lacolaco.smileessence.activity.MainActivity;
-import net.lacolaco.smileessence.twitter.TwitterApi;
-import net.lacolaco.smileessence.util.TwitterMock;
-import twitter4j.StatusUpdate;
-import twitter4j.Twitter;
+import junit.framework.Assert;
+import junit.framework.TestCase;
+import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-public class UpdateStatusTaskTest extends ActivityInstrumentationTestCase2<MainActivity>
+public class TwitterUtilsTest extends TestCase
 {
 
-    Twitter twitter;
-
-    public UpdateStatusTaskTest()
+    public void testLength() throws Exception
     {
-        super(MainActivity.class);
+        String text = "test";
+        Assert.assertEquals(text.length(), TwitterUtils.getFixedTextLength(text));
+        text = "test.com";
+        assertNotSame(text.length(), TwitterUtils.getFixedTextLength(text));
     }
 
-    @Override
-    public void setUp() throws Exception
+    public void testURL() throws Exception
     {
-        TwitterMock mock = new TwitterMock(getInstrumentation().getContext());
-        twitter = new TwitterApi(mock.getAccessToken(), mock.getAccessTokenSecret()).getTwitter();
-    }
+        String screenName = "laco0416";
 
-    public void testUpdateStatus() throws Exception
-    {
-        StatusUpdate update = new StatusUpdate(String.format("UpdateStatusTest %s", new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
-        TweetTask task = new TweetTask(twitter, update, getActivity());
-        task.execute();
-        assertEquals(update.getStatus(), task.get().getText());
+        assertEquals("https://twitter.com/laco0416", TwitterUtils.getUserHomeURL(screenName));
+        assertEquals("http://favstar.fm/users/laco0416/recent", TwitterUtils.getFavstarRecentURL(screenName));
+        assertEquals("http://aclog.koba789.com/laco0416/timeline", TwitterUtils.getAclogTimelineURL(screenName));
+        assertEquals("http://twilog.org/laco0416", TwitterUtils.getTwilogURL(screenName));
     }
 }

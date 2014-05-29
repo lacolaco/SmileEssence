@@ -47,12 +47,21 @@ public class CustomListAdapterTest extends ActivityInstrumentationTestCase2<Main
     {
         mock = new TwitterMock(getInstrumentation().getContext());
         adapter = new CustomListAdapter<>(getActivity(), StatusViewModel.class);
-        account = new Account(mock.getAccessToken(), mock.getAccessTokenSecret(), mock.getUserMock().getId(), mock.getUserMock().getScreenName());
+        account = mock.getAccount();
     }
 
     public void testAddItem() throws Exception
     {
         adapter.addToBottom(new StatusViewModel(mock.getStatusMock(), account));
+        adapter.notifyDataSetChanged();
+        assertEquals(1, adapter.getCount());
+    }
+
+    public void testUpdate() throws Exception
+    {
+        adapter.addToBottom(new StatusViewModel(mock.getStatusMock(), account));
+        assertEquals(0, adapter.getCount());
+        adapter.notifyDataSetChanged();
         assertEquals(1, adapter.getCount());
     }
 
@@ -61,6 +70,7 @@ public class CustomListAdapterTest extends ActivityInstrumentationTestCase2<Main
         StatusViewModel viewModel1 = new StatusViewModel(mock.getStatusMock(), account);
         StatusViewModel viewModel2 = new StatusViewModel(mock.getStatusMock(), account);
         adapter.addToBottom(viewModel1, viewModel2);
+        adapter.notifyDataSetChanged();
         assertEquals(2, adapter.getCount());
     }
 
@@ -68,21 +78,11 @@ public class CustomListAdapterTest extends ActivityInstrumentationTestCase2<Main
     {
         StatusViewModel viewModel = new StatusViewModel(mock.getStatusMock(), account);
         adapter.addToBottom(viewModel, viewModel);
-        assertTrue(adapter.removeItem(0) == viewModel);
-    }
-
-    public void testGetView() throws Exception
-    {
-        final StatusViewModel viewModel = new StatusViewModel(mock.getStatusMock(), account);
-        getActivity().runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                adapter.addToBottom(viewModel);
-                assertNotNull(adapter.getView(0, null, null));
-            }
-        });
+        adapter.notifyDataSetChanged();
+        assertEquals(1, adapter.getCount());
+        adapter.removeItem(0);
+        adapter.notifyDataSetChanged();
+        assertEquals(0, adapter.getCount());
     }
 
     public void testAddPosition() throws Exception
@@ -91,11 +91,13 @@ public class CustomListAdapterTest extends ActivityInstrumentationTestCase2<Main
         StatusViewModel status2 = new StatusViewModel(mock.getStatusMock(), account);
         adapter.addToBottom(status1);
         adapter.addToTop(status2);
+        adapter.notifyDataSetChanged();
         assertEquals(status2, adapter.getItem(0));
     }
 
-    public void testGetActivity() throws Exception
+    @Override
+    protected void tearDown() throws Exception
     {
-        assertNotNull(adapter.getActivity());
+        getActivity().finish(false);
     }
 }

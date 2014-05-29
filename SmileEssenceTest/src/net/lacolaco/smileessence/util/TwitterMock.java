@@ -26,6 +26,8 @@ package net.lacolaco.smileessence.util;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.twitter.TwitterApi;
 import twitter4j.*;
 
 import java.io.BufferedReader;
@@ -87,5 +89,15 @@ public class TwitterMock
     public String getAccessTokenSecret() throws IOException, JSONException
     {
         return new JSONObject(getJson("tokens.json")).getString("token_secret");
+    }
+
+    public Twitter getTwitterMock() throws IOException, JSONException
+    {
+        return new TwitterApi(getAccessToken(), getAccessTokenSecret()).getTwitter();
+    }
+
+    public Account getAccount() throws IOException, TwitterException, JSONException
+    {
+        return new Account(getAccessToken(), getAccessTokenSecret(), getUserMock().getId(), getUserMock().getScreenName());
     }
 }
