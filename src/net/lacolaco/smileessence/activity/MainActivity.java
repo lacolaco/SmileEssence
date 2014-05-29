@@ -43,6 +43,7 @@ import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.entity.SearchQuery;
 import net.lacolaco.smileessence.logging.Logger;
+import net.lacolaco.smileessence.notification.NotificationType;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.preference.AppPreferenceHelper;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
@@ -83,6 +84,7 @@ public class MainActivity extends Activity
     public static final int PAGE_SEARCH = 5;
     public static final int PAGE_LIST = 6;
     public static final String KEY_LAST_USED_SEARCH_QUERY = "lastUsedSearchQuery";
+    public static final String KEY_APP_VERSION = "app.version";
     private static final String lastUsedAccountIDKey = "lastUsedAccountID";
     private ViewPager viewPager;
     private PageListAdapter pagerAdapter;
@@ -125,6 +127,11 @@ public class MainActivity extends Activity
         return this.viewPager.getCurrentItem();
     }
 
+    private String getLastSearch()
+    {
+        return getAppPreferenceHelper().getValue(KEY_LAST_USED_SEARCH_QUERY, "");
+    }
+
     private long getLastUsedAccountID()
     {
         String id = getAppPreferenceHelper().getValue(lastUsedAccountIDKey, "");
@@ -136,6 +143,11 @@ public class MainActivity extends Activity
         {
             return Long.parseLong(id);
         }
+    }
+
+    private boolean setLastUsedAccountID(Account account)
+    {
+        return getAppPreferenceHelper().putValue(lastUsedAccountIDKey, account.getId());
     }
 
     public int getPageCount()
@@ -176,7 +188,7 @@ public class MainActivity extends Activity
 
     private boolean isFirstLaunchThisVersion()
     {
-        return !getVersion().contentEquals(getAppPreferenceHelper().getValue("app.version", ""));
+        return !getVersion().contentEquals(getAppPreferenceHelper().getValue(KEY_APP_VERSION, ""));
     }
 
     /**
@@ -260,18 +272,13 @@ public class MainActivity extends Activity
             PostState.getState().beginTransaction()
                      .setMediaFilePath(path)
                      .commitWithOpen(this);
-            new Notificator(this, R.string.notice_select_image_succeeded).publish();
+            Notificator.publish(this, R.string.notice_select_image_succeeded);
         }
         catch(Exception e)
         {
             e.printStackTrace();
-            new Notificator(this, R.string.notice_select_image_failed).publish();
+            Notificator.publish(this, R.string.notice_select_image_failed, NotificationType.ALERT);
         }
-    }
-
-    public void setSelectedPageIndex(int position)
-    {
-        getViewPager().setCurrentItem(position, false);
     }
 
     private void receiveOAuth(int requestCode, int resultCode, Intent data)
@@ -279,7 +286,7 @@ public class MainActivity extends Activity
         if(resultCode != RESULT_OK)
         {
             Logger.error(requestCode);
-            new Notificator(this, R.string.notice_error_authenticate).publish();
+            Notificator.publish(this, R.string.notice_error_authenticate);
             finish();
         }
         else
@@ -288,14 +295,9 @@ public class MainActivity extends Activity
             Account account = new Account(token.getToken(), token.getTokenSecret(), token.getUserId(), token.getScreenName());
             account.save();
             setCurrentAccount(account);
-            setLastUserAccount(account);
+            setLastUsedAccountID(account);
             startMainLogic();
         }
-    }
-
-    private boolean setLastUserAccount(Account account)
-    {
-        return getAppPreferenceHelper().putValue(lastUsedAccountIDKey, account.getId());
     }
 
     @Override
@@ -349,25 +351,6 @@ public class MainActivity extends Activity
         setSelectedPageIndex(PAGE_HOME, false);
     }
 
-    private void initSearch()
-    {
-        String lastUsedSearchQuery = getLastSearch();
-        if(!TextUtils.isEmpty(lastUsedSearchQuery))
-        {
-            startNewSearch(lastUsedSearchQuery);
-        }
-    }
-
-    private String getLastSearch()
-    {
-        return getAppPreferenceHelper().getValue(KEY_LAST_USED_SEARCH_QUERY, "");
-    }
-
-    private void initPostState()
-    {
-        PostState.newState().beginTransaction().commit();
-    }
-
     public boolean addListPage(String name, Class<? extends CustomListFragment> fragmentClass, CustomListAdapter<?> adapter, boolean withNotify)
     {
         int nextPosition = pagerAdapter.getCount();
@@ -391,6 +374,64 @@ public class MainActivity extends Activity
         {
             return this.pagerAdapter.addPageWithoutNotify(name, fragmentClass, args);
         }
+    }
+
+    private void initPostState()
+    {
+        PostState.newState().beginTransaction().commit();
+    }
+
+    private void initSearch()
+    {
+        String lastUsedSearchQuery = getLastSearch();
+        if(!TextUtils.isEmpty(lastUsedSearchQuery))
+        {
+            startNewSearch(lastUsedSearchQuery);
+        }
+    }
+
+    public void startNewSearch(final String query)
+    {
+        SearchQuery.saveIfNotFound(query);
+        saveLastSearch(query);
+        final SearchListAdapter adapter = (SearchListAdapter) getListAdapter(PAGE_SEARCH);
+        adapter.initSearch(query);
+        adapter.clear();
+        adapter.updateForce();
+        new SearchTask(TwitterApi.getTwitter(getCurrentAccount()), query, this)
+        {
+            @Override
+            protected void onPostExecute(QueryResult queryResult)
+            {
+                super.onPostExecute(queryResult);
+                if(queryResult != null)
+                {
+                    List<twitter4j.Status> tweets = queryResult.getTweets();
+                    for(int i = tweets.size() - 1; i >= 0; i--)
+                    {
+                        twitter4j.Status status = tweets.get(i);
+                        if(!status.isRetweet())
+                        {
+                            StatusViewModel viewModel = new StatusViewModel(status, getCurrentAccount());
+                            adapter.addToTop(viewModel);
+                            StatusFilter.filter(MainActivity.this, viewModel);
+                        }
+                    }
+                    adapter.setTopID(queryResult.getMaxId());
+                    adapter.updateForce();
+                }
+            }
+        }.execute();
+    }
+
+    public CustomListAdapter<?> getListAdapter(int i)
+    {
+        return adapterMap.get(i);
+    }
+
+    private void saveLastSearch(String query)
+    {
+        getAppPreferenceHelper().putValue(KEY_LAST_USED_SEARCH_QUERY, query);
     }
 
     public void setSelectedPageIndex(final int position, final boolean smooth)
@@ -461,11 +502,6 @@ public class MainActivity extends Activity
         messagesTask.execute();
         updateActionBarIcon();
         return true;
-    }
-
-    public CustomListAdapter<?> getListAdapter(int i)
-    {
-        return adapterMap.get(i);
     }
 
     public boolean startStream()
@@ -642,60 +678,17 @@ public class MainActivity extends Activity
         setSelectedPageIndex(MainActivity.PAGE_POST);
     }
 
+    public void setSelectedPageIndex(int position)
+    {
+        getViewPager().setCurrentItem(position, false);
+    }
+
     /**
      * Open search page
      */
     public void openSearchPage()
     {
         setSelectedPageIndex(PAGE_SEARCH);
-    }
-
-    /**
-     * Open search page with given query
-     */
-    public void openSearchPage(final String query)
-    {
-        startNewSearch(query);
-        setSelectedPageIndex(PAGE_SEARCH);
-    }
-
-    public void startNewSearch(final String query)
-    {
-        SearchQuery.saveIfNotFound(query);
-        saveLastSearch(query);
-        final SearchListAdapter adapter = (SearchListAdapter) getListAdapter(PAGE_SEARCH);
-        adapter.initSearch(query);
-        adapter.clear();
-        adapter.updateForce();
-        new SearchTask(TwitterApi.getTwitter(getCurrentAccount()), query, this)
-        {
-            @Override
-            protected void onPostExecute(QueryResult queryResult)
-            {
-                super.onPostExecute(queryResult);
-                if(queryResult != null)
-                {
-                    List<twitter4j.Status> tweets = queryResult.getTweets();
-                    for(int i = tweets.size() - 1; i >= 0; i--)
-                    {
-                        twitter4j.Status status = tweets.get(i);
-                        if(!status.isRetweet())
-                        {
-                            StatusViewModel viewModel = new StatusViewModel(status, getCurrentAccount());
-                            adapter.addToTop(viewModel);
-                            StatusFilter.filter(MainActivity.this, viewModel);
-                        }
-                    }
-                    adapter.setTopID(queryResult.getMaxId());
-                    adapter.updateForce();
-                }
-            }
-        }.execute();
-    }
-
-    private void saveLastSearch(String query)
-    {
-        getAppPreferenceHelper().putValue(KEY_LAST_USED_SEARCH_QUERY, query);
     }
 
     private void addSearchPages()
@@ -705,6 +698,15 @@ public class MainActivity extends Activity
         {
             openSearchPage(searchQuery.query);
         }
+    }
+
+    /**
+     * Open search page with given query
+     */
+    public void openSearchPage(final String query)
+    {
+        startNewSearch(query);
+        setSelectedPageIndex(PAGE_SEARCH);
     }
 
     private void moveToLastPage()
