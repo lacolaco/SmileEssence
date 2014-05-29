@@ -66,6 +66,11 @@ public class TwitterMock
         return TwitterObjectFactory.createStatus(getJson("status.json"));
     }
 
+    public Status getReplyMock() throws IOException, TwitterException
+    {
+        return TwitterObjectFactory.createStatus(getJson("reply.json"));
+    }
+
     public Status getRetweetMock() throws IOException, TwitterException
     {
         return TwitterObjectFactory.createStatus(getJson("retweet.json"));

@@ -43,7 +43,7 @@ public class TweetBuilderTest extends InstrumentationTestCase
     public void testBuilder() throws Exception
     {
         User user = mock.getUserMock();
-        Status status = mock.getStatusMock();
+        Status status = mock.getReplyMock();
         TweetBuilder builder = new TweetBuilder();
         assertEquals("", builder.buildText());
         builder.addScreenName(user.getScreenName());

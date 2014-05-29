@@ -79,7 +79,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
 
     public void testOnStatusDelete() throws Exception
     {
-        final Status status = mock.getStatusMock();
+        final Status status = mock.getReplyMock();
         getActivity().runOnUiThread(new Runnable()
         {
             @Override
@@ -117,7 +117,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
 
     public void testOnMention() throws Exception
     {
-        final Status status = mock.getStatusMock();
+        final Status status = mock.getReplyMock();
         getActivity().runOnUiThread(new Runnable()
         {
             @Override
@@ -155,7 +155,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
 
     public void testOnFavorited() throws Exception
     {
-        final Status status = mock.getStatusMock();
+        final Status status = mock.getReplyMock();
         final User source = status.getUser();
         getActivity().runOnUiThread(new Runnable()
         {

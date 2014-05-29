@@ -43,7 +43,7 @@ public class StatusViewModelTest extends InstrumentationTestCase
 
     public void testID() throws Exception
     {
-        StatusViewModel status = new StatusViewModel(mock.getStatusMock(), account);
+        StatusViewModel status = new StatusViewModel(mock.getReplyMock(), account);
         assertNotSame(0L, status.getID());
     }
 }

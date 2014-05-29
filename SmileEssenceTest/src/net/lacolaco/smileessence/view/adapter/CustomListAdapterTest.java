@@ -52,14 +52,14 @@ public class CustomListAdapterTest extends ActivityInstrumentationTestCase2<Main
 
     public void testAddItem() throws Exception
     {
-        adapter.addToBottom(new StatusViewModel(mock.getStatusMock(), account));
+        adapter.addToBottom(new StatusViewModel(mock.getReplyMock(), account));
         adapter.notifyDataSetChanged();
         assertEquals(1, adapter.getCount());
     }
 
     public void testUpdate() throws Exception
     {
-        adapter.addToBottom(new StatusViewModel(mock.getStatusMock(), account));
+        adapter.addToBottom(new StatusViewModel(mock.getReplyMock(), account));
         assertEquals(0, adapter.getCount());
         adapter.notifyDataSetChanged();
         assertEquals(1, adapter.getCount());
@@ -67,8 +67,8 @@ public class CustomListAdapterTest extends ActivityInstrumentationTestCase2<Main
 
     public void testAddItems() throws Exception
     {
-        StatusViewModel viewModel1 = new StatusViewModel(mock.getStatusMock(), account);
-        StatusViewModel viewModel2 = new StatusViewModel(mock.getStatusMock(), account);
+        StatusViewModel viewModel1 = new StatusViewModel(mock.getReplyMock(), account);
+        StatusViewModel viewModel2 = new StatusViewModel(mock.getReplyMock(), account);
         adapter.addToBottom(viewModel1, viewModel2);
         adapter.notifyDataSetChanged();
         assertEquals(2, adapter.getCount());
@@ -76,7 +76,7 @@ public class CustomListAdapterTest extends ActivityInstrumentationTestCase2<Main
 
     public void testRemoveItem() throws Exception
     {
-        StatusViewModel viewModel = new StatusViewModel(mock.getStatusMock(), account);
+        StatusViewModel viewModel = new StatusViewModel(mock.getReplyMock(), account);
         adapter.addToBottom(viewModel, viewModel);
         adapter.notifyDataSetChanged();
         assertEquals(1, adapter.getCount());
@@ -87,8 +87,8 @@ public class CustomListAdapterTest extends ActivityInstrumentationTestCase2<Main
 
     public void testAddPosition() throws Exception
     {
-        StatusViewModel status1 = new StatusViewModel(mock.getStatusMock(), account);
-        StatusViewModel status2 = new StatusViewModel(mock.getStatusMock(), account);
+        StatusViewModel status1 = new StatusViewModel(mock.getReplyMock(), account);
+        StatusViewModel status2 = new StatusViewModel(mock.getReplyMock(), account);
         adapter.addToBottom(status1);
         adapter.addToTop(status2);
         adapter.notifyDataSetChanged();

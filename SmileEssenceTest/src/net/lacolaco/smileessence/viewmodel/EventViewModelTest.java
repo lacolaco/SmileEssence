@@ -48,7 +48,7 @@ public class EventViewModelTest extends InstrumentationTestCase
     public void testNewInstance() throws Exception
     {
         Context context = getInstrumentation().getTargetContext();
-        Status status = mock.getStatusMock();
+        Status status = mock.getReplyMock();
         User source = mock.getUserMock();
         EventViewModel event = new EventViewModel(EnumEvent.FAVORITED, source, status);
         assertEquals(source.getId(), event.getSourceUserID());
