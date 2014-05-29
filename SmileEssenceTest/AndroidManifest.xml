@@ -31,6 +31,9 @@
     <!-- We add an application tag here just so that we can indicate that
          this package needs to link against the android.test library,
          which is needed when building test cases. -->
+    <uses-sdk
+        android:minSdkVersion="17"
+        android:targetSdkVersion="19"/>
     <application>
         <uses-library android:name="android.test.runner"/>
     </application>

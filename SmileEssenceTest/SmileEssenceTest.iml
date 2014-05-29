@@ -15,9 +15,13 @@
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" generated="true" />
     </content>
     <orderEntry type="inheritedJdk" />
-    <orderEntry type="module" module-name="SmileEssence" scope="PROVIDED" />
+    <orderEntry type="module" module-name="SmileEssence" exported="" scope="PROVIDED" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="ActiveAndroid" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="android-support-v13" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="twitter4j" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="ActiveAndroid" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="twitter-text" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="guava" level="application" />
   </component>
 </module>
 
