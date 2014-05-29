@@ -88,6 +88,6 @@
         <Preference
             android:title="@string/setting_delete_authentication_title"
             android:summary="@string/setting_delete_authentication_summary"
-            android:key="@string/key_setting_delete_authentication"/>
+            android:key="@string/key_setting_clear_account"/>
     </PreferenceCategory>
 </PreferenceScreen>

@@ -27,6 +27,7 @@ package net.lacolaco.smileessence.entity;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Delete;
 
 @Table(name = "Accounts")
 public class Account extends Model
@@ -53,5 +54,10 @@ public class Account extends Model
         this.accessSecret = tokenSecret;
         this.userID = userID;
         this.screenName = screenName;
+    }
+
+    public static void deleteAll()
+    {
+        new Delete().from(Account.class).execute();
     }
 }

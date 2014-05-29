@@ -170,7 +170,8 @@ public class MainActivity extends Activity
 
     private boolean isAuthorized()
     {
-        return getLastUsedAccountID() >= 0;
+        long lastUsedAccountID = getLastUsedAccountID();
+        return lastUsedAccountID >= 0 && Account.load(Account.class, lastUsedAccountID) != null;
     }
 
     private boolean isFirstLaunchThisVersion()
@@ -287,9 +288,14 @@ public class MainActivity extends Activity
             Account account = new Account(token.getToken(), token.getTokenSecret(), token.getUserId(), token.getScreenName());
             account.save();
             setCurrentAccount(account);
-            getAppPreferenceHelper().putValue(lastUsedAccountIDKey, account.getId());
+            setLastUserAccount(account);
             startMainLogic();
         }
+    }
+
+    private boolean setLastUserAccount(Account account)
+    {
+        return getAppPreferenceHelper().putValue(lastUsedAccountIDKey, account.getId());
     }
 
     @Override

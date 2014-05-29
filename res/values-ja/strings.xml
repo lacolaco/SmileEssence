@@ -218,4 +218,6 @@
     <string name="dialog_confirm_commands">実行しますか？</string>
     <string name="notice_add_to_reply">返信に追加しました</string>
     <string name="notice_theme_changed">テーマは再起動後に有効になります</string>
+    <string name="dialog_confirm_clear_account">本当に認証を削除しますか？</string>
+    <string name="notice_cleared_account">認証情報が削除されました。 再起動後に認証してください</string>
 </resources>
