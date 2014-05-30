@@ -120,7 +120,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice)
     {
-        for(int i = 0; i < activity.getPageCount(); i++)
+        for(int i = 0; i < getPagerCount(); i++)
         {
             CustomListAdapter adapter = activity.getListAdapter(i);
             if(adapter != null && adapter instanceof StatusListAdapter)
@@ -129,6 +129,11 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
                 statusListAdapter.removeByStatusID(statusDeletionNotice.getStatusId());
             }
         }
+    }
+
+    private int getPagerCount()
+    {
+        return activity.getPagerAdapter().getCount();
     }
 
     @Override
