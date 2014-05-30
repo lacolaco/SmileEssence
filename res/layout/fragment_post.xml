@@ -79,16 +79,18 @@
                     android:layout_height="wrap_content"
                     android:gravity="top"
                     android:inputType="text|textMultiLine"
-                    android:minHeight="60dp"/>
+                    android:minHeight="60dp">
+
+                    <requestFocus/>
+                </EditText>
             </FrameLayout>
 
             <RelativeLayout
                 android:layout_width="70dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                >
+                android:layout_weight="1">
 
-                <ImageButton
+            <ImageButton
                     android:id="@+id/button_post_delete"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"

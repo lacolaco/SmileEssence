@@ -48,6 +48,7 @@ import net.lacolaco.smileessence.twitter.task.TweetTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.util.BitmapThumbnailTask;
 import net.lacolaco.smileessence.util.IntentUtils;
+import net.lacolaco.smileessence.util.UIHandler;
 import net.lacolaco.smileessence.view.adapter.PostState;
 import net.lacolaco.smileessence.view.dialog.DialogHelper;
 import net.lacolaco.smileessence.view.dialog.PostMenuDialogFragment;
@@ -186,10 +187,9 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     {
         super.onCreateOptionsMenu(menu, inflater);
         menu.removeItem(R.id.actionbar_post);
-        //        onPostStateChange(PostState.getState());
+        showIME();
     }
 
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         Logger.debug("PostFragment CreateView");
@@ -293,6 +293,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
             int start = postState.getSelectionStart();
             int end = postState.getSelectionEnd();
             editText.setSelection(start, end);
+            editText.clearFocus(); // 一旦外すことで再表示時にonFocusChangedイベントが発生する
         }
         if(viewGroupReply != null)
         {
@@ -362,7 +363,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     private void hideIME()
     {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     private void removeImage()
@@ -383,8 +384,18 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
 
     private void showIME()
     {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(editText, 0);
+        if(editText != null)
+        {
+            new UIHandler()
+            {
+                @Override
+                public void run()
+                {
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+                }
+            }.postDelayed(100);
+        }
     }
 
     private void submitPost()
