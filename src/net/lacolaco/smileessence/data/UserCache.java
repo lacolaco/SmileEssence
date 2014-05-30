@@ -27,6 +27,7 @@ package net.lacolaco.smileessence.data;
 import twitter4j.User;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class UserCache
 {
@@ -34,6 +35,8 @@ public class UserCache
     private static UserCache instance = new UserCache();
 
     private ConcurrentHashMap<Long, User> cache = new ConcurrentHashMap<>();
+
+    private ConcurrentLinkedQueue<Long> blockIDs = new ConcurrentLinkedQueue<>();
 
     private UserCache()
     {
@@ -75,5 +78,20 @@ public class UserCache
     public User remove(long id)
     {
         return cache.remove(id);
+    }
+
+    public void putBlockUser(long id)
+    {
+        blockIDs.add(id);
+    }
+
+    public boolean isBlockID(long id)
+    {
+        return blockIDs.contains(Long.valueOf(id));
+    }
+
+    public void removeBlockUser(long id)
+    {
+        blockIDs.remove(Long.valueOf(id));
     }
 }

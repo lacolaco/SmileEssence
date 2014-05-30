@@ -82,10 +82,8 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     public void onStatus(Status status)
     {
         StatusCache.getInstance().put(status);
-        CustomListAdapter<?> home = activity.getListAdapter(MainActivity.PAGE_HOME);
         StatusViewModel viewModel = new StatusViewModel(status, activity.getCurrentAccount());
-        home.addToTop(viewModel);
-        home.update();
+        addToHome(viewModel);
         if(status.isRetweet())
         {
             if(viewModel.isRetweetOfMe())
@@ -102,6 +100,13 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         StatusFilter.filter(activity, viewModel);
     }
 
+    private void addToHome(StatusViewModel viewModel)
+    {
+        StatusListAdapter home = (StatusListAdapter) activity.getListAdapter(MainActivity.PAGE_HOME);
+        home.addToTop(viewModel);
+        home.update();
+    }
+
     private void addToHistory(EventViewModel mentioned)
     {
         CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
@@ -112,7 +117,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
 
     private void addToMentions(StatusViewModel viewModel)
     {
-        CustomListAdapter<?> mentions = activity.getListAdapter(MainActivity.PAGE_MENTIONS);
+        StatusListAdapter mentions = (StatusListAdapter) activity.getListAdapter(MainActivity.PAGE_MENTIONS);
         mentions.addToTop(viewModel);
         mentions.update();
     }

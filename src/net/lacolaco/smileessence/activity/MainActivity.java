@@ -40,6 +40,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import net.lacolaco.smileessence.Application;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.data.UserCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.entity.SearchQuery;
 import net.lacolaco.smileessence.logging.Logger;
@@ -385,12 +386,28 @@ public class MainActivity extends Activity
         int count = TwitterUtils.getPagingCount(this);
         Twitter twitter = TwitterApi.getTwitter(currentAccount);
         Paging paging = TwitterUtils.getPaging(count);
+        initBlockUser(twitter);
         initHome(twitter, paging);
         initMentions(twitter, paging);
         initMessages(twitter, paging);
         initSearch(twitter);
         updateActionBarIcon();
         return true;
+    }
+
+    private void initBlockUser(Twitter twitter)
+    {
+        new BlockIDsTask(twitter, this)
+        {
+            @Override
+            protected void onPostExecute(Long[] blockIDs)
+            {
+                for(Long id : blockIDs)
+                {
+                    UserCache.getInstance().putBlockUser(id);
+                }
+            }
+        }.execute();
     }
 
     private void initHome(final Twitter twitter, final Paging paging)
@@ -401,10 +418,12 @@ public class MainActivity extends Activity
             protected void onPostExecute(twitter4j.Status[] statuses)
             {
                 super.onPostExecute(statuses);
-                CustomListAdapter<?> adapter = getListAdapter(PAGE_HOME);
+                StatusListAdapter adapter = (StatusListAdapter) getListAdapter(PAGE_HOME);
                 for(twitter4j.Status status : statuses)
                 {
-                    adapter.addToBottom(new StatusViewModel(status, currentAccount));
+                    StatusViewModel statusViewModel = new StatusViewModel(status, currentAccount);
+                    adapter.addToBottom(statusViewModel);
+                    StatusFilter.filter(MainActivity.this, statusViewModel);
                 }
                 adapter.updateForce();
             }
@@ -419,7 +438,7 @@ public class MainActivity extends Activity
             protected void onPostExecute(twitter4j.Status[] statuses)
             {
                 super.onPostExecute(statuses);
-                CustomListAdapter<?> adapter = getListAdapter(PAGE_MENTIONS);
+                StatusListAdapter adapter = (StatusListAdapter) getListAdapter(PAGE_MENTIONS);
                 for(twitter4j.Status status : statuses)
                 {
                     adapter.addToBottom(new StatusViewModel(status, currentAccount));

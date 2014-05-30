@@ -25,6 +25,7 @@
 package net.lacolaco.smileessence.view.adapter;
 
 import android.app.Activity;
+import net.lacolaco.smileessence.data.UserCache;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 
 import java.util.Collections;
@@ -51,6 +52,39 @@ public class StatusListAdapter extends CustomListAdapter<StatusViewModel>
     public long getTopID()
     {
         return ((StatusViewModel) getItem(0)).getID();
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    public void addToBottom(StatusViewModel... items)
+    {
+        for(StatusViewModel item : items)
+        {
+            if(isBlockUser(item))
+            {
+                continue;
+            }
+            super.addToBottom(item);
+        }
+    }
+
+    private boolean isBlockUser(StatusViewModel item)
+    {
+        return UserCache.getInstance().isBlockID(item.getOriginalUserID());
+    }
+
+    @Override
+    public void addToTop(StatusViewModel... items)
+    {
+        for(StatusViewModel item : items)
+        {
+            if(isBlockUser(item))
+            {
+                continue;
+            }
+            super.addToTop(item);
+        }
     }
 
     // -------------------------- OTHER METHODS --------------------------

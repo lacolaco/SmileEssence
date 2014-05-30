@@ -193,6 +193,11 @@ public class StatusViewModel implements IViewModel
         return name;
     }
 
+    public long getOriginalUserID()
+    {
+        return isRetweet() ? getRetweetedStatus().getUserID() : getUserID();
+    }
+
     public StatusViewModel getRetweetedStatus()
     {
         return retweetedStatus;
@@ -286,7 +291,7 @@ public class StatusViewModel implements IViewModel
         return isProtected;
     }
 
-    private boolean isRetweet()
+    public boolean isRetweet()
     {
         return retweetedStatus != null;
     }
@@ -316,8 +321,8 @@ public class StatusViewModel implements IViewModel
         UserPreferenceHelper preferenceHelper = new UserPreferenceHelper(activity);
         int textSize = preferenceHelper.getValue(R.string.key_setting_text_size, 10);
         int nameStyle = preferenceHelper.getValue(R.string.key_setting_namestyle, 0);
-        int theme = ((MainActivity)activity).getThemeIndex();
-        NetworkImageView icon = (NetworkImageView)convertedView.findViewById(R.id.imageview_status_icon);
+        int theme = ((MainActivity) activity).getThemeIndex();
+        NetworkImageView icon = (NetworkImageView) convertedView.findViewById(R.id.imageview_status_icon);
         ImageCache.getInstance().setImageToView(getIconURL(), icon);
         icon.setOnClickListener(new View.OnClickListener()
         {
@@ -329,23 +334,23 @@ public class StatusViewModel implements IViewModel
                 DialogHelper.showDialog(activity, dialogFragment);
             }
         });
-        TextView header = (TextView)convertedView.findViewById(R.id.textview_status_header);
+        TextView header = (TextView) convertedView.findViewById(R.id.textview_status_header);
         header.setTextSize(textSize);
         int colorHeader = Themes.getStyledColor(activity, theme, R.attr.color_status_text_header, 0);
         int colorMineHeader = Themes.getStyledColor(activity, theme, R.attr.color_status_text_mine, 0);
         header.setTextColor(isMyStatus() ? colorMineHeader : colorHeader);
         header.setText(NameStyles.getNameString(nameStyle, getScreenName(), getName()));
-        TextView content = (TextView)convertedView.findViewById(R.id.textview_status_text);
+        TextView content = (TextView) convertedView.findViewById(R.id.textview_status_text);
         content.setTextSize(textSize);
         int colorNormal = Themes.getStyledColor(activity, theme, R.attr.color_status_text_normal, 0);
         content.setTextColor(colorNormal);
         content.setText(getText());
-        TextView footer = (TextView)convertedView.findViewById(R.id.textview_status_footer);
+        TextView footer = (TextView) convertedView.findViewById(R.id.textview_status_footer);
         footer.setTextSize(textSize - 2);
         int colorFooter = Themes.getStyledColor(activity, theme, R.attr.color_status_text_footer, 0);
         footer.setTextColor(colorFooter);
         footer.setText(getFooterText());
-        ImageView favorited = (ImageView)convertedView.findViewById(R.id.imageview_status_favorited);
+        ImageView favorited = (ImageView) convertedView.findViewById(R.id.imageview_status_favorited);
         favorited.setVisibility(isFavorited() ? View.VISIBLE : View.GONE);
         if(isRetweet())
         {
