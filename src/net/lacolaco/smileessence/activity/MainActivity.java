@@ -84,9 +84,9 @@ public class MainActivity extends Activity
     public static final int PAGE_HISTORY = 4;
     public static final int PAGE_SEARCH = 5;
     public static final int PAGE_LIST = 6;
-    public static final String KEY_LAST_USED_SEARCH_QUERY = "lastUsedSearchQuery";
-    public static final String KEY_APP_VERSION = "app.version";
-    private static final String lastUsedAccountIDKey = "lastUsedAccountID";
+    private static final String KEY_LAST_USED_SEARCH_QUERY = "lastUsedSearchQuery";
+    private static final String KEY_APP_VERSION = "app.version";
+    private static final String KEY_LAST_USED_ACCOUNT_ID = "lastUsedAccountID";
     private ViewPager viewPager;
     private PageListAdapter pagerAdapter;
     private OAuthSession oauthSession;
@@ -130,7 +130,7 @@ public class MainActivity extends Activity
 
     private long getLastUsedAccountID()
     {
-        String id = getAppPreferenceHelper().getValue(lastUsedAccountIDKey, "");
+        String id = getAppPreferenceHelper().getValue(KEY_LAST_USED_ACCOUNT_ID, "");
         if(TextUtils.isEmpty(id))
         {
             return -1;
@@ -143,7 +143,7 @@ public class MainActivity extends Activity
 
     private void setLastUsedAccountID(Account account)
     {
-        getAppPreferenceHelper().putValue(lastUsedAccountIDKey, account.getId());
+        getAppPreferenceHelper().putValue(KEY_LAST_USED_ACCOUNT_ID, account.getId());
     }
 
     public PageListAdapter getPagerAdapter()
