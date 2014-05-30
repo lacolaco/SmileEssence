@@ -44,14 +44,14 @@ public class MainActivityMenuHelper
         //Post button
         MenuItem postButton = menu.add(Menu.NONE, R.id.actionbar_post, Menu.NONE, activity.getString(R.string.actionbar_post));
         postButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        postButton.setIcon(R.drawable.ic_action_edit);
+        postButton.setIcon(R.drawable.icon_edit);
         //Search button
         MenuItem searchButton = menu.add(Menu.NONE, R.id.actionbar_search, Menu.NONE, activity.getString(R.string.actionbar_search));
         searchButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         searchButton.setIcon(R.drawable.icon_search_white);
         //Settings
         SubMenu settings = menu.addSubMenu(Menu.NONE, R.id.actionbar_settings, Menu.NONE, activity.getString(R.string.actionbar_settings));
-        settings.setIcon(R.drawable.ic_action_settings);
+        settings.setIcon(R.drawable.icon_settings);
         settings.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         settings.add(Menu.NONE, R.id.actionbar_setting, Menu.NONE, activity.getString(R.string.actionbar_setting));
         settings.add(Menu.NONE, R.id.actionbar_edit_templates, Menu.NONE, activity.getString(R.string.actionbar_edit_templates));
@@ -59,7 +59,7 @@ public class MainActivityMenuHelper
         settings.add(Menu.NONE, R.id.actionbar_edit_commands, Menu.NONE, activity.getString(R.string.actionbar_edit_commands));
         //External services
         SubMenu services = menu.addSubMenu(Menu.NONE, R.id.actionbar_services, Menu.NONE, activity.getString(R.string.actionbar_services));
-        services.setIcon(R.drawable.ic_action_web_site);
+        services.setIcon(R.drawable.icon_website);
         services.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         services.add(Menu.NONE, R.id.actionbar_favstar, Menu.NONE, activity.getString(R.string.actionbar_favstar));
         services.add(Menu.NONE, R.id.actionbar_aclog, Menu.NONE, activity.getString(R.string.actionbar_aclog));
@@ -67,7 +67,7 @@ public class MainActivityMenuHelper
         //Report to author
         MenuItem report = menu.add(Menu.NONE, R.id.actionbar_report, Menu.NONE, activity.getString(R.string.actionbar_report));
         report.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-        report.setIcon(R.drawable.ic_action_email);
+        report.setIcon(R.drawable.icon_email);
     }
 
     public static boolean onItemSelected(MainActivity activity, MenuItem item)
