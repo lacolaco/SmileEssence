@@ -96,7 +96,8 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         else if(viewModel.isMention())
         {
             addToMentions(viewModel);
-            addToHistory(new EventViewModel(EnumEvent.MENTIONED, status.getUser(), status));
+            EventViewModel mentioned = new EventViewModel(EnumEvent.MENTIONED, status.getUser(), status);
+            Notificator.publish(activity, mentioned.getFormattedString(activity));
         }
         StatusFilter.filter(activity, viewModel);
     }
@@ -104,7 +105,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     private void addToHistory(EventViewModel mentioned)
     {
         CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
-        new Notificator(activity, mentioned.getFormattedString(activity)).publish();
+        Notificator.publish(activity, mentioned.getFormattedString(activity));
         history.addToTop(mentioned);
         history.update();
     }
