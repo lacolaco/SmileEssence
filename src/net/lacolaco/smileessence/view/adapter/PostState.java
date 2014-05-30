@@ -72,19 +72,9 @@ public class PostState
 
     // --------------------- GETTER / SETTER METHODS ---------------------
 
-    public String getInReplyToScreenName()
-    {
-        return inReplyToScreenName;
-    }
-
     public long getInReplyToStatusID()
     {
         return inReplyToStatusID;
-    }
-
-    public String getInReplyToText()
-    {
-        return inReplyToText;
     }
 
     public String getMediaFilePath()
@@ -113,11 +103,6 @@ public class PostState
     public String getText()
     {
         return text;
-    }
-
-    public boolean isDirectMessage()
-    {
-        return directMessage;
     }
 
     // -------------------------- OTHER METHODS --------------------------

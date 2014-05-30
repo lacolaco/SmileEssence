@@ -178,7 +178,6 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     {
         Logger.debug("PostFragment Create");
         super.onCreate(savedInstanceState);
-        PostState.getState().setListener(this);
         setHasOptionsMenu(true);
     }
 
@@ -187,7 +186,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     {
         super.onCreateOptionsMenu(menu, inflater);
         menu.removeItem(R.id.actionbar_post);
-        onPostStateChange(PostState.getState());
+        //        onPostStateChange(PostState.getState());
     }
 
     @Override
@@ -267,6 +266,11 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         super.onDestroyView();
         setStateFromView();
         PostState.getState().removeListener();
+    }
+
+    private void setStateFromView()
+    {
+        PostState.getState().beginTransaction().setText(editText.getText().toString()).setSelection(editText.getSelectionStart(), editText.getSelectionEnd()).commit();
     }
 
     @Override
@@ -355,6 +359,12 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         DialogHelper.showDialog(getActivity(), menuDialogFragment);
     }
 
+    private void hideIME()
+    {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
+
     private void removeImage()
     {
         hideIME();
@@ -383,20 +393,9 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         setStateFromView();
         StatusUpdate statusUpdate = PostState.getState().toStatusUpdate();
         MainActivity mainActivity = (MainActivity) getActivity();
-        TweetTask tweetTask = new TweetTask(new TwitterApi(mainActivity.getCurrentAccount()).getTwitter(), statusUpdate, mainActivity);
+        TweetTask tweetTask = new TweetTask(TwitterApi.getTwitter(mainActivity.getCurrentAccount()), statusUpdate, mainActivity);
         tweetTask.execute();
         PostState.newState().beginTransaction().commit();
         mainActivity.setSelectedPageIndex(MainActivity.PAGE_HOME);
-    }
-
-    private void hideIME()
-    {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-    }
-
-    private void setStateFromView()
-    {
-        PostState.getState().beginTransaction().setText(editText.getText().toString()).setSelection(editText.getSelectionStart(), editText.getSelectionEnd()).commit();
     }
 }

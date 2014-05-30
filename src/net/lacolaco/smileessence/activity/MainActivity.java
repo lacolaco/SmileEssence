@@ -331,6 +331,7 @@ public class MainActivity extends Activity
         addListPage(getString(R.string.page_name_history), HistoryFragment.class, historyAdapter);
         addListPage(getString(R.string.page_name_search), SearchFragment.class, searchAdapter);
         pagerAdapter.refreshListNavigation();
+        viewPager.setOffscreenPageLimit(pagerAdapter.getCount());
         initPostState();
         setSelectedPageIndex(PAGE_HOME, false);
     }
@@ -673,7 +674,7 @@ public class MainActivity extends Activity
 
     public void setSelectedPageIndex(int position)
     {
-        viewPager.setCurrentItem(position, false);
+        viewPager.setCurrentItem(position, true);
     }
 
     /**
