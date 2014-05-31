@@ -212,11 +212,14 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onDirectMessage(DirectMessage directMessage)
     {
-        addToHistory(new EventViewModel(EnumEvent.RECEIVE_MESSAGE, directMessage.getSender()));
-        MessageViewModel message = new MessageViewModel(directMessage, activity.getCurrentAccount());
-        CustomListAdapter<?> messages = activity.getListAdapter(MainActivity.PAGE_MESSAGES);
-        messages.addToTop(message);
-        messages.update();
+        if(activity.getCurrentAccount().userID == directMessage.getRecipientId())
+        {
+            addToHistory(new EventViewModel(EnumEvent.RECEIVE_MESSAGE, directMessage.getSender()));
+            MessageViewModel message = new MessageViewModel(directMessage, activity.getCurrentAccount());
+            CustomListAdapter<?> messages = activity.getListAdapter(MainActivity.PAGE_MESSAGES);
+            messages.addToTop(message);
+            messages.update();
+        }
     }
 
     @Override
