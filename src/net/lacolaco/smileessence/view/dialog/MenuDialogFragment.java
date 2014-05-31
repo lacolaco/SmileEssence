@@ -45,29 +45,34 @@ public abstract class MenuDialogFragment extends DialogFragment
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
         {
-            final Command command = (Command) adapterView.getItemAtPosition(i);
-            if(command != null)
-            {
-                if(command instanceof IConfirmable)
-                {
-                    ConfirmDialogFragment.show(getActivity(), getString(R.string.dialog_confirm_commands), new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            DialogHelper.close(getActivity());
-                            command.execute();
-                        }
-                    });
-                }
-                else
-                {
-                    DialogHelper.close(getActivity());
-                    command.execute();
-                }
-            }
+            MenuDialogFragment.this.onItemClick(adapterView, i);
         }
     };
+
+    protected void onItemClick(AdapterView<?> adapterView, int i)
+    {
+        final Command command = (Command) adapterView.getItemAtPosition(i);
+        if(command != null)
+        {
+            if(command instanceof IConfirmable)
+            {
+                ConfirmDialogFragment.show(getActivity(), getString(R.string.dialog_confirm_commands), new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        DialogHelper.close(getActivity());
+                        command.execute();
+                    }
+                });
+            }
+            else
+            {
+                DialogHelper.close(getActivity());
+                command.execute();
+            }
+        }
+    }
 
     protected final void filterCommands(List<Command> commands)
     {

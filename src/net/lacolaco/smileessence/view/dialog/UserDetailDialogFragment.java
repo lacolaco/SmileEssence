@@ -108,9 +108,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         {
             case R.id.imageview_user_detail_menu:
             {
-                UserMenuDialogFragment menuFragment = new UserMenuDialogFragment();
-                menuFragment.setUserID(user.getId());
-                DialogHelper.showDialog(activity, menuFragment);
+                openUserMenu(activity, user);
                 break;
             }
             case R.id.imageview_user_detail_icon:
@@ -149,6 +147,13 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
                 break;
             }
         }
+    }
+
+    private void openUserMenu(MainActivity activity, User user)
+    {
+        UserMenuDialogFragment menuFragment = new UserMenuDialogFragment();
+        menuFragment.setUserID(user.getId());
+        DialogHelper.showDialogWithoutClose(activity, menuFragment);
     }
 
     // ------------------------ OVERRIDE METHODS ------------------------

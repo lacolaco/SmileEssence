@@ -29,6 +29,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
@@ -64,6 +65,14 @@ public class UserMenuDialogFragment extends MenuDialogFragment
     }
 
     // ------------------------ OVERRIDE METHODS ------------------------
+
+
+    @Override
+    protected void onItemClick(AdapterView<?> adapterView, int i)
+    {
+        super.onItemClick(adapterView, i);
+        dismiss();
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)

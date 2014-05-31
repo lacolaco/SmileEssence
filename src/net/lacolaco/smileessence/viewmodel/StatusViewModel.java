@@ -372,11 +372,16 @@ public class StatusViewModel implements IViewModel
             @Override
             public void run()
             {
-                StatusMenuDialogFragment fragment = new StatusMenuDialogFragment();
-                fragment.setStatusID(getID());
-                DialogHelper.showDialog(activity, fragment);
+                onClick(activity);
             }
         }));
         return convertedView;
+    }
+
+    private void onClick(Activity activity)
+    {
+        StatusMenuDialogFragment fragment = new StatusMenuDialogFragment();
+        fragment.setStatusID(getID());
+        DialogHelper.showDialogWithoutClose(activity, fragment);
     }
 }

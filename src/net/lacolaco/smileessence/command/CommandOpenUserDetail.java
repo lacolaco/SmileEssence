@@ -81,11 +81,11 @@ public class CommandOpenUserDetail extends Command
                 {
                     UserDetailDialogFragment fragment = new UserDetailDialogFragment();
                     fragment.setUserID(user.getId());
-                    new DialogHelper(getActivity(), fragment).show();
+                    DialogHelper.showDialog(getActivity(), fragment);
                 }
                 else
                 {
-                    new Notificator(getActivity(), R.string.notice_error_show_user, NotificationType.ALERT).publish();
+                    Notificator.publish(getActivity(), R.string.notice_error_show_user, NotificationType.ALERT);
                 }
             }
         }.execute();
