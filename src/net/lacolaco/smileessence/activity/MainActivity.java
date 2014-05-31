@@ -298,7 +298,11 @@ public class MainActivity extends Activity
     @Override
     public void finish()
     {
-        if(viewPager.getCurrentItem() != PAGE_HOME)
+        if(viewPager == null)
+        {
+            forceFinish();
+        }
+        else if(viewPager.getCurrentItem() != PAGE_HOME)
         {
             viewPager.setCurrentItem(PAGE_HOME, true);
         }
