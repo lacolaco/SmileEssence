@@ -37,6 +37,7 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import net.lacolaco.smileessence.Application;
 import net.lacolaco.smileessence.IntentRouter;
@@ -720,6 +721,7 @@ public class MainActivity extends Activity
     {
         super.onPause();
         Logger.debug("MainActivity:onPause");
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Notificator.stopNotification();
     }
 
@@ -728,6 +730,7 @@ public class MainActivity extends Activity
     {
         super.onResume();
         Logger.debug("MainActivity:onResume");
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Notificator.startNotification();
     }
 
