@@ -223,4 +223,6 @@
     <string name="dialog_title_select_userlist">リストを選択</string>
     <string name="command_status_add_to_ignore">以後このツイートを無視する</string>
     <string name="notice_add_to_ignore">無視リストに追加しました</string>
+    <string name="error_intent_status_cannot_load">ツイートを取得できませんでした</string>
+    <string name="intent_post">つぶやく</string>
 </resources>

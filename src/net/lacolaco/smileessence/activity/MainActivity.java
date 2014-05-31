@@ -39,6 +39,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import net.lacolaco.smileessence.Application;
+import net.lacolaco.smileessence.IntentRouter;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.data.CommandSettingCache;
 import net.lacolaco.smileessence.entity.Account;
@@ -250,17 +251,22 @@ public class MainActivity extends Activity
 
     private void getImageUri(int requestCode, Intent data)
     {
+        Uri uri;
+        if(requestCode == REQUEST_GET_PICTURE_FROM_GALLERY)
+        {
+            uri = data.getData();
+        }
+        else
+        {
+            uri = getCameraTempFilePath();
+        }
+        openPostPageWithImage(uri);
+    }
+
+    public void openPostPageWithImage(Uri uri)
+    {
         try
         {
-            Uri uri;
-            if(requestCode == REQUEST_GET_PICTURE_FROM_GALLERY)
-            {
-                uri = data.getData();
-            }
-            else
-            {
-                uri = getCameraTempFilePath();
-            }
             Cursor c = getContentResolver().query(uri, null, null, null, null);
             c.moveToFirst();
             String path = c.getString(c.getColumnIndex(MediaStore.MediaColumns.DATA));
@@ -644,6 +650,7 @@ public class MainActivity extends Activity
         {
             setupAccount();
             startMainLogic();
+            IntentRouter.onNewIntent(this, getIntent());
         }
         else
         {
@@ -702,6 +709,7 @@ public class MainActivity extends Activity
     @Override
     protected void onNewIntent(Intent intent)
     {
+        IntentRouter.onNewIntent(this, intent);
         super.onNewIntent(intent);
     }
 

@@ -231,4 +231,6 @@
     <string name="dialog_title_select_userlist">Select a list</string>
     <string name="command_status_add_to_ignore">Ignore this tweet in future</string>
     <string name="notice_add_to_ignore">Added to ignore list</string>
+    <string name="error_intent_status_cannot_load">Failed to get tweet</string>
+    <string name="intent_post">つぶやく</string>
 </resources>

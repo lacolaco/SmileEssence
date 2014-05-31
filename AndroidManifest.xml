@@ -58,6 +58,53 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <intent-filter android:label="@string/intent_post">
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:host="twitter.com"
+                    android:path="/share"
+                    android:scheme="https"/>
+            </intent-filter>
+            <intent-filter
+                android:label="@string/intent_post">
+                <action android:name="android.intent.action.SEND"/>
+                <data android:mimeType="text/plain"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:mimeType="image/jpeg"/>
+                <data android:mimeType="image/jpg"/>
+                <data android:mimeType="image/png"/>
+                <data android:mimeType="image/bmp"/>
+                <data android:mimeType="image/bitmap"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:host="twitter.com"
+                    android:scheme="http"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:host="twitter.com"
+                    android:scheme="https"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".activity.WebViewActivity"
