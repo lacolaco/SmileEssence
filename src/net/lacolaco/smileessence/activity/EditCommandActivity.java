@@ -37,6 +37,7 @@ import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.command.message.MessageCommand;
 import net.lacolaco.smileessence.command.status.StatusCommand;
 import net.lacolaco.smileessence.command.user.UserCommand;
+import net.lacolaco.smileessence.data.CommandSettingCache;
 import net.lacolaco.smileessence.entity.CommandSetting;
 import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
@@ -104,6 +105,7 @@ public class EditCommandActivity extends Activity
             CommandSetting commandSetting = CommandSetting.selectByKey(command.getKey());
             commandSetting.visibility = checkBoxModel.isChecked();
             commandSetting.save();
+            CommandSettingCache.getInstance().put(commandSetting);
         }
         super.onDestroy();
     }

@@ -40,7 +40,9 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import net.lacolaco.smileessence.Application;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.data.CommandSettingCache;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.entity.CommandSetting;
 import net.lacolaco.smileessence.entity.SearchQuery;
 import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.notification.NotificationType;
@@ -323,7 +325,17 @@ public class MainActivity extends Activity
     {
         initializeView();
         versionCheck();
+        initCommandSetting();
         startTwitter();
+    }
+
+    private void initCommandSetting()
+    {
+        List<CommandSetting> commandSettings = CommandSetting.getAll();
+        for(CommandSetting setting : commandSettings)
+        {
+            CommandSettingCache.getInstance().put(setting);
+        }
     }
 
     private void initializeView()

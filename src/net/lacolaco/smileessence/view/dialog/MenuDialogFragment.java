@@ -30,7 +30,7 @@ import android.widget.AdapterView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.command.IConfirmable;
-import net.lacolaco.smileessence.entity.CommandSetting;
+import net.lacolaco.smileessence.data.CommandSettingCache;
 
 import java.util.Iterator;
 import java.util.List;
@@ -81,13 +81,8 @@ public abstract class MenuDialogFragment extends DialogFragment
             }
             else if(command.getKey() >= 0)
             {
-                CommandSetting setting = CommandSetting.selectByKey(command.getKey());
-                if(setting == null)
-                {
-                    setting = new CommandSetting(command.getKey(), true);
-                    setting.save();
-                }
-                else if(!setting.visibility)
+                boolean visibility = CommandSettingCache.getInstance().get(command.getKey());
+                if(!visibility)
                 {
                     iterator.remove();
                 }
