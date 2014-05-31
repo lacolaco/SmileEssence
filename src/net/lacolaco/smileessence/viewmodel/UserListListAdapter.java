@@ -22,59 +22,40 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.twitter.task;
+package net.lacolaco.smileessence.viewmodel;
 
 import android.app.Activity;
-import net.lacolaco.smileessence.data.UserCache;
-import net.lacolaco.smileessence.logging.Logger;
-import twitter4j.IDs;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
+import net.lacolaco.smileessence.view.adapter.StatusListAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class BlockIDsTask extends TwitterTask<Long[]>
+public class UserListListAdapter extends StatusListAdapter
 {
 
-    public BlockIDsTask(Twitter twitter, Activity activity)
+    private String listFullName;
+
+    public UserListListAdapter(Activity activity)
     {
-        super(twitter);
+        super(activity);
     }
 
     @Override
-    protected Long[] doInBackground(Void... params)
+    public void addToBottom(StatusViewModel... items)
     {
-        try
-        {
-            List<Long> idList = new ArrayList<>();
-            long cursor = -1;
-            do
-            {
-                IDs blocksIDs = twitter.getBlocksIDs(cursor);
-                cursor = blocksIDs.getNextCursor();
-                for(long id : blocksIDs.getIDs())
-                {
-                    idList.add(id);
-                }
-            }
-            while(cursor != 0);
-
-            return idList.toArray(new Long[idList.size()]);
-        }
-        catch(TwitterException e)
-        {
-            Logger.error(e);
-            return new Long[0];
-        }
+        super.addToBottom(items);
     }
 
     @Override
-    protected void onPostExecute(Long[] blockIDs)
+    public void addToTop(StatusViewModel... items)
     {
-        for(Long blockID : blockIDs)
-        {
-            UserCache.getInstance().putBlockUser(blockID);
-        }
+        super.addToTop(items);
+    }
+
+    public String getListFullName()
+    {
+        return listFullName;
+    }
+
+    public void setListFullName(String listFullName)
+    {
+        this.listFullName = listFullName;
     }
 }

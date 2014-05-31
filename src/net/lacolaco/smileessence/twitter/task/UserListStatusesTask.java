@@ -24,57 +24,56 @@
 
 package net.lacolaco.smileessence.twitter.task;
 
-import android.app.Activity;
-import net.lacolaco.smileessence.data.UserCache;
+import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.logging.Logger;
-import twitter4j.IDs;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
+import net.lacolaco.smileessence.twitter.util.TwitterUtils;
+import twitter4j.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class BlockIDsTask extends TwitterTask<Long[]>
+public class UserListStatusesTask extends TwitterTask<Status[]>
 {
 
-    public BlockIDsTask(Twitter twitter, Activity activity)
+    private final String listFullName;
+    private final MainActivity activity;
+    private final Paging paging;
+
+    public UserListStatusesTask(Twitter twitter, String listFullName, MainActivity activity)
+    {
+        this(twitter, listFullName, activity, TwitterUtils.getPaging(TwitterUtils.getPagingCount(activity)));
+    }
+
+    public UserListStatusesTask(Twitter twitter, String listFullName, MainActivity activity, Paging paging)
     {
         super(twitter);
+        this.listFullName = listFullName;
+        this.activity = activity;
+        this.paging = paging;
     }
 
     @Override
-    protected Long[] doInBackground(Void... params)
+    protected twitter4j.Status[] doInBackground(Void... params)
     {
+        ResponseList<twitter4j.Status> responseList;
         try
         {
-            List<Long> idList = new ArrayList<>();
-            long cursor = -1;
-            do
-            {
-                IDs blocksIDs = twitter.getBlocksIDs(cursor);
-                cursor = blocksIDs.getNextCursor();
-                for(long id : blocksIDs.getIDs())
-                {
-                    idList.add(id);
-                }
-            }
-            while(cursor != 0);
-
-            return idList.toArray(new Long[idList.size()]);
+            String[] strings = listFullName.split("/");
+            responseList = twitter.list().getUserListStatuses(strings[0], strings[1], paging);
         }
         catch(TwitterException e)
         {
-            Logger.error(e);
-            return new Long[0];
+            e.printStackTrace();
+            Logger.error(e.toString());
+            return new twitter4j.Status[0];
         }
+        return responseList.toArray(new twitter4j.Status[responseList.size()]);
     }
 
     @Override
-    protected void onPostExecute(Long[] blockIDs)
+    protected void onPostExecute(twitter4j.Status[] statuses)
     {
-        for(Long blockID : blockIDs)
+        for(twitter4j.Status status : statuses)
         {
-            UserCache.getInstance().putBlockUser(blockID);
+            StatusCache.getInstance().put(status);
         }
     }
 }

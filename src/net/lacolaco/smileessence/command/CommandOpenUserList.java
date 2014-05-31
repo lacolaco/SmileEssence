@@ -22,59 +22,39 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.twitter.task;
+package net.lacolaco.smileessence.command;
 
 import android.app.Activity;
-import net.lacolaco.smileessence.data.UserCache;
-import net.lacolaco.smileessence.logging.Logger;
-import twitter4j.IDs;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
+import net.lacolaco.smileessence.activity.MainActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class BlockIDsTask extends TwitterTask<Long[]>
+public class CommandOpenUserList extends Command
 {
 
-    public BlockIDsTask(Twitter twitter, Activity activity)
+    private final String listFullName;
+
+    public CommandOpenUserList(Activity activity, String listFullName)
     {
-        super(twitter);
+        super(-1, activity);
+        this.listFullName = listFullName;
     }
 
     @Override
-    protected Long[] doInBackground(Void... params)
+    public String getText()
     {
-        try
-        {
-            List<Long> idList = new ArrayList<>();
-            long cursor = -1;
-            do
-            {
-                IDs blocksIDs = twitter.getBlocksIDs(cursor);
-                cursor = blocksIDs.getNextCursor();
-                for(long id : blocksIDs.getIDs())
-                {
-                    idList.add(id);
-                }
-            }
-            while(cursor != 0);
-
-            return idList.toArray(new Long[idList.size()]);
-        }
-        catch(TwitterException e)
-        {
-            Logger.error(e);
-            return new Long[0];
-        }
+        return listFullName;
     }
 
     @Override
-    protected void onPostExecute(Long[] blockIDs)
+    public boolean execute()
     {
-        for(Long blockID : blockIDs)
-        {
-            UserCache.getInstance().putBlockUser(blockID);
-        }
+        MainActivity activity = (MainActivity) getActivity();
+        activity.openUserListPage(listFullName);
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled()
+    {
+        return true;
     }
 }

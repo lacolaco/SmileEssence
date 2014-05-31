@@ -218,4 +218,7 @@
     <string name="activity_licenses">ライセンス</string>
     <string name="notice_copy_clipboard">クリップボードにコピーしました</string>
     <string name="dialog_title_talk_chain">会話ビュー</string>
+    <string name="page_name_list">リスト</string>
+    <string name="notice_userlist_not_selected">リストが選択されていません</string>
+    <string name="dialog_title_select_userlist">リストを選択</string>
 </resources>

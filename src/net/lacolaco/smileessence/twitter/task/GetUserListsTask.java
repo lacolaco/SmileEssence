@@ -24,57 +24,47 @@
 
 package net.lacolaco.smileessence.twitter.task;
 
-import android.app.Activity;
-import net.lacolaco.smileessence.data.UserCache;
+import net.lacolaco.smileessence.data.UserListCache;
 import net.lacolaco.smileessence.logging.Logger;
-import twitter4j.IDs;
+import twitter4j.PagableResponseList;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.UserList;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockIDsTask extends TwitterTask<Long[]>
+public class GetUserListsTask extends TwitterTask<UserList[]>
 {
 
-    public BlockIDsTask(Twitter twitter, Activity activity)
+    public GetUserListsTask(Twitter twitter)
     {
         super(twitter);
     }
 
     @Override
-    protected Long[] doInBackground(Void... params)
+    protected UserList[] doInBackground(Void... params)
     {
         try
         {
-            List<Long> idList = new ArrayList<>();
-            long cursor = -1;
-            do
-            {
-                IDs blocksIDs = twitter.getBlocksIDs(cursor);
-                cursor = blocksIDs.getNextCursor();
-                for(long id : blocksIDs.getIDs())
-                {
-                    idList.add(id);
-                }
-            }
-            while(cursor != 0);
+            List<UserList> userLists = new ArrayList<>();
 
-            return idList.toArray(new Long[idList.size()]);
+            userLists.addAll(twitter.list().getUserLists(twitter.getId()));
+            return userLists.toArray(new UserList[userLists.size()]);
         }
         catch(TwitterException e)
         {
             Logger.error(e);
-            return new Long[0];
+            return new UserList[0];
         }
     }
 
     @Override
-    protected void onPostExecute(Long[] blockIDs)
+    protected void onPostExecute(UserList[] lists)
     {
-        for(Long blockID : blockIDs)
+        for(UserList list : lists)
         {
-            UserCache.getInstance().putBlockUser(blockID);
+            UserListCache.getInstance().put(list.getFullName());
         }
     }
 }

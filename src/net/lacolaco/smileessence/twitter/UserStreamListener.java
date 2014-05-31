@@ -28,6 +28,7 @@ import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.data.FavoriteCache;
 import net.lacolaco.smileessence.data.StatusCache;
+import net.lacolaco.smileessence.data.UserListCache;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.view.adapter.MessageListAdapter;
@@ -247,16 +248,19 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onUserListSubscription(User subscriber, User listOwner, UserList list)
     {
+        UserListCache.getInstance().put(list.getFullName());
     }
 
     @Override
     public void onUserListUnsubscription(User subscriber, User listOwner, UserList list)
     {
+        UserListCache.getInstance().remove(list.getFullName());
     }
 
     @Override
     public void onUserListCreation(User listOwner, UserList list)
     {
+        UserListCache.getInstance().put(list.getFullName());
     }
 
     @Override
@@ -267,6 +271,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onUserListDeletion(User listOwner, UserList list)
     {
+        UserListCache.getInstance().remove(list.getFullName());
     }
 
     @Override
