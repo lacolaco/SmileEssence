@@ -27,11 +27,13 @@ package net.lacolaco.smileessence.view.dialog;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -168,6 +170,13 @@ public class SendMessageDialogFragment extends DialogFragment implements TextWat
         Twitter twitter = TwitterApi.getTwitter(activity.getCurrentAccount());
         String text = editText.getText().toString();
         new SendMessageTask(twitter, screenName, text, activity).execute();
+        hideIME();
         dismiss();
+    }
+
+    private void hideIME()
+    {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 }
