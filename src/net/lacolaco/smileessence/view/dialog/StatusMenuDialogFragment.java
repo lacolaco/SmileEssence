@@ -189,6 +189,7 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         commands.add(new StatusCommandReply(activity, status));
         commands.add(new StatusCommandAddToReply(activity, status));
         commands.add(new StatusCommandReplyToAll(activity, status, account));
+        commands.add(new StatusCommandOpenChain(activity, status, account));
         commands.add(new StatusCommandFavorite(activity, status, account));
         commands.add(new StatusCommandRetweet(activity, status, account));
         commands.add(new StatusCommandDelete(activity, status, account));
@@ -201,7 +202,6 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         commands.add(new StatusCommandNanigaja(activity, status, account));
         commands.add(new StatusCommandMakeAnonymous(activity, status, account));
         commands.add(new CommandSaveAsTemplate(activity, TwitterUtils.getOriginalStatusText(status)));
-        commands.add(new StatusCommandOpenChain(activity, status, account));
         for(String screenName : TwitterUtils.getScreenNames(status, null))
         {
             commands.add(new CommandOpenUserDetail(activity, screenName, account));

@@ -27,7 +27,8 @@ package net.lacolaco.smileessence.command.status;
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.notification.Notificator;
+import net.lacolaco.smileessence.view.dialog.DialogHelper;
+import net.lacolaco.smileessence.view.dialog.TalkChainDialogFragment;
 import twitter4j.Status;
 
 public class StatusCommandOpenChain extends StatusCommand
@@ -50,14 +51,15 @@ public class StatusCommandOpenChain extends StatusCommand
     @Override
     public boolean execute()
     {
-        //TODO status chain dialog
-        new Notificator(getActivity(), R.string.notice_not_implemented_yet).publish();
+        TalkChainDialogFragment dialogFragment = new TalkChainDialogFragment();
+        dialogFragment.setStatusID(getOriginalStatus().getId());
+        DialogHelper.showDialog(getActivity(), dialogFragment);
         return true;
     }
 
     @Override
     public boolean isEnabled()
     {
-        return getStatus().getInReplyToStatusId() >= 0;
+        return getOriginalStatus().getInReplyToStatusId() >= 0;
     }
 }

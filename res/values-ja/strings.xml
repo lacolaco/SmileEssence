@@ -217,4 +217,5 @@
     <string name="notice_cleared_account">認証情報が削除されました。 再起動後に認証してください</string>
     <string name="activity_licenses">ライセンス</string>
     <string name="notice_copy_clipboard">クリップボードにコピーしました</string>
+    <string name="dialog_title_talk_chain">会話ビュー</string>
 </resources>

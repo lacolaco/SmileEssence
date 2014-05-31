@@ -225,4 +225,5 @@
     <string name="library_name_twitter_text">twitter-text</string>
     <string name="activity_licenses">Licenses</string>
     <string name="notice_copy_clipboard">Copied to clipboard</string>
+    <string name="dialog_title_talk_chain">Talk View</string>
 </resources>
