@@ -33,9 +33,13 @@ import twitter4j.*;
 public class UserListStatusesTask extends TwitterTask<Status[]>
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final String listFullName;
     private final MainActivity activity;
     private final Paging paging;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public UserListStatusesTask(Twitter twitter, String listFullName, MainActivity activity)
     {
@@ -48,6 +52,17 @@ public class UserListStatusesTask extends TwitterTask<Status[]>
         this.listFullName = listFullName;
         this.activity = activity;
         this.paging = paging;
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(twitter4j.Status[] statuses)
+    {
+        for(twitter4j.Status status : statuses)
+        {
+            StatusCache.getInstance().put(status);
+        }
     }
 
     @Override
@@ -66,14 +81,5 @@ public class UserListStatusesTask extends TwitterTask<Status[]>
             return new twitter4j.Status[0];
         }
         return responseList.toArray(new twitter4j.Status[responseList.size()]);
-    }
-
-    @Override
-    protected void onPostExecute(twitter4j.Status[] statuses)
-    {
-        for(twitter4j.Status status : statuses)
-        {
-            StatusCache.getInstance().put(status);
-        }
     }
 }

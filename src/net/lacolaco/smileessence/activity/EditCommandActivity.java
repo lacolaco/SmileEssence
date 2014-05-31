@@ -51,73 +51,12 @@ import java.util.List;
 public class EditCommandActivity extends Activity
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private CustomListAdapter<CheckBoxModel> adapter;
     private List<Command> editedCommands;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        UserPreferenceHelper userPreferenceHelper = new UserPreferenceHelper(this);
-        setTheme(Themes.getTheme(((Application)getApplication()).getThemeIndex()));
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_edit_list);
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        initializeViews();
-        Logger.debug("EditCommandActivity:onCreate");
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        MenuItem allOn = menu.add(Menu.NONE, R.id.menu_edit_command_all_on, Menu.NONE, "");
-        allOn.setTitle(R.string.actionbar_edit_command_all_on);
-        allOn.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch(item.getItemId())
-        {
-            case R.id.menu_edit_command_all_on:
-            {
-                enableAll();
-                break;
-            }
-            case android.R.id.home:
-            {
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    protected void onDestroy()
-    {
-        for(int i = 0; i < adapter.getCount(); i++)
-        {
-            CheckBoxModel checkBoxModel = (CheckBoxModel)adapter.getItem(i);
-            Command command = editedCommands.get(i);
-            CommandSetting commandSetting = CommandSetting.selectByKey(command.getKey());
-            commandSetting.visibility = checkBoxModel.isChecked();
-            commandSetting.save();
-            CommandSettingCache.getInstance().put(commandSetting);
-        }
-        super.onDestroy();
-    }
-
-    private void initializeViews()
-    {
-        ListView listView = getListView();
-        adapter = new CustomListAdapter<>(this, CheckBoxModel.class);
-        listView.setAdapter(adapter);
-        adapter.addToTop(getCheckBoxItems());
-        adapter.update();
-    }
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     private CheckBoxModel[] getCheckBoxItems()
     {
@@ -170,12 +109,74 @@ public class EditCommandActivity extends Activity
 
     private ListView getListView()
     {
-        return (ListView)findViewById(R.id.listview_edit_list);
+        return (ListView) findViewById(R.id.listview_edit_list);
     }
 
-    private void updateListView()
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
     {
-        getListView().requestLayout();
+        UserPreferenceHelper userPreferenceHelper = new UserPreferenceHelper(this);
+        setTheme(Themes.getTheme(((Application) getApplication()).getThemeIndex()));
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.layout_edit_list);
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        initializeViews();
+        Logger.debug("EditCommandActivity:onCreate");
+    }
+
+    private void initializeViews()
+    {
+        ListView listView = getListView();
+        adapter = new CustomListAdapter<>(this, CheckBoxModel.class);
+        listView.setAdapter(adapter);
+        adapter.addToTop(getCheckBoxItems());
+        adapter.update();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuItem allOn = menu.add(Menu.NONE, R.id.menu_edit_command_all_on, Menu.NONE, "");
+        allOn.setTitle(R.string.actionbar_edit_command_all_on);
+        allOn.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return true;
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        for(int i = 0; i < adapter.getCount(); i++)
+        {
+            CheckBoxModel checkBoxModel = (CheckBoxModel) adapter.getItem(i);
+            Command command = editedCommands.get(i);
+            CommandSetting commandSetting = CommandSetting.selectByKey(command.getKey());
+            commandSetting.visibility = checkBoxModel.isChecked();
+            commandSetting.save();
+            CommandSettingCache.getInstance().put(commandSetting);
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch(item.getItemId())
+        {
+            case R.id.menu_edit_command_all_on:
+            {
+                enableAll();
+                break;
+            }
+            case android.R.id.home:
+            {
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            }
+        }
+        return true;
     }
 
     private void enableAll()
@@ -183,11 +184,16 @@ public class EditCommandActivity extends Activity
         adapter.setNotifiable(false);
         for(int i = 0; i < adapter.getCount(); i++)
         {
-            CheckBoxModel item = (CheckBoxModel)adapter.getItem(i);
+            CheckBoxModel item = (CheckBoxModel) adapter.getItem(i);
             item.setChecked(true);
         }
         adapter.setNotifiable(true);
         adapter.notifyDataSetChanged();
         updateListView();
+    }
+
+    private void updateListView()
+    {
+        getListView().requestLayout();
     }
 }

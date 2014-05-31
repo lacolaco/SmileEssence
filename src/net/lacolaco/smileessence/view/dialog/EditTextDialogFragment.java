@@ -36,18 +36,14 @@ import net.lacolaco.smileessence.R;
 public abstract class EditTextDialogFragment extends DialogFragment
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private static String titleKey = "title";
     private static String textKey = "text";
     private String title;
     private String text;
 
-    public void setParams(String title, String text)
-    {
-        Bundle args = new Bundle();
-        args.putString(titleKey, title);
-        args.putString(textKey, text);
-        setArguments(args);
-    }
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -62,7 +58,7 @@ public abstract class EditTextDialogFragment extends DialogFragment
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
         View view = getActivity().getLayoutInflater().inflate(R.layout.part_edittext, null);
-        final EditText editText = (EditText)view.findViewById(R.id.part_editText);
+        final EditText editText = (EditText) view.findViewById(R.id.part_editText);
         editText.setText(text);
         return new AlertDialog.Builder(getActivity())
                 .setTitle(title)
@@ -87,6 +83,16 @@ public abstract class EditTextDialogFragment extends DialogFragment
                 .create();
     }
 
+    // -------------------------- OTHER METHODS --------------------------
+
     public abstract void onTextInput(String text);
+
+    public void setParams(String title, String text)
+    {
+        Bundle args = new Bundle();
+        args.putString(titleKey, title);
+        args.putString(textKey, text);
+        setArguments(args);
+    }
 
 }

@@ -50,12 +50,12 @@ public class PostMenuDialogFragment extends MenuDialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        MainActivity activity = (MainActivity)getActivity();
+        MainActivity activity = (MainActivity) getActivity();
         Account account = activity.getCurrentAccount();
         List<Command> commands = getCommands(activity);
         filterCommands(commands);
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
-        ListView listView = (ListView)body.findViewById(R.id.listview_dialog_menu_list);
+        ListView listView = (ListView) body.findViewById(R.id.listview_dialog_menu_list);
         CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);
         listView.setAdapter(adapter);
         for(Command command : commands)

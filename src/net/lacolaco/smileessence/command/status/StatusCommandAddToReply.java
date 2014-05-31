@@ -33,10 +33,14 @@ import twitter4j.Status;
 public class StatusCommandAddToReply extends StatusCommand
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public StatusCommandAddToReply(Activity activity, Status status)
     {
         super(R.id.key_command_status_add_to_reply, activity, status);
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -45,17 +49,19 @@ public class StatusCommandAddToReply extends StatusCommand
     }
 
     @Override
+    public boolean isEnabled()
+    {
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
     public boolean execute()
     {
         String text = String.format("@%s ", getOriginalStatus().getUser().getScreenName());
         PostState.getState().beginTransaction().insertText(0, text).moveCursor(text.length()).commit();
         Notificator.publish(getActivity(), R.string.notice_add_to_reply);
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
         return true;
     }
 }

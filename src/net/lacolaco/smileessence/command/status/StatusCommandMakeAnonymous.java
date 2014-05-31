@@ -39,13 +39,19 @@ import twitter4j.Twitter;
 public class StatusCommandMakeAnonymous extends StatusCommand implements IConfirmable
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final Account account;
+
+    // -------------------------- STATIC METHODS --------------------------
 
     public StatusCommandMakeAnonymous(Activity activity, Status status, Account account)
     {
         super(R.id.key_command_status_make_anonymous, activity, status);
         this.account = account;
     }
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public static String build(Activity activity, Status status, Account account)
     {
@@ -63,11 +69,21 @@ public class StatusCommandMakeAnonymous extends StatusCommand implements IConfir
         return str;
     }
 
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
     @Override
     public String getText()
     {
         return getActivity().getString(R.string.command_status_make_anonymous);
     }
+
+    @Override
+    public boolean isEnabled()
+    {
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
 
     @Override
     public boolean execute()
@@ -76,12 +92,6 @@ public class StatusCommandMakeAnonymous extends StatusCommand implements IConfir
         Twitter twitter = new TwitterApi(account).getTwitter();
         new TweetTask(twitter, update, getActivity()).execute();
         new FavoriteTask(twitter, getOriginalStatus().getId(), getActivity()).execute();
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
         return true;
     }
 }

@@ -36,7 +36,8 @@ import net.lacolaco.smileessence.logging.Logger;
 
 import java.util.ArrayList;
 
-public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPager.OnPageChangeListener, ActionBar.OnNavigationListener
+public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPager.OnPageChangeListener,
+        ActionBar.OnNavigationListener
 {
 
     // ------------------------------ FIELDS ------------------------------
@@ -56,6 +57,14 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
         this.viewPager = viewPager;
         viewPager.setAdapter(this);
         viewPager.setOnPageChangeListener(this);
+    }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    @Override
+    public synchronized int getCount()
+    {
+        return pages.size();
     }
 
     // ------------------------ INTERFACE METHODS ------------------------
@@ -91,7 +100,6 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
     }
 
     // -------------------------- OTHER METHODS --------------------------
-
 
     /**
      * Add new tab and new page
@@ -136,12 +144,6 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.navigation_list_item, R.id.navigation_list_item_text, itemList);
         actionBar.setListNavigationCallbacks(adapter, this);
         notifyDataSetChanged();
-    }
-
-    @Override
-    public synchronized int getCount()
-    {
-        return pages.size();
     }
 
     @Override

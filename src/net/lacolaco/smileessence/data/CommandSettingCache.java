@@ -31,28 +31,36 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CommandSettingCache
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private static CommandSettingCache instance = new CommandSettingCache();
 
     private ConcurrentHashMap<Integer, Boolean> cache = new ConcurrentHashMap<>();
 
+    // -------------------------- STATIC METHODS --------------------------
+
     private CommandSettingCache()
     {
     }
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public static CommandSettingCache getInstance()
     {
         return instance;
     }
 
-    public void put(CommandSetting commandSetting)
-    {
-        cache.put(commandSetting.commandKey, commandSetting.visibility);
-    }
+    // -------------------------- OTHER METHODS --------------------------
 
     public Boolean get(int id)
     {
         Boolean visibility = cache.get(Integer.valueOf(id));
         return visibility != null ? visibility : true;
+    }
+
+    public void put(CommandSetting commandSetting)
+    {
+        cache.put(commandSetting.commandKey, commandSetting.visibility);
     }
 
     public boolean remove(int id)

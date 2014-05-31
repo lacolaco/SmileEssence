@@ -117,7 +117,7 @@ public abstract class Command implements IViewModel
         {
             convertedView = inflater.inflate(R.layout.menu_item_simple_text, null);
         }
-        TextView textView = (TextView)convertedView.findViewById(R.id.textView_menuItem_simple);
+        TextView textView = (TextView) convertedView.findViewById(R.id.textView_menuItem_simple);
         textView.setText(getText());
         return convertedView;
     }

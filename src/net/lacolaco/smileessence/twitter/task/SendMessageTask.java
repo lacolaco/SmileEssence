@@ -37,9 +37,13 @@ import twitter4j.TwitterException;
 public class SendMessageTask extends TwitterTask<DirectMessage>
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final String userID;
     private final String text;
     private final Activity activity;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public SendMessageTask(Twitter twitter, String screenName, String text, Activity activity)
     {
@@ -47,6 +51,22 @@ public class SendMessageTask extends TwitterTask<DirectMessage>
         this.userID = screenName;
         this.text = text;
         this.activity = activity;
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(DirectMessage message)
+    {
+        if(message != null)
+        {
+            DirectMessageCache.getInstance().put(message);
+            new Notificator(activity, R.string.notice_message_send_succeeded).publish();
+        }
+        else
+        {
+            new Notificator(activity, R.string.notice_message_send_failed, NotificationType.ALERT).publish();
+        }
     }
 
     @Override
@@ -61,20 +81,6 @@ public class SendMessageTask extends TwitterTask<DirectMessage>
             e.printStackTrace();
             Logger.error(e.toString());
             return null;
-        }
-    }
-
-    @Override
-    protected void onPostExecute(DirectMessage message)
-    {
-        if(message != null)
-        {
-            DirectMessageCache.getInstance().put(message);
-            new Notificator(activity, R.string.notice_message_send_succeeded).publish();
-        }
-        else
-        {
-            new Notificator(activity, R.string.notice_message_send_failed, NotificationType.ALERT).publish();
         }
     }
 

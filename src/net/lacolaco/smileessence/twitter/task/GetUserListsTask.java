@@ -26,7 +26,6 @@ package net.lacolaco.smileessence.twitter.task;
 
 import net.lacolaco.smileessence.data.UserListCache;
 import net.lacolaco.smileessence.logging.Logger;
-import twitter4j.PagableResponseList;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.UserList;
@@ -37,9 +36,22 @@ import java.util.List;
 public class GetUserListsTask extends TwitterTask<UserList[]>
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public GetUserListsTask(Twitter twitter)
     {
         super(twitter);
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(UserList[] lists)
+    {
+        for(UserList list : lists)
+        {
+            UserListCache.getInstance().put(list.getFullName());
+        }
     }
 
     @Override
@@ -56,15 +68,6 @@ public class GetUserListsTask extends TwitterTask<UserList[]>
         {
             Logger.error(e);
             return new UserList[0];
-        }
-    }
-
-    @Override
-    protected void onPostExecute(UserList[] lists)
-    {
-        for(UserList list : lists)
-        {
-            UserListCache.getInstance().put(list.getFullName());
         }
     }
 }

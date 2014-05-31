@@ -33,7 +33,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 public class HistoryFragment extends CustomListFragment
 {
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     protected PullToRefreshBase.Mode getRefreshMode()
@@ -41,11 +41,10 @@ public class HistoryFragment extends CustomListFragment
         return PullToRefreshBase.Mode.DISABLED;
     }
 
-// ------------------------ INTERFACE METHODS ------------------------
+    // ------------------------ INTERFACE METHODS ------------------------
 
 
-// --------------------- Interface OnRefreshListener2 ---------------------
-
+    // --------------------- Interface OnRefreshListener2 ---------------------
 
     @Override
     public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView)

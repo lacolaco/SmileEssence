@@ -32,13 +32,19 @@ import net.lacolaco.smileessence.util.IntentUtils;
 public class CommandOpenURL extends Command
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final String url;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public CommandOpenURL(Activity activity, String url)
     {
         super(-1, activity);
         this.url = url;
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -47,16 +53,18 @@ public class CommandOpenURL extends Command
     }
 
     @Override
+    public boolean isEnabled()
+    {
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
     public boolean execute()
     {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         IntentUtils.startActivityIfFound(getActivity(), intent);
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
         return true;
     }
 }

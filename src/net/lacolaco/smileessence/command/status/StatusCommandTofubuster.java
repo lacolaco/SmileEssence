@@ -34,16 +34,28 @@ import twitter4j.Status;
 public class StatusCommandTofuBuster extends StatusCommand
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public StatusCommandTofuBuster(Activity activity, Status status)
     {
         super(R.id.key_command_status_tofubuster, activity, status);
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
     {
         return getActivity().getString(R.string.command_status_tofubuster);
     }
+
+    @Override
+    public boolean isEnabled()
+    {
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
 
     @Override
     public boolean execute()
@@ -62,12 +74,6 @@ public class StatusCommandTofuBuster extends StatusCommand
         {
             new Notificator(getActivity(), R.string.notice_tofubuster_not_found).publish();
         }
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
         return true;
     }
 }

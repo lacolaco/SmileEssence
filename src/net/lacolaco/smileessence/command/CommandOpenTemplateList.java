@@ -32,18 +32,14 @@ import net.lacolaco.smileessence.view.dialog.DialogHelper;
 public class CommandOpenTemplateList extends Command
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public CommandOpenTemplateList(Activity activity)
     {
         super(-1, activity);
     }
 
-    @Override
-    public boolean execute()
-    {
-        ChooseTemplateDialogFragment fragment = new ChooseTemplateDialogFragment();
-        new DialogHelper(getActivity(), fragment).show();
-        return true;
-    }
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -54,6 +50,16 @@ public class CommandOpenTemplateList extends Command
     @Override
     public boolean isEnabled()
     {
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
+    public boolean execute()
+    {
+        ChooseTemplateDialogFragment fragment = new ChooseTemplateDialogFragment();
+        new DialogHelper(getActivity(), fragment).show();
         return true;
     }
 }

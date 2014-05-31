@@ -34,12 +34,12 @@ import twitter4j.auth.AccessToken;
 public class TwitterApi
 {
 
-// ------------------------------ FIELDS ------------------------------
+    // ------------------------------ FIELDS ------------------------------
 
     private final String token;
     private final String tokenSecret;
 
-// -------------------------- STATIC METHODS --------------------------
+    // -------------------------- STATIC METHODS --------------------------
 
     public TwitterApi(Account account)
     {
@@ -47,7 +47,7 @@ public class TwitterApi
         this.tokenSecret = account.accessSecret;
     }
 
-// --------------------------- CONSTRUCTORS ---------------------------
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public TwitterApi(String token, String tokenSecret)
     {
@@ -60,7 +60,7 @@ public class TwitterApi
         return new TwitterApi(account).getTwitter();
     }
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     public Twitter getTwitter()
     {

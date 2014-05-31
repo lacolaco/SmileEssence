@@ -35,13 +35,19 @@ import twitter4j.User;
 public class UserCommandReportForSpam extends UserCommand implements IConfirmable
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final Account account;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public UserCommandReportForSpam(Activity activity, User user, Account account)
     {
         super(R.id.key_command_user_r4s, activity, user);
         this.account = account;
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -50,15 +56,17 @@ public class UserCommandReportForSpam extends UserCommand implements IConfirmabl
     }
 
     @Override
+    public boolean isEnabled()
+    {
+        return getUser().getId() != account.userID;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
     public boolean execute()
     {
         new ReportForSpamTask(new TwitterApi(account).getTwitter(), getUser().getId(), getActivity()).execute();
         return true;
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
-        return getUser().getId() != account.userID;
     }
 }

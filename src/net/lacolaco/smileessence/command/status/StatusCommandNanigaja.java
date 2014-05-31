@@ -39,13 +39,33 @@ import twitter4j.Twitter;
 public class StatusCommandNanigaja extends StatusCommand implements IConfirmable
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final Account account;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public StatusCommandNanigaja(Activity activity, Status status, Account account)
     {
         super(R.id.key_command_status_nanigaja, activity, status);
         this.account = account;
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    @Override
+    public String getText()
+    {
+        return getActivity().getString(R.string.command_status_nanigaja);
+    }
+
+    @Override
+    public boolean isEnabled()
+    {
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
 
     public String build()
     {
@@ -65,17 +85,6 @@ public class StatusCommandNanigaja extends StatusCommand implements IConfirmable
         return str;
     }
 
-    private String getFormatString(Activity activity)
-    {
-        return activity.getString(R.string.format_status_command_nanigaja);
-    }
-
-    @Override
-    public String getText()
-    {
-        return getActivity().getString(R.string.command_status_nanigaja);
-    }
-
     @Override
     public boolean execute()
     {
@@ -89,9 +98,8 @@ public class StatusCommandNanigaja extends StatusCommand implements IConfirmable
         return true;
     }
 
-    @Override
-    public boolean isEnabled()
+    private String getFormatString(Activity activity)
     {
-        return true;
+        return activity.getString(R.string.format_status_command_nanigaja);
     }
 }

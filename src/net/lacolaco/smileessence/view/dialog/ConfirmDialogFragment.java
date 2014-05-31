@@ -36,6 +36,8 @@ import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 public abstract class ConfirmDialogFragment extends DialogFragment
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     public static final String ARG_TEXT = "text";
     private final DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener()
     {
@@ -48,6 +50,8 @@ public abstract class ConfirmDialogFragment extends DialogFragment
     };
     private int layoutResourceID;
     private String text;
+
+    // -------------------------- STATIC METHODS --------------------------
 
     public static void show(Activity activity, String text, final Runnable onYes)
     {
@@ -106,6 +110,8 @@ public abstract class ConfirmDialogFragment extends DialogFragment
         setArguments(args);
     }
 
+    // ------------------------ OVERRIDE METHODS ------------------------
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -126,6 +132,8 @@ public abstract class ConfirmDialogFragment extends DialogFragment
                                                      .setNegativeButton(R.string.alert_dialog_cancel, listener)
                                                      .create();
     }
+
+    // -------------------------- OTHER METHODS --------------------------
 
     public abstract void onButtonClick(int which);
 }

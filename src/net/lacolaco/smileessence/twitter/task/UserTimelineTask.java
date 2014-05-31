@@ -31,8 +31,12 @@ import twitter4j.*;
 public class UserTimelineTask extends TwitterTask<Status[]>
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final long userID;
     private final Paging paging;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public UserTimelineTask(Twitter twitter, long userID)
     {
@@ -44,6 +48,18 @@ public class UserTimelineTask extends TwitterTask<Status[]>
         super(twitter);
         this.userID = userID;
         this.paging = paging;
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(twitter4j.Status[] statuses)
+    {
+        for(twitter4j.Status status : statuses)
+        {
+            StatusCache.getInstance().put(status);
+        }
+
     }
 
     @Override
@@ -68,15 +84,5 @@ public class UserTimelineTask extends TwitterTask<Status[]>
             return new twitter4j.Status[0];
         }
         return responseList.toArray(new twitter4j.Status[responseList.size()]);
-    }
-
-    @Override
-    protected void onPostExecute(twitter4j.Status[] statuses)
-    {
-        for(twitter4j.Status status : statuses)
-        {
-            StatusCache.getInstance().put(status);
-        }
-
     }
 }

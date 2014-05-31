@@ -31,17 +31,36 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DirectMessageCache
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private static DirectMessageCache instance = new DirectMessageCache();
 
     private ConcurrentHashMap<Long, DirectMessage> cache = new ConcurrentHashMap<>();
+
+    // -------------------------- STATIC METHODS --------------------------
 
     private DirectMessageCache()
     {
     }
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public static DirectMessageCache getInstance()
     {
         return instance;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    /**
+     * Get message by id
+     *
+     * @param id message id
+     * @return cached value
+     */
+    public DirectMessage get(long id)
+    {
+        return cache.get(id);
     }
 
     /**
@@ -53,17 +72,6 @@ public class DirectMessageCache
     public DirectMessage put(DirectMessage message)
     {
         return cache.put(message.getId(), message);
-    }
-
-    /**
-     * Get message by id
-     *
-     * @param id message id
-     * @return cached value
-     */
-    public DirectMessage get(long id)
-    {
-        return cache.get(id);
     }
 
     /**

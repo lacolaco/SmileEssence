@@ -27,6 +27,8 @@ package net.lacolaco.smileessence.util;
 public class NameStyles
 {
 
+    // -------------------------- STATIC METHODS --------------------------
+
     public static String getNameString(int style, String screenName, String name)
     {
         switch(style)

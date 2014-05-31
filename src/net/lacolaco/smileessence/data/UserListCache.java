@@ -29,18 +29,33 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class UserListCache
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private static UserListCache instance = new UserListCache();
 
     private ConcurrentLinkedQueue<String> cache = new ConcurrentLinkedQueue<>();
+
+    // -------------------------- STATIC METHODS --------------------------
 
     private UserListCache()
     {
     }
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public static UserListCache getInstance()
     {
         return instance;
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    public String[] getAll()
+    {
+        return cache.toArray(new String[cache.size()]);
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
 
     /**
      * Put userList into cache
@@ -50,11 +65,6 @@ public class UserListCache
     public void put(String userList)
     {
         cache.add(userList);
-    }
-
-    public String[] getAll()
-    {
-        return cache.toArray(new String[cache.size()]);
     }
 
     public void remove(String userList)

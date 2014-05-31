@@ -37,8 +37,12 @@ import twitter4j.TwitterException;
 public class UnfavoriteTask extends TwitterTask<Status>
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final long statusID;
     private final Activity activity;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public UnfavoriteTask(Twitter twitter, long statusID, Activity activity)
     {
@@ -47,6 +51,21 @@ public class UnfavoriteTask extends TwitterTask<Status>
         this.activity = activity;
     }
 
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(twitter4j.Status status)
+    {
+        if(status != null)
+        {
+            StatusCache.getInstance().put(status);
+            new Notificator(activity, R.string.notice_unfavorite_succeeded).publish();
+        }
+        else
+        {
+            new Notificator(activity, R.string.notice_unfavorite_failed, NotificationType.ALERT).publish();
+        }
+    }
 
     @Override
     protected twitter4j.Status doInBackground(Void... params)
@@ -60,20 +79,6 @@ public class UnfavoriteTask extends TwitterTask<Status>
             e.printStackTrace();
             Logger.error(e.toString());
             return null;
-        }
-    }
-
-    @Override
-    protected void onPostExecute(twitter4j.Status status)
-    {
-        if(status != null)
-        {
-            StatusCache.getInstance().put(status);
-            new Notificator(activity, R.string.notice_unfavorite_succeeded).publish();
-        }
-        else
-        {
-            new Notificator(activity, R.string.notice_unfavorite_failed, NotificationType.ALERT).publish();
         }
     }
 }

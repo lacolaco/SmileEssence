@@ -32,19 +32,43 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class UserCache
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private static UserCache instance = new UserCache();
 
     private ConcurrentHashMap<Long, User> cache = new ConcurrentHashMap<>();
 
     private ConcurrentLinkedQueue<Long> blockIDs = new ConcurrentLinkedQueue<>();
 
+    // -------------------------- STATIC METHODS --------------------------
+
     private UserCache()
     {
     }
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public static UserCache getInstance()
     {
         return instance;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    /**
+     * Get user by id
+     *
+     * @param id user id
+     * @return cached value
+     */
+    public User get(long id)
+    {
+        return cache.get(id);
+    }
+
+    public boolean isBlockID(long id)
+    {
+        return blockIDs.contains(Long.valueOf(id));
     }
 
     /**
@@ -58,15 +82,9 @@ public class UserCache
         return cache.put(user.getId(), user);
     }
 
-    /**
-     * Get user by id
-     *
-     * @param id user id
-     * @return cached value
-     */
-    public User get(long id)
+    public void putBlockUser(long id)
     {
-        return cache.get(id);
+        blockIDs.add(id);
     }
 
     /**
@@ -78,16 +96,6 @@ public class UserCache
     public User remove(long id)
     {
         return cache.remove(id);
-    }
-
-    public void putBlockUser(long id)
-    {
-        blockIDs.add(id);
-    }
-
-    public boolean isBlockID(long id)
-    {
-        return blockIDs.contains(Long.valueOf(id));
     }
 
     public void removeBlockUser(long id)

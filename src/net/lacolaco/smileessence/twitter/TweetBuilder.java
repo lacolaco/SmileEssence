@@ -35,34 +35,14 @@ import java.util.Collection;
 public class TweetBuilder
 {
 
+    // ------------------------------ FIELDS ------------------------------
 
     private String text = "";
     private ArrayList<String> screenNameList = new ArrayList<>();
     private long inReplyToStatusID = -1;
     private String mediaPath = "";
 
-    public TweetBuilder setText(String text)
-    {
-        this.text = text;
-        return this;
-    }
-
-    public TweetBuilder appendText(String str)
-    {
-        return setText(text + str);
-    }
-
-    public TweetBuilder addScreenName(String screenName)
-    {
-        screenNameList.add(screenName);
-        return this;
-    }
-
-    public TweetBuilder addScreenNames(Collection<String> screenNames)
-    {
-        screenNameList.addAll(screenNames);
-        return this;
-    }
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     public TweetBuilder setInReplyToStatusID(long inReplyToStatusID)
     {
@@ -81,21 +61,29 @@ public class TweetBuilder
         return setText(String.format(" RT @%s: %s", status.getUser().getScreenName(), status.getText()));
     }
 
-    public TweetBuilder setQuotation(Status status, String text)
+    // -------------------------- OTHER METHODS --------------------------
+
+    public TweetBuilder addScreenName(String screenName)
     {
-        return setText(String.format("%s RT @%s: %s", text, status.getUser().getScreenName(), status.getText()));
+        screenNameList.add(screenName);
+        return this;
     }
 
-    public String buildText()
+    public TweetBuilder addScreenNames(Collection<String> screenNames)
     {
-        StringBuilder builder = new StringBuilder();
+        screenNameList.addAll(screenNames);
+        return this;
+    }
 
-        for(String screenName : screenNameList)
-        {
-            builder.append(String.format("@%s ", screenName));
-        }
-        builder.append(text);
-        return builder.toString();
+    public TweetBuilder appendText(String str)
+    {
+        return setText(text + str);
+    }
+
+    public TweetBuilder setText(String text)
+    {
+        this.text = text;
+        return this;
     }
 
     public StatusUpdate build()
@@ -114,5 +102,22 @@ public class TweetBuilder
             }
         }
         return statusUpdate;
+    }
+
+    public String buildText()
+    {
+        StringBuilder builder = new StringBuilder();
+
+        for(String screenName : screenNameList)
+        {
+            builder.append(String.format("@%s ", screenName));
+        }
+        builder.append(text);
+        return builder.toString();
+    }
+
+    public TweetBuilder setQuotation(Status status, String text)
+    {
+        return setText(String.format("%s RT @%s: %s", text, status.getUser().getScreenName(), status.getText()));
     }
 }

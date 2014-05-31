@@ -43,6 +43,8 @@ import java.util.List;
 public class SelectUserListDialogFragment extends MenuDialogFragment
 {
 
+    // ------------------------ OVERRIDE METHODS ------------------------
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {

@@ -33,10 +33,14 @@ import com.android.volley.toolbox.*;
 public class ImageCache implements ImageLoader.ImageCache
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private static ImageCache instance = new ImageCache();
     private LruCache<String, Bitmap> cache;
     private RequestQueue requestQueue;
     private ImageLoader imageLoader;
+
+    // -------------------------- STATIC METHODS --------------------------
 
     private ImageCache()
     {
@@ -48,10 +52,31 @@ public class ImageCache implements ImageLoader.ImageCache
         requestQueue.start();
     }
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public static ImageCache getInstance()
     {
         return instance;
     }
+
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface ImageCache ---------------------
+
+    @Override
+    public Bitmap getBitmap(String url)
+    {
+        return cache.get(url);
+    }
+
+    @Override
+    public void putBitmap(String url, Bitmap bitmap)
+    {
+        cache.put(url, bitmap);
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
 
     public ImageLoader.ImageContainer requestBitmap(String imageURL)
     {
@@ -72,17 +97,5 @@ public class ImageCache implements ImageLoader.ImageCache
     public void setImageToView(String imageURL, NetworkImageView view)
     {
         view.setImageUrl(imageURL, imageLoader);
-    }
-
-    @Override
-    public Bitmap getBitmap(String url)
-    {
-        return cache.get(url);
-    }
-
-    @Override
-    public void putBitmap(String url, Bitmap bitmap)
-    {
-        cache.put(url, bitmap);
     }
 }

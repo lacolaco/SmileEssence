@@ -29,7 +29,7 @@ import android.app.Activity;
 public class SearchListAdapter extends StatusListAdapter
 {
 
-// ------------------------------ FIELDS ------------------------------
+    // ------------------------------ FIELDS ------------------------------
 
     private long topID;
     private String query;
@@ -41,7 +41,12 @@ public class SearchListAdapter extends StatusListAdapter
         super(activity);
     }
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    public String getQuery()
+    {
+        return query;
+    }
 
     @Override
     public long getTopID()
@@ -54,10 +59,7 @@ public class SearchListAdapter extends StatusListAdapter
         this.topID = topID;
     }
 
-    public String getQuery()
-    {
-        return query;
-    }
+    // -------------------------- OTHER METHODS --------------------------
 
     public void initSearch(String query)
     {

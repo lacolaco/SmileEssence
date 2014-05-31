@@ -32,10 +32,26 @@ import java.util.Iterator;
 public class MessageListAdapter extends CustomListAdapter<MessageViewModel>
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public MessageListAdapter(Activity activity)
     {
         super(activity, MessageViewModel.class);
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    public long getLastID()
+    {
+        return ((MessageViewModel) getItem(getCount() - 1)).getID();
+    }
+
+    public long getTopID()
+    {
+        return ((MessageViewModel) getItem(0)).getID();
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
 
     public MessageViewModel removeByStatusID(long messageID)
     {
@@ -54,15 +70,5 @@ public class MessageListAdapter extends CustomListAdapter<MessageViewModel>
             }
             return null;
         }
-    }
-
-    public long getLastID()
-    {
-        return ((MessageViewModel) getItem(getCount() - 1)).getID();
-    }
-
-    public long getTopID()
-    {
-        return ((MessageViewModel) getItem(0)).getID();
     }
 }

@@ -31,13 +31,19 @@ import twitter4j.User;
 public abstract class UserCommand extends Command
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final User user;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public UserCommand(int key, Activity activity, User user)
     {
         super(key, activity);
         this.user = user;
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     protected User getUser()
     {

@@ -34,16 +34,28 @@ import twitter4j.Status;
 public class StatusCommandShare extends StatusCommand
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public StatusCommandShare(Activity activity, Status status)
     {
         super(R.id.key_command_status_share, activity, status);
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
     {
         return getActivity().getString(R.string.command_status_share);
     }
+
+    @Override
+    public boolean isEnabled()
+    {
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
 
     @Override
     public boolean execute()
@@ -53,12 +65,6 @@ public class StatusCommandShare extends StatusCommand
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, TwitterUtils.getStatusSummary(getOriginalStatus()));
         IntentUtils.startActivityIfFound(getActivity(), intent);
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
         return true;
     }
 }

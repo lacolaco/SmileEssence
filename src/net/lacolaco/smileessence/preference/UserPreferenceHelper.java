@@ -33,20 +33,33 @@ import java.util.Set;
 public class UserPreferenceHelper extends SharedPreferenceHelper
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     public static final int TEXT_SIZE_MIN = 8;
     public static final int TEXT_SIZE_MAX = 24;
     public static final int TIMELINES_MIN = 1;
     public static final int TIMELINES_MAX = 200;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public UserPreferenceHelper(Context context)
     {
         super(context, null);
     }
 
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
     @Override
     protected SharedPreferences getPref()
     {
         return PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    public boolean getValue(int keyID, boolean defaultValue)
+    {
+        return getString(keyID) != null ? super.getValue(getString(keyID), defaultValue) : defaultValue;
     }
 
     protected String getString(int resID)
@@ -59,11 +72,6 @@ public class UserPreferenceHelper extends SharedPreferenceHelper
         {
             return null;
         }
-    }
-
-    public boolean getValue(int keyID, boolean defaultValue)
-    {
-        return getString(keyID) != null ? super.getValue(getString(keyID), defaultValue) : defaultValue;
     }
 
     public int getValue(int keyID, int defaultValue)

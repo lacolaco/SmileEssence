@@ -30,6 +30,8 @@ import java.util.Date;
 public class StringUtils
 {
 
+    // -------------------------- STATIC METHODS --------------------------
+
     public static String dateToString(Date date)
     {
         Calendar cal = Calendar.getInstance();

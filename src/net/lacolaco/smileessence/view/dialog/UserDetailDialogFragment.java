@@ -93,42 +93,100 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         setArguments(args);
     }
 
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface OnClickListener ---------------------
+
+    @Override
+    public void onClick(View v)
+    {
+        MainActivity activity = (MainActivity) getActivity();
+        final Account account = activity.getCurrentAccount();
+        User user = TwitterUtils.tryGetUser(account, getUserID());
+        switch(v.getId())
+        {
+            case R.id.imageview_user_detail_menu:
+            {
+                UserMenuDialogFragment menuFragment = new UserMenuDialogFragment();
+                menuFragment.setUserID(user.getId());
+                DialogHelper.showDialog(activity, menuFragment);
+                break;
+            }
+            case R.id.imageview_user_detail_icon:
+            {
+                openUrl(user.getBiggerProfileImageURLHttps());
+                break;
+            }
+            case R.id.textview_user_detail_screenname:
+            {
+                openUrl(TwitterUtils.getUserHomeURL(user.getScreenName()));
+                break;
+            }
+            case R.id.textview_user_detail_tweet_count:
+            {
+                openUrl(TwitterUtils.getUserHomeURL(user.getScreenName()));
+                break;
+            }
+            case R.id.textview_user_detail_friend_count:
+            {
+                openUrl(String.format("%s/following", TwitterUtils.getUserHomeURL(user.getScreenName())));
+                break;
+            }
+            case R.id.textview_user_detail_follower_count:
+            {
+                openUrl(String.format("%s/followers", TwitterUtils.getUserHomeURL(user.getScreenName())));
+                break;
+            }
+            case R.id.textview_user_detail_favorite_count:
+            {
+                openUrl(String.format("%s/favorites", TwitterUtils.getUserHomeURL(user.getScreenName())));
+                break;
+            }
+            case R.id.button_user_detail_follow:
+            {
+                toggleFollowing(user, account, activity);
+                break;
+            }
+        }
+    }
+
     // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        MainActivity activity = (MainActivity)getActivity();
+        MainActivity activity = (MainActivity) getActivity();
         Account account = activity.getCurrentAccount();
         User user = TwitterUtils.tryGetUser(account, getUserID());
 
         View v = activity.getLayoutInflater().inflate(R.layout.dialog_user_detail, null);
         View menu = v.findViewById(R.id.imageview_user_detail_menu);
         menu.setOnClickListener(this);
-        textViewScreenName = (TextView)v.findViewById(R.id.textview_user_detail_screenname);
+        textViewScreenName = (TextView) v.findViewById(R.id.textview_user_detail_screenname);
         textViewScreenName.setOnClickListener(this);
-        textViewName = (TextView)v.findViewById(R.id.textview_user_detail_name);
-        textViewURL = (TextView)v.findViewById(R.id.textview_user_detail_url);
-        textViewLocate = (TextView)v.findViewById(R.id.textview_user_detail_locate);
-        textViewFollowed = (TextView)v.findViewById(R.id.textview_user_detail_followed);
-        textViewProtected = (TextView)v.findViewById(R.id.texttview_user_detail_protected);
-        textViewDescription = (TextView)v.findViewById(R.id.textview_user_detail_description);
-        textViewTweetCount = (TextView)v.findViewById(R.id.textview_user_detail_tweet_count);
+        textViewName = (TextView) v.findViewById(R.id.textview_user_detail_name);
+        textViewURL = (TextView) v.findViewById(R.id.textview_user_detail_url);
+        textViewLocate = (TextView) v.findViewById(R.id.textview_user_detail_locate);
+        textViewFollowed = (TextView) v.findViewById(R.id.textview_user_detail_followed);
+        textViewProtected = (TextView) v.findViewById(R.id.texttview_user_detail_protected);
+        textViewDescription = (TextView) v.findViewById(R.id.textview_user_detail_description);
+        textViewTweetCount = (TextView) v.findViewById(R.id.textview_user_detail_tweet_count);
         textViewTweetCount.setOnClickListener(this);
-        textViewFriendCount = (TextView)v.findViewById(R.id.textview_user_detail_friend_count);
+        textViewFriendCount = (TextView) v.findViewById(R.id.textview_user_detail_friend_count);
         textViewFriendCount.setOnClickListener(this);
-        textViewFollowerCount = (TextView)v.findViewById(R.id.textview_user_detail_follower_count);
+        textViewFollowerCount = (TextView) v.findViewById(R.id.textview_user_detail_follower_count);
         textViewFollowerCount.setOnClickListener(this);
-        textViewFavoriteCount = (TextView)v.findViewById(R.id.textview_user_detail_favorite_count);
+        textViewFavoriteCount = (TextView) v.findViewById(R.id.textview_user_detail_favorite_count);
         textViewFavoriteCount.setOnClickListener(this);
-        imageViewIcon = (NetworkImageView)v.findViewById(R.id.imageview_user_detail_icon);
+        imageViewIcon = (NetworkImageView) v.findViewById(R.id.imageview_user_detail_icon);
         imageViewIcon.setOnClickListener(this);
-        imageViewHeader = (NetworkImageView)v.findViewById(R.id.imageview_user_detail_header);
-        buttonFollow = (Button)v.findViewById(R.id.button_user_detail_follow);
+        imageViewHeader = (NetworkImageView) v.findViewById(R.id.imageview_user_detail_header);
+        buttonFollow = (Button) v.findViewById(R.id.button_user_detail_follow);
         buttonFollow.setOnClickListener(this);
-        listViewTimeline = (ListView)v.findViewById(R.id.listview_user_detail_timeline);
+        listViewTimeline = (ListView) v.findViewById(R.id.listview_user_detail_timeline);
         setUserData(user, account);
-        TabHost tabHost = (TabHost)v.findViewById(android.R.id.tabhost);
+        TabHost tabHost = (TabHost) v.findViewById(android.R.id.tabhost);
         tabHost.setup();
         TabHost.TabSpec tab1 = tabHost.newTabSpec("tab1")
                                       .setContent(R.id.tab1)
@@ -186,7 +244,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         }
         else
         {
-            int theme = ((MainActivity)getActivity()).getThemeIndex();
+            int theme = ((MainActivity) getActivity()).getThemeIndex();
             final Drawable blue = Themes.getStyledDrawable(getActivity(), theme, R.attr.button_round_blue);
             final Drawable red = Themes.getStyledDrawable(getActivity(), theme, R.attr.button_round_red);
 
@@ -232,59 +290,6 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         return html;
     }
 
-    @Override
-    public void onClick(View v)
-    {
-        MainActivity activity = (MainActivity)getActivity();
-        final Account account = activity.getCurrentAccount();
-        User user = TwitterUtils.tryGetUser(account, getUserID());
-        switch(v.getId())
-        {
-            case R.id.imageview_user_detail_menu:
-            {
-                UserMenuDialogFragment menuFragment = new UserMenuDialogFragment();
-                menuFragment.setUserID(user.getId());
-                DialogHelper.showDialog(activity, menuFragment);
-                break;
-            }
-            case R.id.imageview_user_detail_icon:
-            {
-                openUrl(user.getBiggerProfileImageURLHttps());
-                break;
-            }
-            case R.id.textview_user_detail_screenname:
-            {
-                openUrl(TwitterUtils.getUserHomeURL(user.getScreenName()));
-                break;
-            }
-            case R.id.textview_user_detail_tweet_count:
-            {
-                openUrl(TwitterUtils.getUserHomeURL(user.getScreenName()));
-                break;
-            }
-            case R.id.textview_user_detail_friend_count:
-            {
-                openUrl(String.format("%s/following", TwitterUtils.getUserHomeURL(user.getScreenName())));
-                break;
-            }
-            case R.id.textview_user_detail_follower_count:
-            {
-                openUrl(String.format("%s/followers", TwitterUtils.getUserHomeURL(user.getScreenName())));
-                break;
-            }
-            case R.id.textview_user_detail_favorite_count:
-            {
-                openUrl(String.format("%s/favorites", TwitterUtils.getUserHomeURL(user.getScreenName())));
-                break;
-            }
-            case R.id.button_user_detail_follow:
-            {
-                toggleFollowing(user, account, activity);
-                break;
-            }
-        }
-    }
-
     private void openUrl(String url)
     {
         new CommandOpenURL(getActivity(), url).execute();
@@ -294,7 +299,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
     {
         buttonFollow.setText(R.string.user_detail_loading);
         buttonFollow.setBackground(activity.getResources().getDrawable(R.drawable.button_round_gray));
-        Boolean isFollowing = buttonFollow.getTag() != null ? (Boolean)buttonFollow.getTag() : false;
+        Boolean isFollowing = buttonFollow.getTag() != null ? (Boolean) buttonFollow.getTag() : false;
         Twitter twitter = new TwitterApi(account).getTwitter();
         if(isFollowing)
         {

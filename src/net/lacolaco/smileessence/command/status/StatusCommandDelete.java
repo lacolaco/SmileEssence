@@ -35,13 +35,19 @@ import twitter4j.Status;
 public class StatusCommandDelete extends StatusCommand implements IConfirmable
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final Account account;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public StatusCommandDelete(Activity activity, Status status, Account account)
     {
         super(R.id.key_command_status_delete, activity, status);
         this.account = account;
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -50,16 +56,18 @@ public class StatusCommandDelete extends StatusCommand implements IConfirmable
     }
 
     @Override
+    public boolean isEnabled()
+    {
+        return getOriginalStatus().getUser().getId() == account.userID;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
     public boolean execute()
     {
         DeleteStatusTask task = new DeleteStatusTask(new TwitterApi(account).getTwitter(), getOriginalStatus().getId(), getActivity());
         task.execute();
         return true;
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
-        return getOriginalStatus().getUser().getId() == account.userID;
     }
 }

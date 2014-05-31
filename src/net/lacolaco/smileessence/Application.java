@@ -27,15 +27,19 @@ package net.lacolaco.smileessence;
 public class Application extends com.activeandroid.app.Application
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private int themeIndex;
 
-    public void setThemeIndex(int themeIndex)
-    {
-        this.themeIndex = themeIndex;
-    }
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     public int getThemeIndex()
     {
         return themeIndex;
+    }
+
+    public void setThemeIndex(int themeIndex)
+    {
+        this.themeIndex = themeIndex;
     }
 }

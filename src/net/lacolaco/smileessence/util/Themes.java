@@ -33,8 +33,12 @@ import net.lacolaco.smileessence.logging.Logger;
 public class Themes
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     public static final int THEME_DARK = 0;
     public static final int THEME_LIGHT = 1;
+
+    // -------------------------- STATIC METHODS --------------------------
 
     public static int getTheme(int index)
     {

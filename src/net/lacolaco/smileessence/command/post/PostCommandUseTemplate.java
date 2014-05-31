@@ -30,13 +30,19 @@ import net.lacolaco.smileessence.entity.Template;
 public class PostCommandUseTemplate extends PostCommandInsert
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final Template template;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public PostCommandUseTemplate(Activity activity, Template template)
     {
         super(activity, template.text);
         this.template = template;
     }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public boolean execute()

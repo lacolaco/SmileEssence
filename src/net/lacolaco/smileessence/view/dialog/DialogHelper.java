@@ -31,9 +31,13 @@ import android.app.FragmentTransaction;
 public class DialogHelper
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private static final String TAG_DIALOG = "dialog";
     private final Activity activity;
     private final DialogFragment dialogFragment;
+
+    // -------------------------- STATIC METHODS --------------------------
 
     public DialogHelper(Activity activity, DialogFragment dialogFragment)
     {
@@ -41,11 +45,7 @@ public class DialogHelper
         this.dialogFragment = dialogFragment;
     }
 
-    public static void showDialog(Activity activity, DialogFragment dialogFragment)
-    {
-        close(activity);
-        dialogFragment.show(activity.getFragmentManager().beginTransaction(), TAG_DIALOG);
-    }
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     /**
      * Please expressly closing
@@ -53,6 +53,14 @@ public class DialogHelper
     public static void showDialogWithoutClose(Activity activity, DialogFragment dialogFragment)
     {
         dialogFragment.show(activity.getFragmentManager().beginTransaction(), "dialog_2");
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    public static void showDialog(Activity activity, DialogFragment dialogFragment)
+    {
+        close(activity);
+        dialogFragment.show(activity.getFragmentManager().beginTransaction(), TAG_DIALOG);
     }
 
     public static void close(Activity activity)

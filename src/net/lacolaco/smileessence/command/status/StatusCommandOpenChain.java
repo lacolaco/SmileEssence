@@ -34,13 +34,19 @@ import twitter4j.Status;
 public class StatusCommandOpenChain extends StatusCommand
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final Account account;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public StatusCommandOpenChain(Activity activity, Status status, Account account)
     {
         super(R.id.key_command_status_open_chain, activity, status);
         this.account = account;
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -49,17 +55,19 @@ public class StatusCommandOpenChain extends StatusCommand
     }
 
     @Override
+    public boolean isEnabled()
+    {
+        return getOriginalStatus().getInReplyToStatusId() >= 0;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
     public boolean execute()
     {
         TalkChainDialogFragment dialogFragment = new TalkChainDialogFragment();
         dialogFragment.setStatusID(getOriginalStatus().getId());
         DialogHelper.showDialog(getActivity(), dialogFragment);
         return true;
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
-        return getOriginalStatus().getInReplyToStatusId() >= 0;
     }
 }

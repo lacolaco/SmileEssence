@@ -31,5 +31,7 @@ import android.view.View;
 public interface IViewModel
 {
 
+    // -------------------------- OTHER METHODS --------------------------
+
     View getView(Activity activity, LayoutInflater inflater, View convertedView);
 }

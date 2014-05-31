@@ -71,13 +71,13 @@ public class MessageMenuDialogFragment extends MenuDialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        MainActivity activity = (MainActivity)getActivity();
+        MainActivity activity = (MainActivity) getActivity();
         Account account = activity.getCurrentAccount();
         DirectMessage message = TwitterUtils.tryGetMessage(account, getMessageID());
         List<Command> commands = getCommands(activity, message, account);
         filterCommands(commands);
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
-        ListView listView = (ListView)body.findViewById(R.id.listview_dialog_menu_list);
+        ListView listView = (ListView) body.findViewById(R.id.listview_dialog_menu_list);
         CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);
         listView.setAdapter(adapter);
         for(Command command : commands)
@@ -96,11 +96,6 @@ public class MessageMenuDialogFragment extends MenuDialogFragment
                 .create();
     }
 
-    private View getTitleView(MainActivity activity, Account account, DirectMessage message)
-    {
-        return new MessageViewModel(message, account).getView(activity, activity.getLayoutInflater(), null);
-    }
-
     public List<Command> getCommands(Activity activity, DirectMessage message, Account account)
     {
         ArrayList<Command> commands = new ArrayList<>();
@@ -109,5 +104,10 @@ public class MessageMenuDialogFragment extends MenuDialogFragment
         commands.add(new CommandOpenUserDetail(activity, message.getSenderScreenName(), account));
         commands.add(new CommandOpenUserDetail(activity, message.getRecipientScreenName(), account));
         return commands;
+    }
+
+    private View getTitleView(MainActivity activity, Account account, DirectMessage message)
+    {
+        return new MessageViewModel(message, account).getView(activity, activity.getLayoutInflater(), null);
     }
 }

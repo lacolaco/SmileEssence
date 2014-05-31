@@ -39,9 +39,13 @@ import java.util.concurrent.TimeUnit;
 public class OAuthSession
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     public static final String CALLBACK_OAUTH = "oauth://smileessence";
     private static final String OAUTH_VERIFIER = "oauth_verifier";
     private RequestToken requestToken;
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     public String getAuthorizationURL()
     {
@@ -60,6 +64,8 @@ public class OAuthSession
             return null;
         }
     }
+
+    // -------------------------- OTHER METHODS --------------------------
 
     public AccessToken getAccessToken(Uri uri)
     {

@@ -33,10 +33,14 @@ import twitter4j.User;
 public class UserCommandOpenTwilog extends UserCommand
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public UserCommandOpenTwilog(Activity activity, User user)
     {
         super(R.id.key_command_user_open_twilog, activity, user);
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -45,14 +49,16 @@ public class UserCommandOpenTwilog extends UserCommand
     }
 
     @Override
-    public boolean execute()
-    {
-        return new CommandOpenURL(getActivity(), TwitterUtils.getTwilogURL(getUser().getScreenName())).execute();
-    }
-
-    @Override
     public boolean isEnabled()
     {
         return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
+    public boolean execute()
+    {
+        return new CommandOpenURL(getActivity(), TwitterUtils.getTwilogURL(getUser().getScreenName())).execute();
     }
 }

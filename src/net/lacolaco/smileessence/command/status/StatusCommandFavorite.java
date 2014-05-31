@@ -35,13 +35,19 @@ import twitter4j.Status;
 public class StatusCommandFavorite extends StatusCommand implements IConfirmable
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final Account account;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public StatusCommandFavorite(Activity activity, Status status, Account account)
     {
         super(R.id.key_command_status_favorite, activity, status);
         this.account = account;
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -50,16 +56,18 @@ public class StatusCommandFavorite extends StatusCommand implements IConfirmable
     }
 
     @Override
+    public boolean isEnabled()
+    {
+        return !getOriginalStatus().isFavorited();
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
     public boolean execute()
     {
         FavoriteTask task = new FavoriteTask(new TwitterApi(account).getTwitter(), getOriginalStatus().getId(), getActivity());
         task.execute();
         return true;
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
-        return !getOriginalStatus().isFavorited();
     }
 }

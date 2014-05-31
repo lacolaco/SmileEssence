@@ -47,7 +47,25 @@ import twitter4j.TwitterException;
 public class TalkChainDialogFragment extends DialogFragment
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     public static final String KEY_STATUS_ID = "statusID";
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    private long getStatusID()
+    {
+        return getArguments().getLong(KEY_STATUS_ID);
+    }
+
+    public void setStatusID(long id)
+    {
+        Bundle bundle = new Bundle();
+        bundle.putLong(KEY_STATUS_ID, id);
+        setArguments(bundle);
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -73,17 +91,7 @@ public class TalkChainDialogFragment extends DialogFragment
                 .create();
     }
 
-    private long getStatusID()
-    {
-        return getArguments().getLong(KEY_STATUS_ID);
-    }
-
-    public void setStatusID(long id)
-    {
-        Bundle bundle = new Bundle();
-        bundle.putLong(KEY_STATUS_ID, id);
-        setArguments(bundle);
-    }
+    // -------------------------- INNER CLASSES --------------------------
 
     private class GetTalkTask extends AsyncTask<Void, Void, Void>
     {

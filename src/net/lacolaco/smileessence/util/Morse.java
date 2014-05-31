@@ -32,8 +32,12 @@ import java.util.regex.Pattern;
 public class Morse
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private static HashMap<String, String> jaMc;
     private static HashMap<String, String> mcJa;
+
+    // -------------------------- STATIC METHODS --------------------------
 
     /**
      * 与えられた文字列がモールス文を含むかどうかを返す
@@ -108,7 +112,6 @@ public class Morse
         }
         return sb.toString().trim();
     }
-
 
     private static String toRightMorse(String str)
     {

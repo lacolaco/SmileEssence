@@ -37,14 +37,34 @@ import twitter4j.TwitterException;
 public class RetweetTask extends TwitterTask<Status>
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final long statusID;
     private final Activity activity;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public RetweetTask(Twitter twitter, long statusID, Activity activity)
     {
         super(twitter);
         this.statusID = statusID;
         this.activity = activity;
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(twitter4j.Status status)
+    {
+        if(status != null)
+        {
+            StatusCache.getInstance().put(status);
+            new Notificator(activity, R.string.notice_retweet_succeeded).publish();
+        }
+        else
+        {
+            new Notificator(activity, R.string.notice_retweet_failed, NotificationType.ALERT).publish();
+        }
     }
 
     @Override
@@ -59,20 +79,6 @@ public class RetweetTask extends TwitterTask<Status>
             e.printStackTrace();
             Logger.error(e.toString());
             return null;
-        }
-    }
-
-    @Override
-    protected void onPostExecute(twitter4j.Status status)
-    {
-        if(status != null)
-        {
-            StatusCache.getInstance().put(status);
-            new Notificator(activity, R.string.notice_retweet_succeeded).publish();
-        }
-        else
-        {
-            new Notificator(activity, R.string.notice_retweet_failed, NotificationType.ALERT).publish();
         }
     }
 }

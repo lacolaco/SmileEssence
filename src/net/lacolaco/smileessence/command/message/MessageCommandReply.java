@@ -33,10 +33,14 @@ import twitter4j.DirectMessage;
 public class MessageCommandReply extends MessageCommand
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public MessageCommandReply(Activity activity, DirectMessage message)
     {
         super(R.id.key_command_message_reply, activity, message);
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -45,17 +49,19 @@ public class MessageCommandReply extends MessageCommand
     }
 
     @Override
+    public boolean isEnabled()
+    {
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
     public boolean execute()
     {
         SendMessageDialogFragment dialogFragment = new SendMessageDialogFragment();
         dialogFragment.setScreenName(getMessage().getSenderScreenName());
         DialogHelper.showDialog(getActivity(), dialogFragment);
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
         return true;
     }
 }

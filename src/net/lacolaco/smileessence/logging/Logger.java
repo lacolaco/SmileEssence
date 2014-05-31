@@ -29,7 +29,11 @@ import android.util.Log;
 public class Logger
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private static final String TAG = "SmileEssence";
+
+    // -------------------------- STATIC METHODS --------------------------
 
     public static void debug(Object message)
     {

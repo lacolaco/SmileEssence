@@ -31,14 +31,14 @@ import net.lacolaco.smileessence.view.adapter.PostState;
 public abstract class PostCommand extends Command
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public PostCommand(Activity activity)
     {
         super(-1, activity);
     }
 
-    public abstract String build(String s);
-
-    public abstract boolean isReplaceCommand();
+    // -------------------------- OTHER METHODS --------------------------
 
     @Override
     public boolean execute()
@@ -65,4 +65,8 @@ public abstract class PostCommand extends Command
         transaction.setText(builtString).commit();
         return true;
     }
+
+    public abstract String build(String s);
+
+    public abstract boolean isReplaceCommand();
 }

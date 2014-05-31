@@ -33,6 +33,8 @@ import com.activeandroid.query.Delete;
 public class Account extends Model
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     @Column(name = "Token", notNull = true)
     public String accessToken;
     @Column(name = "Secret", notNull = true)
@@ -42,10 +44,14 @@ public class Account extends Model
     @Column(name = "ScreenName", notNull = true)
     public String screenName;
 
+    // -------------------------- STATIC METHODS --------------------------
+
     public Account()
     {
         super();
     }
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public Account(String token, String tokenSecret, long userID, String screenName)
     {

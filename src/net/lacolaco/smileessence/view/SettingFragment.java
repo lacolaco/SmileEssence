@@ -47,68 +47,11 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
         Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener
 {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.setting);
-        EditTextPreference textSizePreference = (EditTextPreference) findPreference(R.string.key_setting_text_size);
-        textSizePreference.setSummary(textSizePreference.getText());
-        textSizePreference.setOnPreferenceChangeListener(this);
-        ListPreference themePreference = (ListPreference) findPreference(R.string.key_setting_theme);
-        themePreference.setSummary(themePreference.getEntry());
-        themePreference.setOnPreferenceChangeListener(this);
-        ListPreference namestylePreference = (ListPreference) findPreference(R.string.key_setting_namestyle);
-        namestylePreference.setSummary(namestylePreference.getEntry());
-        EditTextPreference timelinesPreference = (EditTextPreference) findPreference(R.string.key_setting_timelines);
-        timelinesPreference.setSummary(String.format(getString(R.string.setting_timelines_summary_format), timelinesPreference.getText()));
-        timelinesPreference.setOnPreferenceChangeListener(this);
-        Preference appInfoPreference = findPreference(R.string.key_setting_application_information);
-        appInfoPreference.setOnPreferenceClickListener(this);
-        Preference clearAccount = findPreference(R.string.key_setting_clear_account);
-        clearAccount.setOnPreferenceClickListener(this);
-        Preference license = findPreference(R.string.key_setting_licenses);
-        license.setOnPreferenceClickListener(this);
-    }
+    // ------------------------ INTERFACE METHODS ------------------------
 
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-    }
 
-    @Override
-    public void onPause()
-    {
-        super.onPause();
-        SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
-    }
+    // --------------------- Interface OnPreferenceChangeListener ---------------------
 
-    public Preference findPreference(int preferenceResID)
-    {
-        return findPreference(getString(preferenceResID));
-    }
-
-    private void setSummaryCurrentValue()
-    {
-        EditTextPreference textSizePreference = (EditTextPreference) findPreference(R.string.key_setting_text_size);
-        textSizePreference.setSummary(textSizePreference.getText());
-        ListPreference themePreference = (ListPreference) findPreference(R.string.key_setting_theme);
-        themePreference.setSummary(themePreference.getEntry());
-        ListPreference namestylePreference = (ListPreference) findPreference(R.string.key_setting_namestyle);
-        namestylePreference.setSummary(namestylePreference.getEntry());
-        EditTextPreference timelinesPreference = (EditTextPreference) findPreference(R.string.key_setting_timelines);
-        timelinesPreference.setSummary(String.format(getString(R.string.setting_timelines_summary_format), timelinesPreference.getText()));
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
-    {
-        setSummaryCurrentValue();
-    }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue)
@@ -155,6 +98,9 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
         return true;
     }
 
+    // --------------------- Interface OnPreferenceClickListener ---------------------
+
+
     @Override
     public boolean onPreferenceClick(Preference preference)
     {
@@ -186,14 +132,81 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
         return true;
     }
 
+    // --------------------- Interface OnSharedPreferenceChangeListener ---------------------
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
+    {
+        setSummaryCurrentValue();
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.setting);
+        EditTextPreference textSizePreference = (EditTextPreference) findPreference(R.string.key_setting_text_size);
+        textSizePreference.setSummary(textSizePreference.getText());
+        textSizePreference.setOnPreferenceChangeListener(this);
+        ListPreference themePreference = (ListPreference) findPreference(R.string.key_setting_theme);
+        themePreference.setSummary(themePreference.getEntry());
+        themePreference.setOnPreferenceChangeListener(this);
+        ListPreference namestylePreference = (ListPreference) findPreference(R.string.key_setting_namestyle);
+        namestylePreference.setSummary(namestylePreference.getEntry());
+        EditTextPreference timelinesPreference = (EditTextPreference) findPreference(R.string.key_setting_timelines);
+        timelinesPreference.setSummary(String.format(getString(R.string.setting_timelines_summary_format), timelinesPreference.getText()));
+        timelinesPreference.setOnPreferenceChangeListener(this);
+        Preference appInfoPreference = findPreference(R.string.key_setting_application_information);
+        appInfoPreference.setOnPreferenceClickListener(this);
+        Preference clearAccount = findPreference(R.string.key_setting_clear_account);
+        clearAccount.setOnPreferenceClickListener(this);
+        Preference license = findPreference(R.string.key_setting_licenses);
+        license.setOnPreferenceClickListener(this);
+    }
+
+    public Preference findPreference(int preferenceResID)
+    {
+        return findPreference(getString(preferenceResID));
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    private void finishActivity()
+    {
+        getActivity().finish();
+    }
+
     private void openLicenseActivity()
     {
         Intent intent = new Intent(getActivity(), LicenseActivity.class);
         getActivity().startActivity(intent);
     }
 
-    private void finishActivity()
+    private void setSummaryCurrentValue()
     {
-        getActivity().finish();
+        EditTextPreference textSizePreference = (EditTextPreference) findPreference(R.string.key_setting_text_size);
+        textSizePreference.setSummary(textSizePreference.getText());
+        ListPreference themePreference = (ListPreference) findPreference(R.string.key_setting_theme);
+        themePreference.setSummary(themePreference.getEntry());
+        ListPreference namestylePreference = (ListPreference) findPreference(R.string.key_setting_namestyle);
+        namestylePreference.setSummary(namestylePreference.getEntry());
+        EditTextPreference timelinesPreference = (EditTextPreference) findPreference(R.string.key_setting_timelines);
+        timelinesPreference.setSummary(String.format(getString(R.string.setting_timelines_summary_format), timelinesPreference.getText()));
     }
 }

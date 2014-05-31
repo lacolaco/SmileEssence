@@ -33,10 +33,14 @@ import twitter4j.Status;
 public class StatusCommandOpenInBrowser extends StatusCommand
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public StatusCommandOpenInBrowser(Activity activity, Status status)
     {
         super(R.id.key_command_status_open_in_browser, activity, status);
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -45,14 +49,16 @@ public class StatusCommandOpenInBrowser extends StatusCommand
     }
 
     @Override
-    public boolean execute()
-    {
-        return new CommandOpenURL(getActivity(), TwitterUtils.getStatusURL(getOriginalStatus())).execute();
-    }
-
-    @Override
     public boolean isEnabled()
     {
         return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
+    public boolean execute()
+    {
+        return new CommandOpenURL(getActivity(), TwitterUtils.getStatusURL(getOriginalStatus())).execute();
     }
 }

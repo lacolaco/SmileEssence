@@ -38,12 +38,18 @@ public enum EnumEvent
     UNBLOCKED(R.string.format_event_unblocked),
     RECEIVE_MESSAGE(R.string.format_event_message);
 
+    // ------------------------------ FIELDS ------------------------------
+
     private int textFormatResourceID;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     private EnumEvent(int textFormatResourceID)
     {
         this.textFormatResourceID = textFormatResourceID;
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     public int getTextFormatResourceID()
     {

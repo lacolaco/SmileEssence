@@ -34,14 +34,14 @@ import twitter4j.Status;
 public class StatusCommandQuote extends StatusCommand
 {
 
-// --------------------------- CONSTRUCTORS ---------------------------
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public StatusCommandQuote(Activity activity, Status status)
     {
         super(R.id.key_command_status_quote, activity, status);
     }
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -55,7 +55,7 @@ public class StatusCommandQuote extends StatusCommand
         return !getStatus().getUser().isProtected();
     }
 
-// -------------------------- OTHER METHODS --------------------------
+    // -------------------------- OTHER METHODS --------------------------
 
     @Override
     public boolean execute()

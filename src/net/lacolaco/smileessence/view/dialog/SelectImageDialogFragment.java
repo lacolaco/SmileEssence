@@ -116,13 +116,6 @@ public class SelectImageDialogFragment extends MenuDialogFragment
         return commands;
     }
 
-    private void startGallery(MainActivity activity)
-    {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        IntentUtils.startActivityForResultIfFound(activity, intent, MainActivity.REQUEST_GET_PICTURE_FROM_GALLERY);
-    }
-
     private void startCamera(MainActivity activity)
     {
         ContentValues values = new ContentValues();
@@ -137,5 +130,12 @@ public class SelectImageDialogFragment extends MenuDialogFragment
         intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, tempFilePath);
         IntentUtils.startActivityForResultIfFound(activity, intent, MainActivity.REQUEST_GET_PICTURE_FROM_CAMERA);
+    }
+
+    private void startGallery(MainActivity activity)
+    {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        IntentUtils.startActivityForResultIfFound(activity, intent, MainActivity.REQUEST_GET_PICTURE_FROM_GALLERY);
     }
 }

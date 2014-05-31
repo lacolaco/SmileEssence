@@ -33,8 +33,12 @@ import twitter4j.User;
 public class ShowUserTask extends TwitterTask<User>
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final long userID;
     private final String screenName;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public ShowUserTask(Twitter twitter, long userID)
     {
@@ -48,6 +52,17 @@ public class ShowUserTask extends TwitterTask<User>
         super(twitter);
         this.screenName = screenName;
         this.userID = -1;
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(User user)
+    {
+        if(user != null)
+        {
+            UserCache.getInstance().put(user);
+        }
     }
 
     @Override
@@ -69,15 +84,6 @@ public class ShowUserTask extends TwitterTask<User>
             e.printStackTrace();
             Logger.error(e.toString());
             return null;
-        }
-    }
-
-    @Override
-    protected void onPostExecute(User user)
-    {
-        if(user != null)
-        {
-            UserCache.getInstance().put(user);
         }
     }
 }

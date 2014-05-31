@@ -32,8 +32,12 @@ import twitter4j.auth.RequestToken;
 public class AccessTokenTask extends TwitterTask<AccessToken>
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final RequestToken requestToken;
     private final String verifier;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public AccessTokenTask(Twitter twitter, RequestToken requestToken, String verifier)
     {

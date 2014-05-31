@@ -29,7 +29,11 @@ import android.app.Activity;
 public class PostCommandInsert extends PostCommand
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final String inserted;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public PostCommandInsert(Activity activity, String inserted)
     {
@@ -37,17 +41,7 @@ public class PostCommandInsert extends PostCommand
         this.inserted = inserted;
     }
 
-    @Override
-    public String build(String s)
-    {
-        return s + inserted;
-    }
-
-    @Override
-    public boolean isReplaceCommand()
-    {
-        return false;
-    }
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -59,5 +53,19 @@ public class PostCommandInsert extends PostCommand
     public boolean isEnabled()
     {
         return true;
+    }
+
+    @Override
+    public boolean isReplaceCommand()
+    {
+        return false;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
+    public String build(String s)
+    {
+        return s + inserted;
     }
 }

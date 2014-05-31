@@ -41,15 +41,21 @@ import java.util.List;
 public class Template extends Model implements IViewModel
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     @Column(name = "Text", notNull = true)
     public String text;
     @Column(name = "Count")
     public int count;
 
+    // -------------------------- STATIC METHODS --------------------------
+
     public Template()
     {
         super();
     }
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public Template(String text, int count)
     {
@@ -58,6 +64,16 @@ public class Template extends Model implements IViewModel
         this.count = count;
     }
 
+    public static List<Template> getAll()
+    {
+        return new Select().from(Template.class).orderBy("COUNT DESC").execute();
+    }
+
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface IViewModel ---------------------
+
     @Override
     public View getView(Activity activity, LayoutInflater inflater, View convertedView)
     {
@@ -65,13 +81,8 @@ public class Template extends Model implements IViewModel
         {
             convertedView = inflater.inflate(R.layout.menu_item_simple_text, null);
         }
-        TextView textView = (TextView)convertedView.findViewById(R.id.textView_menuItem_simple);
+        TextView textView = (TextView) convertedView.findViewById(R.id.textView_menuItem_simple);
         textView.setText(this.text);
         return convertedView;
-    }
-
-    public static List<Template> getAll()
-    {
-        return new Select().from(Template.class).orderBy("COUNT DESC").execute();
     }
 }

@@ -34,13 +34,19 @@ import twitter4j.User;
 public class UserCommandSendMessage extends UserCommand
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final Account account;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public UserCommandSendMessage(Activity activity, User user, Account account)
     {
         super(R.id.key_command_user_send_message, activity, user);
         this.account = account;
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -49,17 +55,19 @@ public class UserCommandSendMessage extends UserCommand
     }
 
     @Override
+    public boolean isEnabled()
+    {
+        return account.userID != getUser().getId();
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
     public boolean execute()
     {
         SendMessageDialogFragment dialogFragment = new SendMessageDialogFragment();
         dialogFragment.setScreenName(getUser().getScreenName());
         DialogHelper.showDialog(getActivity(), dialogFragment);
         return true;
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
-        return account.userID != getUser().getId();
     }
 }

@@ -34,10 +34,14 @@ import twitter4j.User;
 public class UserCommandReply extends UserCommand
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public UserCommandReply(Activity activity, User user)
     {
         super(R.id.key_command_user_reply, activity, user);
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -46,17 +50,19 @@ public class UserCommandReply extends UserCommand
     }
 
     @Override
+    public boolean isEnabled()
+    {
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
     public boolean execute()
     {
         PostState.newState().beginTransaction()
                  .setText(new TweetBuilder().addScreenName(getUser().getScreenName()).buildText())
                  .commitWithOpen((MainActivity) getActivity());
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
         return true;
     }
 }

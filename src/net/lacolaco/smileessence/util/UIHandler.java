@@ -30,6 +30,8 @@ import android.os.Looper;
 public abstract class UIHandler extends Handler implements Runnable
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public UIHandler()
     {
         super(Looper.getMainLooper());
@@ -39,6 +41,16 @@ public abstract class UIHandler extends Handler implements Runnable
     {
         super(Looper.getMainLooper(), callback);
     }
+
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface Runnable ---------------------
+
+    @Override
+    public abstract void run();
+
+    // -------------------------- OTHER METHODS --------------------------
 
     public boolean post()
     {
@@ -50,21 +62,18 @@ public abstract class UIHandler extends Handler implements Runnable
         return postAtFrontOfQueue(this);
     }
 
-    public boolean postAtTime(Object token, long uptimeMillis)
-    {
-        return postAtTime(this, token, uptimeMillis);
-    }
-
     public boolean postAtTime(long uptimeMillis)
     {
         return postAtTime(this, uptimeMillis);
+    }
+
+    public boolean postAtTime(Object token, long uptimeMillis)
+    {
+        return postAtTime(this, token, uptimeMillis);
     }
 
     public boolean postDelayed(long delayMillis)
     {
         return postDelayed(this, delayMillis);
     }
-
-    @Override
-    public abstract void run();
 }

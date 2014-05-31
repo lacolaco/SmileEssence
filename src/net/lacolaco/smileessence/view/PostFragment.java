@@ -190,6 +190,22 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         showIME();
     }
 
+    private void showIME()
+    {
+        if(editText != null)
+        {
+            new UIHandler()
+            {
+                @Override
+                public void run()
+                {
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+                }
+            }.postDelayed(100);
+        }
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         Logger.debug("PostFragment CreateView");
@@ -380,22 +396,6 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         setStateFromView();
         SelectImageDialogFragment selectImageDialogFragment = new SelectImageDialogFragment();
         DialogHelper.showDialog(getActivity(), selectImageDialogFragment);
-    }
-
-    private void showIME()
-    {
-        if(editText != null)
-        {
-            new UIHandler()
-            {
-                @Override
-                public void run()
-                {
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
-                }
-            }.postDelayed(100);
-        }
     }
 
     private void submitPost()

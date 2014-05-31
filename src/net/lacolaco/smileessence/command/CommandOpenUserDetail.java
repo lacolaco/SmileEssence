@@ -38,8 +38,12 @@ import twitter4j.User;
 public class CommandOpenUserDetail extends Command
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final String screenName;
     private final Account account;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public CommandOpenUserDetail(Activity activity, String screenName, Account account)
     {
@@ -48,11 +52,21 @@ public class CommandOpenUserDetail extends Command
         this.account = account;
     }
 
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
     @Override
     public String getText()
     {
         return String.format("@%s", screenName);
     }
+
+    @Override
+    public boolean isEnabled()
+    {
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
 
     @Override
     public boolean execute()
@@ -76,12 +90,6 @@ public class CommandOpenUserDetail extends Command
             }
         }.execute();
 
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
         return true;
     }
 }

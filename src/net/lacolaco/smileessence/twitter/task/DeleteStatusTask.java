@@ -37,14 +37,34 @@ import twitter4j.TwitterException;
 public class DeleteStatusTask extends TwitterTask<Status>
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final long statusID;
     private final Activity activity;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public DeleteStatusTask(Twitter twitter, long statusID, Activity activity)
     {
         super(twitter);
         this.statusID = statusID;
         this.activity = activity;
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(twitter4j.Status status)
+    {
+        if(status != null)
+        {
+            StatusCache.getInstance().remove(status.getId());
+            new Notificator(activity, R.string.notice_status_delete_succeeded).publish();
+        }
+        else
+        {
+            new Notificator(activity, R.string.notice_status_delete_failed, NotificationType.ALERT).publish();
+        }
     }
 
     @Override
@@ -59,20 +79,6 @@ public class DeleteStatusTask extends TwitterTask<Status>
             e.printStackTrace();
             Logger.error(e.toString());
             return null;
-        }
-    }
-
-    @Override
-    protected void onPostExecute(twitter4j.Status status)
-    {
-        if(status != null)
-        {
-            StatusCache.getInstance().remove(status.getId());
-            new Notificator(activity, R.string.notice_status_delete_succeeded).publish();
-        }
-        else
-        {
-            new Notificator(activity, R.string.notice_status_delete_failed, NotificationType.ALERT).publish();
         }
     }
 }

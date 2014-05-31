@@ -32,8 +32,12 @@ import java.util.Set;
 public class SharedPreferenceHelper
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     protected final Context context;
     protected final String fileName;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public SharedPreferenceHelper(Context context, String fileName)
     {
@@ -41,10 +45,14 @@ public class SharedPreferenceHelper
         this.fileName = fileName;
     }
 
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
     protected SharedPreferences getPref()
     {
         return context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
     }
+
+    // -------------------------- OTHER METHODS --------------------------
 
     public boolean getValue(String key, boolean defaultValue)
     {

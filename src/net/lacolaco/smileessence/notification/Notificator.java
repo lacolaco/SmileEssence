@@ -35,7 +35,7 @@ import net.lacolaco.smileessence.util.UIHandler;
 public class Notificator
 {
 
-// ------------------------------ FIELDS ------------------------------
+    // ------------------------------ FIELDS ------------------------------
 
     private static final int DURATION = 1000;
     private static boolean isRunning;
@@ -43,7 +43,7 @@ public class Notificator
     private String text;
     private NotificationType type;
 
-// -------------------------- STATIC METHODS --------------------------
+    // -------------------------- STATIC METHODS --------------------------
 
     public Notificator(Activity activity, int resID)
     {
@@ -78,7 +78,7 @@ public class Notificator
         Crouton.cancelAllCroutons();
     }
 
-// --------------------------- CONSTRUCTORS ---------------------------
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     /**
      * Notify self on cronton or toast.
@@ -103,7 +103,7 @@ public class Notificator
         new Notificator(activity, text, type).publish();
     }
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     private Style getStyle()
     {
@@ -127,7 +127,7 @@ public class Notificator
         return style.build();
     }
 
-// -------------------------- OTHER METHODS --------------------------
+    // -------------------------- OTHER METHODS --------------------------
 
     public Crouton makeCrouton()
     {

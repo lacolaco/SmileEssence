@@ -41,6 +41,28 @@ import java.util.List;
 public class LicenseActivity extends Activity
 {
 
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    private List<String> getFileNames()
+    {
+        List<String> apacheFiles = new ArrayList<>();
+        apacheFiles.add(getString(R.string.library_name_twitter4j));
+        apacheFiles.add(getString(R.string.library_name_crouton));
+        apacheFiles.add(getString(R.string.library_name_pull_to_refresh));
+        apacheFiles.add(getString(R.string.library_name_volley));
+        apacheFiles.add(getString(R.string.library_name_activeandroid));
+        apacheFiles.add(getString(R.string.library_name_guava));
+        apacheFiles.add(getString(R.string.library_name_twitter_text));
+        return apacheFiles;
+    }
+
+    private String getMarkerString()
+    {
+        return getString(R.string.dialog_licenses_list_marker);
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -64,24 +86,6 @@ public class LicenseActivity extends Activity
             name.setText(String.format("%s %s", marker, apacheFile));
             files.addView(name);
         }
-    }
-
-    private String getMarkerString()
-    {
-        return getString(R.string.dialog_licenses_list_marker);
-    }
-
-    private List<String> getFileNames()
-    {
-        List<String> apacheFiles = new ArrayList<>();
-        apacheFiles.add(getString(R.string.library_name_twitter4j));
-        apacheFiles.add(getString(R.string.library_name_crouton));
-        apacheFiles.add(getString(R.string.library_name_pull_to_refresh));
-        apacheFiles.add(getString(R.string.library_name_volley));
-        apacheFiles.add(getString(R.string.library_name_activeandroid));
-        apacheFiles.add(getString(R.string.library_name_guava));
-        apacheFiles.add(getString(R.string.library_name_twitter_text));
-        return apacheFiles;
     }
 
     @Override

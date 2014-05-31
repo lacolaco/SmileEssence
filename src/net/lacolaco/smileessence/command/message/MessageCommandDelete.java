@@ -35,13 +35,19 @@ import twitter4j.DirectMessage;
 public class MessageCommandDelete extends MessageCommand implements IConfirmable
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final Account account;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public MessageCommandDelete(Activity activity, DirectMessage message, Account account)
     {
         super(R.id.key_command_message_delete, activity, message);
         this.account = account;
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -50,16 +56,18 @@ public class MessageCommandDelete extends MessageCommand implements IConfirmable
     }
 
     @Override
+    public boolean isEnabled()
+    {
+        return account.userID == getMessage().getSenderId();
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
     public boolean execute()
     {
         DeleteMessageTask task = new DeleteMessageTask(new TwitterApi(account).getTwitter(), getMessage().getId(), getActivity());
         task.execute();
         return true;
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
-        return account.userID == getMessage().getSenderId();
     }
 }

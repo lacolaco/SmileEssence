@@ -37,9 +37,22 @@ import java.util.List;
 public class BlockIDsTask extends TwitterTask<Long[]>
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public BlockIDsTask(Twitter twitter, Activity activity)
     {
         super(twitter);
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(Long[] blockIDs)
+    {
+        for(Long blockID : blockIDs)
+        {
+            UserCache.getInstance().putBlockUser(blockID);
+        }
     }
 
     @Override
@@ -66,15 +79,6 @@ public class BlockIDsTask extends TwitterTask<Long[]>
         {
             Logger.error(e);
             return new Long[0];
-        }
-    }
-
-    @Override
-    protected void onPostExecute(Long[] blockIDs)
-    {
-        for(Long blockID : blockIDs)
-        {
-            UserCache.getInstance().putBlockUser(blockID);
         }
     }
 }

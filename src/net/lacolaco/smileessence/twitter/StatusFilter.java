@@ -34,6 +34,8 @@ import java.util.regex.Pattern;
 public class StatusFilter
 {
 
+    // -------------------------- STATIC METHODS --------------------------
+
     public static void filter(MainActivity activity, StatusViewModel status)
     {
         extract(activity, status);

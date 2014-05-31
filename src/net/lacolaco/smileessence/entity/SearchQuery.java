@@ -36,11 +36,15 @@ import java.util.List;
 public class SearchQuery extends Model
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     @Column(name = "Query", unique = true)
     public String query;
 
     @Column(name = "CreatedAt")
     public Date createdAt;
+
+    // -------------------------- STATIC METHODS --------------------------
 
     public SearchQuery()
     {
@@ -58,13 +62,9 @@ public class SearchQuery extends Model
         return new Select().from(SearchQuery.class).orderBy("CreatedAt DESC").execute();
     }
 
-    public static SearchQuery findByQuery(String query)
-    {
-        return new Select().from(SearchQuery.class).where("Query = ?", query).executeSingle();
-    }
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     /**
-     *
      * @param query
      * @return
      */
@@ -79,5 +79,10 @@ public class SearchQuery extends Model
             new SearchQuery(query, new Date()).save();
             return true;
         }
+    }
+
+    public static SearchQuery findByQuery(String query)
+    {
+        return new Select().from(SearchQuery.class).where("Query = ?", query).executeSingle();
     }
 }

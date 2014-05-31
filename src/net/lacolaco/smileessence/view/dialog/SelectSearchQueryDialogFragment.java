@@ -42,6 +42,8 @@ import java.util.List;
 public class SelectSearchQueryDialogFragment extends MenuDialogFragment
 {
 
+    // ------------------------ OVERRIDE METHODS ------------------------
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {

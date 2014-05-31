@@ -33,8 +33,12 @@ import net.lacolaco.smileessence.util.UIHandler;
 public class ListItemClickListener implements View.OnClickListener
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final Activity activity;
     private final Runnable callback;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public ListItemClickListener(Activity activity, Runnable callback)
     {
@@ -42,10 +46,15 @@ public class ListItemClickListener implements View.OnClickListener
         this.callback = callback;
     }
 
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface OnClickListener ---------------------
+
     @Override
     public void onClick(final View v)
     {
-        final int currentBgColor = ((ColorDrawable)v.getBackground()).getColor();
+        final int currentBgColor = ((ColorDrawable) v.getBackground()).getColor();
         v.setBackgroundColor(activity.getResources().getColor(R.color.metro_blue));
         v.invalidate();
         new UIHandler()

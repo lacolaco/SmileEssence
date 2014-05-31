@@ -37,14 +37,34 @@ import twitter4j.User;
 public class FollowTask extends TwitterTask<User>
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final long userID;
     private final Activity activity;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public FollowTask(Twitter twitter, long userID, Activity activity)
     {
         super(twitter);
         this.userID = userID;
         this.activity = activity;
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(User user)
+    {
+        if(user != null)
+        {
+            UserCache.getInstance().put(user);
+            new Notificator(activity, R.string.notice_follow_succeeded).publish();
+        }
+        else
+        {
+            new Notificator(activity, R.string.notice_follow_failed, NotificationType.ALERT).publish();
+        }
     }
 
     @Override
@@ -59,20 +79,6 @@ public class FollowTask extends TwitterTask<User>
             e.printStackTrace();
             Logger.error(e.toString());
             return null;
-        }
-    }
-
-    @Override
-    protected void onPostExecute(User user)
-    {
-        if(user != null)
-        {
-            UserCache.getInstance().put(user);
-            new Notificator(activity, R.string.notice_follow_succeeded).publish();
-        }
-        else
-        {
-            new Notificator(activity, R.string.notice_follow_failed, NotificationType.ALERT).publish();
         }
     }
 }

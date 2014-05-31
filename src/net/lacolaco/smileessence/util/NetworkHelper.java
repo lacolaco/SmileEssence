@@ -31,12 +31,18 @@ import android.net.NetworkInfo;
 public class NetworkHelper
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final Context context;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public NetworkHelper(Context context)
     {
         this.context = context;
     }
+
+    // -------------------------- OTHER METHODS --------------------------
 
     public boolean canConnect()
     {

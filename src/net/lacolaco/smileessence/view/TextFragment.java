@@ -35,7 +35,11 @@ import android.widget.TextView;
 public class TextFragment extends Fragment
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     public static final String ARG_TEXT = "text";
+
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

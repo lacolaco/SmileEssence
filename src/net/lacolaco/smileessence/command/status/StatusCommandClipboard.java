@@ -34,10 +34,14 @@ import twitter4j.Status;
 public class StatusCommandClipboard extends StatusCommand
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public StatusCommandClipboard(Activity activity, Status status)
     {
         super(R.id.key_command_status_clipboard, activity, status);
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -46,17 +50,19 @@ public class StatusCommandClipboard extends StatusCommand
     }
 
     @Override
-    public boolean execute()
+    public boolean isEnabled()
     {
-        ClipboardManager manager = (ClipboardManager)getActivity().getSystemService(Activity.CLIPBOARD_SERVICE);
-        manager.setPrimaryClip(ClipData.newPlainText("tweet text", getOriginalStatus().getText()));
-        Notificator.publish(getActivity(), R.string.notice_copy_clipboard);
         return true;
     }
 
+    // -------------------------- OTHER METHODS --------------------------
+
     @Override
-    public boolean isEnabled()
+    public boolean execute()
     {
+        ClipboardManager manager = (ClipboardManager) getActivity().getSystemService(Activity.CLIPBOARD_SERVICE);
+        manager.setPrimaryClip(ClipData.newPlainText("tweet text", getOriginalStatus().getText()));
+        Notificator.publish(getActivity(), R.string.notice_copy_clipboard);
         return true;
     }
 }

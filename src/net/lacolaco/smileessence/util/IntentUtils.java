@@ -37,21 +37,11 @@ import java.util.List;
 public class IntentUtils
 {
 
-    /**
-     * Check intent has any callable activity
-     * @param activity
-     * @param intent
-     * @return
-     */
-    public static boolean canStartActivity(Activity activity, Intent intent)
-    {
-        PackageManager packageManager = activity.getPackageManager();
-        List<ResolveInfo> infos = packageManager.queryIntentActivities(intent, PackageManager.COMPONENT_ENABLED_STATE_DEFAULT);
-        return !infos.isEmpty();
-    }
+    // -------------------------- STATIC METHODS --------------------------
 
     /**
      * Start activity if callable apps are found
+     *
      * @param activity
      * @param intent
      * @return
@@ -71,7 +61,22 @@ public class IntentUtils
     }
 
     /**
+     * Check intent has any callable activity
+     *
+     * @param activity
+     * @param intent
+     * @return
+     */
+    public static boolean canStartActivity(Activity activity, Intent intent)
+    {
+        PackageManager packageManager = activity.getPackageManager();
+        List<ResolveInfo> infos = packageManager.queryIntentActivities(intent, PackageManager.COMPONENT_ENABLED_STATE_DEFAULT);
+        return !infos.isEmpty();
+    }
+
+    /**
      * Start activity for result if callable apps are found
+     *
      * @param activity
      * @param intent
      * @param requestCode

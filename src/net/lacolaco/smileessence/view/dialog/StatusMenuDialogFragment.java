@@ -148,11 +148,6 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         }
     }
 
-    private void confirm(MainActivity activity, Runnable onYes)
-    {
-        ConfirmDialogFragment.show(activity, getString(R.string.dialog_confirm_commands), onYes);
-    }
-
     // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
@@ -292,5 +287,10 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         delete.setVisibility(deletable ? View.VISIBLE : View.GONE);
         delete.setOnClickListener(this);
         return view;
+    }
+
+    private void confirm(MainActivity activity, Runnable onYes)
+    {
+        ConfirmDialogFragment.show(activity, getString(R.string.dialog_confirm_commands), onYes);
     }
 }

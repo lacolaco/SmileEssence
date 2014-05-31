@@ -36,10 +36,14 @@ import net.lacolaco.smileessence.R;
 public class SimpleDialogFragment extends DialogFragment
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     public static final String ARG_LAYOUT = "layout";
     public static final String ARG_TITLE = "title";
     private int layoutResourceID;
     private String title;
+
+    // -------------------------- STATIC METHODS --------------------------
 
     public static SimpleDialogFragment newInstance(int layoutResourceID, String title)
     {
@@ -50,6 +54,8 @@ public class SimpleDialogFragment extends DialogFragment
         fragment.setArguments(args);
         return fragment;
     }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public void onCreate(Bundle savedInstanceState)

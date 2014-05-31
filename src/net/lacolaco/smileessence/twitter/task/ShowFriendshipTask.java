@@ -32,8 +32,12 @@ import twitter4j.TwitterException;
 public class ShowFriendshipTask extends TwitterTask<Relationship>
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final long userID;
     private final String screenName;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public ShowFriendshipTask(Twitter twitter, long userID)
     {

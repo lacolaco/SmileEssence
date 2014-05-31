@@ -31,13 +31,19 @@ import twitter4j.DirectMessage;
 public abstract class MessageCommand extends Command
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final DirectMessage message;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public MessageCommand(int key, Activity activity, DirectMessage message)
     {
         super(key, activity);
         this.message = message;
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     protected DirectMessage getMessage()
     {

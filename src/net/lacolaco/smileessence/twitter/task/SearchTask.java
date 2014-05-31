@@ -70,6 +70,20 @@ public class SearchTask extends TwitterTask<QueryResult>
         return query;
     }
 
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(QueryResult queryResult)
+    {
+        if(queryResult != null)
+        {
+            for(twitter4j.Status status : queryResult.getTweets())
+            {
+                StatusCache.getInstance().put(status);
+            }
+        }
+    }
+
     @Override
     protected QueryResult doInBackground(Void... params)
     {
@@ -90,18 +104,6 @@ public class SearchTask extends TwitterTask<QueryResult>
                 Notificator.publish(activity, R.string.notice_error_search, NotificationType.ALERT);
             }
             return null;
-        }
-    }
-
-    @Override
-    protected void onPostExecute(QueryResult queryResult)
-    {
-        if(queryResult != null)
-        {
-            for(twitter4j.Status status : queryResult.getTweets())
-            {
-                StatusCache.getInstance().put(status);
-            }
         }
     }
 }

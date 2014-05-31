@@ -33,10 +33,14 @@ import twitter4j.User;
 public class UserCommandAddToReply extends UserCommand
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public UserCommandAddToReply(Activity activity, User user)
     {
         super(R.id.key_command_user_add_to_reply, activity, user);
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -45,17 +49,19 @@ public class UserCommandAddToReply extends UserCommand
     }
 
     @Override
+    public boolean isEnabled()
+    {
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
     public boolean execute()
     {
         String text = String.format("@%s ", getUser().getScreenName());
         PostState.getState().beginTransaction().insertText(0, text).moveCursor(text.length()).commit();
         Notificator.publish(getActivity(), R.string.notice_add_to_reply);
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
         return true;
     }
 }

@@ -45,8 +45,25 @@ import java.util.List;
 public class HashtagDialogFragment extends MenuDialogFragment
 {
 
+    // ------------------------------ FIELDS ------------------------------
 
     public static final String KEY_TEXT = "text";
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    private String getHashtagText()
+    {
+        return "#" + (String) getArguments().get(KEY_TEXT);
+    }
+
+    public void setText(String text)
+    {
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_TEXT, text);
+        setArguments(bundle);
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -70,11 +87,6 @@ public class HashtagDialogFragment extends MenuDialogFragment
         return new AlertDialog.Builder(activity).setView(body).setTitle(text).setCancelable(true).create();
     }
 
-    private String getHashtagText()
-    {
-        return "#" + (String) getArguments().get(KEY_TEXT);
-    }
-
     public List<Command> getCommands(Activity activity, String text)
     {
         ArrayList<Command> commands = new ArrayList<>();
@@ -82,12 +94,5 @@ public class HashtagDialogFragment extends MenuDialogFragment
         commands.add(new CommandPasteToPost(activity, text));
         commands.add(new CommandSearchOnTwitter(activity, text));
         return commands;
-    }
-
-    public void setText(String text)
-    {
-        Bundle bundle = new Bundle();
-        bundle.putString(KEY_TEXT, text);
-        setArguments(bundle);
     }
 }

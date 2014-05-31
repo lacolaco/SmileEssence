@@ -36,7 +36,11 @@ import twitter4j.User;
 public class StatusCommandRetweet extends StatusCommand implements IConfirmable
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final Account account;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public StatusCommandRetweet(Activity activity, Status status, Account account)
     {
@@ -44,18 +48,12 @@ public class StatusCommandRetweet extends StatusCommand implements IConfirmable
         this.account = account;
     }
 
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
     @Override
     public String getText()
     {
         return getActivity().getString(R.string.command_status_retweet);
-    }
-
-    @Override
-    public boolean execute()
-    {
-        RetweetTask task = new RetweetTask(new TwitterApi(account).getTwitter(), getOriginalStatus().getId(), getActivity());
-        task.execute();
-        return true;
     }
 
     @Override
@@ -70,6 +68,16 @@ public class StatusCommandRetweet extends StatusCommand implements IConfirmable
         {
             return false;
         }
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
+    public boolean execute()
+    {
+        RetweetTask task = new RetweetTask(new TwitterApi(account).getTwitter(), getOriginalStatus().getId(), getActivity());
+        task.execute();
         return true;
     }
 }

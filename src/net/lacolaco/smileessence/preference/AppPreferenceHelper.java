@@ -29,7 +29,11 @@ import android.content.Context;
 public class AppPreferenceHelper extends SharedPreferenceHelper
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private static final String FILE_NAME = "AppPreference";
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public AppPreferenceHelper(Context context)
     {

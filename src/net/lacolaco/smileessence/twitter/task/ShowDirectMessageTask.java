@@ -33,12 +33,24 @@ import twitter4j.TwitterException;
 public class ShowDirectMessageTask extends TwitterTask<DirectMessage>
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final long messageID;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public ShowDirectMessageTask(Twitter twitter, long messageID)
     {
         super(twitter);
         this.messageID = messageID;
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(DirectMessage directMessage)
+    {
+        DirectMessageCache.getInstance().put(directMessage);
     }
 
     @Override
@@ -54,11 +66,5 @@ public class ShowDirectMessageTask extends TwitterTask<DirectMessage>
             Logger.error(e.toString());
             return null;
         }
-    }
-
-    @Override
-    protected void onPostExecute(DirectMessage directMessage)
-    {
-        DirectMessageCache.getInstance().put(directMessage);
     }
 }

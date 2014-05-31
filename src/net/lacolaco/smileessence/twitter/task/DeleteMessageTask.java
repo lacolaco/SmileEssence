@@ -37,14 +37,34 @@ import twitter4j.TwitterException;
 public class DeleteMessageTask extends TwitterTask<DirectMessage>
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final long messageID;
     private final Activity activity;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public DeleteMessageTask(Twitter twitter, long messageID, Activity activity)
     {
         super(twitter);
         this.messageID = messageID;
         this.activity = activity;
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(DirectMessage message)
+    {
+        if(message != null)
+        {
+            DirectMessageCache.getInstance().put(message);
+            new Notificator(activity, R.string.notice_message_delete_succeeded).publish();
+        }
+        else
+        {
+            new Notificator(activity, R.string.notice_message_delete_failed, NotificationType.ALERT).publish();
+        }
     }
 
     @Override
@@ -59,20 +79,6 @@ public class DeleteMessageTask extends TwitterTask<DirectMessage>
             e.printStackTrace();
             Logger.error(e.toString());
             return null;
-        }
-    }
-
-    @Override
-    protected void onPostExecute(DirectMessage message)
-    {
-        if(message != null)
-        {
-            DirectMessageCache.getInstance().put(message);
-            new Notificator(activity, R.string.notice_message_delete_succeeded).publish();
-        }
-        else
-        {
-            new Notificator(activity, R.string.notice_message_delete_failed, NotificationType.ALERT).publish();
         }
     }
 

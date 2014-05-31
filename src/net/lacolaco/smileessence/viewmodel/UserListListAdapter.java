@@ -30,12 +30,30 @@ import net.lacolaco.smileessence.view.adapter.StatusListAdapter;
 public class UserListListAdapter extends StatusListAdapter
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private String listFullName;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public UserListListAdapter(Activity activity)
     {
         super(activity);
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    public String getListFullName()
+    {
+        return listFullName;
+    }
+
+    public void setListFullName(String listFullName)
+    {
+        this.listFullName = listFullName;
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public void addToBottom(StatusViewModel... items)
@@ -47,15 +65,5 @@ public class UserListListAdapter extends StatusListAdapter
     public void addToTop(StatusViewModel... items)
     {
         super.addToTop(items);
-    }
-
-    public String getListFullName()
-    {
-        return listFullName;
-    }
-
-    public void setListFullName(String listFullName)
-    {
-        this.listFullName = listFullName;
     }
 }

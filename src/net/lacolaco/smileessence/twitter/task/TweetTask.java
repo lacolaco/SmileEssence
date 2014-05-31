@@ -38,14 +38,34 @@ import twitter4j.TwitterException;
 public class TweetTask extends TwitterTask<Status>
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final StatusUpdate update;
     private final Activity activity;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public TweetTask(Twitter twitter, StatusUpdate update, Activity activity)
     {
         super(twitter);
         this.update = update;
         this.activity = activity;
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(twitter4j.Status status)
+    {
+        if(status != null)
+        {
+            StatusCache.getInstance().put(status);
+            new Notificator(activity, R.string.notice_tweet_succeeded).publish();
+        }
+        else
+        {
+            new Notificator(activity, R.string.notice_tweet_failed, NotificationType.ALERT).publish();
+        }
     }
 
     @Override
@@ -60,20 +80,6 @@ public class TweetTask extends TwitterTask<Status>
             e.printStackTrace();
             Logger.error(e.toString());
             return null;
-        }
-    }
-
-    @Override
-    protected void onPostExecute(twitter4j.Status status)
-    {
-        if(status != null)
-        {
-            StatusCache.getInstance().put(status);
-            new Notificator(activity, R.string.notice_tweet_succeeded).publish();
-        }
-        else
-        {
-            new Notificator(activity, R.string.notice_tweet_failed, NotificationType.ALERT).publish();
         }
     }
 }

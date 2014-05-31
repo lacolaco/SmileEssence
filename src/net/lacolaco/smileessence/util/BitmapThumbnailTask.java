@@ -36,15 +36,30 @@ import android.widget.ImageView;
 public class BitmapThumbnailTask extends AsyncTask<Void, Void, Bitmap>
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final Activity activity;
     private final String filePath;
     private final ImageView imageView;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public BitmapThumbnailTask(Activity activity, String filePath, ImageView imageView)
     {
         this.activity = activity;
         this.filePath = filePath;
         this.imageView = imageView;
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(Bitmap bitmap)
+    {
+        if(bitmap != null && imageView != null)
+        {
+            imageView.setImageBitmap(bitmap);
+        }
     }
 
     @Override
@@ -62,14 +77,5 @@ public class BitmapThumbnailTask extends AsyncTask<Void, Void, Bitmap>
             return MediaStore.Images.Thumbnails.getThumbnail(resolver, id, MediaStore.Images.Thumbnails.MICRO_KIND, opt);
         }
         return null;
-    }
-
-    @Override
-    protected void onPostExecute(Bitmap bitmap)
-    {
-        if(bitmap != null && imageView != null)
-        {
-            imageView.setImageBitmap(bitmap);
-        }
     }
 }

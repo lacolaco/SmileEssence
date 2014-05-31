@@ -33,12 +33,24 @@ import twitter4j.TwitterException;
 public class ShowStatusTask extends TwitterTask<Status>
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final long id;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public ShowStatusTask(Twitter twitter, long id)
     {
         super(twitter);
         this.id = id;
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(twitter4j.Status status)
+    {
+        StatusCache.getInstance().put(status);
     }
 
     @Override
@@ -54,11 +66,5 @@ public class ShowStatusTask extends TwitterTask<Status>
             Logger.error(e.toString());
             return null;
         }
-    }
-
-    @Override
-    protected void onPostExecute(twitter4j.Status status)
-    {
-        StatusCache.getInstance().put(status);
     }
 }

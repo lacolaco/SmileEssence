@@ -36,13 +36,28 @@ import java.net.URL;
 public class BitmapURLTask extends AsyncTask<Void, Void, Bitmap>
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final String url;
     private final ImageView imageView;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public BitmapURLTask(String url, ImageView imageView)
     {
         this.url = url;
         this.imageView = imageView;
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onPostExecute(Bitmap bitmap)
+    {
+        if(imageView != null)
+        {
+            imageView.setImageBitmap(bitmap);
+        }
     }
 
     @Override
@@ -58,15 +73,6 @@ public class BitmapURLTask extends AsyncTask<Void, Void, Bitmap>
         {
             e.printStackTrace();
             return null;
-        }
-    }
-
-    @Override
-    protected void onPostExecute(Bitmap bitmap)
-    {
-        if(imageView != null)
-        {
-            imageView.setImageBitmap(bitmap);
         }
     }
 }

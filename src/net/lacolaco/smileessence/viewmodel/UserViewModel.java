@@ -29,6 +29,8 @@ import twitter4j.User;
 public class UserViewModel
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private long id;
     private String screenName;
     private String name;
@@ -43,6 +45,8 @@ public class UserViewModel
     private int favoritesCount;
     private boolean isProtected;
     private boolean isVerified;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public UserViewModel(User user)
     {
@@ -62,19 +66,11 @@ public class UserViewModel
         isVerified = user.isVerified();
     }
 
-    public long getID()
-    {
-        return id;
-    }
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
-    public String getScreenName()
+    public String getBannerURL()
     {
-        return screenName;
-    }
-
-    public String getName()
-    {
-        return name;
+        return bannerURL;
     }
 
     public String getDescription()
@@ -82,34 +78,9 @@ public class UserViewModel
         return description;
     }
 
-    public String getLocation()
+    public int getFavoritesCount()
     {
-        return location;
-    }
-
-    public String getURL()
-    {
-        return url;
-    }
-
-    public String getIconURL()
-    {
-        return iconURL;
-    }
-
-    public String getBannerURL()
-    {
-        return bannerURL;
-    }
-
-    public int getStatusesCount()
-    {
-        return statusesCount;
-    }
-
-    public int getFriendsCount()
-    {
-        return friendsCount;
+        return favoritesCount;
     }
 
     public int getFollowersCount()
@@ -117,9 +88,44 @@ public class UserViewModel
         return followersCount;
     }
 
-    public int getFavoritesCount()
+    public int getFriendsCount()
     {
-        return favoritesCount;
+        return friendsCount;
+    }
+
+    public String getIconURL()
+    {
+        return iconURL;
+    }
+
+    public long getID()
+    {
+        return id;
+    }
+
+    public String getLocation()
+    {
+        return location;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public String getScreenName()
+    {
+        return screenName;
+    }
+
+    public int getStatusesCount()
+    {
+        return statusesCount;
+    }
+
+    public String getURL()
+    {
+        return url;
     }
 
     public boolean isProtected()

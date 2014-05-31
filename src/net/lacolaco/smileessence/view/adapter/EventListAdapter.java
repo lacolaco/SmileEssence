@@ -30,6 +30,8 @@ import net.lacolaco.smileessence.viewmodel.EventViewModel;
 public class EventListAdapter extends CustomListAdapter<EventViewModel>
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public EventListAdapter(Activity activity)
     {
         super(activity, EventViewModel.class);

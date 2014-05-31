@@ -32,22 +32,14 @@ import net.lacolaco.smileessence.util.Morse;
 public class PostCommandMorse extends PostCommand
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public PostCommandMorse(Activity activity)
     {
         super(activity);
     }
 
-    @Override
-    public String build(String s)
-    {
-        return Morse.jaToMorse(s);
-    }
-
-    @Override
-    public boolean isReplaceCommand()
-    {
-        return true;
-    }
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -59,5 +51,19 @@ public class PostCommandMorse extends PostCommand
     public boolean isEnabled()
     {
         return !TextUtils.isEmpty(getText());
+    }
+
+    @Override
+    public boolean isReplaceCommand()
+    {
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
+    public String build(String s)
+    {
+        return Morse.jaToMorse(s);
     }
 }

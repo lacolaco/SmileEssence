@@ -36,11 +36,11 @@ import twitter4j.Status;
 public class StatusCommandReplyToAll extends StatusCommand
 {
 
-// ------------------------------ FIELDS ------------------------------
+    // ------------------------------ FIELDS ------------------------------
 
     private final Account account;
 
-// --------------------------- CONSTRUCTORS ---------------------------
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public StatusCommandReplyToAll(Activity activity, Status status, Account account)
     {
@@ -48,7 +48,7 @@ public class StatusCommandReplyToAll extends StatusCommand
         this.account = account;
     }
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -62,7 +62,7 @@ public class StatusCommandReplyToAll extends StatusCommand
         return TwitterUtils.getScreenNames(getStatus(), account.screenName).size() > 1;
     }
 
-// -------------------------- OTHER METHODS --------------------------
+    // -------------------------- OTHER METHODS --------------------------
 
     @Override
     public boolean execute()

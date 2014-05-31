@@ -53,6 +53,13 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         this.activity = activity;
     }
 
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    private int getPagerCount()
+    {
+        return activity.getPagerAdapter().getCount();
+    }
+
     // ------------------------ INTERFACE METHODS ------------------------
 
 
@@ -105,33 +112,6 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         StatusFilter.filter(activity, viewModel);
     }
 
-    private boolean isIgnoredStatus(Status status)
-    {
-        return status.isRetweet() && StatusCache.getInstance().isIgnored(status.getRetweetedStatus().getId());
-    }
-
-    private void addToHome(StatusViewModel viewModel)
-    {
-        StatusListAdapter home = (StatusListAdapter) activity.getListAdapter(MainActivity.PAGE_HOME);
-        home.addToTop(viewModel);
-        home.update();
-    }
-
-    private void addToHistory(EventViewModel mentioned)
-    {
-        CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
-        Notificator.publish(activity, mentioned.getFormattedString(activity));
-        history.addToTop(mentioned);
-        history.update();
-    }
-
-    private void addToMentions(StatusViewModel viewModel)
-    {
-        StatusListAdapter mentions = (StatusListAdapter) activity.getListAdapter(MainActivity.PAGE_MENTIONS);
-        mentions.addToTop(viewModel);
-        mentions.update();
-    }
-
     @Override
     public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice)
     {
@@ -144,11 +124,6 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
                 statusListAdapter.removeByStatusID(statusDeletionNotice.getStatusId());
             }
         }
-    }
-
-    private int getPagerCount()
-    {
-        return activity.getPagerAdapter().getCount();
     }
 
     @Override
@@ -304,5 +279,32 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         {
             addToHistory(new EventViewModel(EnumEvent.UNBLOCKED, source));
         }
+    }
+
+    private void addToHistory(EventViewModel mentioned)
+    {
+        CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
+        Notificator.publish(activity, mentioned.getFormattedString(activity));
+        history.addToTop(mentioned);
+        history.update();
+    }
+
+    private void addToHome(StatusViewModel viewModel)
+    {
+        StatusListAdapter home = (StatusListAdapter) activity.getListAdapter(MainActivity.PAGE_HOME);
+        home.addToTop(viewModel);
+        home.update();
+    }
+
+    private void addToMentions(StatusViewModel viewModel)
+    {
+        StatusListAdapter mentions = (StatusListAdapter) activity.getListAdapter(MainActivity.PAGE_MENTIONS);
+        mentions.addToTop(viewModel);
+        mentions.update();
+    }
+
+    private boolean isIgnoredStatus(Status status)
+    {
+        return status.isRetweet() && StatusCache.getInstance().isIgnored(status.getRetweetedStatus().getId());
     }
 }

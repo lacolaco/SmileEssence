@@ -31,17 +31,34 @@ import java.util.concurrent.ConcurrentHashMap;
 public class FavoriteCache
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private static FavoriteCache instance = new FavoriteCache();
 
     private ConcurrentHashMap<Long, Boolean> cache = new ConcurrentHashMap<>();
+
+    // -------------------------- STATIC METHODS --------------------------
 
     private FavoriteCache()
     {
     }
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public static FavoriteCache getInstance()
     {
         return instance;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    /**
+     * Get status by id
+     */
+    public boolean get(long id)
+    {
+        Boolean favorited = cache.get(id);
+        return favorited != null ? favorited : false;
     }
 
     /**
@@ -58,6 +75,7 @@ public class FavoriteCache
             cache.put(status.getId(), status.isFavorited());
         }
     }
+
     public void put(Status status, boolean favorited)
     {
         if(status.isRetweet())
@@ -68,15 +86,6 @@ public class FavoriteCache
         {
             cache.put(status.getId(), favorited);
         }
-    }
-
-    /**
-     * Get status by id
-     */
-    public boolean get(long id)
-    {
-        Boolean favorited = cache.get(id);
-        return favorited != null ? favorited : false;
     }
 
     /**

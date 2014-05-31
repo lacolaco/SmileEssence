@@ -34,14 +34,14 @@ import twitter4j.Status;
 public class StatusCommandReply extends StatusCommand
 {
 
-// --------------------------- CONSTRUCTORS ---------------------------
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public StatusCommandReply(Activity activity, Status status)
     {
         super(R.id.key_command_status_reply, activity, status);
     }
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -55,7 +55,7 @@ public class StatusCommandReply extends StatusCommand
         return true;
     }
 
-// -------------------------- OTHER METHODS --------------------------
+    // -------------------------- OTHER METHODS --------------------------
 
     @Override
     public boolean execute()

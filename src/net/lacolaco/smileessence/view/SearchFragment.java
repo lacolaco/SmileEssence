@@ -62,6 +62,11 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
 
     // --------------------- GETTER / SETTER METHODS ---------------------
 
+    private int getAdapterIndex()
+    {
+        return getArguments().getInt(ADAPTER_INDEX);
+    }
+
     private MainActivity getMainActivity()
     {
         return (MainActivity) getActivity();
@@ -77,7 +82,6 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
 
 
     // --------------------- Interface OnClickListener ---------------------
-
 
     @Override
     public void onClick(View v)
@@ -203,11 +207,6 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         }.execute();
     }
 
-    private void notifyTextEmpty(MainActivity activity)
-    {
-        Notificator.publish(activity, R.string.notice_search_text_empty);
-    }
-
     // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
@@ -244,11 +243,6 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         return page;
     }
 
-    private int getAdapterIndex()
-    {
-        return getArguments().getInt(ADAPTER_INDEX);
-    }
-
     private EditText getEditText(View page)
     {
         return (EditText) page.findViewById(R.id.edittext_search);
@@ -270,9 +264,9 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         return (ImageButton) page.findViewById(R.id.button_search_queries);
     }
 
-    private SearchListAdapter getListAdapter(MainActivity activity)
+    private void notifyTextEmpty(MainActivity activity)
     {
-        return (SearchListAdapter) activity.getListAdapter(MainActivity.PAGE_SEARCH);
+        Notificator.publish(activity, R.string.notice_search_text_empty);
     }
 
     private void openSearchQueryDialog(final MainActivity mainActivity)
@@ -290,6 +284,17 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         });
     }
 
+    private SearchListAdapter getListAdapter(MainActivity activity)
+    {
+        return (SearchListAdapter) activity.getListAdapter(MainActivity.PAGE_SEARCH);
+    }
+
+    private void hideIME()
+    {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
+
     private void search()
     {
         if(editText != null)
@@ -301,11 +306,5 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
                 hideIME();
             }
         }
-    }
-
-    private void hideIME()
-    {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 }

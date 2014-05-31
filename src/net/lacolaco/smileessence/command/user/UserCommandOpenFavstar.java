@@ -33,10 +33,14 @@ import twitter4j.User;
 public class UserCommandOpenFavstar extends UserCommand
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public UserCommandOpenFavstar(Activity activity, User user)
     {
         super(R.id.key_command_user_open_favstar, activity, user);
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -45,14 +49,16 @@ public class UserCommandOpenFavstar extends UserCommand
     }
 
     @Override
-    public boolean execute()
-    {
-        return new CommandOpenURL(getActivity(), TwitterUtils.getFavstarRecentURL(getUser().getScreenName())).execute();
-    }
-
-    @Override
     public boolean isEnabled()
     {
         return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
+    public boolean execute()
+    {
+        return new CommandOpenURL(getActivity(), TwitterUtils.getFavstarRecentURL(getUser().getScreenName())).execute();
     }
 }

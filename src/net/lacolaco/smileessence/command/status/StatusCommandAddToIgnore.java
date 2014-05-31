@@ -33,10 +33,14 @@ import twitter4j.Status;
 public class StatusCommandAddToIgnore extends StatusCommand
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public StatusCommandAddToIgnore(Activity activity, Status status)
     {
         super(R.id.key_command_status_add_to_ignore, activity, status);
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -45,16 +49,18 @@ public class StatusCommandAddToIgnore extends StatusCommand
     }
 
     @Override
+    public boolean isEnabled()
+    {
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
     public boolean execute()
     {
         StatusCache.getInstance().addToIgnoreStatus(getOriginalStatus().getId());
         Notificator.publish(getActivity(), R.string.notice_add_to_ignore);
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
         return true;
     }
 }

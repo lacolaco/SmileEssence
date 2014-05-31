@@ -54,13 +54,49 @@ import twitter4j.Twitter;
 public class UserListFragment extends CustomListFragment implements View.OnClickListener
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private TextView textListName;
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    private UserListListAdapter getListAdapter()
+    {
+        return (UserListListAdapter) getListAdapter(MainActivity.PAGE_USERLIST);
+    }
+
+    private MainActivity getMainActivity()
+    {
+        return (MainActivity) getActivity();
+    }
 
     @Override
     protected PullToRefreshBase.Mode getRefreshMode()
     {
         return PullToRefreshBase.Mode.BOTH;
     }
+
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface OnClickListener ---------------------
+
+
+    @Override
+    public void onClick(View v)
+    {
+        int id = v.getId();
+        switch(id)
+        {
+            case R.id.button_userlist_lists:
+            {
+                openUserListsDialog(getMainActivity());
+                break;
+            }
+        }
+    }
+
+    // --------------------- Interface OnRefreshListener2 ---------------------
 
     @Override
     public void onPullDownToRefresh(final PullToRefreshBase<ListView> refreshView)
@@ -105,16 +141,6 @@ public class UserListFragment extends CustomListFragment implements View.OnClick
                 refreshView.onRefreshComplete();
             }
         }.execute();
-    }
-
-    private void notifyTextEmpty(MainActivity activity)
-    {
-        Notificator.publish(activity, R.string.notice_userlist_not_selected);
-    }
-
-    private UserListListAdapter getListAdapter()
-    {
-        return (UserListListAdapter) getListAdapter(MainActivity.PAGE_USERLIST);
     }
 
     @Override
@@ -162,10 +188,7 @@ public class UserListFragment extends CustomListFragment implements View.OnClick
         }.execute();
     }
 
-    private MainActivity getMainActivity()
-    {
-        return (MainActivity) getActivity();
-    }
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -200,18 +223,9 @@ public class UserListFragment extends CustomListFragment implements View.OnClick
         return (ImageButton) page.findViewById(R.id.button_userlist_lists);
     }
 
-    @Override
-    public void onClick(View v)
+    private void notifyTextEmpty(MainActivity activity)
     {
-        int id = v.getId();
-        switch(id)
-        {
-            case R.id.button_userlist_lists:
-            {
-                openUserListsDialog(getMainActivity());
-                break;
-            }
-        }
+        Notificator.publish(activity, R.string.notice_userlist_not_selected);
     }
 
     private void openUserListsDialog(MainActivity mainActivity)

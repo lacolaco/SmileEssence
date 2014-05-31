@@ -41,13 +41,19 @@ import java.util.List;
 public class ExtractionWord extends Model implements IViewModel
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     @Column(name = "Text", notNull = true)
     public String text;
+
+    // -------------------------- STATIC METHODS --------------------------
 
     public ExtractionWord()
     {
         super();
     }
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public ExtractionWord(String text)
     {
@@ -60,6 +66,11 @@ public class ExtractionWord extends Model implements IViewModel
         return new Select().from(ExtractionWord.class).execute();
     }
 
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface IViewModel ---------------------
+
     @Override
     public View getView(Activity activity, LayoutInflater inflater, View convertedView)
     {
@@ -67,7 +78,7 @@ public class ExtractionWord extends Model implements IViewModel
         {
             convertedView = inflater.inflate(R.layout.menu_item_simple_text, null);
         }
-        TextView textView = (TextView)convertedView.findViewById(R.id.textView_menuItem_simple);
+        TextView textView = (TextView) convertedView.findViewById(R.id.textView_menuItem_simple);
         textView.setText(this.text);
         return convertedView;
     }

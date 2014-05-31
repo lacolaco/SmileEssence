@@ -31,7 +31,11 @@ import twitter4j.Status;
 public abstract class StatusCommand extends Command
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final Status status;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public StatusCommand(int key, Activity activity, Status status)
     {
@@ -39,13 +43,15 @@ public abstract class StatusCommand extends Command
         this.status = status;
     }
 
-    protected final Status getStatus()
-    {
-        return status;
-    }
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     protected final Status getOriginalStatus()
     {
         return status.isRetweet() ? status.getRetweetedStatus() : status;
+    }
+
+    protected final Status getStatus()
+    {
+        return status;
     }
 }

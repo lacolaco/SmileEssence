@@ -32,19 +32,48 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class StatusCache
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private static StatusCache instance = new StatusCache();
 
     private ConcurrentHashMap<Long, Status> cache = new ConcurrentHashMap<>();
 
     private ConcurrentLinkedQueue<Long> ignoreIDs = new ConcurrentLinkedQueue<>();
 
+    // -------------------------- STATIC METHODS --------------------------
+
     private StatusCache()
     {
     }
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public static StatusCache getInstance()
     {
         return instance;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    public void addToIgnoreStatus(long id)
+    {
+        ignoreIDs.add(id);
+    }
+
+    /**
+     * Get status by id
+     *
+     * @param id status id
+     * @return cached value
+     */
+    public Status get(long id)
+    {
+        return cache.get(id);
+    }
+
+    public boolean isIgnored(long id)
+    {
+        return ignoreIDs.contains(id);
     }
 
     /**
@@ -63,17 +92,6 @@ public class StatusCache
     }
 
     /**
-     * Get status by id
-     *
-     * @param id status id
-     * @return cached value
-     */
-    public Status get(long id)
-    {
-        return cache.get(id);
-    }
-
-    /**
      * Remove status by id
      *
      * @param id status id
@@ -82,15 +100,5 @@ public class StatusCache
     public Status remove(long id)
     {
         return cache.remove(id);
-    }
-
-    public void addToIgnoreStatus(long id)
-    {
-        ignoreIDs.add(id);
-    }
-
-    public boolean isIgnored(long id)
-    {
-        return ignoreIDs.contains(id);
     }
 }

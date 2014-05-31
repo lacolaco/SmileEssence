@@ -70,7 +70,6 @@ public class SendMessageDialogFragment extends DialogFragment implements TextWat
 
     // --------------------- Interface OnClickListener ---------------------
 
-
     @Override
     public void onClick(View v)
     {

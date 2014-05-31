@@ -33,13 +33,19 @@ import twitter4j.Status;
 public class StatusCommandFavAndRT extends StatusCommand implements IConfirmable
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final Account account;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public StatusCommandFavAndRT(Activity activity, Status status, Account account)
     {
         super(R.id.key_command_status_fav_and_rt, activity, status);
         this.account = account;
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -48,15 +54,17 @@ public class StatusCommandFavAndRT extends StatusCommand implements IConfirmable
     }
 
     @Override
+    public boolean isEnabled()
+    {
+        return new StatusCommandRetweet(getActivity(), getOriginalStatus(), account).isEnabled();
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
     public boolean execute()
     {
         return new StatusCommandFavorite(getActivity(), getOriginalStatus(), account).execute() &
                 new StatusCommandRetweet(getActivity(), getOriginalStatus(), account).execute();
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
-        return new StatusCommandRetweet(getActivity(), getOriginalStatus(), account).isEnabled();
     }
 }

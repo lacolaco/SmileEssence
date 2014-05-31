@@ -30,13 +30,19 @@ import net.lacolaco.smileessence.activity.MainActivity;
 public class CommandOpenUserList extends Command
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final String listFullName;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public CommandOpenUserList(Activity activity, String listFullName)
     {
         super(-1, activity);
         this.listFullName = listFullName;
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -45,16 +51,18 @@ public class CommandOpenUserList extends Command
     }
 
     @Override
+    public boolean isEnabled()
+    {
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
     public boolean execute()
     {
         MainActivity activity = (MainActivity) getActivity();
         activity.openUserListPage(listFullName);
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled()
-    {
         return true;
     }
 }

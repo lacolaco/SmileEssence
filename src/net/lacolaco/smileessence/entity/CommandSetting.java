@@ -35,10 +35,14 @@ import java.util.List;
 public class CommandSetting extends Model
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     @Column(name = "CommandKey")
     public int commandKey;
     @Column(name = "Visibility")
     public boolean visibility;
+
+    // -------------------------- STATIC METHODS --------------------------
 
     public CommandSetting()
     {
@@ -51,6 +55,8 @@ public class CommandSetting extends Model
         this.commandKey = commandKey;
         this.visibility = visibility;
     }
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public static List<CommandSetting> getAll()
     {

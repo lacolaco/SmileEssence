@@ -45,61 +45,19 @@ import net.lacolaco.smileessence.view.dialog.EditTextDialogFragment;
 
 import java.util.List;
 
-public class EditTemplateActivity extends Activity implements AdapterView.OnItemClickListener, AbsListView.MultiChoiceModeListener
+public class EditTemplateActivity extends Activity implements AdapterView.OnItemClickListener,
+        AbsListView.MultiChoiceModeListener
 {
+
+    // ------------------------------ FIELDS ------------------------------
 
     private CustomListAdapter<Template> adapter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        setTheme(Themes.getTheme(((Application)getApplication()).getThemeIndex()));
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_edit_list);
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        initializeViews();
-        Logger.debug("EditTemplateActivity:onCreate");
-    }
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
+    private ListView getListView()
     {
-        MenuItem add = menu.add(Menu.NONE, R.id.menu_edit_list_add, Menu.NONE, "");
-        add.setIcon(android.R.drawable.ic_menu_add);
-        add.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch(item.getItemId())
-        {
-            case R.id.menu_edit_list_add:
-            {
-                addNewTemplate();
-                break;
-            }
-            case android.R.id.home:
-            {
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-            }
-        }
-        return true;
-    }
-
-    private void initializeViews()
-    {
-        ListView listView = getListView();
-        adapter = new CustomListAdapter<>(this, Template.class);
-        listView.setAdapter(adapter);
-        adapter.addToTop(getTemplates());
-        adapter.update();
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        listView.setOnItemClickListener(this);
-        listView.setMultiChoiceModeListener(this);
+        return (ListView) findViewById(R.id.listview_edit_list);
     }
 
     private Template[] getTemplates()
@@ -108,88 +66,11 @@ public class EditTemplateActivity extends Activity implements AdapterView.OnItem
         return all.toArray(new Template[all.size()]);
     }
 
-    private ListView getListView()
-    {
-        return (ListView)findViewById(R.id.listview_edit_list);
-    }
+    // ------------------------ INTERFACE METHODS ------------------------
 
-    private void updateListView()
-    {
-        getListView().requestLayout();
-    }
 
-    public void deleteSelectedItems()
-    {
-        SparseBooleanArray checkedItems = getListView().getCheckedItemPositions();
-        adapter.setNotifiable(false);
-        for(int i = adapter.getCount() - 1; i > -1; i--)
-        {
-            if(checkedItems.get(i))
-            {
-                Template template = adapter.removeItem(i);
-                template.delete();
-            }
-        }
-        adapter.setNotifiable(true);
-        adapter.notifyDataSetChanged();
-        updateListView();
-    }
+    // --------------------- Interface Callback ---------------------
 
-    private void addNewTemplate()
-    {
-        final Template template = new Template();
-        EditTextDialogFragment dialogFragment = new EditTextDialogFragment()
-        {
-            @Override
-            public void onTextInput(String text)
-            {
-                if(TextUtils.isEmpty(text.trim()))
-                {
-                    return;
-                }
-                template.text = text;
-                template.save();
-                adapter.addToBottom(template);
-                adapter.notifyDataSetChanged();
-                updateListView();
-            }
-        };
-        dialogFragment.setParams(getString(R.string.dialog_title_add), "");
-        new DialogHelper(this, dialogFragment).show();
-    }
-
-    public void openEditTemplateDialog(int position)
-    {
-        final Template template = (Template)adapter.getItem(position);
-        EditTextDialogFragment dialogFragment = new EditTextDialogFragment()
-        {
-            @Override
-            public void onTextInput(String text)
-            {
-                if(TextUtils.isEmpty(text.trim()))
-                {
-                    return;
-                }
-                template.text = text;
-                template.save();
-                adapter.notifyDataSetChanged();
-                updateListView();
-            }
-        };
-        dialogFragment.setParams(getString(R.string.dialog_title_edit), template.text);
-        new DialogHelper(this, dialogFragment).show();
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-    {
-        openEditTemplateDialog(position);
-    }
-
-    @Override
-    public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked)
-    {
-    }
 
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu)
@@ -223,5 +104,144 @@ public class EditTemplateActivity extends Activity implements AdapterView.OnItem
     @Override
     public void onDestroyActionMode(ActionMode mode)
     {
+    }
+
+    // --------------------- Interface MultiChoiceModeListener ---------------------
+
+
+    @Override
+    public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked)
+    {
+    }
+
+    // --------------------- Interface OnItemClickListener ---------------------
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+    {
+        openEditTemplateDialog(position);
+    }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        setTheme(Themes.getTheme(((Application) getApplication()).getThemeIndex()));
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.layout_edit_list);
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        initializeViews();
+        Logger.debug("EditTemplateActivity:onCreate");
+    }
+
+    private void initializeViews()
+    {
+        ListView listView = getListView();
+        adapter = new CustomListAdapter<>(this, Template.class);
+        listView.setAdapter(adapter);
+        adapter.addToTop(getTemplates());
+        adapter.update();
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setOnItemClickListener(this);
+        listView.setMultiChoiceModeListener(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuItem add = menu.add(Menu.NONE, R.id.menu_edit_list_add, Menu.NONE, "");
+        add.setIcon(android.R.drawable.ic_menu_add);
+        add.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch(item.getItemId())
+        {
+            case R.id.menu_edit_list_add:
+            {
+                addNewTemplate();
+                break;
+            }
+            case android.R.id.home:
+            {
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            }
+        }
+        return true;
+    }
+
+    private void addNewTemplate()
+    {
+        final Template template = new Template();
+        EditTextDialogFragment dialogFragment = new EditTextDialogFragment()
+        {
+            @Override
+            public void onTextInput(String text)
+            {
+                if(TextUtils.isEmpty(text.trim()))
+                {
+                    return;
+                }
+                template.text = text;
+                template.save();
+                adapter.addToBottom(template);
+                adapter.notifyDataSetChanged();
+                updateListView();
+            }
+        };
+        dialogFragment.setParams(getString(R.string.dialog_title_add), "");
+        new DialogHelper(this, dialogFragment).show();
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    public void deleteSelectedItems()
+    {
+        SparseBooleanArray checkedItems = getListView().getCheckedItemPositions();
+        adapter.setNotifiable(false);
+        for(int i = adapter.getCount() - 1; i > -1; i--)
+        {
+            if(checkedItems.get(i))
+            {
+                Template template = adapter.removeItem(i);
+                template.delete();
+            }
+        }
+        adapter.setNotifiable(true);
+        adapter.notifyDataSetChanged();
+        updateListView();
+    }
+
+    private void updateListView()
+    {
+        getListView().requestLayout();
+    }
+
+    public void openEditTemplateDialog(int position)
+    {
+        final Template template = (Template) adapter.getItem(position);
+        EditTextDialogFragment dialogFragment = new EditTextDialogFragment()
+        {
+            @Override
+            public void onTextInput(String text)
+            {
+                if(TextUtils.isEmpty(text.trim()))
+                {
+                    return;
+                }
+                template.text = text;
+                template.save();
+                adapter.notifyDataSetChanged();
+                updateListView();
+            }
+        };
+        dialogFragment.setParams(getString(R.string.dialog_title_edit), template.text);
+        new DialogHelper(this, dialogFragment).show();
     }
 }

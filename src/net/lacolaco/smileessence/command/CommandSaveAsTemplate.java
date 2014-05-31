@@ -32,7 +32,11 @@ import net.lacolaco.smileessence.notification.Notificator;
 public class CommandSaveAsTemplate extends Command
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final String text;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public CommandSaveAsTemplate(Activity activity, String text)
     {
@@ -40,13 +44,7 @@ public class CommandSaveAsTemplate extends Command
         this.text = text;
     }
 
-    @Override
-    public boolean execute()
-    {
-        new Template(text, 0).save();
-        new Notificator(getActivity(), R.string.notice_save_as_template).publish();
-        return true;
-    }
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -57,6 +55,16 @@ public class CommandSaveAsTemplate extends Command
     @Override
     public boolean isEnabled()
     {
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
+    public boolean execute()
+    {
+        new Template(text, 0).save();
+        new Notificator(getActivity(), R.string.notice_save_as_template).publish();
         return true;
     }
 }

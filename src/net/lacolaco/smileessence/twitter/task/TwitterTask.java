@@ -30,7 +30,11 @@ import twitter4j.Twitter;
 public abstract class TwitterTask<T> extends AsyncTask<Void, Void, T>
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     protected Twitter twitter;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     protected TwitterTask(Twitter twitter)
     {

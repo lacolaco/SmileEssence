@@ -32,7 +32,11 @@ import twitter4j.auth.RequestToken;
 public class RequestTokenTask extends TwitterTask<RequestToken>
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final String callback;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public RequestTokenTask(Twitter twitter, String callback)
     {

@@ -34,14 +34,20 @@ import net.lacolaco.smileessence.R;
 public class CheckBoxModel implements IViewModel
 {
 
+    // ------------------------------ FIELDS ------------------------------
+
     private final String text;
     private boolean checked;
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public CheckBoxModel(String text, boolean isChecked)
     {
         this.text = text;
         checked = isChecked;
     }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     public boolean isChecked()
     {
@@ -53,6 +59,11 @@ public class CheckBoxModel implements IViewModel
         this.checked = checked;
     }
 
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface IViewModel ---------------------
+
     @Override
     public View getView(Activity activity, LayoutInflater inflater, View convertedView)
     {
@@ -60,7 +71,7 @@ public class CheckBoxModel implements IViewModel
         {
             convertedView = inflater.inflate(R.layout.menu_item_checkbox, null);
         }
-        CheckBox checkBox = (CheckBox)convertedView.findViewById(R.id.checkBox_menuItem);
+        CheckBox checkBox = (CheckBox) convertedView.findViewById(R.id.checkBox_menuItem);
         checkBox.setText(this.text);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {

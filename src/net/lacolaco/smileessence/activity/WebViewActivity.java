@@ -39,10 +39,12 @@ import net.lacolaco.smileessence.util.Themes;
 public class WebViewActivity extends Activity
 {
 
+    // ------------------------ OVERRIDE METHODS ------------------------
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        setTheme(Themes.getTheme(((Application)getApplication()).getThemeIndex()));
+        setTheme(Themes.getTheme(((Application) getApplication()).getThemeIndex()));
         super.onCreate(savedInstanceState);
         WebView webView = new WebView(this);
         CookieSyncManager.createInstance(this).resetSync();

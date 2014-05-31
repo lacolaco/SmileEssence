@@ -30,22 +30,14 @@ import net.lacolaco.smileessence.R;
 public class PostCommandMakeAnonymous extends PostCommand
 {
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public PostCommandMakeAnonymous(Activity activity)
     {
         super(activity);
     }
 
-    @Override
-    public String build(String s)
-    {
-        return getActivity().getString(R.string.format_status_command_make_anonymous, s).trim();
-    }
-
-    @Override
-    public boolean isReplaceCommand()
-    {
-        return true;
-    }
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText()
@@ -57,5 +49,19 @@ public class PostCommandMakeAnonymous extends PostCommand
     public boolean isEnabled()
     {
         return true;
+    }
+
+    @Override
+    public boolean isReplaceCommand()
+    {
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
+    public String build(String s)
+    {
+        return getActivity().getString(R.string.format_status_command_make_anonymous, s).trim();
     }
 }
