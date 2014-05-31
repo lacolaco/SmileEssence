@@ -296,7 +296,15 @@ public class MainActivity extends Activity
         }
         else
         {
-            finish(getUserPreferenceHelper().getValue(R.string.key_setting_show_confirm_dialog, true));
+            ConfirmDialogFragment.show(this, getString(R.string.dialog_confirm_finish_app), new Runnable()
+            {
+
+                @Override
+                public void run()
+                {
+                    forceFinish();
+                }
+            });
         }
     }
 
@@ -660,26 +668,6 @@ public class MainActivity extends Activity
     }
 
     // -------------------------- OTHER METHODS --------------------------
-
-    public void finish(boolean needConfirmDialog)
-    {
-        if(needConfirmDialog)
-        {
-            ConfirmDialogFragment.show(this, getString(R.string.dialog_confirm_finish_app), new Runnable()
-            {
-
-                @Override
-                public void run()
-                {
-                    forceFinish();
-                }
-            });
-        }
-        else
-        {
-            forceFinish();
-        }
-    }
 
     private void forceFinish()
     {

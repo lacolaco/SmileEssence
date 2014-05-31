@@ -177,7 +177,7 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
                     Account.deleteAll();
                     finishActivity();
                 }
-            });
+            }, false);
         }
         else if(key.contentEquals(getString(R.string.key_setting_licenses)))
         {

@@ -31,6 +31,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 
 public abstract class ConfirmDialogFragment extends DialogFragment
 {
@@ -50,11 +51,22 @@ public abstract class ConfirmDialogFragment extends DialogFragment
 
     public static void show(Activity activity, String text, final Runnable onYes)
     {
-        show(activity, text, onYes, null);
+        show(activity, text, onYes, null, true);
     }
 
-    public static void show(Activity activity, String text, final Runnable onOK, final Runnable onCancel)
+    public static void show(Activity activity, String text, final Runnable onYes, boolean ignorable)
     {
+        show(activity, text, onYes, null, ignorable);
+    }
+
+    public static void show(Activity activity, String text, final Runnable onOK, final Runnable onCancel, boolean ignorable)
+    {
+        boolean confirm = new UserPreferenceHelper(activity).getValue(R.string.key_setting_show_confirm_dialog, true);
+        if(!confirm && ignorable)
+        {
+            onOK.run();
+            return;
+        }
         final ConfirmDialogFragment fragment = new ConfirmDialogFragment()
         {
             @Override
