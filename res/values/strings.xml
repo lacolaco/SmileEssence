@@ -224,4 +224,5 @@
     <string name="library_name_guava">Guava</string>
     <string name="library_name_twitter_text">twitter-text</string>
     <string name="activity_licenses">Licenses</string>
+    <string name="notice_copy_clipboard">Copied to clipboard</string>
 </resources>

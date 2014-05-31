@@ -216,4 +216,5 @@
     <string name="dialog_confirm_clear_account">本当に認証を削除しますか？</string>
     <string name="notice_cleared_account">認証情報が削除されました。 再起動後に認証してください</string>
     <string name="activity_licenses">ライセンス</string>
+    <string name="notice_copy_clipboard">クリップボードにコピーしました</string>
 </resources>

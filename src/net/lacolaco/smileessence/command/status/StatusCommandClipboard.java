@@ -28,6 +28,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.notification.Notificator;
 import twitter4j.Status;
 
 public class StatusCommandClipboard extends StatusCommand
@@ -49,6 +50,7 @@ public class StatusCommandClipboard extends StatusCommand
     {
         ClipboardManager manager = (ClipboardManager)getActivity().getSystemService(Activity.CLIPBOARD_SERVICE);
         manager.setPrimaryClip(ClipData.newPlainText("tweet text", getOriginalStatus().getText()));
+        Notificator.publish(getActivity(), R.string.notice_copy_clipboard);
         return true;
     }
 
