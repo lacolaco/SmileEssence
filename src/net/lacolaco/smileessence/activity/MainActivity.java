@@ -237,14 +237,21 @@ public class MainActivity extends Activity
             case REQUEST_GET_PICTURE_FROM_GALLERY:
             case REQUEST_GET_PICTURE_FROM_CAMERA:
             {
-                getImageUri(requestCode, data);
+                getImageUri(requestCode, resultCode, data);
                 break;
             }
         }
     }
 
-    private void getImageUri(int requestCode, Intent data)
+    private void getImageUri(int requestCode, int resultCode, Intent data)
     {
+        if(resultCode != RESULT_OK)
+        {
+            Logger.error(requestCode);
+            Notificator.publish(this, R.string.notice_select_image_failed);
+            finish();
+            return;
+        }
         Uri uri;
         if(requestCode == REQUEST_GET_PICTURE_FROM_GALLERY)
         {
