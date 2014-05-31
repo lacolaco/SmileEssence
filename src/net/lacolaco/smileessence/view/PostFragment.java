@@ -309,7 +309,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
             int start = postState.getSelectionStart();
             int end = postState.getSelectionEnd();
             editText.setSelection(start, end);
-            editText.clearFocus(); // 一旦外すことで再表示時にonFocusChangedイベントが発生する
+            //            editText.clearFocus(); // 一旦外すことで再表示時にonFocusChangedイベントが発生する
         }
         if(viewGroupReply != null)
         {
@@ -370,8 +370,8 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
 
     private void openPostMenu()
     {
-        hideIME();
         setStateFromView();
+        hideIME();
         PostMenuDialogFragment menuDialogFragment = new PostMenuDialogFragment();
         DialogHelper.showDialog(getActivity(), menuDialogFragment);
     }
@@ -392,8 +392,8 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
 
     private void setImage()
     {
-        hideIME();
         setStateFromView();
+        hideIME();
         SelectImageDialogFragment selectImageDialogFragment = new SelectImageDialogFragment();
         DialogHelper.showDialog(getActivity(), selectImageDialogFragment);
     }

@@ -39,6 +39,7 @@ import net.lacolaco.smileessence.data.UserCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
+import net.lacolaco.smileessence.util.Morse;
 import net.lacolaco.smileessence.util.NameStyles;
 import net.lacolaco.smileessence.util.StringUtils;
 import net.lacolaco.smileessence.util.Themes;
@@ -329,9 +330,7 @@ public class StatusViewModel implements IViewModel
             @Override
             public void onClick(View v)
             {
-                UserDetailDialogFragment dialogFragment = new UserDetailDialogFragment();
-                dialogFragment.setUserID(isRetweet() ? getRetweetedStatus().userID : userID);
-                DialogHelper.showDialog(activity, dialogFragment);
+                onIconClick(activity);
             }
         });
         TextView header = (TextView) convertedView.findViewById(R.id.textview_status_header);
@@ -344,7 +343,15 @@ public class StatusViewModel implements IViewModel
         content.setTextSize(textSize);
         int colorNormal = Themes.getStyledColor(activity, theme, R.attr.color_status_text_normal, 0);
         content.setTextColor(colorNormal);
-        content.setText(getText());
+        String rawText = getText();
+        if(isReadMorseEnabled((MainActivity) activity) && Morse.isMorse(rawText))
+        {
+            content.setText(String.format("%s\n(%s)", rawText, Morse.morseToJa(rawText)));
+        }
+        else
+        {
+            content.setText(rawText);
+        }
         TextView footer = (TextView) convertedView.findViewById(R.id.textview_status_footer);
         footer.setTextSize(textSize - 2);
         int colorFooter = Themes.getStyledColor(activity, theme, R.attr.color_status_text_footer, 0);
@@ -376,6 +383,18 @@ public class StatusViewModel implements IViewModel
             }
         }));
         return convertedView;
+    }
+
+    private boolean isReadMorseEnabled(MainActivity activity)
+    {
+        return ((MainActivity) activity).getUserPreferenceHelper().getValue(R.string.key_setting_read_morse, true);
+    }
+
+    private void onIconClick(Activity activity)
+    {
+        UserDetailDialogFragment dialogFragment = new UserDetailDialogFragment();
+        dialogFragment.setUserID(isRetweet() ? getRetweetedStatus().userID : userID);
+        DialogHelper.showDialog(activity, dialogFragment);
     }
 
     private void onClick(Activity activity)

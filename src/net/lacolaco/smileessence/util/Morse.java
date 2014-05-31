@@ -54,7 +54,7 @@ public class Morse
         {
             list.add(matcher.group());
         }
-        if(list.size() <= 1)
+        if(list.size() <= 2)
         {
             return false;
         }
