@@ -34,7 +34,6 @@ import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 public class OAuthSession
 {
@@ -54,7 +53,7 @@ public class OAuthSession
         task.execute();
         try
         {
-            requestToken = task.get(3000, TimeUnit.MILLISECONDS);
+            requestToken = task.get();
             return requestToken.getAuthorizationURL();
         }
         catch(Exception e)
