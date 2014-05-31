@@ -89,7 +89,6 @@ public class MainActivity extends Activity
     public static final int PAGE_SEARCH = 5;
     public static final int PAGE_USERLIST = 6;
     private static final String KEY_LAST_USED_SEARCH_QUERY = "lastUsedSearchQuery";
-    private static final String KEY_APP_VERSION = "app.version";
     private static final String KEY_LAST_USED_ACCOUNT_ID = "lastUsedAccountID";
     private static final String KEY_LAST_USER_LIST = "lastUsedUserList";
     private ViewPager viewPager;
@@ -180,11 +179,6 @@ public class MainActivity extends Activity
     {
         long lastUsedAccountID = getLastUsedAccountID();
         return lastUsedAccountID >= 0 && Account.load(Account.class, lastUsedAccountID) != null;
-    }
-
-    private boolean isFirstLaunchThisVersion()
-    {
-        return !getVersion().contentEquals(getAppPreferenceHelper().getValue(KEY_APP_VERSION, ""));
     }
 
     /**
@@ -330,7 +324,6 @@ public class MainActivity extends Activity
     public void startMainLogic()
     {
         initializeView();
-        versionCheck();
         initCommandSetting();
         startTwitter();
     }
@@ -630,14 +623,6 @@ public class MainActivity extends Activity
             }
         };
         userTask.execute();
-    }
-
-    private void versionCheck()
-    {
-        if(isFirstLaunchThisVersion())
-        {
-            //TODO Show change log
-        }
     }
 
     @Override
