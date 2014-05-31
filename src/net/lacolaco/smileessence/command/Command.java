@@ -63,6 +63,7 @@ public abstract class Command implements IViewModel
         commands.add(new StatusCommandReply(activity, null));
         commands.add(new StatusCommandAddToReply(activity, null));
         commands.add(new StatusCommandReplyToAll(activity, null, null));
+        commands.add(new StatusCommandOpenChain(activity, null, null));
         commands.add(new StatusCommandFavorite(activity, null, null));
         commands.add(new StatusCommandRetweet(activity, null, null));
         commands.add(new StatusCommandDelete(activity, null, null));
@@ -74,13 +75,11 @@ public abstract class Command implements IViewModel
         commands.add(new StatusCommandTofuBuster(activity, null));
         commands.add(new StatusCommandNanigaja(activity, null, null));
         commands.add(new StatusCommandMakeAnonymous(activity, null, null));
-        commands.add(new StatusCommandOpenChain(activity, null, null));
+        commands.add(new StatusCommandAddToIgnore(activity, null));
         //User
         commands.add(new UserCommandReply(activity, null));
         commands.add(new UserCommandAddToReply(activity, null));
         commands.add(new UserCommandSendMessage(activity, null, null));
-        commands.add(new UserCommandFollow(activity, null, null));
-        commands.add(new UserCommandUnfollow(activity, null, null));
         commands.add(new UserCommandBlock(activity, null, null));
         commands.add(new UserCommandUnblock(activity, null, null));
         commands.add(new UserCommandReportForSpam(activity, null, null));
