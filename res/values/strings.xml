@@ -233,4 +233,5 @@
     <string name="notice_add_to_ignore">Added to ignore list</string>
     <string name="error_intent_status_cannot_load">Failed to get tweet</string>
     <string name="intent_post">つぶやく</string>
+    <string name="post_button_send_message">Send Message</string>
 </resources>

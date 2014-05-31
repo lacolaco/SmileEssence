@@ -27,7 +27,8 @@ package net.lacolaco.smileessence.command.user;
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.notification.Notificator;
+import net.lacolaco.smileessence.view.dialog.DialogHelper;
+import net.lacolaco.smileessence.view.dialog.SendMessageDialogFragment;
 import twitter4j.User;
 
 public class UserCommandSendMessage extends UserCommand
@@ -50,8 +51,9 @@ public class UserCommandSendMessage extends UserCommand
     @Override
     public boolean execute()
     {
-        //TODO open send dm dialog
-        Notificator.publish(getActivity(), R.string.notice_not_implemented_yet);
+        SendMessageDialogFragment dialogFragment = new SendMessageDialogFragment();
+        dialogFragment.setScreenName(getUser().getScreenName());
+        DialogHelper.showDialog(getActivity(), dialogFragment);
         return true;
     }
 
