@@ -24,9 +24,6 @@
   -->
 
 <resources>
-    <string name="app_name">SmileEssence</string>
-    <string name="app_version">0.1.0</string>
-    <string name="app_url">http://smileessence.lacolaco.net</string>
     <string name="namestyle_s_n">ScreenName / Name</string>
     <string name="namestyle_n_s">Name / ScreenName</string>
     <string name="namestyle_s">ScreenName</string>
@@ -90,8 +87,6 @@
     <string name="error_setting_timelines_range">1から200の間で設定してください</string>
     <string name="error_setting_timelines_not_number">数を入力してください</string>
     <string name="alert_dialog_ok">OK</string>
-    <string name="app_author">Developed by laco0416</string>
-    <string name="app_thanks_to">Thanks to</string>
     <string name="dialog_title_about">アプリ情報</string>
     <string name="dialog_licenses_notices_of_files">Notices of files:</string>
     <string name="dialog_title_licenses">オープンソースライセンス</string>

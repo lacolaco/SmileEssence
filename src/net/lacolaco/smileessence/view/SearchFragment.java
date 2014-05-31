@@ -53,7 +53,7 @@ import twitter4j.Twitter;
 
 import java.util.List;
 
-public class SearchFragment extends CustomListFragment implements View.OnClickListener
+public class SearchFragment extends CustomListFragment implements View.OnClickListener, View.OnFocusChangeListener
 {
 
     // ------------------------------ FIELDS ------------------------------
@@ -239,6 +239,7 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         ImageButton buttonExecute = getExecuteButton(page);
         buttonExecute.setOnClickListener(this);
         editText = getEditText(page);
+        editText.setOnFocusChangeListener(this);
         editText.setText(adapter.getQuery());
         return page;
     }
@@ -305,6 +306,15 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
                 getMainActivity().openSearchPage(text);
                 hideIME();
             }
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus)
+    {
+        if(!hasFocus)
+        {
+            hideIME();
         }
     }
 }

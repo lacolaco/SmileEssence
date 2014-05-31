@@ -200,7 +200,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
                 public void run()
                 {
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+                    imm.showSoftInput(editText, 0);
                 }
             }.postDelayed(100);
         }
@@ -379,7 +379,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     private void hideIME()
     {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
     private void removeImage()
@@ -400,13 +400,13 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
 
     private void submitPost()
     {
-        hideIME();
         setStateFromView();
         StatusUpdate statusUpdate = PostState.getState().toStatusUpdate();
         MainActivity mainActivity = (MainActivity) getActivity();
         TweetTask tweetTask = new TweetTask(TwitterApi.getTwitter(mainActivity.getCurrentAccount()), statusUpdate, mainActivity);
         tweetTask.execute();
         PostState.newState().beginTransaction().commit();
+        hideIME();
         mainActivity.setSelectedPageIndex(MainActivity.PAGE_HOME);
     }
 }
