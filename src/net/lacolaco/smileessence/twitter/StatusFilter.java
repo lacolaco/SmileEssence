@@ -41,6 +41,10 @@ public class StatusFilter
 
     private static void extract(MainActivity activity, StatusViewModel status)
     {
+        if(status.isRetweet())
+        {
+            return;
+        }
         Pattern pattern;
         for(ExtractionWord word : ExtractionWord.getAll())
         {
