@@ -83,6 +83,10 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     public void onStatus(Status status)
     {
         StatusCache.getInstance().put(status);
+        if(isIgnoredStatus(status))
+        {
+            return;
+        }
         StatusViewModel viewModel = new StatusViewModel(status, activity.getCurrentAccount());
         addToHome(viewModel);
         if(status.isRetweet())
@@ -99,6 +103,11 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
             Notificator.publish(activity, mentioned.getFormattedString(activity));
         }
         StatusFilter.filter(activity, viewModel);
+    }
+
+    private boolean isIgnoredStatus(Status status)
+    {
+        return status.isRetweet() && StatusCache.getInstance().isIgnored(status.getRetweetedStatus().getId());
     }
 
     private void addToHome(StatusViewModel viewModel)

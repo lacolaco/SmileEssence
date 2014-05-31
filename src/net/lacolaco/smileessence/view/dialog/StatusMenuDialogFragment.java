@@ -201,6 +201,7 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         commands.add(new StatusCommandTofuBuster(activity, status));
         commands.add(new StatusCommandNanigaja(activity, status, account));
         commands.add(new StatusCommandMakeAnonymous(activity, status, account));
+        commands.add(new StatusCommandAddToIgnore(activity, status));
         commands.add(new CommandSaveAsTemplate(activity, TwitterUtils.getOriginalStatusText(status)));
         for(String screenName : TwitterUtils.getScreenNames(status, null))
         {

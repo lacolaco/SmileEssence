@@ -229,4 +229,6 @@
     <string name="page_name_list">List</string>
     <string name="notice_userlist_not_selected">No List is selected</string>
     <string name="dialog_title_select_userlist">Select a list</string>
+    <string name="command_status_add_to_ignore">Ignore this tweet in future</string>
+    <string name="notice_add_to_ignore">Added to ignore list</string>
 </resources>

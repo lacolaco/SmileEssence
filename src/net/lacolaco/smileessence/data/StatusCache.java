@@ -27,6 +27,7 @@ package net.lacolaco.smileessence.data;
 import twitter4j.Status;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class StatusCache
 {
@@ -34,6 +35,8 @@ public class StatusCache
     private static StatusCache instance = new StatusCache();
 
     private ConcurrentHashMap<Long, Status> cache = new ConcurrentHashMap<>();
+
+    private ConcurrentLinkedQueue<Long> ignoreIDs = new ConcurrentLinkedQueue<>();
 
     private StatusCache()
     {
@@ -79,5 +82,15 @@ public class StatusCache
     public Status remove(long id)
     {
         return cache.remove(id);
+    }
+
+    public void addToIgnoreStatus(long id)
+    {
+        ignoreIDs.add(id);
+    }
+
+    public boolean isIgnored(long id)
+    {
+        return ignoreIDs.contains(id);
     }
 }
