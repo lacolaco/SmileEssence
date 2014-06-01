@@ -54,6 +54,8 @@ import java.util.Date;
 public class StatusViewModel implements IViewModel
 {
 
+    public static final String TAG = "statusDialog";
+
     // ------------------------------ FIELDS ------------------------------
 
     private long id;
@@ -401,6 +403,6 @@ public class StatusViewModel implements IViewModel
     {
         StatusMenuDialogFragment fragment = new StatusMenuDialogFragment();
         fragment.setStatusID(getID());
-        DialogHelper.showDialogWithoutClose(activity, fragment);
+        DialogHelper.showDialog(activity, fragment, TAG);
     }
 }

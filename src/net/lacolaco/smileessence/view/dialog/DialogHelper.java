@@ -28,12 +28,16 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 
+import java.util.Stack;
+
 public class DialogHelper
 {
 
     // ------------------------------ FIELDS ------------------------------
 
     private static final String TAG_DIALOG = "dialog";
+
+    private static Stack<String> dialogStack = new Stack<>();
     private final Activity activity;
     private final DialogFragment dialogFragment;
 
@@ -45,28 +49,39 @@ public class DialogHelper
         this.dialogFragment = dialogFragment;
     }
 
-    // --------------------------- CONSTRUCTORS ---------------------------
+    public static void close(Activity activity)
+    {
+        close(activity, TAG_DIALOG);
+    }
+
+    /**
+     * Close all stacked dialog
+     */
+    public static void closeAll(Activity activity)
+    {
+        while(dialogStack.size() > 0)
+        {
+            String tag = dialogStack.pop();
+            close(activity, tag);
+        }
+    }
 
     /**
      * Please expressly closing
      */
-    public static void showDialogWithoutClose(Activity activity, DialogFragment dialogFragment)
+    public static void showDialog(Activity activity, DialogFragment dialogFragment, String tag)
     {
-        dialogFragment.show(activity.getFragmentManager().beginTransaction(), "dialog_2");
+        close(activity, tag);
+        dialogStack.push(tag);
+        dialogFragment.show(activity.getFragmentManager().beginTransaction(), tag);
     }
 
-    // -------------------------- OTHER METHODS --------------------------
+    // --------------------------- CONSTRUCTORS ---------------------------
 
-    public static void showDialog(Activity activity, DialogFragment dialogFragment)
-    {
-        close(activity);
-        dialogFragment.show(activity.getFragmentManager().beginTransaction(), TAG_DIALOG);
-    }
-
-    public static void close(Activity activity)
+    public static void close(Activity activity, String tag)
     {
         FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
-        DialogFragment oldDialog = (DialogFragment) activity.getFragmentManager().findFragmentByTag(TAG_DIALOG);
+        DialogFragment oldDialog = (DialogFragment) activity.getFragmentManager().findFragmentByTag(tag);
         if(oldDialog != null)
         {
             transaction.remove(oldDialog);
@@ -74,6 +89,13 @@ public class DialogHelper
         }
         //        transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    public static void showDialog(Activity activity, DialogFragment dialogFragment)
+    {
+        showDialog(activity, dialogFragment, TAG_DIALOG);
     }
 
     public void show()

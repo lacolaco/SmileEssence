@@ -26,6 +26,7 @@ package net.lacolaco.smileessence.view.adapter;
 
 import android.text.TextUtils;
 import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.view.dialog.DialogHelper;
 import twitter4j.StatusUpdate;
 
 import java.io.File;
@@ -219,6 +220,7 @@ public class PostState
 
         public void commitWithOpen(MainActivity activity)
         {
+            DialogHelper.closeAll(activity);
             activity.openPostPage();
             PostState.getState().copy(state).postStateChange();
         }

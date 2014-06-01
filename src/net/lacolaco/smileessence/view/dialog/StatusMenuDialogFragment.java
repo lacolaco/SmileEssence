@@ -89,7 +89,6 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
             case R.id.button_status_detail_reply:
             {
                 new StatusCommandReply(activity, status).execute();
-                dismiss();
                 break;
             }
             case R.id.button_status_detail_retweet:

@@ -196,7 +196,7 @@ public class EditTemplateActivity extends Activity implements AdapterView.OnItem
             }
         };
         dialogFragment.setParams(getString(R.string.dialog_title_add), "");
-        new DialogHelper(this, dialogFragment).show();
+        DialogHelper.showDialog(this, dialogFragment);
     }
 
     // -------------------------- OTHER METHODS --------------------------
@@ -242,6 +242,6 @@ public class EditTemplateActivity extends Activity implements AdapterView.OnItem
             }
         };
         dialogFragment.setParams(getString(R.string.dialog_title_edit), template.text);
-        new DialogHelper(this, dialogFragment).show();
+        DialogHelper.showDialog(this, dialogFragment);
     }
 }

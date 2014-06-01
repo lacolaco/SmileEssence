@@ -39,6 +39,7 @@ public abstract class ConfirmDialogFragment extends DialogFragment
     // ------------------------------ FIELDS ------------------------------
 
     public static final String ARG_TEXT = "text";
+    public static final String TAG = "confirmDialog";
     private final DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener()
     {
         @Override
@@ -100,7 +101,7 @@ public abstract class ConfirmDialogFragment extends DialogFragment
             }
         };
         fragment.setText(text);
-        DialogHelper.showDialogWithoutClose(activity, fragment);
+        DialogHelper.showDialog(activity, fragment, TAG);
     }
 
     public void setText(String text)

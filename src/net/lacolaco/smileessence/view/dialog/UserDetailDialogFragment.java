@@ -62,6 +62,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
 
     // ------------------------------ FIELDS ------------------------------
 
+    public static final String TAG = "userDialog";
     private static final String KEY_USER_ID = "userID";
     private TextView textViewScreenName;
     private TextView textViewName;
@@ -153,7 +154,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
     {
         UserMenuDialogFragment menuFragment = new UserMenuDialogFragment();
         menuFragment.setUserID(user.getId());
-        DialogHelper.showDialogWithoutClose(activity, menuFragment);
+        DialogHelper.showDialog(activity, menuFragment, TAG);
     }
 
     // ------------------------ OVERRIDE METHODS ------------------------
