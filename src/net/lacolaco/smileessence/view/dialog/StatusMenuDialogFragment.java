@@ -30,7 +30,6 @@ import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import net.lacolaco.smileessence.R;
@@ -150,13 +149,6 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
     }
 
     // ------------------------ OVERRIDE METHODS ------------------------
-
-    @Override
-    protected void onItemClick(AdapterView<?> adapterView, int i)
-    {
-        super.onItemClick(adapterView, i);
-        dismiss();
-    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)

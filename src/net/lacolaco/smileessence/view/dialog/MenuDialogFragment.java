@@ -63,6 +63,7 @@ public abstract class MenuDialogFragment extends DialogFragment
                     {
                         DialogHelper.close(getActivity());
                         command.execute();
+                        dismiss();
                     }
                 });
             }
@@ -70,6 +71,7 @@ public abstract class MenuDialogFragment extends DialogFragment
             {
                 DialogHelper.close(getActivity());
                 command.execute();
+                dismiss();
             }
         }
     }
