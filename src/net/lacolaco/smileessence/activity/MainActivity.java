@@ -513,36 +513,39 @@ public class MainActivity extends Activity
 
     public void startNewSearch(final Twitter twitter, final String query)
     {
-        SearchQuery.saveIfNotFound(query);
         saveLastSearch(query);
-        final SearchListAdapter adapter = (SearchListAdapter) getListAdapter(PAGE_SEARCH);
-        adapter.initSearch(query);
-        adapter.clear();
-        adapter.updateForce();
-        new SearchTask(twitter, query, this)
+        if(!TextUtils.isEmpty(query))
         {
-            @Override
-            protected void onPostExecute(QueryResult queryResult)
+            SearchQuery.saveIfNotFound(query);
+            final SearchListAdapter adapter = (SearchListAdapter) getListAdapter(PAGE_SEARCH);
+            adapter.initSearch(query);
+            adapter.clear();
+            adapter.updateForce();
+            new SearchTask(twitter, query, this)
             {
-                super.onPostExecute(queryResult);
-                if(queryResult != null)
+                @Override
+                protected void onPostExecute(QueryResult queryResult)
                 {
-                    List<twitter4j.Status> tweets = queryResult.getTweets();
-                    for(int i = tweets.size() - 1; i >= 0; i--)
+                    super.onPostExecute(queryResult);
+                    if(queryResult != null)
                     {
-                        twitter4j.Status status = tweets.get(i);
-                        if(!status.isRetweet())
+                        List<twitter4j.Status> tweets = queryResult.getTweets();
+                        for(int i = tweets.size() - 1; i >= 0; i--)
                         {
-                            StatusViewModel viewModel = new StatusViewModel(status, getCurrentAccount());
-                            adapter.addToTop(viewModel);
-                            StatusFilter.filter(MainActivity.this, viewModel);
+                            twitter4j.Status status = tweets.get(i);
+                            if(!status.isRetweet())
+                            {
+                                StatusViewModel viewModel = new StatusViewModel(status, getCurrentAccount());
+                                adapter.addToTop(viewModel);
+                                StatusFilter.filter(MainActivity.this, viewModel);
+                            }
                         }
+                        adapter.setTopID(queryResult.getMaxId());
+                        adapter.updateForce();
                     }
-                    adapter.setTopID(queryResult.getMaxId());
-                    adapter.updateForce();
                 }
-            }
-        }.execute();
+            }.execute();
+        }
     }
 
     public CustomListAdapter<?> getListAdapter(int i)

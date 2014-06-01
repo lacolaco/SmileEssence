@@ -230,4 +230,6 @@
     <string name="post_button_send_message">Send Message</string>
     <string name="dialog_confirm_delete_query">Delete this query, OK?</string>
     <string name="notice_search_query_deleted">Query was deleted</string>
+    <string name="notice_no_template_exists">No template exists</string>
+    <string name="notice_no_query_exists">No query exists</string>
 </resources>

@@ -25,7 +25,6 @@
 package net.lacolaco.smileessence.view;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.*;
@@ -37,7 +36,10 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.command.Command;
+import net.lacolaco.smileessence.command.CommandOpenSearch;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.entity.SearchQuery;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.twitter.StatusFilter;
 import net.lacolaco.smileessence.twitter.TwitterApi;
@@ -272,14 +274,29 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
 
     private void openSearchQueryDialog(final MainActivity mainActivity)
     {
+        if(SearchQuery.getAll().size() == 0)
+        {
+            Notificator.publish(mainActivity, R.string.notice_no_query_exists);
+            return;
+        }
         DialogHelper.showDialog(mainActivity, new SelectSearchQueryDialogFragment()
         {
             @Override
-            public void onDismiss(DialogInterface dialog)
+            protected void deleteQuery(CommandOpenSearch command)
             {
-                super.onDismiss(dialog);
-                SearchListAdapter adapter = getListAdapter(mainActivity);
-                editText.setText(adapter.getQuery());
+                super.deleteQuery(command);
+                if(editText.getText().toString().contentEquals(command.getQuery().query))
+                {
+                    editText.setText("");
+                }
+            }
+
+            @Override
+            protected void executeCommand(Command command)
+            {
+                super.executeCommand(command);
+                SearchQuery query = ((CommandOpenSearch) command).getQuery();
+                editText.setText(query.query);
                 hideIME();
             }
         });

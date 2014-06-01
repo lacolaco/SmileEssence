@@ -61,19 +61,22 @@ public abstract class MenuDialogFragment extends DialogFragment
                     @Override
                     public void run()
                     {
-                        DialogHelper.close(getActivity());
-                        command.execute();
-                        dismiss();
+                        executeCommand(command);
                     }
                 });
             }
             else
             {
-                DialogHelper.close(getActivity());
-                command.execute();
-                dismiss();
+                executeCommand(command);
             }
         }
+    }
+
+    protected void executeCommand(Command command)
+    {
+        DialogHelper.close(getActivity());
+        command.execute();
+        dismiss();
     }
 
     protected final void filterCommands(List<Command> commands)

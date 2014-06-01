@@ -223,4 +223,6 @@
     <string name="post_button_send_message">メッセージを送信</string>
     <string name="dialog_confirm_delete_query">クエリを削除しますか？</string>
     <string name="notice_search_query_deleted">クエリを削除しました</string>
+    <string name="notice_no_template_exists">定型文が存在しません</string>
+    <string name="notice_no_query_exists">クエリが存在しません</string>
 </resources>

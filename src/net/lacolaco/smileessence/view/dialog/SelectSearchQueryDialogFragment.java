@@ -92,11 +92,17 @@ public class SelectSearchQueryDialogFragment extends MenuDialogFragment implemen
             @Override
             public void run()
             {
-                command.getQuery().delete();
-                Notificator.publish(getActivity(), R.string.notice_search_query_deleted);
-                dismiss();
+                deleteQuery(command);
             }
         }, false);
         return false;
+    }
+
+    protected void deleteQuery(CommandOpenSearch command)
+    {
+        command.getQuery().delete();
+        Notificator.publish(getActivity(), R.string.notice_search_query_deleted);
+        ((MainActivity) getActivity()).openSearchPage("");
+        dismiss();
     }
 }
