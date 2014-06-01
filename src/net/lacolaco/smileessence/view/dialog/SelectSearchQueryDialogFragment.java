@@ -28,18 +28,21 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.Command;
+import net.lacolaco.smileessence.command.CommandOpenSearch;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.entity.SearchQuery;
+import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectSearchQueryDialogFragment extends MenuDialogFragment
+public class SelectSearchQueryDialogFragment extends MenuDialogFragment implements AdapterView.OnItemLongClickListener
 {
 
     // ------------------------ OVERRIDE METHODS ------------------------
@@ -61,6 +64,7 @@ public class SelectSearchQueryDialogFragment extends MenuDialogFragment
         }
         adapter.update();
         listView.setOnItemClickListener(onItemClickListener);
+        listView.setOnItemLongClickListener(this);
 
         return new AlertDialog.Builder(activity).setView(body).setTitle(R.string.dialog_title_select_search_query).setCancelable(true).create();
     }
@@ -73,29 +77,26 @@ public class SelectSearchQueryDialogFragment extends MenuDialogFragment
         {
             for(final SearchQuery query : queries)
             {
-                commands.add(new Command(-1, activity)
-                {
-                    @Override
-                    public boolean execute()
-                    {
-                        activity.openSearchPage(query.query);
-                        return true;
-                    }
-
-                    @Override
-                    public String getText()
-                    {
-                        return query.query;
-                    }
-
-                    @Override
-                    public boolean isEnabled()
-                    {
-                        return true;
-                    }
-                });
+                commands.add(new CommandOpenSearch(activity, query));
             }
         }
         return commands;
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
+    {
+        final CommandOpenSearch command = (CommandOpenSearch) parent.getItemAtPosition(position);
+        ConfirmDialogFragment.show(getActivity(), getString(R.string.dialog_confirm_delete_query), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                command.getQuery().delete();
+                Notificator.publish(getActivity(), R.string.notice_search_query_deleted);
+                dismiss();
+            }
+        }, false);
+        return false;
     }
 }

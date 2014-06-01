@@ -221,4 +221,6 @@
     <string name="error_intent_status_cannot_load">ツイートを取得できませんでした</string>
     <string name="intent_post">つぶやく</string>
     <string name="post_button_send_message">メッセージを送信</string>
+    <string name="dialog_confirm_delete_query">クエリを削除しますか？</string>
+    <string name="notice_search_query_deleted">クエリを削除しました</string>
 </resources>

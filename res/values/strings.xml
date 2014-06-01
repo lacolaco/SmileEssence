@@ -228,4 +228,6 @@
     <string name="error_intent_status_cannot_load">Failed to get tweet</string>
     <string name="intent_post">つぶやく</string>
     <string name="post_button_send_message">Send Message</string>
+    <string name="dialog_confirm_delete_query">Delete this query, OK?</string>
+    <string name="notice_search_query_deleted">Query was deleted</string>
 </resources>
