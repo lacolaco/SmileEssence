@@ -369,26 +369,25 @@ public class MainActivity extends Activity
         EventListAdapter historyAdapter = new EventListAdapter(this);
         SearchListAdapter searchAdapter = new SearchListAdapter(this);
         UserListListAdapter userListAdapter = new UserListListAdapter(this);
-        addListPage(getString(R.string.page_name_home), HomeFragment.class, homeAdapter);
-        addListPage(getString(R.string.page_name_mentions), MentionsFragment.class, mentionsAdapter);
-        addListPage(getString(R.string.page_name_messages), MessagesFragment.class, messagesAdapter);
-        addListPage(getString(R.string.page_name_history), HistoryFragment.class, historyAdapter);
-        addListPage(getString(R.string.page_name_search), SearchFragment.class, searchAdapter);
-        addListPage(getString(R.string.page_name_list), UserListFragment.class, userListAdapter);
+        addListPage(getString(R.string.page_name_home), HomeFragment.class, homeAdapter, PAGE_HOME);
+        addListPage(getString(R.string.page_name_mentions), MentionsFragment.class, mentionsAdapter, PAGE_MENTIONS);
+        addListPage(getString(R.string.page_name_messages), MessagesFragment.class, messagesAdapter, PAGE_MESSAGES);
+        addListPage(getString(R.string.page_name_history), HistoryFragment.class, historyAdapter, PAGE_HISTORY);
+        addListPage(getString(R.string.page_name_search), SearchFragment.class, searchAdapter, PAGE_SEARCH);
+        addListPage(getString(R.string.page_name_list), UserListFragment.class, userListAdapter, PAGE_USERLIST);
         pagerAdapter.refreshListNavigation();
         viewPager.setOffscreenPageLimit(pagerAdapter.getCount());
         initPostState();
         setSelectedPageIndex(PAGE_HOME, false);
     }
 
-    public void addListPage(String name, Class<? extends CustomListFragment> fragmentClass, CustomListAdapter<?> adapter)
+    public void addListPage(String name, Class<? extends CustomListFragment> fragmentClass, CustomListAdapter<?> adapter, int index)
     {
-        int nextPosition = pagerAdapter.getCount();
         Bundle args = new Bundle();
-        args.putInt(CustomListFragment.ADAPTER_INDEX, nextPosition);
+        args.putInt(CustomListFragment.ADAPTER_INDEX, index);
         if(addPage(name, fragmentClass, args, false))
         {
-            adapterMap.put(nextPosition, adapter);
+            adapterMap.put(index, adapter);
         }
     }
 
