@@ -407,6 +407,6 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         tweetTask.execute();
         PostState.newState().beginTransaction().commit();
         hideIME();
-        mainActivity.setSelectedPageIndex(MainActivity.PAGE_HOME);
+        mainActivity.setSelectedPageIndex(MainActivity.ADAPTER_HOME);
     }
 }

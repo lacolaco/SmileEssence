@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ The MIT License (MIT)
   ~
@@ -23,21 +24,30 @@
   ~ SOFTWARE.
   -->
 
-<resources>
-    <item name="actionbar_search" type="id"/>
-    <item name="actionbar_settings" type="id"/>
-    <item name="actionbar_setting" type="id"/>
-    <item name="actionbar_edit_templates" type="id"/>
-    <item name="actionbar_edit_extraction" type="id"/>
-    <item name="actionbar_edit_commands" type="id"/>
-    <item name="actionbar_services" type="id"/>
-    <item name="actionbar_report" type="id"/>
-    <item name="actionbar_favstar" type="id"/>
-    <item name="actionbar_aclog" type="id"/>
-    <item name="actionbar_twilog" type="id"/>
-    <item name="fragment_setting" type="id"/>
-    <item name="menu_edit_list_add" type="id"/>
-    <item name="menu_edit_command_all_on" type="id"/>
-    <item name="actionbar_post" type="id"/>
-    <item name="actionbar_edit_tabs" type="id"/>
-</resources>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?android:attr/activatedBackgroundIndicator"
+                android:baselineAligned="true">
+
+    <CheckBox
+        android:id="@+id/checkBox_menuItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="16dp"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/edittext_editable_checkbox"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <EditText
+        android:id="@+id/edittext_editable_checkbox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp"
+        android:layout_alignParentRight="true"/>
+</RelativeLayout>

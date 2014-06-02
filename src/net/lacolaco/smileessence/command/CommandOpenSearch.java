@@ -59,7 +59,8 @@ public class CommandOpenSearch extends Command
     @Override
     public boolean isEnabled()
     {
-        return true;
+        MainActivity activity = (MainActivity) getActivity();
+        return activity.getPageSearch() != -1;
     }
 
     // -------------------------- OTHER METHODS --------------------------

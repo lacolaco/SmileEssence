@@ -46,9 +46,9 @@ public class MainActivityMenuHelper
         postButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         postButton.setIcon(R.drawable.icon_edit);
         //Search button
-        MenuItem searchButton = menu.add(Menu.NONE, R.id.actionbar_search, Menu.NONE, activity.getString(R.string.actionbar_search));
-        searchButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        searchButton.setIcon(R.drawable.icon_search_white);
+        //        MenuItem searchButton = menu.add(Menu.NONE, R.id.actionbar_search, Menu.NONE, activity.getString(R.string.actionbar_search));
+        //        searchButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        //        searchButton.setIcon(R.drawable.icon_search_white);
         //Settings
         SubMenu settings = menu.addSubMenu(Menu.NONE, R.id.actionbar_settings, Menu.NONE, activity.getString(R.string.actionbar_settings));
         settings.setIcon(R.drawable.icon_settings);
@@ -57,6 +57,7 @@ public class MainActivityMenuHelper
         settings.add(Menu.NONE, R.id.actionbar_edit_templates, Menu.NONE, activity.getString(R.string.actionbar_edit_templates));
         settings.add(Menu.NONE, R.id.actionbar_edit_extraction, Menu.NONE, activity.getString(R.string.actionbar_edit_extraction));
         settings.add(Menu.NONE, R.id.actionbar_edit_commands, Menu.NONE, activity.getString(R.string.actionbar_edit_commands));
+        settings.add(Menu.NONE, R.id.actionbar_edit_tabs, Menu.NONE, activity.getString(R.string.actionbar_edit_tabs));
         //External services
         SubMenu services = menu.addSubMenu(Menu.NONE, R.id.actionbar_services, Menu.NONE, activity.getString(R.string.actionbar_services));
         services.setIcon(R.drawable.icon_website);
@@ -105,6 +106,12 @@ public class MainActivityMenuHelper
             case R.id.actionbar_edit_commands:
             {
                 Intent intent = new Intent(activity, EditCommandActivity.class);
+                activity.startActivity(intent);
+                return true;
+            }
+            case R.id.actionbar_edit_tabs:
+            {
+                Intent intent = new Intent(activity, EditTabActivity.class);
                 activity.startActivity(intent);
                 return true;
             }

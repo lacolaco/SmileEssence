@@ -111,6 +111,6 @@ public class MentionsFragment extends CustomListFragment
 
     private StatusListAdapter getListAdapter(MainActivity activity)
     {
-        return (StatusListAdapter) activity.getListAdapter(MainActivity.PAGE_MENTIONS);
+        return (StatusListAdapter) activity.getListAdapter(MainActivity.ADAPTER_MENTIONS);
     }
 }

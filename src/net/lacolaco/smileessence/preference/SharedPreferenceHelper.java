@@ -87,7 +87,7 @@ public class SharedPreferenceHelper
     public boolean putValue(String key, boolean value)
     {
         SharedPreferences.Editor editor = getPref().edit();
-        editor.putString(key, String.valueOf(value));
+        editor.putBoolean(key, value);
         return editor.commit();
     }
 

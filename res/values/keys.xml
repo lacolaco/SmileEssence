@@ -39,4 +39,12 @@
     <string name="key_setting_theme">theme</string>
     <string name="key_setting_application_information">appInfo</string>
     <string name="key_setting_licenses">licenseNotice</string>
+    <string name="key_page_messages_position">pageMessagesPosition</string>
+    <string name="key_page_messages_visibility">pageMessagesVisibility</string>
+    <string name="key_page_history_visibility">pageHistoryVisibility</string>
+    <string name="key_page_history_position">pageHistoryPosition</string>
+    <string name="key_page_search_visibility">pageSearchVisibility</string>
+    <string name="key_page_search_position">pageSearchPosition</string>
+    <string name="key_page_list_visibility">pageListVisibility</string>
+    <string name="key_page_list_position">pageListPosition</string>
 </resources>

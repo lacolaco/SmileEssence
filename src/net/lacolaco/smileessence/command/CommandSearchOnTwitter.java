@@ -54,7 +54,7 @@ public class CommandSearchOnTwitter extends Command
     @Override
     public boolean isEnabled()
     {
-        return true;
+        return ((MainActivity) getActivity()).getPageSearch() != -1;
     }
 
     // -------------------------- OTHER METHODS --------------------------

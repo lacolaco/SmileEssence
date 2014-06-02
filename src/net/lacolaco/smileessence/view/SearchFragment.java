@@ -103,6 +103,18 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         }
     }
 
+    // --------------------- Interface OnFocusChangeListener ---------------------
+
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus)
+    {
+        if(!hasFocus)
+        {
+            hideIME();
+        }
+    }
+
     // --------------------- Interface OnRefreshListener2 ---------------------
 
     @Override
@@ -267,6 +279,11 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         return (ImageButton) page.findViewById(R.id.button_search_queries);
     }
 
+    private SearchListAdapter getListAdapter(MainActivity activity)
+    {
+        return (SearchListAdapter) activity.getListAdapter(MainActivity.ADAPTER_SEARCH);
+    }
+
     private void notifyTextEmpty(MainActivity activity)
     {
         Notificator.publish(activity, R.string.notice_search_text_empty);
@@ -302,11 +319,6 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         });
     }
 
-    private SearchListAdapter getListAdapter(MainActivity activity)
-    {
-        return (SearchListAdapter) activity.getListAdapter(MainActivity.PAGE_SEARCH);
-    }
-
     private void hideIME()
     {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -323,15 +335,6 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
                 getMainActivity().openSearchPage(text);
                 hideIME();
             }
-        }
-    }
-
-    @Override
-    public void onFocusChange(View v, boolean hasFocus)
-    {
-        if(!hasFocus)
-        {
-            hideIME();
         }
     }
 }

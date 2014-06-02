@@ -131,6 +131,11 @@
             android:label="@string/activity_edit_command"
             android:parentActivityName="net.lacolaco.smileessence.activity.MainActivity"/>
         <activity
+            android:name=".activity.EditTabActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/activity_edit_tab"
+            android:parentActivityName="net.lacolaco.smileessence.activity.MainActivity"/>
+        <activity
             android:name=".activity.LicenseActivity"
             android:label="@string/activity_licenses"
             android:parentActivityName="net.lacolaco.smileessence.activity.SettingActivity"/>

@@ -232,4 +232,7 @@
     <string name="notice_search_query_deleted">Query was deleted</string>
     <string name="notice_no_template_exists">No template exists</string>
     <string name="notice_no_query_exists">No query exists</string>
+    <string name="notice_tab_editted">Tab setting are enabled on next launch</string>
+    <string name="activity_edit_tab">Tabs Setting</string>
+    <string name="actionbar_edit_tabs">Edit tabs</string>
 </resources>

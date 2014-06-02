@@ -84,15 +84,19 @@ public class MainActivity extends Activity
     public static final int REQUEST_GET_PICTURE_FROM_GALLERY = 11;
     public static final int REQUEST_GET_PICTURE_FROM_CAMERA = 12;
     public static final int PAGE_POST = 0;
-    public static final int PAGE_HOME = 1;
-    public static final int PAGE_MENTIONS = 2;
-    public static final int PAGE_MESSAGES = 3;
-    public static final int PAGE_HISTORY = 4;
-    public static final int PAGE_SEARCH = 5;
-    public static final int PAGE_USERLIST = 6;
+    public static final int ADAPTER_HOME = 1;
+    public static final int ADAPTER_MENTIONS = 2;
+    public static final int ADAPTER_MESSAGES = 3;
+    public static final int ADAPTER_HISTORY = 4;
+    public static final int ADAPTER_SEARCH = 5;
+    public static final int ADAPTER_USERLIST = 6;
     private static final String KEY_LAST_USED_SEARCH_QUERY = "lastUsedSearchQuery";
     private static final String KEY_LAST_USED_ACCOUNT_ID = "lastUsedAccountID";
     private static final String KEY_LAST_USER_LIST = "lastUsedUserList";
+    private int pageMessages;
+    private int pageHistory;
+    private int pageSearch;
+    private int pageUserlist;
     private ViewPager viewPager;
     private PageListAdapter pagerAdapter;
     private OAuthSession oauthSession;
@@ -104,7 +108,7 @@ public class MainActivity extends Activity
 
     // --------------------- GETTER / SETTER METHODS ---------------------
 
-    private AppPreferenceHelper getAppPreferenceHelper()
+    public AppPreferenceHelper getAppPreferenceHelper()
     {
         return new AppPreferenceHelper(this);
     }
@@ -157,9 +161,44 @@ public class MainActivity extends Activity
         return getAppPreferenceHelper().getValue(KEY_LAST_USER_LIST, "");
     }
 
+    public int getPageHistory()
+    {
+        return pageHistory;
+    }
+
+    public int getPageHome()
+    {
+        return ADAPTER_HOME;
+    }
+
+    public int getPageMentions()
+    {
+        return ADAPTER_MENTIONS;
+    }
+
+    public int getPageMessages()
+    {
+        return pageMessages;
+    }
+
+    public int getPagePost()
+    {
+        return PAGE_POST;
+    }
+
     public PageListAdapter getPagerAdapter()
     {
         return pagerAdapter;
+    }
+
+    public int getPageSearch()
+    {
+        return pageSearch;
+    }
+
+    public int getPageUserlist()
+    {
+        return pageUserlist;
     }
 
     public int getThemeIndex()
@@ -266,6 +305,36 @@ public class MainActivity extends Activity
         openPostPageWithImage(uri);
     }
 
+    @Override
+    public void finish()
+    {
+        if(viewPager == null)
+        {
+            forceFinish();
+        }
+        else if(viewPager.getCurrentItem() != ADAPTER_HOME)
+        {
+            viewPager.setCurrentItem(ADAPTER_HOME, true);
+        }
+        else
+        {
+            ConfirmDialogFragment.show(this, getString(R.string.dialog_confirm_finish_app), new Runnable()
+            {
+
+                @Override
+                public void run()
+                {
+                    forceFinish();
+                }
+            });
+        }
+    }
+
+    private void forceFinish()
+    {
+        super.finish();
+    }
+
     public void openPostPageWithImage(Uri uri)
     {
         try
@@ -304,36 +373,6 @@ public class MainActivity extends Activity
         }
     }
 
-    @Override
-    public void finish()
-    {
-        if(viewPager == null)
-        {
-            forceFinish();
-        }
-        else if(viewPager.getCurrentItem() != PAGE_HOME)
-        {
-            viewPager.setCurrentItem(PAGE_HOME, true);
-        }
-        else
-        {
-            ConfirmDialogFragment.show(this, getString(R.string.dialog_confirm_finish_app), new Runnable()
-            {
-
-                @Override
-                public void run()
-                {
-                    forceFinish();
-                }
-            });
-        }
-    }
-
-    private void forceFinish()
-    {
-        super.finish();
-    }
-
     public void startMainLogic()
     {
         initializeView();
@@ -363,32 +402,41 @@ public class MainActivity extends Activity
 
     private void initializePages()
     {
-        addPage(getString(R.string.page_name_post), PostFragment.class, null, true);
-        StatusListAdapter homeAdapter = new StatusListAdapter(this);
-        StatusListAdapter mentionsAdapter = new StatusListAdapter(this);
-        MessageListAdapter messagesAdapter = new MessageListAdapter(this);
-        EventListAdapter historyAdapter = new EventListAdapter(this);
-        SearchListAdapter searchAdapter = new SearchListAdapter(this);
-        UserListListAdapter userListAdapter = new UserListListAdapter(this);
-        addListPage(getString(R.string.page_name_home), HomeFragment.class, homeAdapter, PAGE_HOME);
-        addListPage(getString(R.string.page_name_mentions), MentionsFragment.class, mentionsAdapter, PAGE_MENTIONS);
-        addListPage(getString(R.string.page_name_messages), MessagesFragment.class, messagesAdapter, PAGE_MESSAGES);
-        addListPage(getString(R.string.page_name_history), HistoryFragment.class, historyAdapter, PAGE_HISTORY);
-        addListPage(getString(R.string.page_name_search), SearchFragment.class, searchAdapter, PAGE_SEARCH);
-        addListPage(getString(R.string.page_name_list), UserListFragment.class, userListAdapter, PAGE_USERLIST);
+        addPostPage();
+        addHomePage();
+        addMentionsPage();
+        addMessagesPage();
+        addHistoryPage();
+        addSearchPage();
+        addUserListPage();
         pagerAdapter.refreshListNavigation();
         viewPager.setOffscreenPageLimit(pagerAdapter.getCount());
         initPostState();
-        setSelectedPageIndex(PAGE_HOME, false);
+        setSelectedPageIndex(ADAPTER_HOME, false);
     }
 
-    public void addListPage(String name, Class<? extends CustomListFragment> fragmentClass, CustomListAdapter<?> adapter, int index)
+    private void addHistoryPage()
     {
-        Bundle args = new Bundle();
-        args.putInt(CustomListFragment.ADAPTER_INDEX, index);
-        if(addPage(name, fragmentClass, args, false))
+        boolean visible = getUserPreferenceHelper().getValue(R.string.key_page_history_visibility, true);
+        getUserPreferenceHelper().putValue(R.string.key_page_history_visibility, visible);
+        EventListAdapter historyAdapter = new EventListAdapter(this);
+        pageHistory = addListPage(getString(R.string.page_name_history), HistoryFragment.class, historyAdapter, ADAPTER_HISTORY, visible);
+    }
+
+    public int addListPage(String name, Class<? extends CustomListFragment> fragmentClass, CustomListAdapter<?> adapter, int adapterIndex, boolean visible)
+    {
+        if(visible)
         {
-            adapterMap.put(index, adapter);
+            Bundle args = new Bundle();
+            args.putInt(CustomListFragment.ADAPTER_INDEX, adapterIndex);
+            addPage(name, fragmentClass, args, false);
+            adapterMap.put(adapterIndex, adapter);
+            return pagerAdapter.getCount() - 1;
+        }
+        else
+        {
+            adapterMap.put(adapterIndex, adapter);
+            return -1;
         }
     }
 
@@ -402,6 +450,47 @@ public class MainActivity extends Activity
         {
             return this.pagerAdapter.addPageWithoutNotify(name, fragmentClass, args);
         }
+    }
+
+    private void addHomePage()
+    {
+        StatusListAdapter homeAdapter = new StatusListAdapter(this);
+        addListPage(getString(R.string.page_name_home), HomeFragment.class, homeAdapter, ADAPTER_HOME, true);
+    }
+
+    private void addMentionsPage()
+    {
+        StatusListAdapter mentionsAdapter = new StatusListAdapter(this);
+        addListPage(getString(R.string.page_name_mentions), MentionsFragment.class, mentionsAdapter, ADAPTER_MENTIONS, true);
+    }
+
+    private void addMessagesPage()
+    {
+        boolean visible = getUserPreferenceHelper().getValue(R.string.key_page_messages_visibility, true);
+        getUserPreferenceHelper().putValue(R.string.key_page_messages_visibility, visible);
+        MessageListAdapter messagesAdapter = new MessageListAdapter(this);
+        pageMessages = addListPage(getString(R.string.page_name_messages), MessagesFragment.class, messagesAdapter, ADAPTER_MESSAGES, visible);
+    }
+
+    private void addPostPage()
+    {
+        addPage(getString(R.string.page_name_post), PostFragment.class, null, true);
+    }
+
+    private void addSearchPage()
+    {
+        boolean visible = getUserPreferenceHelper().getValue(R.string.key_page_search_visibility, true);
+        getUserPreferenceHelper().putValue(R.string.key_page_search_visibility, visible);
+        SearchListAdapter searchAdapter = new SearchListAdapter(this);
+        pageSearch = addListPage(getString(R.string.page_name_search), SearchFragment.class, searchAdapter, ADAPTER_SEARCH, visible);
+    }
+
+    private void addUserListPage()
+    {
+        boolean visible = getUserPreferenceHelper().getValue(R.string.key_page_list_visibility, true);
+        getUserPreferenceHelper().putValue(R.string.key_page_list_visibility, visible);
+        UserListListAdapter userListAdapter = new UserListListAdapter(this);
+        pageUserlist = addListPage(getString(R.string.page_name_list), UserListFragment.class, userListAdapter, ADAPTER_USERLIST, visible);
     }
 
     private void initPostState()
@@ -454,7 +543,7 @@ public class MainActivity extends Activity
             protected void onPostExecute(twitter4j.Status[] statuses)
             {
                 super.onPostExecute(statuses);
-                StatusListAdapter adapter = (StatusListAdapter) getListAdapter(PAGE_HOME);
+                StatusListAdapter adapter = (StatusListAdapter) getListAdapter(ADAPTER_HOME);
                 for(twitter4j.Status status : statuses)
                 {
                     StatusViewModel statusViewModel = new StatusViewModel(status, currentAccount);
@@ -474,7 +563,7 @@ public class MainActivity extends Activity
             protected void onPostExecute(twitter4j.Status[] statuses)
             {
                 super.onPostExecute(statuses);
-                StatusListAdapter adapter = (StatusListAdapter) getListAdapter(PAGE_MENTIONS);
+                StatusListAdapter adapter = (StatusListAdapter) getListAdapter(ADAPTER_MENTIONS);
                 for(twitter4j.Status status : statuses)
                 {
                     adapter.addToBottom(new StatusViewModel(status, currentAccount));
@@ -492,7 +581,7 @@ public class MainActivity extends Activity
             protected void onPostExecute(DirectMessage[] directMessages)
             {
                 super.onPostExecute(directMessages);
-                MessageListAdapter adapter = (MessageListAdapter) getListAdapter(PAGE_MESSAGES);
+                MessageListAdapter adapter = (MessageListAdapter) getListAdapter(ADAPTER_MESSAGES);
                 for(DirectMessage message : directMessages)
                 {
                     adapter.addToBottom(new MessageViewModel(message, currentAccount));
@@ -506,7 +595,7 @@ public class MainActivity extends Activity
             protected void onPostExecute(DirectMessage[] directMessages)
             {
                 super.onPostExecute(directMessages);
-                MessageListAdapter adapter = (MessageListAdapter) getListAdapter(PAGE_MESSAGES);
+                MessageListAdapter adapter = (MessageListAdapter) getListAdapter(ADAPTER_MESSAGES);
                 for(DirectMessage message : directMessages)
                 {
                     adapter.addToBottom(new MessageViewModel(message, currentAccount));
@@ -531,7 +620,7 @@ public class MainActivity extends Activity
         if(!TextUtils.isEmpty(query))
         {
             SearchQuery.saveIfNotFound(query);
-            final SearchListAdapter adapter = (SearchListAdapter) getListAdapter(PAGE_SEARCH);
+            final SearchListAdapter adapter = (SearchListAdapter) getListAdapter(ADAPTER_SEARCH);
             adapter.initSearch(query);
             adapter.clear();
             adapter.updateForce();
@@ -584,7 +673,7 @@ public class MainActivity extends Activity
     private void startUserList(Twitter twitter, String listFullName)
     {
         saveLastUserList(listFullName);
-        final UserListListAdapter adapter = (UserListListAdapter) getListAdapter(PAGE_USERLIST);
+        final UserListListAdapter adapter = (UserListListAdapter) getListAdapter(ADAPTER_USERLIST);
         adapter.setListFullName(listFullName);
         adapter.clear();
         adapter.updateForce();
@@ -769,7 +858,7 @@ public class MainActivity extends Activity
      */
     public void openSearchPage()
     {
-        setSelectedPageIndex(PAGE_SEARCH);
+        setSelectedPageIndex(pageSearch);
     }
 
     /**
@@ -789,6 +878,6 @@ public class MainActivity extends Activity
 
     private void openUserListPage()
     {
-        setSelectedPageIndex(PAGE_USERLIST);
+        setSelectedPageIndex(pageUserlist);
     }
 }

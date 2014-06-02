@@ -73,7 +73,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
             }
         });
         Thread.sleep(1000);
-        assertEquals(1, getActivity().getListAdapter(MainActivity.PAGE_HOME).getCount());
+        assertEquals(1, getActivity().getListAdapter(MainActivity.ADAPTER_HOME).getCount());
         assertEquals(status.getRetweetedStatus(), StatusCache.getInstance().get(status.getRetweetedStatus().getId()));
     }
 
@@ -112,7 +112,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
             }
         });
         Thread.sleep(1000);
-        assertEquals(0, getActivity().getListAdapter(MainActivity.PAGE_HOME).getCount());
+        assertEquals(0, getActivity().getListAdapter(MainActivity.ADAPTER_HOME).getCount());
     }
 
     public void testOnMention() throws Exception
@@ -130,8 +130,8 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
             }
         });
         Thread.sleep(1000);
-        assertEquals(1, getActivity().getListAdapter(MainActivity.PAGE_MENTIONS).getCount());
-        assertEquals(1, getActivity().getListAdapter(MainActivity.PAGE_HISTORY).getCount());
+        assertEquals(1, getActivity().getListAdapter(MainActivity.ADAPTER_MENTIONS).getCount());
+        assertEquals(1, getActivity().getListAdapter(MainActivity.ADAPTER_HISTORY).getCount());
     }
 
     public void testOnRetweeted() throws Exception
@@ -149,8 +149,8 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
             }
         });
         Thread.sleep(1000);
-        assertEquals(1, getActivity().getListAdapter(MainActivity.PAGE_HOME).getCount());
-        assertEquals(0, getActivity().getListAdapter(MainActivity.PAGE_HISTORY).getCount());
+        assertEquals(1, getActivity().getListAdapter(MainActivity.ADAPTER_HOME).getCount());
+        assertEquals(0, getActivity().getListAdapter(MainActivity.ADAPTER_HISTORY).getCount());
     }
 
     public void testOnFavorited() throws Exception
@@ -170,7 +170,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
             }
         });
         Thread.sleep(1000);
-        assertEquals(2, getActivity().getListAdapter(MainActivity.PAGE_HISTORY).getCount());
+        assertEquals(2, getActivity().getListAdapter(MainActivity.ADAPTER_HISTORY).getCount());
     }
 
     public void testOnFollow() throws Exception
@@ -188,7 +188,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
             }
         });
         Thread.sleep(1000);
-        assertEquals(1, getActivity().getListAdapter(MainActivity.PAGE_HISTORY).getCount());
+        assertEquals(1, getActivity().getListAdapter(MainActivity.ADAPTER_HISTORY).getCount());
     }
 
     public void testOnBlock() throws Exception
@@ -207,7 +207,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
             }
         });
         Thread.sleep(1000);
-        assertEquals(2, getActivity().getListAdapter(MainActivity.PAGE_HISTORY).getCount());
+        assertEquals(2, getActivity().getListAdapter(MainActivity.ADAPTER_HISTORY).getCount());
     }
 
     public void testOnDirectMessage() throws Exception
@@ -225,7 +225,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
             }
         });
         Thread.sleep(1000);
-        assertEquals(1, getActivity().getListAdapter(MainActivity.PAGE_MESSAGES).getCount());
+        assertEquals(1, getActivity().getListAdapter(MainActivity.ADAPTER_MESSAGES).getCount());
         getActivity().runOnUiThread(new Runnable()
         {
             @Override
@@ -235,7 +235,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
             }
         });
         Thread.sleep(1000);
-        assertEquals(0, getActivity().getListAdapter(MainActivity.PAGE_MESSAGES).getCount());
+        assertEquals(0, getActivity().getListAdapter(MainActivity.ADAPTER_MESSAGES).getCount());
     }
 
     @Override

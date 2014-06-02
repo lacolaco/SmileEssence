@@ -60,7 +60,7 @@ public class StatusFilter
 
     private static void addToMentions(MainActivity activity, StatusViewModel status)
     {
-        StatusListAdapter adapter = (StatusListAdapter) activity.getListAdapter(MainActivity.PAGE_MENTIONS);
+        StatusListAdapter adapter = (StatusListAdapter) activity.getListAdapter(MainActivity.ADAPTER_MENTIONS);
         adapter.addToTop(status);
         adapter.update();
     }

@@ -159,7 +159,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onDeletionNotice(long directMessageId, long userId)
     {
-        MessageListAdapter messages = (MessageListAdapter) activity.getListAdapter(MainActivity.PAGE_MESSAGES);
+        MessageListAdapter messages = (MessageListAdapter) activity.getListAdapter(MainActivity.ADAPTER_MESSAGES);
         messages.removeByMessageID(directMessageId);
     }
 
@@ -178,8 +178,8 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         else if(isMe(source))
         {
             FavoriteCache.getInstance().put(favoritedStatus, true);
-            activity.getListAdapter(MainActivity.PAGE_HOME).update();
-            activity.getListAdapter(MainActivity.PAGE_MENTIONS).update();
+            activity.getListAdapter(MainActivity.ADAPTER_HOME).update();
+            activity.getListAdapter(MainActivity.ADAPTER_MENTIONS).update();
         }
     }
 
@@ -193,8 +193,8 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         else if(isMe(source))
         {
             FavoriteCache.getInstance().put(unfavoritedStatus, false);
-            activity.getListAdapter(MainActivity.PAGE_HOME).update();
-            activity.getListAdapter(MainActivity.PAGE_MENTIONS).update();
+            activity.getListAdapter(MainActivity.ADAPTER_HOME).update();
+            activity.getListAdapter(MainActivity.ADAPTER_MENTIONS).update();
         }
     }
 
@@ -287,7 +287,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
 
     private void addToHistory(EventViewModel mentioned)
     {
-        CustomListAdapter<?> history = activity.getListAdapter(MainActivity.PAGE_HISTORY);
+        CustomListAdapter<?> history = activity.getListAdapter(MainActivity.ADAPTER_HISTORY);
         Notificator.publish(activity, mentioned.getFormattedString(activity));
         history.addToTop(mentioned);
         history.update();
@@ -295,21 +295,21 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
 
     private void addToHome(StatusViewModel viewModel)
     {
-        StatusListAdapter home = (StatusListAdapter) activity.getListAdapter(MainActivity.PAGE_HOME);
+        StatusListAdapter home = (StatusListAdapter) activity.getListAdapter(MainActivity.ADAPTER_HOME);
         home.addToTop(viewModel);
         home.update();
     }
 
     private void addToMentions(StatusViewModel viewModel)
     {
-        StatusListAdapter mentions = (StatusListAdapter) activity.getListAdapter(MainActivity.PAGE_MENTIONS);
+        StatusListAdapter mentions = (StatusListAdapter) activity.getListAdapter(MainActivity.ADAPTER_MENTIONS);
         mentions.addToTop(viewModel);
         mentions.update();
     }
 
     private void addToMessages(MessageViewModel message)
     {
-        MessageListAdapter messages = (MessageListAdapter) activity.getListAdapter(MainActivity.PAGE_MESSAGES);
+        MessageListAdapter messages = (MessageListAdapter) activity.getListAdapter(MainActivity.ADAPTER_MESSAGES);
         messages.addToTop(message);
         messages.update();
     }

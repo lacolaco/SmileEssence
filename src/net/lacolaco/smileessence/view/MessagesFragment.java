@@ -114,6 +114,6 @@ public class MessagesFragment extends CustomListFragment
 
     private MessageListAdapter getListAdapter(MainActivity activity)
     {
-        return (MessageListAdapter) activity.getListAdapter(MainActivity.PAGE_MESSAGES);
+        return (MessageListAdapter) activity.getListAdapter(MainActivity.ADAPTER_MESSAGES);
     }
 }
