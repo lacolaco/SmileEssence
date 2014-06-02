@@ -50,18 +50,20 @@ import java.util.Date;
 public class MessageViewModel implements IViewModel
 {
 
-// ------------------------------ FIELDS ------------------------------
+    // ------------------------------ FIELDS ------------------------------
 
-    private long id;
-    private long senderID;
-    private String senderScreenName;
-    private String senderName;
-    private String senderIconURL;
-    private String text;
-    private Date createdAt;
-    private boolean myMessage;
+    private final long id;
+    private final long senderID;
+    private final String senderScreenName;
+    private final String senderName;
+    private final String senderIconURL;
+    private final long recipientId;
+    private final String recipientScreenName;
+    private final String text;
+    private final Date createdAt;
+    private final boolean myMessage;
 
-// --------------------------- CONSTRUCTORS ---------------------------
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public MessageViewModel(DirectMessage directMessage, Account account)
     {
@@ -71,6 +73,8 @@ public class MessageViewModel implements IViewModel
         senderScreenName = directMessage.getSenderScreenName();
         senderName = directMessage.getSender().getName();
         senderIconURL = directMessage.getSender().getProfileImageURL();
+        recipientId = directMessage.getRecipientId();
+        recipientScreenName = directMessage.getRecipientScreenName();
         text = directMessage.getText();
         createdAt = directMessage.getCreatedAt();
         myMessage = isMyMessage(account);
@@ -81,16 +85,36 @@ public class MessageViewModel implements IViewModel
         return senderID == account.userID;
     }
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     public Date getCreatedAt()
     {
         return createdAt;
     }
 
+    private String getFooterText()
+    {
+        String s = StringUtils.dateToString(getCreatedAt());
+        if(isMyMessage())
+        {
+            s = String.format("%s to @%s", s, recipientScreenName);
+        }
+        return s;
+    }
+
     public long getID()
     {
         return id;
+    }
+
+    public long getRecipientId()
+    {
+        return recipientId;
+    }
+
+    public String getRecipientScreenName()
+    {
+        return recipientScreenName;
     }
 
     public String getSenderIconURL()
@@ -123,10 +147,10 @@ public class MessageViewModel implements IViewModel
         return myMessage;
     }
 
-// ------------------------ INTERFACE METHODS ------------------------
+    // ------------------------ INTERFACE METHODS ------------------------
 
 
-// --------------------- Interface IViewModel ---------------------
+    // --------------------- Interface IViewModel ---------------------
 
     @Override
     public View getView(final Activity activity, LayoutInflater inflater, View convertedView)
@@ -155,7 +179,7 @@ public class MessageViewModel implements IViewModel
         header.setTextSize(textSize);
         int colorHeader = Themes.getStyledColor(activity, theme, R.attr.color_message_text_header, 0);
         header.setTextColor(colorHeader);
-        header.setText(NameStyles.getNameString(nameStyle, getSenderScreenName(), getSenderName()));
+        header.setText(getNameString(nameStyle));
         TextView content = (TextView) convertedView.findViewById(R.id.textview_status_text);
         content.setTextSize(textSize);
         int colorNormal = Themes.getStyledColor(activity, theme, R.attr.color_status_text_normal, 0);
@@ -165,7 +189,7 @@ public class MessageViewModel implements IViewModel
         footer.setTextSize(textSize - 2);
         int colorFooter = Themes.getStyledColor(activity, theme, R.attr.color_status_text_footer, 0);
         footer.setTextColor(colorFooter);
-        footer.setText(StringUtils.dateToString(getCreatedAt()));
+        footer.setText(getFooterText());
         ImageView favorited = (ImageView) convertedView.findViewById(R.id.imageview_status_favorited);
         favorited.setVisibility(View.GONE);
         int colorBgMessage = Themes.getStyledColor(activity, theme, R.attr.color_message_bg_normal, 0);
@@ -181,5 +205,10 @@ public class MessageViewModel implements IViewModel
             }
         }));
         return convertedView;
+    }
+
+    private String getNameString(int nameStyle)
+    {
+        return NameStyles.getNameString(nameStyle, getSenderScreenName(), getSenderName());
     }
 }
