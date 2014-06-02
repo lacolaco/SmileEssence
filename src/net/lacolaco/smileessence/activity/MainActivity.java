@@ -492,12 +492,26 @@ public class MainActivity extends Activity
             protected void onPostExecute(DirectMessage[] directMessages)
             {
                 super.onPostExecute(directMessages);
-                CustomListAdapter<?> adapter = getListAdapter(PAGE_MESSAGES);
+                MessageListAdapter adapter = (MessageListAdapter) getListAdapter(PAGE_MESSAGES);
                 for(DirectMessage message : directMessages)
                 {
                     adapter.addToBottom(new MessageViewModel(message, currentAccount));
                 }
-                adapter.updateForce();
+                adapter.notifyDataSetChanged();
+            }
+        }.execute();
+        new SentDirectMessagesTask(twitter, this, paging)
+        {
+            @Override
+            protected void onPostExecute(DirectMessage[] directMessages)
+            {
+                super.onPostExecute(directMessages);
+                MessageListAdapter adapter = (MessageListAdapter) getListAdapter(PAGE_MESSAGES);
+                for(DirectMessage message : directMessages)
+                {
+                    adapter.addToBottom(new MessageViewModel(message, currentAccount));
+                }
+                adapter.notifyDataSetChanged();
             }
         }.execute();
     }

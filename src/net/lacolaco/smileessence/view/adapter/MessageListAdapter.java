@@ -27,6 +27,8 @@ package net.lacolaco.smileessence.view.adapter;
 import android.app.Activity;
 import net.lacolaco.smileessence.viewmodel.MessageViewModel;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 public class MessageListAdapter extends CustomListAdapter<MessageViewModel>
@@ -51,9 +53,27 @@ public class MessageListAdapter extends CustomListAdapter<MessageViewModel>
         return ((MessageViewModel) getItem(0)).getID();
     }
 
+    // ------------------------ OVERRIDE METHODS ------------------------
+
+    @Override
+    public void sort()
+    {
+        synchronized(LOCK)
+        {
+            Collections.sort(list, new Comparator<MessageViewModel>()
+            {
+                @Override
+                public int compare(MessageViewModel lhs, MessageViewModel rhs)
+                {
+                    return rhs.getCreatedAt().compareTo(lhs.getCreatedAt());
+                }
+            });
+        }
+    }
+
     // -------------------------- OTHER METHODS --------------------------
 
-    public MessageViewModel removeByStatusID(long messageID)
+    public MessageViewModel removeByMessageID(long messageID)
     {
         synchronized(this.LOCK)
         {

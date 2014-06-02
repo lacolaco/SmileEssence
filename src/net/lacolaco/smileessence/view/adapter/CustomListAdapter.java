@@ -115,9 +115,14 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
     @Override
     public void notifyDataSetChanged()
     {
+        sort();
         array = Iterables.toArray(list, clss);
         count = array.length;
         super.notifyDataSetChanged();
+    }
+
+    public void sort()
+    {
     }
 
     // -------------------------- OTHER METHODS --------------------------

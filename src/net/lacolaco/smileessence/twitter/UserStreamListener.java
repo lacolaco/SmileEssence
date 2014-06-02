@@ -155,7 +155,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     public void onDeletionNotice(long directMessageId, long userId)
     {
         MessageListAdapter messages = (MessageListAdapter) activity.getListAdapter(MainActivity.PAGE_MESSAGES);
-        messages.removeByStatusID(directMessageId);
+        messages.removeByMessageID(directMessageId);
     }
 
     @Override

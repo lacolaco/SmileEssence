@@ -61,12 +61,18 @@ public class StatusListAdapter extends CustomListAdapter<StatusViewModel>
     {
         for(StatusViewModel item : items)
         {
-            if(isBlockUser(item))
+            if(preAdd(item))
             {
                 continue;
             }
             super.addToBottom(item);
         }
+    }
+
+    private boolean preAdd(StatusViewModel item)
+    {
+        removeByStatusID(item.getID());
+        return isBlockUser(item);
     }
 
     private boolean isBlockUser(StatusViewModel item)
@@ -79,11 +85,30 @@ public class StatusListAdapter extends CustomListAdapter<StatusViewModel>
     {
         for(StatusViewModel item : items)
         {
-            if(isBlockUser(item))
+            if(preAdd(item))
             {
                 continue;
             }
             super.addToTop(item);
+        }
+    }
+
+    /**
+     * Sort list by Status#createdAt
+     */
+    @Override
+    public void sort()
+    {
+        synchronized(LOCK)
+        {
+            Collections.sort(list, new Comparator<StatusViewModel>()
+            {
+                @Override
+                public int compare(StatusViewModel lhs, StatusViewModel rhs)
+                {
+                    return rhs.getCreatedAt().compareTo(lhs.getCreatedAt());
+                }
+            });
         }
     }
 
@@ -105,24 +130,6 @@ public class StatusListAdapter extends CustomListAdapter<StatusViewModel>
                 }
             }
             return null;
-        }
-    }
-
-    /**
-     * Sort list by Status#createdAt
-     */
-    public void sort()
-    {
-        synchronized(LOCK)
-        {
-            Collections.sort(list, new Comparator<StatusViewModel>()
-            {
-                @Override
-                public int compare(StatusViewModel lhs, StatusViewModel rhs)
-                {
-                    return rhs.getCreatedAt().compareTo(lhs.getCreatedAt());
-                }
-            });
         }
     }
 }

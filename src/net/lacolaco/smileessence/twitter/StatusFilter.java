@@ -62,7 +62,6 @@ public class StatusFilter
     {
         StatusListAdapter adapter = (StatusListAdapter) activity.getListAdapter(MainActivity.PAGE_MENTIONS);
         adapter.addToTop(status);
-        adapter.sort();
         adapter.update();
     }
 }
