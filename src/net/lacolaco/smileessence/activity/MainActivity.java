@@ -43,6 +43,7 @@ import net.lacolaco.smileessence.Application;
 import net.lacolaco.smileessence.IntentRouter;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.data.CommandSettingCache;
+import net.lacolaco.smileessence.data.UserListCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.entity.CommandSetting;
 import net.lacolaco.smileessence.entity.SearchQuery;
@@ -597,6 +598,7 @@ public class MainActivity extends Activity
 
     private void initUserListCache(Twitter twitter)
     {
+        UserListCache.getInstance().clear();
         new GetUserListsTask(twitter).execute();
     }
 

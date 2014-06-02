@@ -71,4 +71,9 @@ public class UserListCache
     {
         cache.remove(userList);
     }
+
+    public void clear()
+    {
+        cache.clear();
+    }
 }
