@@ -55,6 +55,11 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
 
     // --------------------- GETTER / SETTER METHODS ---------------------
 
+    private long getMyID()
+    {
+        return activity.getCurrentAccount().userID;
+    }
+
     private int getPagerCount()
     {
         return activity.getPagerAdapter().getCount();
@@ -166,12 +171,11 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onFavorite(User source, User target, Status favoritedStatus)
     {
-        long myID = activity.getCurrentAccount().userID;
-        if(myID == target.getId())
+        if(isMe(target))
         {
             addToHistory(new EventViewModel(EnumEvent.FAVORITED, source, favoritedStatus));
         }
-        else if(myID == source.getId())
+        else if(isMe(source))
         {
             FavoriteCache.getInstance().put(favoritedStatus, true);
             activity.getListAdapter(MainActivity.PAGE_HOME).update();
@@ -182,12 +186,11 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onUnfavorite(User source, User target, Status unfavoritedStatus)
     {
-        long myID = activity.getCurrentAccount().userID;
-        if(myID == target.getId())
+        if(isMe(target))
         {
             addToHistory(new EventViewModel(EnumEvent.UNFAVORITED, source, unfavoritedStatus));
         }
-        else if(myID == source.getId())
+        else if(isMe(source))
         {
             FavoriteCache.getInstance().put(unfavoritedStatus, false);
             activity.getListAdapter(MainActivity.PAGE_HOME).update();
@@ -198,7 +201,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onFollow(User source, User followedUser)
     {
-        if(activity.getCurrentAccount().userID == followedUser.getId())
+        if(isMe(followedUser))
         {
             addToHistory(new EventViewModel(EnumEvent.FOLLOWED, source));
         }
@@ -212,14 +215,12 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onDirectMessage(DirectMessage directMessage)
     {
-        if(activity.getCurrentAccount().userID == directMessage.getRecipientId())
+        if(isMe(directMessage.getRecipient()))
         {
             addToHistory(new EventViewModel(EnumEvent.RECEIVE_MESSAGE, directMessage.getSender()));
-            MessageViewModel message = new MessageViewModel(directMessage, activity.getCurrentAccount());
-            CustomListAdapter<?> messages = activity.getListAdapter(MainActivity.PAGE_MESSAGES);
-            messages.addToTop(message);
-            messages.update();
         }
+        MessageViewModel message = new MessageViewModel(directMessage, activity.getCurrentAccount());
+        addToMessages(message);
     }
 
     @Override
@@ -269,7 +270,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onBlock(User source, User blockedUser)
     {
-        if(activity.getCurrentAccount().userID == blockedUser.getId())
+        if(isMe(blockedUser))
         {
             addToHistory(new EventViewModel(EnumEvent.BLOCKED, source));
         }
@@ -278,7 +279,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onUnblock(User source, User unblockedUser)
     {
-        if(activity.getCurrentAccount().userID == unblockedUser.getId())
+        if(isMe(unblockedUser))
         {
             addToHistory(new EventViewModel(EnumEvent.UNBLOCKED, source));
         }
@@ -306,8 +307,20 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         mentions.update();
     }
 
+    private void addToMessages(MessageViewModel message)
+    {
+        MessageListAdapter messages = (MessageListAdapter) activity.getListAdapter(MainActivity.PAGE_MESSAGES);
+        messages.addToTop(message);
+        messages.update();
+    }
+
     private boolean isIgnoredStatus(Status status)
     {
         return status.isRetweet() && StatusCache.getInstance().isIgnored(status.getRetweetedStatus().getId());
+    }
+
+    private boolean isMe(User user)
+    {
+        return user.getId() == getMyID();
     }
 }
