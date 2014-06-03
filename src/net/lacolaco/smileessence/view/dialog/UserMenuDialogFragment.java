@@ -34,6 +34,7 @@ import android.widget.ListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.Command;
+import net.lacolaco.smileessence.command.CommandSearchOnTwitter;
 import net.lacolaco.smileessence.command.user.*;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
@@ -112,6 +113,7 @@ public class UserMenuDialogFragment extends MenuDialogFragment
         commands.add(new UserCommandOpenAclog(activity, user));
         commands.add(new UserCommandOpenTwilog(activity, user));
         commands.add(new UserCommandIntroduce(activity, user));
+        commands.add(new CommandSearchOnTwitter(activity, user.getScreenName()));
         return commands;
     }
 }
