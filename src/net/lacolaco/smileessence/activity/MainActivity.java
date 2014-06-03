@@ -83,6 +83,7 @@ public class MainActivity extends Activity
     public static final int REQUEST_OAUTH = 10;
     public static final int REQUEST_GET_PICTURE_FROM_GALLERY = 11;
     public static final int REQUEST_GET_PICTURE_FROM_CAMERA = 12;
+    public static final int PAGE_GONE = -1;
     public static final int PAGE_POST = 0;
     public static final int ADAPTER_HOME = 1;
     public static final int ADAPTER_MENTIONS = 2;
@@ -93,10 +94,10 @@ public class MainActivity extends Activity
     private static final String KEY_LAST_USED_SEARCH_QUERY = "lastUsedSearchQuery";
     private static final String KEY_LAST_USED_ACCOUNT_ID = "lastUsedAccountID";
     private static final String KEY_LAST_USER_LIST = "lastUsedUserList";
-    private int pageMessages;
-    private int pageHistory;
-    private int pageSearch;
-    private int pageUserlist;
+    private int pageIndexMessages;
+    private int pageIndexHistory;
+    private int pageIndexSearch;
+    private int pageIndexUserlist;
     private ViewPager viewPager;
     private PageListAdapter pagerAdapter;
     private OAuthSession oauthSession;
@@ -143,7 +144,7 @@ public class MainActivity extends Activity
         String id = getAppPreferenceHelper().getValue(KEY_LAST_USED_ACCOUNT_ID, "");
         if(TextUtils.isEmpty(id))
         {
-            return -1;
+            return PAGE_GONE;
         }
         else
         {
@@ -161,9 +162,9 @@ public class MainActivity extends Activity
         return getAppPreferenceHelper().getValue(KEY_LAST_USER_LIST, "");
     }
 
-    public int getPageHistory()
+    public int getPageIndexHistory()
     {
-        return pageHistory;
+        return pageIndexHistory;
     }
 
     public int getPageHome()
@@ -176,9 +177,9 @@ public class MainActivity extends Activity
         return ADAPTER_MENTIONS;
     }
 
-    public int getPageMessages()
+    public int getPageIndexMessages()
     {
-        return pageMessages;
+        return pageIndexMessages;
     }
 
     public int getPagePost()
@@ -191,14 +192,14 @@ public class MainActivity extends Activity
         return pagerAdapter;
     }
 
-    public int getPageSearch()
+    public int getPageIndexSearch()
     {
-        return pageSearch;
+        return pageIndexSearch;
     }
 
-    public int getPageUserlist()
+    public int getPageIndexUserlist()
     {
-        return pageUserlist;
+        return pageIndexUserlist;
     }
 
     public int getThemeIndex()
@@ -420,7 +421,7 @@ public class MainActivity extends Activity
         boolean visible = getUserPreferenceHelper().getValue(R.string.key_page_history_visibility, true);
         getUserPreferenceHelper().putValue(R.string.key_page_history_visibility, visible);
         EventListAdapter historyAdapter = new EventListAdapter(this);
-        pageHistory = addListPage(getString(R.string.page_name_history), HistoryFragment.class, historyAdapter, ADAPTER_HISTORY, visible);
+        pageIndexHistory = addListPage(getString(R.string.page_name_history), HistoryFragment.class, historyAdapter, ADAPTER_HISTORY, visible);
     }
 
     public int addListPage(String name, Class<? extends CustomListFragment> fragmentClass, CustomListAdapter<?> adapter, int adapterIndex, boolean visible)
@@ -436,7 +437,7 @@ public class MainActivity extends Activity
         else
         {
             adapterMap.put(adapterIndex, adapter);
-            return -1;
+            return PAGE_GONE;
         }
     }
 
@@ -469,7 +470,7 @@ public class MainActivity extends Activity
         boolean visible = getUserPreferenceHelper().getValue(R.string.key_page_messages_visibility, true);
         getUserPreferenceHelper().putValue(R.string.key_page_messages_visibility, visible);
         MessageListAdapter messagesAdapter = new MessageListAdapter(this);
-        pageMessages = addListPage(getString(R.string.page_name_messages), MessagesFragment.class, messagesAdapter, ADAPTER_MESSAGES, visible);
+        pageIndexMessages = addListPage(getString(R.string.page_name_messages), MessagesFragment.class, messagesAdapter, ADAPTER_MESSAGES, visible);
     }
 
     private void addPostPage()
@@ -482,7 +483,7 @@ public class MainActivity extends Activity
         boolean visible = getUserPreferenceHelper().getValue(R.string.key_page_search_visibility, true);
         getUserPreferenceHelper().putValue(R.string.key_page_search_visibility, visible);
         SearchListAdapter searchAdapter = new SearchListAdapter(this);
-        pageSearch = addListPage(getString(R.string.page_name_search), SearchFragment.class, searchAdapter, ADAPTER_SEARCH, visible);
+        pageIndexSearch = addListPage(getString(R.string.page_name_search), SearchFragment.class, searchAdapter, ADAPTER_SEARCH, visible);
     }
 
     private void addUserListPage()
@@ -490,7 +491,7 @@ public class MainActivity extends Activity
         boolean visible = getUserPreferenceHelper().getValue(R.string.key_page_list_visibility, true);
         getUserPreferenceHelper().putValue(R.string.key_page_list_visibility, visible);
         UserListListAdapter userListAdapter = new UserListListAdapter(this);
-        pageUserlist = addListPage(getString(R.string.page_name_list), UserListFragment.class, userListAdapter, ADAPTER_USERLIST, visible);
+        pageIndexUserlist = addListPage(getString(R.string.page_name_list), UserListFragment.class, userListAdapter, ADAPTER_USERLIST, visible);
     }
 
     private void initPostState()
@@ -575,6 +576,10 @@ public class MainActivity extends Activity
 
     private void initMessages(final Twitter twitter, final Paging paging)
     {
+        if(pageIndexMessages == PAGE_GONE)
+        {
+            return;
+        }
         new DirectMessagesTask(twitter, this, paging)
         {
             @Override
@@ -607,6 +612,10 @@ public class MainActivity extends Activity
 
     private void initSearch(Twitter twitter)
     {
+        if(pageIndexSearch == PAGE_GONE)
+        {
+            return;
+        }
         String lastUsedSearchQuery = getLastSearch();
         if(!TextUtils.isEmpty(lastUsedSearchQuery))
         {
@@ -663,6 +672,10 @@ public class MainActivity extends Activity
 
     private void initUserList(Twitter twitter)
     {
+        if(pageIndexUserlist == PAGE_GONE)
+        {
+            return;
+        }
         String lastUserList = getLastUserList();
         if(!TextUtils.isEmpty(lastUserList))
         {
@@ -858,7 +871,7 @@ public class MainActivity extends Activity
      */
     public void openSearchPage()
     {
-        setSelectedPageIndex(pageSearch);
+        setSelectedPageIndex(pageIndexSearch);
     }
 
     /**
@@ -878,6 +891,6 @@ public class MainActivity extends Activity
 
     private void openUserListPage()
     {
-        setSelectedPageIndex(pageUserlist);
+        setSelectedPageIndex(pageIndexUserlist);
     }
 }
