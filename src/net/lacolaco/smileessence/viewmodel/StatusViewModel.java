@@ -56,7 +56,7 @@ public class StatusViewModel implements IViewModel
 
     // ------------------------------ FIELDS ------------------------------
 
-    public static final String TAG = "statusDialog";
+    public static final String STATUS_DIALOG = "statusDialog";
     private long id;
     private long userID;
     private String screenName;
@@ -400,11 +400,12 @@ public class StatusViewModel implements IViewModel
     {
         StatusMenuDialogFragment fragment = new StatusMenuDialogFragment();
         fragment.setStatusID(getID());
-        DialogHelper.showDialog(activity, fragment, TAG);
+        DialogHelper.showDialog(activity, fragment, STATUS_DIALOG);
     }
 
     private void onIconClick(Activity activity)
     {
+        DialogHelper.close(activity, STATUS_DIALOG);
         UserDetailDialogFragment dialogFragment = new UserDetailDialogFragment();
         dialogFragment.setUserID(isRetweet() ? getRetweetedStatus().userID : userID);
         DialogHelper.showDialog(activity, dialogFragment);

@@ -49,7 +49,7 @@ public class DialogHelper
         this.dialogFragment = dialogFragment;
     }
 
-    public static void close(Activity activity)
+    public static void closeDialog(Activity activity)
     {
         close(activity, TAG_DIALOG);
     }
@@ -80,15 +80,18 @@ public class DialogHelper
 
     public static void close(Activity activity, String tag)
     {
-        FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
-        DialogFragment oldDialog = (DialogFragment) activity.getFragmentManager().findFragmentByTag(tag);
-        if(oldDialog != null)
+        if(activity != null)
         {
-            transaction.remove(oldDialog);
-            //            oldDialog.dismiss();
+            FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
+            DialogFragment oldDialog = (DialogFragment) activity.getFragmentManager().findFragmentByTag(tag);
+            if(oldDialog != null)
+            {
+                transaction.remove(oldDialog);
+                //            oldDialog.dismiss();
+            }
+            //        transaction.addToBackStack(null);
+            transaction.commit();
         }
-        //        transaction.addToBackStack(null);
-        transaction.commit();
     }
 
     // -------------------------- OTHER METHODS --------------------------
