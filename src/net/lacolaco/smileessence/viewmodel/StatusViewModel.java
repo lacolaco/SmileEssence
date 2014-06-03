@@ -54,10 +54,9 @@ import java.util.Date;
 public class StatusViewModel implements IViewModel
 {
 
-    public static final String TAG = "statusDialog";
-
     // ------------------------------ FIELDS ------------------------------
 
+    public static final String TAG = "statusDialog";
     private long id;
     private long userID;
     private String screenName;
@@ -194,6 +193,11 @@ public class StatusViewModel implements IViewModel
             return retweetedStatus.name;
         }
         return name;
+    }
+
+    public StatusViewModel getOriginal()
+    {
+        return isRetweet() ? retweetedStatus : this;
     }
 
     public long getOriginalUserID()
@@ -392,17 +396,17 @@ public class StatusViewModel implements IViewModel
         return ((MainActivity) activity).getUserPreferenceHelper().getValue(R.string.key_setting_read_morse, true);
     }
 
-    private void onIconClick(Activity activity)
-    {
-        UserDetailDialogFragment dialogFragment = new UserDetailDialogFragment();
-        dialogFragment.setUserID(isRetweet() ? getRetweetedStatus().userID : userID);
-        DialogHelper.showDialog(activity, dialogFragment);
-    }
-
     private void onClick(Activity activity)
     {
         StatusMenuDialogFragment fragment = new StatusMenuDialogFragment();
         fragment.setStatusID(getID());
         DialogHelper.showDialog(activity, fragment, TAG);
+    }
+
+    private void onIconClick(Activity activity)
+    {
+        UserDetailDialogFragment dialogFragment = new UserDetailDialogFragment();
+        dialogFragment.setUserID(isRetweet() ? getRetweetedStatus().userID : userID);
+        DialogHelper.showDialog(activity, dialogFragment);
     }
 }

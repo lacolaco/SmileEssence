@@ -80,6 +80,25 @@ public class StatusListAdapter extends CustomListAdapter<StatusViewModel>
         return UserCache.getInstance().isBlockID(item.getOriginalUserID());
     }
 
+    public StatusViewModel removeByStatusID(long statusID)
+    {
+        synchronized(this.LOCK)
+        {
+            Iterator<StatusViewModel> iterator = this.list.iterator();
+            while(iterator.hasNext())
+            {
+                StatusViewModel statusViewModel = iterator.next();
+                if(statusViewModel.getID() == statusID)
+                {
+                    iterator.remove();
+                    update();
+                    return statusViewModel;
+                }
+            }
+            return null;
+        }
+    }
+
     @Override
     public void addToTop(StatusViewModel... items)
     {
@@ -106,30 +125,9 @@ public class StatusListAdapter extends CustomListAdapter<StatusViewModel>
                 @Override
                 public int compare(StatusViewModel lhs, StatusViewModel rhs)
                 {
-                    return rhs.getCreatedAt().compareTo(lhs.getCreatedAt());
+                    return Long.valueOf(rhs.getID()).compareTo(lhs.getID());
                 }
             });
-        }
-    }
-
-    // -------------------------- OTHER METHODS --------------------------
-
-    public StatusViewModel removeByStatusID(long statusID)
-    {
-        synchronized(this.LOCK)
-        {
-            Iterator<StatusViewModel> iterator = this.list.iterator();
-            while(iterator.hasNext())
-            {
-                StatusViewModel statusViewModel = iterator.next();
-                if(statusViewModel.getID() == statusID)
-                {
-                    iterator.remove();
-                    update();
-                    return statusViewModel;
-                }
-            }
-            return null;
         }
     }
 }
