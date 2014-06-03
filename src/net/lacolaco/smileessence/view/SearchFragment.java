@@ -55,7 +55,8 @@ import twitter4j.Twitter;
 
 import java.util.List;
 
-public class SearchFragment extends CustomListFragment implements View.OnClickListener, View.OnFocusChangeListener
+public class SearchFragment extends CustomListFragment implements View.OnClickListener, View.OnFocusChangeListener,
+        SearchListAdapter.OnQueryChangeListener
 {
 
     // ------------------------------ FIELDS ------------------------------
@@ -255,6 +256,7 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         editText = getEditText(page);
         editText.setOnFocusChangeListener(this);
         editText.setText(adapter.getQuery());
+        adapter.setOnQueryChangeListener(this);
         return page;
     }
 
@@ -335,6 +337,15 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
                 getMainActivity().openSearchPage(text);
                 hideIME();
             }
+        }
+    }
+
+    @Override
+    public void onQueryChange(String newQuery)
+    {
+        if(editText != null)
+        {
+            editText.setText(newQuery);
         }
     }
 }

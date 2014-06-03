@@ -33,6 +33,7 @@ public class SearchListAdapter extends StatusListAdapter
 
     private long topID;
     private String query;
+    private OnQueryChangeListener listener;
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
@@ -42,6 +43,16 @@ public class SearchListAdapter extends StatusListAdapter
     }
 
     // --------------------- GETTER / SETTER METHODS ---------------------
+
+    public OnQueryChangeListener getListener()
+    {
+        return listener;
+    }
+
+    public void setOnQueryChangeListener(OnQueryChangeListener listener)
+    {
+        this.listener = listener;
+    }
 
     public String getQuery()
     {
@@ -65,6 +76,18 @@ public class SearchListAdapter extends StatusListAdapter
     {
         this.query = query;
         topID = 0;
+        if(listener != null)
+        {
+            listener.onQueryChange(query);
+        }
+    }
+
+    // -------------------------- INNER CLASSES --------------------------
+
+    public static interface OnQueryChangeListener
+    {
+
+        void onQueryChange(String newQuery);
     }
 
 }
