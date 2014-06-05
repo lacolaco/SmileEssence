@@ -49,11 +49,6 @@ public class SearchListAdapter extends StatusListAdapter
         return listener;
     }
 
-    public void setOnQueryChangeListener(OnQueryChangeListener listener)
-    {
-        this.listener = listener;
-    }
-
     public String getQuery()
     {
         return query;
@@ -68,6 +63,11 @@ public class SearchListAdapter extends StatusListAdapter
     public void setTopID(long topID)
     {
         this.topID = topID;
+    }
+
+    public void setOnQueryChangeListener(OnQueryChangeListener listener)
+    {
+        this.listener = listener;
     }
 
     // -------------------------- OTHER METHODS --------------------------

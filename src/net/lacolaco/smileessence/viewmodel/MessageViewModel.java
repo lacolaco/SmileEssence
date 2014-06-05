@@ -80,11 +80,6 @@ public class MessageViewModel implements IViewModel
         myMessage = isMyMessage(account);
     }
 
-    private boolean isMyMessage(Account account)
-    {
-        return senderID == account.userID;
-    }
-
     // --------------------- GETTER / SETTER METHODS ---------------------
 
     public Date getCreatedAt()
@@ -210,5 +205,10 @@ public class MessageViewModel implements IViewModel
     private String getNameString(int nameStyle)
     {
         return NameStyles.getNameString(nameStyle, getSenderScreenName(), getSenderName());
+    }
+
+    private boolean isMyMessage(Account account)
+    {
+        return senderID == account.userID;
     }
 }

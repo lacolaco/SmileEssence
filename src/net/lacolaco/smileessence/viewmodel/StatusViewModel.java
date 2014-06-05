@@ -105,21 +105,6 @@ public class StatusViewModel implements IViewModel
         setRetweetOfMe(isRetweetOfMe(account.userID));
     }
 
-    public boolean isMention(String screenName)
-    {
-        return text.contains(String.format("@%s", screenName));
-    }
-
-    public boolean isMyStatus(long userID)
-    {
-        return this.userID == userID;
-    }
-
-    public boolean isRetweetOfMe(long userID)
-    {
-        return retweetedStatus != null && retweetedStatus.getUserID() == userID;
-    }
-
     // --------------------- GETTER / SETTER METHODS ---------------------
 
     public Date getCreatedAt()
@@ -388,6 +373,23 @@ public class StatusViewModel implements IViewModel
             }
         }));
         return convertedView;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    public boolean isMention(String screenName)
+    {
+        return text.contains(String.format("@%s", screenName));
+    }
+
+    public boolean isMyStatus(long userID)
+    {
+        return this.userID == userID;
+    }
+
+    public boolean isRetweetOfMe(long userID)
+    {
+        return retweetedStatus != null && retweetedStatus.getUserID() == userID;
     }
 
     private boolean isReadMorseEnabled(MainActivity activity)

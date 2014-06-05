@@ -66,6 +66,11 @@ public class DialogHelper
         }
     }
 
+    public static void showDialog(Activity activity, DialogFragment dialogFragment)
+    {
+        showDialog(activity, dialogFragment, TAG_DIALOG);
+    }
+
     /**
      * Please expressly closing
      */
@@ -95,11 +100,6 @@ public class DialogHelper
     }
 
     // -------------------------- OTHER METHODS --------------------------
-
-    public static void showDialog(Activity activity, DialogFragment dialogFragment)
-    {
-        showDialog(activity, dialogFragment, TAG_DIALOG);
-    }
 
     public void show()
     {

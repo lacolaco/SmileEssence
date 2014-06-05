@@ -69,35 +69,6 @@ public class StatusListAdapter extends CustomListAdapter<StatusViewModel>
         }
     }
 
-    private boolean preAdd(StatusViewModel item)
-    {
-        removeByStatusID(item.getID());
-        return isBlockUser(item);
-    }
-
-    private boolean isBlockUser(StatusViewModel item)
-    {
-        return UserCache.getInstance().isBlockID(item.getOriginalUserID());
-    }
-
-    public StatusViewModel removeByStatusID(long statusID)
-    {
-        synchronized(this.LOCK)
-        {
-            Iterator<StatusViewModel> iterator = this.list.iterator();
-            while(iterator.hasNext())
-            {
-                StatusViewModel statusViewModel = iterator.next();
-                if(statusViewModel.getID() == statusID)
-                {
-                    iterator.remove();
-                    return statusViewModel;
-                }
-            }
-            return null;
-        }
-    }
-
     @Override
     public void addToTop(StatusViewModel... items)
     {
@@ -128,5 +99,36 @@ public class StatusListAdapter extends CustomListAdapter<StatusViewModel>
                 }
             });
         }
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    public StatusViewModel removeByStatusID(long statusID)
+    {
+        synchronized(this.LOCK)
+        {
+            Iterator<StatusViewModel> iterator = this.list.iterator();
+            while(iterator.hasNext())
+            {
+                StatusViewModel statusViewModel = iterator.next();
+                if(statusViewModel.getID() == statusID)
+                {
+                    iterator.remove();
+                    return statusViewModel;
+                }
+            }
+            return null;
+        }
+    }
+
+    private boolean isBlockUser(StatusViewModel item)
+    {
+        return UserCache.getInstance().isBlockID(item.getOriginalUserID());
+    }
+
+    private boolean preAdd(StatusViewModel item)
+    {
+        removeByStatusID(item.getID());
+        return isBlockUser(item);
     }
 }

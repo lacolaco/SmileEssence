@@ -96,6 +96,8 @@ public class MessageMenuDialogFragment extends MenuDialogFragment
                 .create();
     }
 
+    // -------------------------- OTHER METHODS --------------------------
+
     public List<Command> getCommands(Activity activity, DirectMessage message, Account account)
     {
         ArrayList<Command> commands = new ArrayList<>();

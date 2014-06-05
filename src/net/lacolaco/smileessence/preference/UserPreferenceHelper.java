@@ -62,18 +62,6 @@ public class UserPreferenceHelper extends SharedPreferenceHelper
         return getString(keyID) != null ? super.getValue(getString(keyID), defaultValue) : defaultValue;
     }
 
-    protected String getString(int resID)
-    {
-        try
-        {
-            return context.getString(resID);
-        }
-        catch(Exception e)
-        {
-            return null;
-        }
-    }
-
     public int getValue(int keyID, int defaultValue)
     {
         return getString(keyID) != null ? super.getValue(getString(keyID), defaultValue) : defaultValue;
@@ -151,5 +139,17 @@ public class UserPreferenceHelper extends SharedPreferenceHelper
             return false;
         }
         return super.putValue(getString(keyID), value);
+    }
+
+    protected String getString(int resID)
+    {
+        try
+        {
+            return context.getString(resID);
+        }
+        catch(Exception e)
+        {
+            return null;
+        }
     }
 }

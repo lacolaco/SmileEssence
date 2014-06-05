@@ -173,6 +173,8 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         return new AlertDialog.Builder(activity).setCustomTitle(header).setView(body).create();
     }
 
+    // -------------------------- OTHER METHODS --------------------------
+
     public List<Command> getCommands(Activity activity, Status status, Account account)
     {
         ArrayList<Command> commands = new ArrayList<>();
@@ -208,6 +210,11 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         return commands;
     }
 
+    private void confirm(MainActivity activity, Runnable onYes)
+    {
+        ConfirmDialogFragment.show(activity, getString(R.string.dialog_confirm_commands), onYes);
+    }
+
     private ArrayList<Command> getHashtagCommands(Activity activity, Status status)
     {
         ArrayList<Command> commands = new ArrayList<>();
@@ -216,26 +223,6 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
             for(HashtagEntity hashtagEntity : status.getHashtagEntities())
             {
                 commands.add(new CommandOpenHashtagDialog(activity, hashtagEntity));
-            }
-        }
-        return commands;
-    }
-
-    private ArrayList<Command> getURLCommands(Activity activity, Status status)
-    {
-        ArrayList<Command> commands = new ArrayList<>();
-        if(status.getURLEntities() != null)
-        {
-            for(URLEntity urlEntity : status.getURLEntities())
-            {
-                commands.add(new CommandOpenURL(activity, urlEntity.getExpandedURL()));
-            }
-        }
-        if(status.getMediaEntities() != null)
-        {
-            for(MediaEntity mediaEntity : status.getMediaEntities())
-            {
-                commands.add(new CommandOpenURL(activity, mediaEntity.getMediaURL()));
             }
         }
         return commands;
@@ -289,8 +276,23 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         return view;
     }
 
-    private void confirm(MainActivity activity, Runnable onYes)
+    private ArrayList<Command> getURLCommands(Activity activity, Status status)
     {
-        ConfirmDialogFragment.show(activity, getString(R.string.dialog_confirm_commands), onYes);
+        ArrayList<Command> commands = new ArrayList<>();
+        if(status.getURLEntities() != null)
+        {
+            for(URLEntity urlEntity : status.getURLEntities())
+            {
+                commands.add(new CommandOpenURL(activity, urlEntity.getExpandedURL()));
+            }
+        }
+        if(status.getMediaEntities() != null)
+        {
+            for(MediaEntity mediaEntity : status.getMediaEntities())
+            {
+                commands.add(new CommandOpenURL(activity, mediaEntity.getMediaURL()));
+            }
+        }
+        return commands;
     }
 }

@@ -40,6 +40,8 @@ public abstract class PostCommand extends Command
 
     // -------------------------- OTHER METHODS --------------------------
 
+    public abstract String build(String s);
+
     @Override
     public boolean execute()
     {
@@ -65,8 +67,6 @@ public abstract class PostCommand extends Command
         transaction.setText(builtString).commit();
         return true;
     }
-
-    public abstract String build(String s);
 
     public abstract boolean isReplaceCommand();
 }

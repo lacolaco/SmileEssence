@@ -87,6 +87,8 @@ public class HashtagDialogFragment extends MenuDialogFragment
         return new AlertDialog.Builder(activity).setView(body).setTitle(text).setCancelable(true).create();
     }
 
+    // -------------------------- OTHER METHODS --------------------------
+
     public List<Command> getCommands(Activity activity, String text)
     {
         ArrayList<Command> commands = new ArrayList<>();

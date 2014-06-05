@@ -69,6 +69,8 @@ public class ChooseTemplateDialogFragment extends MenuDialogFragment
                 .create();
     }
 
+    // -------------------------- OTHER METHODS --------------------------
+
     public List<Command> getCommands(Activity activity)
     {
         ArrayList<Command> list = new ArrayList<>();

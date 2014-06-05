@@ -46,12 +46,14 @@ public class SearchTask extends TwitterTask<QueryResult>
     private final MainActivity activity;
     private final Query query;
 
-    // --------------------------- CONSTRUCTORS ---------------------------
+    // -------------------------- STATIC METHODS --------------------------
 
     public SearchTask(Twitter twitter, String queryString, MainActivity activity)
     {
         this(twitter, getBaseQuery(activity, queryString), activity);
     }
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public SearchTask(Twitter twitter, Query query, MainActivity activity)
     {

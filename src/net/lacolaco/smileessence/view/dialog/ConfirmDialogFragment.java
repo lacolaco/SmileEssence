@@ -104,6 +104,8 @@ public abstract class ConfirmDialogFragment extends DialogFragment
         DialogHelper.showDialog(activity, fragment, TAG);
     }
 
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
     public void setText(String text)
     {
         Bundle args = new Bundle();

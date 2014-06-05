@@ -66,6 +66,8 @@ public class SelectUserListDialogFragment extends MenuDialogFragment
         return new AlertDialog.Builder(activity).setView(body).setTitle(R.string.dialog_title_select_userlist).setCancelable(true).create();
     }
 
+    // -------------------------- OTHER METHODS --------------------------
+
     public List<Command> getCommands(final MainActivity activity)
     {
         ArrayList<Command> commands = new ArrayList<>();

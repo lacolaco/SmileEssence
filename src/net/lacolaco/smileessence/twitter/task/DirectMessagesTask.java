@@ -35,12 +35,12 @@ import twitter4j.*;
 public class DirectMessagesTask extends TwitterTask<DirectMessage[]>
 {
 
-// ------------------------------ FIELDS ------------------------------
+    // ------------------------------ FIELDS ------------------------------
 
     private final Activity activity;
     private final Paging paging;
 
-// --------------------------- CONSTRUCTORS ---------------------------
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     protected DirectMessagesTask(Twitter twitter, Activity activity)
     {
@@ -54,7 +54,7 @@ public class DirectMessagesTask extends TwitterTask<DirectMessage[]>
         this.paging = paging;
     }
 
-// ------------------------ OVERRIDE METHODS ------------------------
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     protected void onPostExecute(DirectMessage[] directMessages)

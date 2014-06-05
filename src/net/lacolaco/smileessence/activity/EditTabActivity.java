@@ -83,11 +83,6 @@ public class EditTabActivity extends Activity
         return models.toArray(new EditableCheckBoxModel[models.size()]);
     }
 
-    private int getPosition(int key, int defaultValue)
-    {
-        return Integer.parseInt(getPreference().getValue(key, String.valueOf(defaultValue)));
-    }
-
     private ListView getListView()
     {
         return (ListView) findViewById(R.id.listview_edit_list);
@@ -118,15 +113,6 @@ public class EditTabActivity extends Activity
         Logger.debug("EditTabActivity:onCreate");
     }
 
-    private void initializeViews()
-    {
-        ListView listView = getListView();
-        adapter = new CustomListAdapter<>(this, EditableCheckBoxModel.class);
-        listView.setAdapter(adapter);
-        adapter.addToTop(getCheckBoxItems());
-        adapter.update();
-    }
-
     @Override
     protected void onDestroy()
     {
@@ -143,11 +129,6 @@ public class EditTabActivity extends Activity
         super.onDestroy();
     }
 
-    private void putVisibility(int key, boolean value)
-    {
-        getPreference().putValue(key, value);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -162,13 +143,32 @@ public class EditTabActivity extends Activity
         return true;
     }
 
+    private int getPosition(int key, int defaultValue)
+    {
+        return Integer.parseInt(getPreference().getValue(key, String.valueOf(defaultValue)));
+    }
+
     private boolean getVisibility(int key)
     {
         return getPreference().getValue(key, true);
     }
 
+    private void initializeViews()
+    {
+        ListView listView = getListView();
+        adapter = new CustomListAdapter<>(this, EditableCheckBoxModel.class);
+        listView.setAdapter(adapter);
+        adapter.addToTop(getCheckBoxItems());
+        adapter.update();
+    }
+
     private void putPosition(int key, int value)
     {
         getPreference().putValue(key, String.valueOf(value));
+    }
+
+    private void putVisibility(int key, boolean value)
+    {
+        getPreference().putValue(key, value);
     }
 }

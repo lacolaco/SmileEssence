@@ -121,10 +121,6 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
         super.notifyDataSetChanged();
     }
 
-    public void sort()
-    {
-    }
-
     // -------------------------- OTHER METHODS --------------------------
 
     public void addToBottom(T... items)
@@ -182,6 +178,10 @@ public class CustomListAdapter<T extends IViewModel> extends BaseAdapter
         {
             return list.remove(item);
         }
+    }
+
+    public void sort()
+    {
     }
 
     public void update()

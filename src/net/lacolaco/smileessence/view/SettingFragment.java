@@ -52,7 +52,6 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
 
     // --------------------- Interface OnPreferenceChangeListener ---------------------
 
-
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue)
     {
@@ -99,7 +98,6 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
     }
 
     // --------------------- Interface OnPreferenceClickListener ---------------------
-
 
     @Override
     public boolean onPreferenceClick(Preference preference)
@@ -166,11 +164,6 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
         license.setOnPreferenceClickListener(this);
     }
 
-    public Preference findPreference(int preferenceResID)
-    {
-        return findPreference(getString(preferenceResID));
-    }
-
     @Override
     public void onPause()
     {
@@ -185,6 +178,13 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
         super.onResume();
         SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    public Preference findPreference(int preferenceResID)
+    {
+        return findPreference(getString(preferenceResID));
     }
 
     private void finishActivity()

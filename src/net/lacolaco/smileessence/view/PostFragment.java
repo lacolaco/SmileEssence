@@ -134,6 +134,57 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         }
     }
 
+    // --------------------- Interface OnPostStateChangeListener ---------------------
+
+
+    @Override
+    public void onPostStateChange(final PostState postState)
+    {
+        Logger.debug("PostFragment PostStateChange");
+        MainActivity activity = (MainActivity) getActivity();
+        if(editText != null)
+        {
+            editText.setText(postState.getText());
+            int start = postState.getSelectionStart();
+            int end = postState.getSelectionEnd();
+            editText.setSelection(start, end);
+            //            editText.clearFocus(); // 一旦外すことで再表示時にonFocusChangedイベントが発生する
+        }
+        if(viewGroupReply != null)
+        {
+            if(postState.getInReplyToStatusID() >= 0)
+            {
+                viewGroupReply.setVisibility(View.VISIBLE);
+                View header = viewGroupReply.findViewById(R.id.layout_post_reply_status);
+                Account account = activity.getCurrentAccount();
+                Status status = TwitterUtils.tryGetStatus(account, postState.getInReplyToStatusID());
+                header = new StatusViewModel(status, account).getView(activity, activity.getLayoutInflater(), header);
+                header.setBackgroundColor(getResources().getColor(R.color.transparent));
+                header.setClickable(false);
+                ImageButton imageButtonDeleteReply = (ImageButton) viewGroupReply.findViewById(R.id.button_post_reply_delete);
+                imageButtonDeleteReply.setOnClickListener(this);
+            }
+            else
+            {
+                viewGroupReply.setVisibility(View.GONE);
+            }
+        }
+        if(viewGroupMedia != null)
+        {
+            ImageView imageViewMedia = (ImageView) viewGroupMedia.findViewById(R.id.image_post_media);
+            if(TextUtils.isEmpty(postState.getMediaFilePath()))
+            {
+                viewGroupMedia.setVisibility(View.GONE);
+            }
+            else
+            {
+                viewGroupMedia.setVisibility(View.VISIBLE);
+
+            }
+            new BitmapThumbnailTask(activity, postState.getMediaFilePath(), imageViewMedia).execute();
+        }
+    }
+
     // --------------------- Interface TextWatcher ---------------------
 
     @Override
@@ -190,22 +241,6 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         showIME();
     }
 
-    private void showIME()
-    {
-        if(editText != null)
-        {
-            new UIHandler()
-            {
-                @Override
-                public void run()
-                {
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(editText, 0);
-                }
-            }.postDelayed(100);
-        }
-    }
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         Logger.debug("PostFragment CreateView");
@@ -250,6 +285,46 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         return v;
     }
 
+    @Override
+    public void onDestroyView()
+    {
+        Logger.debug("PostFragment DestroyView");
+        super.onDestroyView();
+        setStateFromView();
+        PostState.getState().removeListener();
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState)
+    {
+        Logger.debug("PostFragment ViewStateRestored");
+        super.onViewStateRestored(savedInstanceState);
+        PostState state = PostState.getState();
+        onPostStateChange(state);
+    }
+
+    private void deletePost()
+    {
+        editText.setText("");
+        PostState.getState().beginTransaction().setText("").setCursor(0).commit();
+        deleteReply();
+    }
+
+    private void deleteReply()
+    {
+        viewGroupReply.setVisibility(View.GONE);
+        PostState.getState().beginTransaction().setInReplyToStatusID(-1).commit();
+    }
+
+    private void displayImage()
+    {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.setDataAndType(Uri.fromFile(new File(PostState.getState().getMediaFilePath())), "image/*");
+        IntentUtils.startActivityIfFound(getActivity(), intent);
+    }
+
     private TextView getCountTextView(View v)
     {
         return (TextView) v.findViewById(R.id.post_text_count);
@@ -275,97 +350,10 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         return (Button) v.findViewById(R.id.button_post_tweet);
     }
 
-    @Override
-    public void onDestroyView()
+    private void hideIME()
     {
-        Logger.debug("PostFragment DestroyView");
-        super.onDestroyView();
-        setStateFromView();
-        PostState.getState().removeListener();
-    }
-
-    private void setStateFromView()
-    {
-        PostState.getState().beginTransaction().setText(editText.getText().toString()).setSelection(editText.getSelectionStart(), editText.getSelectionEnd()).commit();
-    }
-
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState)
-    {
-        Logger.debug("PostFragment ViewStateRestored");
-        super.onViewStateRestored(savedInstanceState);
-        PostState state = PostState.getState();
-        onPostStateChange(state);
-    }
-
-    @Override
-    public void onPostStateChange(final PostState postState)
-    {
-        Logger.debug("PostFragment PostStateChange");
-        MainActivity activity = (MainActivity) getActivity();
-        if(editText != null)
-        {
-            editText.setText(postState.getText());
-            int start = postState.getSelectionStart();
-            int end = postState.getSelectionEnd();
-            editText.setSelection(start, end);
-            //            editText.clearFocus(); // 一旦外すことで再表示時にonFocusChangedイベントが発生する
-        }
-        if(viewGroupReply != null)
-        {
-            if(postState.getInReplyToStatusID() >= 0)
-            {
-                viewGroupReply.setVisibility(View.VISIBLE);
-                View header = viewGroupReply.findViewById(R.id.layout_post_reply_status);
-                Account account = activity.getCurrentAccount();
-                Status status = TwitterUtils.tryGetStatus(account, postState.getInReplyToStatusID());
-                header = new StatusViewModel(status, account).getView(activity, activity.getLayoutInflater(), header);
-                header.setBackgroundColor(getResources().getColor(R.color.transparent));
-                header.setClickable(false);
-                ImageButton imageButtonDeleteReply = (ImageButton) viewGroupReply.findViewById(R.id.button_post_reply_delete);
-                imageButtonDeleteReply.setOnClickListener(this);
-            }
-            else
-            {
-                viewGroupReply.setVisibility(View.GONE);
-            }
-        }
-        if(viewGroupMedia != null)
-        {
-            ImageView imageViewMedia = (ImageView) viewGroupMedia.findViewById(R.id.image_post_media);
-            if(TextUtils.isEmpty(postState.getMediaFilePath()))
-            {
-                viewGroupMedia.setVisibility(View.GONE);
-            }
-            else
-            {
-                viewGroupMedia.setVisibility(View.VISIBLE);
-
-            }
-            new BitmapThumbnailTask(activity, postState.getMediaFilePath(), imageViewMedia).execute();
-        }
-    }
-
-    private void deletePost()
-    {
-        editText.setText("");
-        PostState.getState().beginTransaction().setText("").setCursor(0).commit();
-        deleteReply();
-    }
-
-    private void deleteReply()
-    {
-        viewGroupReply.setVisibility(View.GONE);
-        PostState.getState().beginTransaction().setInReplyToStatusID(-1).commit();
-    }
-
-    private void displayImage()
-    {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.addCategory(Intent.CATEGORY_DEFAULT);
-        intent.setDataAndType(Uri.fromFile(new File(PostState.getState().getMediaFilePath())), "image/*");
-        IntentUtils.startActivityIfFound(getActivity(), intent);
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
     private void openPostMenu()
@@ -374,12 +362,6 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         hideIME();
         PostMenuDialogFragment menuDialogFragment = new PostMenuDialogFragment();
         DialogHelper.showDialog(getActivity(), menuDialogFragment);
-    }
-
-    private void hideIME()
-    {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
     private void removeImage()
@@ -396,6 +378,27 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         hideIME();
         SelectImageDialogFragment selectImageDialogFragment = new SelectImageDialogFragment();
         DialogHelper.showDialog(getActivity(), selectImageDialogFragment);
+    }
+
+    private void setStateFromView()
+    {
+        PostState.getState().beginTransaction().setText(editText.getText().toString()).setSelection(editText.getSelectionStart(), editText.getSelectionEnd()).commit();
+    }
+
+    private void showIME()
+    {
+        if(editText != null)
+        {
+            new UIHandler()
+            {
+                @Override
+                public void run()
+                {
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(editText, 0);
+                }
+            }.postDelayed(100);
+        }
     }
 
     private void submitPost()

@@ -46,7 +46,7 @@ import java.util.concurrent.ExecutionException;
 public class TwitterUtils
 {
 
-// -------------------------- STATIC METHODS --------------------------
+    // -------------------------- STATIC METHODS --------------------------
 
     /**
      * Get twitter style fixed text length
@@ -241,12 +241,13 @@ public class TwitterUtils
 
     /**
      * Return original status text. If status is not retweet, value is same to a given.
+     *
      * @param status
      * @return
      */
     public static String getOriginalStatusText(Status status)
     {
-        return status.isRetweet()? status.getRetweetedStatus().getText(): status.getText();
+        return status.isRetweet() ? status.getRetweetedStatus().getText() : status.getText();
     }
 
     public static Paging getPaging(int count)

@@ -185,6 +185,12 @@ public class UserListFragment extends CustomListFragment implements View.OnClick
     // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
+    protected PullToRefreshListView getListView(View page)
+    {
+        return (PullToRefreshListView) page.findViewById(R.id.listview_userlist);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View page = inflater.inflate(R.layout.fragment_userlist, container, false);
@@ -204,12 +210,6 @@ public class UserListFragment extends CustomListFragment implements View.OnClick
     private UserListListAdapter getListAdapter(MainActivity activity)
     {
         return (UserListListAdapter) getListAdapter(MainActivity.ADAPTER_USERLIST);
-    }
-
-    @Override
-    protected PullToRefreshListView getListView(View page)
-    {
-        return (PullToRefreshListView) page.findViewById(R.id.listview_userlist);
     }
 
     private TextView getTextListName(View page)

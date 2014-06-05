@@ -71,7 +71,6 @@ public class EditTemplateActivity extends Activity implements AdapterView.OnItem
 
     // --------------------- Interface Callback ---------------------
 
-
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu)
     {
@@ -108,7 +107,6 @@ public class EditTemplateActivity extends Activity implements AdapterView.OnItem
 
     // --------------------- Interface MultiChoiceModeListener ---------------------
 
-
     @Override
     public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked)
     {
@@ -134,18 +132,6 @@ public class EditTemplateActivity extends Activity implements AdapterView.OnItem
         actionBar.setDisplayHomeAsUpEnabled(true);
         initializeViews();
         Logger.debug("EditTemplateActivity:onCreate");
-    }
-
-    private void initializeViews()
-    {
-        ListView listView = getListView();
-        adapter = new CustomListAdapter<>(this, Template.class);
-        listView.setAdapter(adapter);
-        adapter.addToTop(getTemplates());
-        adapter.update();
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        listView.setOnItemClickListener(this);
-        listView.setMultiChoiceModeListener(this);
     }
 
     @Override
@@ -176,6 +162,47 @@ public class EditTemplateActivity extends Activity implements AdapterView.OnItem
         return true;
     }
 
+    // -------------------------- OTHER METHODS --------------------------
+
+    public void deleteSelectedItems()
+    {
+        SparseBooleanArray checkedItems = getListView().getCheckedItemPositions();
+        adapter.setNotifiable(false);
+        for(int i = adapter.getCount() - 1; i > -1; i--)
+        {
+            if(checkedItems.get(i))
+            {
+                Template template = adapter.removeItem(i);
+                template.delete();
+            }
+        }
+        adapter.setNotifiable(true);
+        adapter.notifyDataSetChanged();
+        updateListView();
+    }
+
+    public void openEditTemplateDialog(int position)
+    {
+        final Template template = (Template) adapter.getItem(position);
+        EditTextDialogFragment dialogFragment = new EditTextDialogFragment()
+        {
+            @Override
+            public void onTextInput(String text)
+            {
+                if(TextUtils.isEmpty(text.trim()))
+                {
+                    return;
+                }
+                template.text = text;
+                template.save();
+                adapter.notifyDataSetChanged();
+                updateListView();
+            }
+        };
+        dialogFragment.setParams(getString(R.string.dialog_title_edit), template.text);
+        DialogHelper.showDialog(this, dialogFragment);
+    }
+
     private void addNewTemplate()
     {
         final Template template = new Template();
@@ -199,49 +226,20 @@ public class EditTemplateActivity extends Activity implements AdapterView.OnItem
         DialogHelper.showDialog(this, dialogFragment);
     }
 
-    // -------------------------- OTHER METHODS --------------------------
-
-    public void deleteSelectedItems()
+    private void initializeViews()
     {
-        SparseBooleanArray checkedItems = getListView().getCheckedItemPositions();
-        adapter.setNotifiable(false);
-        for(int i = adapter.getCount() - 1; i > -1; i--)
-        {
-            if(checkedItems.get(i))
-            {
-                Template template = adapter.removeItem(i);
-                template.delete();
-            }
-        }
-        adapter.setNotifiable(true);
-        adapter.notifyDataSetChanged();
-        updateListView();
+        ListView listView = getListView();
+        adapter = new CustomListAdapter<>(this, Template.class);
+        listView.setAdapter(adapter);
+        adapter.addToTop(getTemplates());
+        adapter.update();
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setOnItemClickListener(this);
+        listView.setMultiChoiceModeListener(this);
     }
 
     private void updateListView()
     {
         getListView().requestLayout();
-    }
-
-    public void openEditTemplateDialog(int position)
-    {
-        final Template template = (Template) adapter.getItem(position);
-        EditTextDialogFragment dialogFragment = new EditTextDialogFragment()
-        {
-            @Override
-            public void onTextInput(String text)
-            {
-                if(TextUtils.isEmpty(text.trim()))
-                {
-                    return;
-                }
-                template.text = text;
-                template.save();
-                adapter.notifyDataSetChanged();
-                updateListView();
-            }
-        };
-        dialogFragment.setParams(getString(R.string.dialog_title_edit), template.text);
-        DialogHelper.showDialog(this, dialogFragment);
     }
 }

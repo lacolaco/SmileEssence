@@ -100,6 +100,26 @@ public class IntentRouter
         return builder.toString();
     }
 
+    private static String getText(Uri uri)
+    {
+        String text = "";
+        String url = "";
+        if(uri.getQueryParameter("text") != null)
+        {
+            text = uri.getQueryParameter("text").replaceAll("\\+", " ");
+        }
+        else if(uri.getQueryParameter("status") != null)
+        {
+            text = uri.getQueryParameter("status").replaceAll("\\+", " ");
+        }
+
+        if(uri.getQueryParameter("url") != null)
+        {
+            url = uri.getQueryParameter("url");
+        }
+        return text + " " + url;
+    }
+
     private static void onUriIntent(MainActivity activity, Uri uri)
     {
         Logger.debug(uri.toString());
@@ -148,26 +168,6 @@ public class IntentRouter
             }
         }
         return Long.parseLong(str);
-    }
-
-    private static String getText(Uri uri)
-    {
-        String text = "";
-        String url = "";
-        if(uri.getQueryParameter("text") != null)
-        {
-            text = uri.getQueryParameter("text").replaceAll("\\+", " ");
-        }
-        else if(uri.getQueryParameter("status") != null)
-        {
-            text = uri.getQueryParameter("status").replaceAll("\\+", " ");
-        }
-
-        if(uri.getQueryParameter("url") != null)
-        {
-            url = uri.getQueryParameter("url");
-        }
-        return text + " " + url;
     }
 
     private static boolean isPostIntent(Uri uri)

@@ -244,6 +244,11 @@ public class MainActivity extends Activity
         this.streaming = streaming;
     }
 
+    public void setSelectedPageIndex(int position)
+    {
+        viewPager.setCurrentItem(position, true);
+    }
+
     // ------------------------ INTERFACE METHODS ------------------------
 
 
@@ -273,46 +278,6 @@ public class MainActivity extends Activity
     // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        switch(requestCode)
-        {
-            case REQUEST_OAUTH:
-            {
-                receiveOAuth(requestCode, resultCode, data);
-                break;
-            }
-            case REQUEST_GET_PICTURE_FROM_GALLERY:
-            case REQUEST_GET_PICTURE_FROM_CAMERA:
-            {
-                getImageUri(requestCode, resultCode, data);
-                break;
-            }
-        }
-    }
-
-    private void getImageUri(int requestCode, int resultCode, Intent data)
-    {
-        if(resultCode != RESULT_OK)
-        {
-            Logger.error(requestCode);
-            Notificator.publish(this, R.string.notice_select_image_failed);
-            finish();
-            return;
-        }
-        Uri uri;
-        if(requestCode == REQUEST_GET_PICTURE_FROM_GALLERY)
-        {
-            uri = data.getData();
-        }
-        else
-        {
-            uri = getCameraTempFilePath();
-        }
-        openPostPageWithImage(uri);
-    }
-
-    @Override
     public void finish()
     {
         if(viewPager == null)
@@ -337,98 +302,94 @@ public class MainActivity extends Activity
         }
     }
 
-    private void forceFinish()
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        super.finish();
-    }
-
-    public void openPostPageWithImage(Uri uri)
-    {
-        try
+        switch(requestCode)
         {
-            Cursor c = getContentResolver().query(uri, null, null, null, null);
-            c.moveToFirst();
-            String path = c.getString(c.getColumnIndex(MediaStore.MediaColumns.DATA));
-            PostState.getState().beginTransaction()
-                     .setMediaFilePath(path)
-                     .commitWithOpen(this);
-            Notificator.publish(this, R.string.notice_select_image_succeeded);
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-            Notificator.publish(this, R.string.notice_select_image_failed, NotificationType.ALERT);
+            case REQUEST_OAUTH:
+            {
+                receiveOAuth(requestCode, resultCode, data);
+                break;
+            }
+            case REQUEST_GET_PICTURE_FROM_GALLERY:
+            case REQUEST_GET_PICTURE_FROM_CAMERA:
+            {
+                getImageUri(requestCode, resultCode, data);
+                break;
+            }
         }
     }
 
-    private void receiveOAuth(int requestCode, int resultCode, Intent data)
+    @Override
+    public void onCreate(Bundle savedInstanceState)
     {
-        if(resultCode != RESULT_OK)
+        setTheme();
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        if(isAuthorized())
         {
-            Logger.error(requestCode);
-            Notificator.publish(this, R.string.notice_error_authenticate);
-            finish();
+            setupAccount();
+            startMainLogic();
+            IntentRouter.onNewIntent(this, getIntent());
         }
         else
         {
-            AccessToken token = oauthSession.getAccessToken(data.getData());
-            Account account = new Account(token.getToken(), token.getTokenSecret(), token.getUserId(), token.getScreenName());
-            account.save();
-            setCurrentAccount(account);
-            setLastUsedAccountID(account);
-            startMainLogic();
+            startOAuthSession();
         }
+        Logger.debug("MainActivity:onCreate");
     }
 
-    public void startMainLogic()
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
     {
-        initializeView();
-        initCommandSetting();
-        startTwitter();
+        MainActivityMenuHelper.addItemsToMenu(this, menu);
+        return true;
     }
 
-    private void initCommandSetting()
+    @Override
+    protected void onDestroy()
     {
-        List<CommandSetting> commandSettings = CommandSetting.getAll();
-        for(CommandSetting setting : commandSettings)
+        super.onDestroy();
+        if(stream != null)
         {
-            CommandSettingCache.getInstance().put(setting);
+            stream.shutdown();
         }
+        Logger.debug("MainActivity:onDestroy");
     }
 
-    private void initializeView()
+    @Override
+    protected void onNewIntent(Intent intent)
     {
-        ActionBar bar = getActionBar();
-        bar.setDisplayShowHomeEnabled(true);
-        bar.setDisplayShowTitleEnabled(false);
-        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        pagerAdapter = new PageListAdapter(this, viewPager);
-        initializePages();
+        IntentRouter.onNewIntent(this, intent);
+        super.onNewIntent(intent);
     }
 
-    private void initializePages()
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
     {
-        addPostPage();
-        addHomePage();
-        addMentionsPage();
-        addMessagesPage();
-        addHistoryPage();
-        addSearchPage();
-        addUserListPage();
-        pagerAdapter.refreshListNavigation();
-        viewPager.setOffscreenPageLimit(pagerAdapter.getCount());
-        initPostState();
-        setSelectedPageIndex(ADAPTER_HOME, false);
+        return MainActivityMenuHelper.onItemSelected(this, item);
     }
 
-    private void addHistoryPage()
+    @Override
+    protected void onPause()
     {
-        boolean visible = getUserPreferenceHelper().getValue(R.string.key_page_history_visibility, true);
-        getUserPreferenceHelper().putValue(R.string.key_page_history_visibility, visible);
-        EventListAdapter historyAdapter = new EventListAdapter(this);
-        pageIndexHistory = addListPage(getString(R.string.page_name_history), HistoryFragment.class, historyAdapter, ADAPTER_HISTORY, visible);
+        super.onPause();
+        Logger.debug("MainActivity:onPause");
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        Notificator.stopNotification();
     }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        Logger.debug("MainActivity:onResume");
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        Notificator.startNotification();
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
 
     public int addListPage(String name, Class<? extends CustomListFragment> fragmentClass, CustomListAdapter<?> adapter, int adapterIndex, boolean visible)
     {
@@ -457,6 +418,191 @@ public class MainActivity extends Activity
         {
             return this.pagerAdapter.addPageWithoutNotify(name, fragmentClass, args);
         }
+    }
+
+    public CustomListAdapter<?> getListAdapter(int i)
+    {
+        return adapterMap.get(i);
+    }
+
+    public void openPostPage()
+    {
+        setSelectedPageIndex(MainActivity.PAGE_POST);
+    }
+
+    public void openPostPageWithImage(Uri uri)
+    {
+        try
+        {
+            Cursor c = getContentResolver().query(uri, null, null, null, null);
+            c.moveToFirst();
+            String path = c.getString(c.getColumnIndex(MediaStore.MediaColumns.DATA));
+            PostState.getState().beginTransaction()
+                     .setMediaFilePath(path)
+                     .commitWithOpen(this);
+            Notificator.publish(this, R.string.notice_select_image_succeeded);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            Notificator.publish(this, R.string.notice_select_image_failed, NotificationType.ALERT);
+        }
+    }
+
+    /**
+     * Open search page
+     */
+    public void openSearchPage()
+    {
+        setSelectedPageIndex(pageIndexSearch);
+    }
+
+    /**
+     * Open search page with given query
+     */
+    public void openSearchPage(final String query)
+    {
+        startNewSearch(TwitterApi.getTwitter(getCurrentAccount()), query);
+        openSearchPage();
+    }
+
+    public void openUserListPage(String listFullName)
+    {
+        startUserList(TwitterApi.getTwitter(getCurrentAccount()), listFullName);
+        openUserListPage();
+    }
+
+    public void saveLastUserList(String lastUserList)
+    {
+        getAppPreferenceHelper().putValue(KEY_LAST_USER_LIST, lastUserList);
+    }
+
+    public void setListAdapter(int adapterIndex, CustomListAdapter<?> adapter)
+    {
+        adapterMap.put(adapterIndex, adapter);
+    }
+
+    public void setSelectedPageIndex(final int position, final boolean smooth)
+    {
+        new UIHandler()
+        {
+            @Override
+            public void run()
+            {
+                viewPager.setCurrentItem(position, smooth);
+            }
+        }.post();
+    }
+
+    public void startMainLogic()
+    {
+        initializeView();
+        initCommandSetting();
+        startTwitter();
+    }
+
+    public void startNewSearch(final Twitter twitter, final String query)
+    {
+        saveLastSearch(query);
+        if(!TextUtils.isEmpty(query))
+        {
+            SearchQuery.saveIfNotFound(query);
+            final SearchListAdapter adapter = (SearchListAdapter) getListAdapter(ADAPTER_SEARCH);
+            adapter.initSearch(query);
+            adapter.clear();
+            adapter.updateForce();
+            new SearchTask(twitter, query, this)
+            {
+                @Override
+                protected void onPostExecute(QueryResult queryResult)
+                {
+                    super.onPostExecute(queryResult);
+                    if(queryResult != null)
+                    {
+                        List<twitter4j.Status> tweets = queryResult.getTweets();
+                        for(int i = tweets.size() - 1; i >= 0; i--)
+                        {
+                            twitter4j.Status status = tweets.get(i);
+                            if(!status.isRetweet())
+                            {
+                                StatusViewModel viewModel = new StatusViewModel(status, getCurrentAccount());
+                                adapter.addToTop(viewModel);
+                                StatusFilter.filter(MainActivity.this, viewModel);
+                            }
+                        }
+                        adapter.setTopID(queryResult.getMaxId());
+                        adapter.updateForce();
+                    }
+                }
+            }.execute();
+        }
+    }
+
+    public boolean startStream()
+    {
+        if(!new NetworkHelper(this).canConnect())
+        {
+            return false;
+        }
+        if(stream != null)
+        {
+            stream.shutdown();
+        }
+        stream = new TwitterApi(currentAccount).getTwitterStream();
+        UserStreamListener listener = new UserStreamListener(this);
+        stream.addListener(listener);
+        stream.addConnectionLifeCycleListener(listener);
+        stream.user();
+        return true;
+    }
+
+    public boolean startTwitter()
+    {
+        if(!startStream())
+        {
+            return false;
+        }
+        int count = TwitterUtils.getPagingCount(this);
+        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        Paging paging = TwitterUtils.getPaging(count);
+        initBlockUser(twitter);
+        initUserListCache(twitter);
+        initHome(twitter, paging);
+        initMentions(twitter, paging);
+        initMessages(twitter, paging);
+        initSearch(twitter);
+        initUserList(twitter);
+        updateActionBarIcon();
+        return true;
+    }
+
+    public void updateActionBarIcon()
+    {
+        Twitter twitter = new TwitterApi(currentAccount).getTwitter();
+        final ImageView homeIcon = (ImageView) findViewById(android.R.id.home);
+        ShowUserTask userTask = new ShowUserTask(twitter, currentAccount.userID)
+        {
+            @Override
+            protected void onPostExecute(User user)
+            {
+                super.onPostExecute(user);
+                if(user != null)
+                {
+                    String urlHttps = user.getProfileImageURLHttps();
+                    homeIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    new BitmapURLTask(urlHttps, homeIcon).execute();
+                }
+            }
+        };
+        userTask.execute();
+    }
+
+    private void addHistoryPage()
+    {
+        boolean visible = getUserPreferenceHelper().getValue(R.string.key_page_history_visibility, true);
+        getUserPreferenceHelper().putValue(R.string.key_page_history_visibility, visible);
+        EventListAdapter historyAdapter = new EventListAdapter(this);
+        pageIndexHistory = addListPage(getString(R.string.page_name_history), HistoryFragment.class, historyAdapter, ADAPTER_HISTORY, visible);
     }
 
     private void addHomePage()
@@ -500,46 +646,44 @@ public class MainActivity extends Activity
         pageIndexUserlist = addListPage(getString(R.string.page_name_list), UserListFragment.class, userListAdapter, ADAPTER_USERLIST, visible);
     }
 
-    private void initPostState()
+    private void forceFinish()
     {
-        PostState.newState().beginTransaction().commit();
+        super.finish();
     }
 
-    public void setSelectedPageIndex(final int position, final boolean smooth)
+    private void getImageUri(int requestCode, int resultCode, Intent data)
     {
-        new UIHandler()
+        if(resultCode != RESULT_OK)
         {
-            @Override
-            public void run()
-            {
-                viewPager.setCurrentItem(position, smooth);
-            }
-        }.post();
-    }
-
-    public boolean startTwitter()
-    {
-        if(!startStream())
-        {
-            return false;
+            Logger.error(requestCode);
+            Notificator.publish(this, R.string.notice_select_image_failed);
+            finish();
+            return;
         }
-        int count = TwitterUtils.getPagingCount(this);
-        Twitter twitter = TwitterApi.getTwitter(currentAccount);
-        Paging paging = TwitterUtils.getPaging(count);
-        initBlockUser(twitter);
-        initUserListCache(twitter);
-        initHome(twitter, paging);
-        initMentions(twitter, paging);
-        initMessages(twitter, paging);
-        initSearch(twitter);
-        initUserList(twitter);
-        updateActionBarIcon();
-        return true;
+        Uri uri;
+        if(requestCode == REQUEST_GET_PICTURE_FROM_GALLERY)
+        {
+            uri = data.getData();
+        }
+        else
+        {
+            uri = getCameraTempFilePath();
+        }
+        openPostPageWithImage(uri);
     }
 
     private void initBlockUser(Twitter twitter)
     {
         new BlockIDsTask(twitter, this).execute();
+    }
+
+    private void initCommandSetting()
+    {
+        List<CommandSetting> commandSettings = CommandSetting.getAll();
+        for(CommandSetting setting : commandSettings)
+        {
+            CommandSettingCache.getInstance().put(setting);
+        }
     }
 
     private void initHome(final Twitter twitter, final Paging paging)
@@ -616,6 +760,11 @@ public class MainActivity extends Activity
         }.execute();
     }
 
+    private void initPostState()
+    {
+        PostState.newState().beginTransaction().commit();
+    }
+
     private void initSearch(Twitter twitter)
     {
         if(pageIndexSearch == PAGE_GONE)
@@ -627,53 +776,6 @@ public class MainActivity extends Activity
         {
             startNewSearch(twitter, lastUsedSearchQuery);
         }
-    }
-
-    public void startNewSearch(final Twitter twitter, final String query)
-    {
-        saveLastSearch(query);
-        if(!TextUtils.isEmpty(query))
-        {
-            SearchQuery.saveIfNotFound(query);
-            final SearchListAdapter adapter = (SearchListAdapter) getListAdapter(ADAPTER_SEARCH);
-            adapter.initSearch(query);
-            adapter.clear();
-            adapter.updateForce();
-            new SearchTask(twitter, query, this)
-            {
-                @Override
-                protected void onPostExecute(QueryResult queryResult)
-                {
-                    super.onPostExecute(queryResult);
-                    if(queryResult != null)
-                    {
-                        List<twitter4j.Status> tweets = queryResult.getTweets();
-                        for(int i = tweets.size() - 1; i >= 0; i--)
-                        {
-                            twitter4j.Status status = tweets.get(i);
-                            if(!status.isRetweet())
-                            {
-                                StatusViewModel viewModel = new StatusViewModel(status, getCurrentAccount());
-                                adapter.addToTop(viewModel);
-                                StatusFilter.filter(MainActivity.this, viewModel);
-                            }
-                        }
-                        adapter.setTopID(queryResult.getMaxId());
-                        adapter.updateForce();
-                    }
-                }
-            }.execute();
-        }
-    }
-
-    public CustomListAdapter<?> getListAdapter(int i)
-    {
-        return adapterMap.get(i);
-    }
-
-    private void saveLastSearch(String query)
-    {
-        getAppPreferenceHelper().putValue(KEY_LAST_USED_SEARCH_QUERY, query);
     }
 
     private void initUserList(Twitter twitter)
@@ -689,97 +791,65 @@ public class MainActivity extends Activity
         }
     }
 
-    private void startUserList(Twitter twitter, String listFullName)
-    {
-        saveLastUserList(listFullName);
-        final UserListListAdapter adapter = (UserListListAdapter) getListAdapter(ADAPTER_USERLIST);
-        adapter.setListFullName(listFullName);
-        adapter.clear();
-        adapter.updateForce();
-        new UserListStatusesTask(twitter, listFullName, this)
-        {
-            @Override
-            protected void onPostExecute(twitter4j.Status[] statuses)
-            {
-                super.onPostExecute(statuses);
-                for(twitter4j.Status status : statuses)
-                {
-                    StatusViewModel statusViewModel = new StatusViewModel(status, getCurrentAccount());
-                    adapter.addToBottom(statusViewModel);
-                    StatusFilter.filter(MainActivity.this, statusViewModel);
-                }
-                adapter.updateForce();
-            }
-        }.execute();
-    }
-
-    public void saveLastUserList(String lastUserList)
-    {
-        getAppPreferenceHelper().putValue(KEY_LAST_USER_LIST, lastUserList);
-    }
-
     private void initUserListCache(Twitter twitter)
     {
         UserListCache.getInstance().clear();
         new GetUserListsTask(twitter).execute();
     }
 
-    public boolean startStream()
+    private void initializePages()
     {
-        if(!new NetworkHelper(this).canConnect())
-        {
-            return false;
-        }
-        if(stream != null)
-        {
-            stream.shutdown();
-        }
-        stream = new TwitterApi(currentAccount).getTwitterStream();
-        UserStreamListener listener = new UserStreamListener(this);
-        stream.addListener(listener);
-        stream.addConnectionLifeCycleListener(listener);
-        stream.user();
-        return true;
+        addPostPage();
+        addHomePage();
+        addMentionsPage();
+        addMessagesPage();
+        addHistoryPage();
+        addSearchPage();
+        addUserListPage();
+        pagerAdapter.refreshListNavigation();
+        viewPager.setOffscreenPageLimit(pagerAdapter.getCount());
+        initPostState();
+        setSelectedPageIndex(ADAPTER_HOME, false);
     }
 
-    public void updateActionBarIcon()
+    private void initializeView()
     {
-        Twitter twitter = new TwitterApi(currentAccount).getTwitter();
-        final ImageView homeIcon = (ImageView) findViewById(android.R.id.home);
-        ShowUserTask userTask = new ShowUserTask(twitter, currentAccount.userID)
-        {
-            @Override
-            protected void onPostExecute(User user)
-            {
-                super.onPostExecute(user);
-                if(user != null)
-                {
-                    String urlHttps = user.getProfileImageURLHttps();
-                    homeIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                    new BitmapURLTask(urlHttps, homeIcon).execute();
-                }
-            }
-        };
-        userTask.execute();
+        ActionBar bar = getActionBar();
+        bar.setDisplayShowHomeEnabled(true);
+        bar.setDisplayShowTitleEnabled(false);
+        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        pagerAdapter = new PageListAdapter(this, viewPager);
+        initializePages();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState)
+    private void openUserListPage()
     {
-        setTheme();
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        if(isAuthorized())
+        setSelectedPageIndex(pageIndexUserlist);
+    }
+
+    private void receiveOAuth(int requestCode, int resultCode, Intent data)
+    {
+        if(resultCode != RESULT_OK)
         {
-            setupAccount();
-            startMainLogic();
-            IntentRouter.onNewIntent(this, getIntent());
+            Logger.error(requestCode);
+            Notificator.publish(this, R.string.notice_error_authenticate);
+            finish();
         }
         else
         {
-            startOAuthSession();
+            AccessToken token = oauthSession.getAccessToken(data.getData());
+            Account account = new Account(token.getToken(), token.getTokenSecret(), token.getUserId(), token.getScreenName());
+            account.save();
+            setCurrentAccount(account);
+            setLastUsedAccountID(account);
+            startMainLogic();
         }
-        Logger.debug("MainActivity:onCreate");
+    }
+
+    private void saveLastSearch(String query)
+    {
+        getAppPreferenceHelper().putValue(KEY_LAST_USED_SEARCH_QUERY, query);
     }
 
     private void setTheme()
@@ -811,97 +881,27 @@ public class MainActivity extends Activity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
+    private void startUserList(Twitter twitter, String listFullName)
     {
-        MainActivityMenuHelper.addItemsToMenu(this, menu);
-        return true;
-    }
-
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-        if(stream != null)
+        saveLastUserList(listFullName);
+        final UserListListAdapter adapter = (UserListListAdapter) getListAdapter(ADAPTER_USERLIST);
+        adapter.setListFullName(listFullName);
+        adapter.clear();
+        adapter.updateForce();
+        new UserListStatusesTask(twitter, listFullName, this)
         {
-            stream.shutdown();
-        }
-        Logger.debug("MainActivity:onDestroy");
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent)
-    {
-        IntentRouter.onNewIntent(this, intent);
-        super.onNewIntent(intent);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        return MainActivityMenuHelper.onItemSelected(this, item);
-    }
-
-    @Override
-    protected void onPause()
-    {
-        super.onPause();
-        Logger.debug("MainActivity:onPause");
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        Notificator.stopNotification();
-    }
-
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-        Logger.debug("MainActivity:onResume");
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        Notificator.startNotification();
-    }
-
-    // -------------------------- OTHER METHODS --------------------------
-
-    public void openPostPage()
-    {
-        setSelectedPageIndex(MainActivity.PAGE_POST);
-    }
-
-    public void setSelectedPageIndex(int position)
-    {
-        viewPager.setCurrentItem(position, true);
-    }
-
-    /**
-     * Open search page
-     */
-    public void openSearchPage()
-    {
-        setSelectedPageIndex(pageIndexSearch);
-    }
-
-    /**
-     * Open search page with given query
-     */
-    public void openSearchPage(final String query)
-    {
-        startNewSearch(TwitterApi.getTwitter(getCurrentAccount()), query);
-        openSearchPage();
-    }
-
-    public void openUserListPage(String listFullName)
-    {
-        startUserList(TwitterApi.getTwitter(getCurrentAccount()), listFullName);
-        openUserListPage();
-    }
-
-    public void setListAdapter(int adapterIndex, CustomListAdapter<?> adapter)
-    {
-        adapterMap.put(adapterIndex, adapter);
-    }
-
-    private void openUserListPage()
-    {
-        setSelectedPageIndex(pageIndexUserlist);
+            @Override
+            protected void onPostExecute(twitter4j.Status[] statuses)
+            {
+                super.onPostExecute(statuses);
+                for(twitter4j.Status status : statuses)
+                {
+                    StatusViewModel statusViewModel = new StatusViewModel(status, getCurrentAccount());
+                    adapter.addToBottom(statusViewModel);
+                    StatusFilter.filter(MainActivity.this, statusViewModel);
+                }
+                adapter.updateForce();
+            }
+        }.execute();
     }
 }

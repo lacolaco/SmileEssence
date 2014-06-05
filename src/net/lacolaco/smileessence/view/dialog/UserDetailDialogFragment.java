@@ -151,13 +151,6 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         }
     }
 
-    private void openUserMenu(MainActivity activity, User user)
-    {
-        UserMenuDialogFragment menuFragment = new UserMenuDialogFragment();
-        menuFragment.setUserID(user.getId());
-        DialogHelper.showDialog(activity, menuFragment, TAG);
-    }
-
     // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
@@ -208,6 +201,27 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
                 .setView(v)
                 .setCancelable(true)
                 .create();
+    }
+
+    private String getHtmlDescription(String description)
+    {
+        String html = description;
+        html = html.replaceAll("https?://[\\w/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+", "<a href=\"$0\">$0</a>");
+        html = html.replaceAll("@([a-zA-Z0-9_]+)", "<a href=\"" + TwitterUtils.getUserHomeURL("$1") + "\">$0</a>");
+        html = html.replaceAll("\r\n", "<br />");
+        return html;
+    }
+
+    private void openUrl(String url)
+    {
+        new CommandOpenURL(getActivity(), url).execute();
+    }
+
+    private void openUserMenu(MainActivity activity, User user)
+    {
+        UserMenuDialogFragment menuFragment = new UserMenuDialogFragment();
+        menuFragment.setUserID(user.getId());
+        DialogHelper.showDialog(activity, menuFragment, TAG);
     }
 
     private void setUserData(User user, final Account account)
@@ -287,20 +301,6 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
                 adapter.updateForce();
             }
         }.execute();
-    }
-
-    private String getHtmlDescription(String description)
-    {
-        String html = description;
-        html = html.replaceAll("https?://[\\w/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+", "<a href=\"$0\">$0</a>");
-        html = html.replaceAll("@([a-zA-Z0-9_]+)", "<a href=\"" + TwitterUtils.getUserHomeURL("$1") + "\">$0</a>");
-        html = html.replaceAll("\r\n", "<br />");
-        return html;
-    }
-
-    private void openUrl(String url)
-    {
-        new CommandOpenURL(getActivity(), url).execute();
     }
 
     private void toggleFollowing(User user, final Account account, Activity activity)

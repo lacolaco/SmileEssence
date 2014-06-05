@@ -71,6 +71,8 @@ public class PostMenuDialogFragment extends MenuDialogFragment
                 .create();
     }
 
+    // -------------------------- OTHER METHODS --------------------------
+
     public List<Command> getCommands(Activity activity)
     {
         ArrayList<Command> commands = new ArrayList<>();

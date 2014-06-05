@@ -106,13 +106,24 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
 
     // --------------------- Interface OnFocusChangeListener ---------------------
 
-
     @Override
     public void onFocusChange(View v, boolean hasFocus)
     {
         if(!hasFocus)
         {
             hideIME();
+        }
+    }
+
+    // --------------------- Interface OnQueryChangeListener ---------------------
+
+
+    @Override
+    public void onQueryChange(String newQuery)
+    {
+        if(editText != null)
+        {
+            editText.setText(newQuery);
         }
     }
 
@@ -225,6 +236,12 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
     // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
+    protected PullToRefreshListView getListView(View page)
+    {
+        return (PullToRefreshListView) page.findViewById(R.id.listview_search);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -270,10 +287,9 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         return (ImageButton) page.findViewById(R.id.button_search_execute);
     }
 
-    @Override
-    protected PullToRefreshListView getListView(View page)
+    private SearchListAdapter getListAdapter(MainActivity activity)
     {
-        return (PullToRefreshListView) page.findViewById(R.id.listview_search);
+        return (SearchListAdapter) activity.getListAdapter(MainActivity.ADAPTER_SEARCH);
     }
 
     private ImageButton getQueriesButton(View page)
@@ -281,9 +297,10 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         return (ImageButton) page.findViewById(R.id.button_search_queries);
     }
 
-    private SearchListAdapter getListAdapter(MainActivity activity)
+    private void hideIME()
     {
-        return (SearchListAdapter) activity.getListAdapter(MainActivity.ADAPTER_SEARCH);
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
     private void notifyTextEmpty(MainActivity activity)
@@ -321,12 +338,6 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         });
     }
 
-    private void hideIME()
-    {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-    }
-
     private void search()
     {
         if(editText != null)
@@ -337,15 +348,6 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
                 getMainActivity().openSearchPage(text);
                 hideIME();
             }
-        }
-    }
-
-    @Override
-    public void onQueryChange(String newQuery)
-    {
-        if(editText != null)
-        {
-            editText.setText(newQuery);
         }
     }
 }

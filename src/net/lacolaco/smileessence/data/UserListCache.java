@@ -57,6 +57,11 @@ public class UserListCache
 
     // -------------------------- OTHER METHODS --------------------------
 
+    public void clear()
+    {
+        cache.clear();
+    }
+
     /**
      * Put userList into cache
      *
@@ -70,10 +75,5 @@ public class UserListCache
     public void remove(String userList)
     {
         cache.remove(userList);
-    }
-
-    public void clear()
-    {
-        cache.clear();
     }
 }

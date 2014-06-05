@@ -127,15 +127,6 @@ public class EditCommandActivity extends Activity
         Logger.debug("EditCommandActivity:onCreate");
     }
 
-    private void initializeViews()
-    {
-        ListView listView = getListView();
-        adapter = new CustomListAdapter<>(this, CheckBoxModel.class);
-        listView.setAdapter(adapter);
-        adapter.addToTop(getCheckBoxItems());
-        adapter.update();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -190,6 +181,15 @@ public class EditCommandActivity extends Activity
         adapter.setNotifiable(true);
         adapter.notifyDataSetChanged();
         updateListView();
+    }
+
+    private void initializeViews()
+    {
+        ListView listView = getListView();
+        adapter = new CustomListAdapter<>(this, CheckBoxModel.class);
+        listView.setAdapter(adapter);
+        adapter.addToTop(getCheckBoxItems());
+        adapter.update();
     }
 
     private void updateListView()

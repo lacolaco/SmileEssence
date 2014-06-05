@@ -67,14 +67,6 @@ public class UserMenuDialogFragment extends MenuDialogFragment
 
     // ------------------------ OVERRIDE METHODS ------------------------
 
-
-    @Override
-    protected void onItemClick(AdapterView<?> adapterView, int i)
-    {
-        super.onItemClick(adapterView, i);
-        dismiss();
-    }
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
@@ -99,6 +91,15 @@ public class UserMenuDialogFragment extends MenuDialogFragment
                 .setCancelable(true)
                 .create();
     }
+
+    @Override
+    protected void onItemClick(AdapterView<?> adapterView, int i)
+    {
+        super.onItemClick(adapterView, i);
+        dismiss();
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
 
     public List<Command> getCommands(Activity activity, User user, Account account)
     {

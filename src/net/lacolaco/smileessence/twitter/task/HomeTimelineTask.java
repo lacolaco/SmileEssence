@@ -36,12 +36,12 @@ import twitter4j.*;
 public class HomeTimelineTask extends TwitterTask<Status[]>
 {
 
-// ------------------------------ FIELDS ------------------------------
+    // ------------------------------ FIELDS ------------------------------
 
     private final Paging paging;
     private final Activity activity;
 
-// --------------------------- CONSTRUCTORS ---------------------------
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public HomeTimelineTask(Twitter twitter, Activity activity)
     {
@@ -55,7 +55,7 @@ public class HomeTimelineTask extends TwitterTask<Status[]>
         this.paging = paging;
     }
 
-// ------------------------ OVERRIDE METHODS ------------------------
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     protected void onPostExecute(twitter4j.Status[] statuses)

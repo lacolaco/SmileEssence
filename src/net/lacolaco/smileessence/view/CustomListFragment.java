@@ -123,16 +123,6 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
         return page;
     }
 
-    protected CustomListAdapter<?> getListAdapter(int fragmentIndex)
-    {
-        return ((MainActivity) getActivity()).getListAdapter(fragmentIndex);
-    }
-
-    protected PullToRefreshListView getListView(View page)
-    {
-        return (PullToRefreshListView) page.findViewById(R.id.fragment_list_listview);
-    }
-
     @Override
     public void onSaveInstanceState(Bundle outState)
     {
@@ -148,6 +138,21 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
         {
             fragmentIndex = savedInstanceState.getInt(ADAPTER_INDEX);
         }
+    }
+
+    protected CustomListAdapter<?> getListAdapter(int fragmentIndex)
+    {
+        return ((MainActivity) getActivity()).getListAdapter(fragmentIndex);
+    }
+
+    protected PullToRefreshListView getListView(View page)
+    {
+        return (PullToRefreshListView) page.findViewById(R.id.fragment_list_listview);
+    }
+
+    protected void notifyListUpdated(int increments)
+    {
+        Notificator.publish(getActivity(), getString(R.string.notice_timeline_new, increments));
     }
 
     protected void updateListViewWithNotice(AbsListView absListView, CustomListAdapter<?> adapter, boolean addedToTop)
@@ -180,10 +185,5 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
         {
             adapter.setNotifiable(true);
         }
-    }
-
-    protected void notifyListUpdated(int increments)
-    {
-        Notificator.publish(getActivity(), getString(R.string.notice_timeline_new, increments));
     }
 }

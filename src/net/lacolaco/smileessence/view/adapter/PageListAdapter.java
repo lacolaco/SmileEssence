@@ -134,18 +134,6 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
         return pages.add(info);
     }
 
-    public synchronized void refreshListNavigation()
-    {
-        ArrayList<String> itemList = new ArrayList<>();
-        for(PageInfo page : pages)
-        {
-            itemList.add(page.name);
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.navigation_list_item, R.id.navigation_list_item_text, itemList);
-        actionBar.setListNavigationCallbacks(adapter, this);
-        notifyDataSetChanged();
-    }
-
     @Override
     public synchronized Fragment getItem(int position)
     {
@@ -156,6 +144,18 @@ public class PageListAdapter extends FragmentStatePagerAdapter implements ViewPa
     public synchronized PageInfo getPage(int position)
     {
         return pages.get(position);
+    }
+
+    public synchronized void refreshListNavigation()
+    {
+        ArrayList<String> itemList = new ArrayList<>();
+        for(PageInfo page : pages)
+        {
+            itemList.add(page.name);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.navigation_list_item, R.id.navigation_list_item_text, itemList);
+        actionBar.setListNavigationCallbacks(adapter, this);
+        notifyDataSetChanged();
     }
 
     public synchronized boolean removePage(int position)

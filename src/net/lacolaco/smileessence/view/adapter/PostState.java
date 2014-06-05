@@ -58,17 +58,11 @@ public class PostState
         return instance;
     }
 
+    // --------------------------- CONSTRUCTORS ---------------------------
+
     public static PostState newState()
     {
         return instance = new PostState().setListener(instance.listener);
-    }
-
-    // --------------------------- CONSTRUCTORS ---------------------------
-
-    public PostState setListener(OnPostStateChangeListener listener)
-    {
-        this.listener = listener;
-        return this;
     }
 
     // --------------------- GETTER / SETTER METHODS ---------------------
@@ -104,6 +98,12 @@ public class PostState
     public String getText()
     {
         return text;
+    }
+
+    public PostState setListener(OnPostStateChangeListener listener)
+    {
+        this.listener = listener;
+        return this;
     }
 
     // -------------------------- OTHER METHODS --------------------------

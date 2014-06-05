@@ -75,19 +75,6 @@ public class LicenseActivity extends Activity
         setFiles();
     }
 
-    private void setFiles()
-    {
-        LinearLayout files = (LinearLayout) findViewById(R.id.linear_license_files);
-        List<String> apacheFiles = getFileNames();
-        String marker = getMarkerString();
-        for(String apacheFile : apacheFiles)
-        {
-            TextView name = new TextView(this);
-            name.setText(String.format("%s %s", marker, apacheFile));
-            files.addView(name);
-        }
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -100,5 +87,18 @@ public class LicenseActivity extends Activity
             }
         }
         return true;
+    }
+
+    private void setFiles()
+    {
+        LinearLayout files = (LinearLayout) findViewById(R.id.linear_license_files);
+        List<String> apacheFiles = getFileNames();
+        String marker = getMarkerString();
+        for(String apacheFile : apacheFiles)
+        {
+            TextView name = new TextView(this);
+            name.setText(String.format("%s %s", marker, apacheFile));
+            files.addView(name);
+        }
     }
 }

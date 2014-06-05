@@ -45,6 +45,26 @@ import java.util.List;
 public class SelectSearchQueryDialogFragment extends MenuDialogFragment implements AdapterView.OnItemLongClickListener
 {
 
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface OnItemLongClickListener ---------------------
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
+    {
+        final CommandOpenSearch command = (CommandOpenSearch) parent.getItemAtPosition(position);
+        ConfirmDialogFragment.show(getActivity(), getString(R.string.dialog_confirm_delete_query), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                deleteQuery(command);
+            }
+        }, false);
+        return false;
+    }
+
     // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
@@ -69,6 +89,8 @@ public class SelectSearchQueryDialogFragment extends MenuDialogFragment implemen
         return new AlertDialog.Builder(activity).setView(body).setTitle(R.string.dialog_title_select_search_query).setCancelable(true).create();
     }
 
+    // -------------------------- OTHER METHODS --------------------------
+
     public List<Command> getCommands(final MainActivity activity)
     {
         ArrayList<Command> commands = new ArrayList<>();
@@ -81,21 +103,6 @@ public class SelectSearchQueryDialogFragment extends MenuDialogFragment implemen
             }
         }
         return commands;
-    }
-
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
-    {
-        final CommandOpenSearch command = (CommandOpenSearch) parent.getItemAtPosition(position);
-        ConfirmDialogFragment.show(getActivity(), getString(R.string.dialog_confirm_delete_query), new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                deleteQuery(command);
-            }
-        }, false);
-        return false;
     }
 
     protected void deleteQuery(CommandOpenSearch command)

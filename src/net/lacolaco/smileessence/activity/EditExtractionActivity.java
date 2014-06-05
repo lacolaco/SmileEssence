@@ -71,7 +71,6 @@ public class EditExtractionActivity extends Activity implements AdapterView.OnIt
 
     // --------------------- Interface Callback ---------------------
 
-
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu)
     {
@@ -108,7 +107,6 @@ public class EditExtractionActivity extends Activity implements AdapterView.OnIt
 
     // --------------------- Interface MultiChoiceModeListener ---------------------
 
-
     @Override
     public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked)
     {
@@ -134,18 +132,6 @@ public class EditExtractionActivity extends Activity implements AdapterView.OnIt
         actionBar.setDisplayHomeAsUpEnabled(true);
         initializeViews();
         Logger.debug("EditExtractionWordActivity:onCreate");
-    }
-
-    private void initializeViews()
-    {
-        ListView listView = getListView();
-        adapter = new CustomListAdapter<>(this, ExtractionWord.class);
-        listView.setAdapter(adapter);
-        adapter.addToTop(getExtractionWords());
-        adapter.update();
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        listView.setOnItemClickListener(this);
-        listView.setMultiChoiceModeListener(this);
     }
 
     @Override
@@ -176,6 +162,47 @@ public class EditExtractionActivity extends Activity implements AdapterView.OnIt
         return true;
     }
 
+    // -------------------------- OTHER METHODS --------------------------
+
+    public void deleteSelectedItems()
+    {
+        SparseBooleanArray checkedItems = getListView().getCheckedItemPositions();
+        adapter.setNotifiable(false);
+        for(int i = adapter.getCount() - 1; i > -1; i--)
+        {
+            if(checkedItems.get(i))
+            {
+                ExtractionWord extractionWord = adapter.removeItem(i);
+                extractionWord.delete();
+            }
+        }
+        adapter.setNotifiable(true);
+        adapter.notifyDataSetChanged();
+        updateListView();
+    }
+
+    public void openEditExtractionWordDialog(int position)
+    {
+        final ExtractionWord extractionWord = (ExtractionWord) adapter.getItem(position);
+        EditTextDialogFragment dialogFragment = new EditTextDialogFragment()
+        {
+            @Override
+            public void onTextInput(String text)
+            {
+                if(TextUtils.isEmpty(text.trim()))
+                {
+                    return;
+                }
+                extractionWord.text = text;
+                extractionWord.save();
+                adapter.notifyDataSetChanged();
+                updateListView();
+            }
+        };
+        dialogFragment.setParams(getString(R.string.dialog_title_edit), extractionWord.text);
+        DialogHelper.showDialog(this, dialogFragment);
+    }
+
     private void addNewExtractionWord()
     {
         final ExtractionWord extractionWord = new ExtractionWord();
@@ -199,49 +226,20 @@ public class EditExtractionActivity extends Activity implements AdapterView.OnIt
         DialogHelper.showDialog(this, dialogFragment);
     }
 
-    // -------------------------- OTHER METHODS --------------------------
-
-    public void deleteSelectedItems()
+    private void initializeViews()
     {
-        SparseBooleanArray checkedItems = getListView().getCheckedItemPositions();
-        adapter.setNotifiable(false);
-        for(int i = adapter.getCount() - 1; i > -1; i--)
-        {
-            if(checkedItems.get(i))
-            {
-                ExtractionWord extractionWord = adapter.removeItem(i);
-                extractionWord.delete();
-            }
-        }
-        adapter.setNotifiable(true);
-        adapter.notifyDataSetChanged();
-        updateListView();
+        ListView listView = getListView();
+        adapter = new CustomListAdapter<>(this, ExtractionWord.class);
+        listView.setAdapter(adapter);
+        adapter.addToTop(getExtractionWords());
+        adapter.update();
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setOnItemClickListener(this);
+        listView.setMultiChoiceModeListener(this);
     }
 
     private void updateListView()
     {
         getListView().requestLayout();
-    }
-
-    public void openEditExtractionWordDialog(int position)
-    {
-        final ExtractionWord extractionWord = (ExtractionWord) adapter.getItem(position);
-        EditTextDialogFragment dialogFragment = new EditTextDialogFragment()
-        {
-            @Override
-            public void onTextInput(String text)
-            {
-                if(TextUtils.isEmpty(text.trim()))
-                {
-                    return;
-                }
-                extractionWord.text = text;
-                extractionWord.save();
-                adapter.notifyDataSetChanged();
-                updateListView();
-            }
-        };
-        dialogFragment.setParams(getString(R.string.dialog_title_edit), extractionWord.text);
-        DialogHelper.showDialog(this, dialogFragment);
     }
 }

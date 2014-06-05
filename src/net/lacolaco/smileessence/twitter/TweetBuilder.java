@@ -61,6 +61,12 @@ public class TweetBuilder
         return setText(String.format(" RT @%s: %s", status.getUser().getScreenName(), status.getText()));
     }
 
+    public TweetBuilder setText(String text)
+    {
+        this.text = text;
+        return this;
+    }
+
     // -------------------------- OTHER METHODS --------------------------
 
     public TweetBuilder addScreenName(String screenName)
@@ -78,12 +84,6 @@ public class TweetBuilder
     public TweetBuilder appendText(String str)
     {
         return setText(text + str);
-    }
-
-    public TweetBuilder setText(String text)
-    {
-        this.text = text;
-        return this;
     }
 
     public StatusUpdate build()

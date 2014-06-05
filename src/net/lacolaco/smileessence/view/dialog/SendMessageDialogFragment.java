@@ -164,6 +164,12 @@ public class SendMessageDialogFragment extends DialogFragment implements TextWat
         editText.setText("");
     }
 
+    private void hideIME()
+    {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
+
     private void sendMessage()
     {
         MainActivity activity = (MainActivity) getActivity();
@@ -172,11 +178,5 @@ public class SendMessageDialogFragment extends DialogFragment implements TextWat
         new SendMessageTask(twitter, screenName, text, activity).execute();
         hideIME();
         dismiss();
-    }
-
-    private void hideIME()
-    {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 }

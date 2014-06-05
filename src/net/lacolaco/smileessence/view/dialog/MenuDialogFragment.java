@@ -49,29 +49,6 @@ public abstract class MenuDialogFragment extends DialogFragment
         }
     };
 
-    protected void onItemClick(AdapterView<?> adapterView, int i)
-    {
-        final Command command = (Command) adapterView.getItemAtPosition(i);
-        if(command != null)
-        {
-            if(command instanceof IConfirmable)
-            {
-                ConfirmDialogFragment.show(getActivity(), getString(R.string.dialog_confirm_commands), new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        executeCommand(command);
-                    }
-                });
-            }
-            else
-            {
-                executeCommand(command);
-            }
-        }
-    }
-
     protected void executeCommand(Command command)
     {
         DialogHelper.closeDialog(getActivity());
@@ -96,6 +73,29 @@ public abstract class MenuDialogFragment extends DialogFragment
                 {
                     iterator.remove();
                 }
+            }
+        }
+    }
+
+    protected void onItemClick(AdapterView<?> adapterView, int i)
+    {
+        final Command command = (Command) adapterView.getItemAtPosition(i);
+        if(command != null)
+        {
+            if(command instanceof IConfirmable)
+            {
+                ConfirmDialogFragment.show(getActivity(), getString(R.string.dialog_confirm_commands), new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        executeCommand(command);
+                    }
+                });
+            }
+            else
+            {
+                executeCommand(command);
             }
         }
     }
