@@ -26,6 +26,7 @@ package net.lacolaco.smileessence.twitter.task;
 
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.data.FavoriteCache;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.notification.NotificationType;
@@ -64,6 +65,7 @@ public class HomeTimelineTask extends TwitterTask<Status[]>
             for(twitter4j.Status status : statuses)
             {
                 StatusCache.getInstance().put(status);
+                FavoriteCache.getInstance().put(status);
             }
         }
     }

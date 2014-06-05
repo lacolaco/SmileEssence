@@ -27,6 +27,7 @@ package net.lacolaco.smileessence.twitter.task;
 import android.content.res.Configuration;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.data.FavoriteCache;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.notification.NotificationType;
@@ -80,6 +81,7 @@ public class SearchTask extends TwitterTask<QueryResult>
             for(twitter4j.Status status : queryResult.getTweets())
             {
                 StatusCache.getInstance().put(status);
+                FavoriteCache.getInstance().put(status);
             }
         }
     }

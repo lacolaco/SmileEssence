@@ -103,7 +103,6 @@ public class StatusViewModel implements IViewModel
         setMention(isMention(account.screenName));
         setMyStatus(isMyStatus(account.userID));
         setRetweetOfMe(isRetweetOfMe(account.userID));
-        FavoriteCache.getInstance().put(status);
     }
 
     public boolean isMention(String screenName)

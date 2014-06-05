@@ -86,7 +86,11 @@ public class StatusCache
     {
         if(status.isRetweet())
         {
-            cache.put(status.getRetweetedStatus().getId(), status.getRetweetedStatus());
+            put(status.getRetweetedStatus());
+        }
+        if(cache.containsKey(status.getId()))
+        {
+            cache.remove(status.getId());
         }
         return cache.put(status.getId(), status);
     }

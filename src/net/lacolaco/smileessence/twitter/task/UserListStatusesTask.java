@@ -25,6 +25,7 @@
 package net.lacolaco.smileessence.twitter.task;
 
 import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.data.FavoriteCache;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
@@ -62,6 +63,7 @@ public class UserListStatusesTask extends TwitterTask<Status[]>
         for(twitter4j.Status status : statuses)
         {
             StatusCache.getInstance().put(status);
+            FavoriteCache.getInstance().put(status);
         }
     }
 

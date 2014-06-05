@@ -115,6 +115,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
             Notificator.publish(activity, mentioned.getFormattedString(activity));
         }
         StatusFilter.filter(activity, viewModel);
+        FavoriteCache.getInstance().put(status);
     }
 
     @Override
@@ -175,8 +176,9 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         {
             addToHistory(new EventViewModel(EnumEvent.FAVORITED, source, favoritedStatus));
         }
-        else if(isMe(source))
+        if(isMe(source))
         {
+            StatusCache.getInstance().put(favoritedStatus);
             FavoriteCache.getInstance().put(favoritedStatus, true);
             activity.getListAdapter(MainActivity.ADAPTER_HOME).update();
             activity.getListAdapter(MainActivity.ADAPTER_MENTIONS).update();
@@ -190,8 +192,9 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         {
             addToHistory(new EventViewModel(EnumEvent.UNFAVORITED, source, unfavoritedStatus));
         }
-        else if(isMe(source))
+        if(isMe(source))
         {
+            StatusCache.getInstance().put(unfavoritedStatus);
             FavoriteCache.getInstance().put(unfavoritedStatus, false);
             activity.getListAdapter(MainActivity.ADAPTER_HOME).update();
             activity.getListAdapter(MainActivity.ADAPTER_MENTIONS).update();

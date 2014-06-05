@@ -66,11 +66,7 @@ public class FavoriteCache
      */
     public void put(Status status)
     {
-        if(status.isRetweet())
-        {
-            cache.put(status.getRetweetedStatus().getId(), status.getRetweetedStatus().isFavorited());
-        }
-        else
+        if(!status.isRetweet())
         {
             cache.put(status.getId(), status.isFavorited());
         }
