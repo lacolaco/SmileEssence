@@ -72,6 +72,7 @@ import net.lacolaco.smileessence.viewmodel.menu.MainActivityMenuHelper;
 import twitter4j.*;
 import twitter4j.auth.AccessToken;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -162,9 +163,9 @@ public class MainActivity extends Activity
         return getAppPreferenceHelper().getValue(KEY_LAST_USER_LIST, "");
     }
 
-    public int getPageIndexHistory()
+    public Collection<CustomListAdapter<?>> getListAdapters()
     {
-        return pageIndexHistory;
+        return adapterMap.values();
     }
 
     public int getPageHome()
@@ -172,24 +173,14 @@ public class MainActivity extends Activity
         return ADAPTER_HOME;
     }
 
-    public int getPageMentions()
+    public int getPageIndexHistory()
     {
-        return ADAPTER_MENTIONS;
+        return pageIndexHistory;
     }
 
     public int getPageIndexMessages()
     {
         return pageIndexMessages;
-    }
-
-    public int getPagePost()
-    {
-        return PAGE_POST;
-    }
-
-    public PageListAdapter getPagerAdapter()
-    {
-        return pagerAdapter;
     }
 
     public int getPageIndexSearch()
@@ -200,6 +191,21 @@ public class MainActivity extends Activity
     public int getPageIndexUserlist()
     {
         return pageIndexUserlist;
+    }
+
+    public int getPageMentions()
+    {
+        return ADAPTER_MENTIONS;
+    }
+
+    public int getPagePost()
+    {
+        return PAGE_POST;
+    }
+
+    public PageListAdapter getPagerAdapter()
+    {
+        return pagerAdapter;
     }
 
     public int getThemeIndex()
@@ -887,6 +893,11 @@ public class MainActivity extends Activity
     {
         startUserList(TwitterApi.getTwitter(getCurrentAccount()), listFullName);
         openUserListPage();
+    }
+
+    public void setListAdapter(int adapterIndex, CustomListAdapter<?> adapter)
+    {
+        adapterMap.put(adapterIndex, adapter);
     }
 
     private void openUserListPage()

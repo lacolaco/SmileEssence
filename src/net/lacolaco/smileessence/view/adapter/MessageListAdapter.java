@@ -84,7 +84,6 @@ public class MessageListAdapter extends CustomListAdapter<MessageViewModel>
                 if(message.getID() == messageID)
                 {
                     iterator.remove();
-                    update();
                     return message;
                 }
             }

@@ -64,6 +64,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
 
     public static final String TAG = "userDialog";
     private static final String KEY_USER_ID = "userID";
+    private static final int ADAPTER_INDEX = 100;
     private TextView textViewScreenName;
     private TextView textViewName;
     private TextView textViewURL;
@@ -239,9 +240,10 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         textViewDescription.setMovementMethod(LinkMovementMethod.getInstance());
         ImageCache.getInstance().setImageToView(user.getBiggerProfileImageURL(), imageViewIcon);
         ImageCache.getInstance().setImageToView(user.getProfileBannerURL(), imageViewHeader);
-        final StatusListAdapter adapter = new StatusListAdapter(getActivity());
+        MainActivity activity = (MainActivity) getActivity();
+        final StatusListAdapter adapter = new StatusListAdapter(activity);
         listViewTimeline.setAdapter(adapter);
-
+        activity.setListAdapter(ADAPTER_INDEX, adapter);
         Twitter twitter = new TwitterApi(account).getTwitter();
         if(user.getId() == account.userID)
         {
@@ -250,9 +252,9 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         }
         else
         {
-            int theme = ((MainActivity) getActivity()).getThemeIndex();
-            final Drawable blue = Themes.getStyledDrawable(getActivity(), theme, R.attr.button_round_blue);
-            final Drawable red = Themes.getStyledDrawable(getActivity(), theme, R.attr.button_round_red);
+            int theme = ((MainActivity) activity).getThemeIndex();
+            final Drawable blue = Themes.getStyledDrawable(activity, theme, R.attr.button_round_blue);
+            final Drawable red = Themes.getStyledDrawable(activity, theme, R.attr.button_round_red);
 
             new ShowFriendshipTask(twitter, user.getId())
             {
