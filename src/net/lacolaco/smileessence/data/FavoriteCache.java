@@ -88,6 +88,11 @@ public class FavoriteCache
         }
     }
 
+    public void put(long id, boolean favorited)
+    {
+        cache.put(id, favorited);
+    }
+
     /**
      * Remove favorite by id
      */
