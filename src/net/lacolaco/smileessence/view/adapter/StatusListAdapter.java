@@ -103,7 +103,7 @@ public class StatusListAdapter extends CustomListAdapter<StatusViewModel>
 
     // -------------------------- OTHER METHODS --------------------------
 
-    public StatusViewModel removeByStatusID(long statusID)
+    public void removeByStatusID(long statusID)
     {
         synchronized(this.LOCK)
         {
@@ -111,13 +111,11 @@ public class StatusListAdapter extends CustomListAdapter<StatusViewModel>
             while(iterator.hasNext())
             {
                 StatusViewModel statusViewModel = iterator.next();
-                if(statusViewModel.getID() == statusID)
+                if(statusViewModel.getID() == statusID || statusViewModel.getOriginal().getID() == statusID)
                 {
                     iterator.remove();
-                    return statusViewModel;
                 }
             }
-            return null;
         }
     }
 
