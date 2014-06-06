@@ -205,6 +205,10 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
 
     private String getHtmlDescription(String description)
     {
+        if(!TextUtils.isEmpty(description))
+        {
+            return "";
+        }
         String html = description;
         html = html.replaceAll("https?://[\\w/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+", "<a href=\"$0\">$0</a>");
         html = html.replaceAll("@([a-zA-Z0-9_]+)", "<a href=\"" + TwitterUtils.getUserHomeURL("$1") + "\">$0</a>");
