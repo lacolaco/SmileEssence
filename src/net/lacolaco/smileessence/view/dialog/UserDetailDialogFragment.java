@@ -205,7 +205,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
 
     private String getHtmlDescription(String description)
     {
-        if(!TextUtils.isEmpty(description))
+        if(TextUtils.isEmpty(description))
         {
             return "";
         }
