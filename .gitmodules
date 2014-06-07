@@ -1,0 +1,9 @@
+[submodule "modules/volley"]
+	path = modules/volley
+	url = https://android.googlesource.com/platform/frameworks/volley
+[submodule "modules/crouton"]
+	path = modules/crouton
+	url = https://github.com/keyboardsurfer/Crouton.git
+[submodule "modules/android-pull-to-refresh"]
+	path = modules/android-pull-to-refresh
+	url = https://github.com/nhnopensource/android-pull-to-refresh.git
