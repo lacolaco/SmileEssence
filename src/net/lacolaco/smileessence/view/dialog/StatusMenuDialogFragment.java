@@ -286,13 +286,22 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
                 commands.add(new CommandOpenURL(activity, urlEntity.getExpandedURL()));
             }
         }
-        if(status.getMediaEntities() != null)
+        for(MediaEntity mediaEntity : getMediaEntities(status))
         {
-            for(MediaEntity mediaEntity : status.getMediaEntities())
-            {
-                commands.add(new CommandOpenURL(activity, mediaEntity.getMediaURL()));
-            }
+            commands.add(new CommandOpenURL(activity, mediaEntity.getMediaURL()));
         }
         return commands;
+    }
+
+    private MediaEntity[] getMediaEntities(Status status)
+    {
+        if(status.getExtendedMediaEntities().length == 0)
+        {
+            return status.getMediaEntities();
+        }
+        else
+        {
+            return status.getExtendedMediaEntities();
+        }
     }
 }
