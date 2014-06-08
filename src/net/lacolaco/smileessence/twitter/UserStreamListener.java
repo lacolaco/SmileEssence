@@ -189,7 +189,8 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onUnfavorite(User source, User target, Status unfavoritedStatus)
     {
-        if(isMe(target))
+        boolean unfavNoticeEnabled = activity.getUserPreferenceHelper().getValue(R.string.key_setting_notify_on_unfavorited, true);
+        if(isMe(target) && unfavNoticeEnabled)
         {
             addToHistory(new EventViewModel(EnumEvent.UNFAVORITED, source, unfavoritedStatus));
         }
