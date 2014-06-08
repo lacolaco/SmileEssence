@@ -60,8 +60,10 @@ public class UserCommandReply extends UserCommand
     @Override
     public boolean execute()
     {
+        String text = new TweetBuilder().addScreenName(getUser().getScreenName()).buildText();
         PostState.newState().beginTransaction()
-                 .setText(new TweetBuilder().addScreenName(getUser().getScreenName()).buildText())
+                 .setText(text)
+                 .setCursor(text.length())
                  .commitWithOpen((MainActivity) getActivity());
         return true;
     }
