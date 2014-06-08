@@ -70,6 +70,6 @@ public class NanigajaTest extends ActivityInstrumentationTestCase2<MainActivity>
     @Override
     public void tearDown() throws Exception
     {
-        getActivity().finish(false);
+        getActivity().forceFinish();
     }
 }

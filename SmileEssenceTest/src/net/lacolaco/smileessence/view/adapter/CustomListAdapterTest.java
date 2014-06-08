@@ -98,6 +98,6 @@ public class CustomListAdapterTest extends ActivityInstrumentationTestCase2<Main
     @Override
     protected void tearDown() throws Exception
     {
-        getActivity().finish(false);
+        getActivity().forceFinish();
     }
 }

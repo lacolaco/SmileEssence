@@ -241,6 +241,6 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
     @Override
     protected void tearDown() throws Exception
     {
-        getActivity().finish(false);
+        getActivity().forceFinish();
     }
 }

@@ -646,7 +646,7 @@ public class MainActivity extends Activity
         pageIndexUserlist = addListPage(getString(R.string.page_name_list), UserListFragment.class, userListAdapter, ADAPTER_USERLIST, visible);
     }
 
-    private void forceFinish()
+    public void forceFinish()
     {
         super.finish();
     }
