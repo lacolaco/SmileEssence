@@ -182,13 +182,9 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         {
             commands.add(command);
         }
-        commands.add(new StatusCommandReply(activity, status));
         commands.add(new StatusCommandAddToReply(activity, status));
         commands.add(new StatusCommandReplyToAll(activity, status, account));
         commands.add(new StatusCommandOpenChain(activity, status, account));
-        commands.add(new StatusCommandFavorite(activity, status, account));
-        commands.add(new StatusCommandRetweet(activity, status, account));
-        commands.add(new StatusCommandDelete(activity, status, account));
         commands.add(new StatusCommandFavAndRT(activity, status, account));
         commands.add(new StatusCommandQuote(activity, status));
         commands.add(new StatusCommandShare(activity, status));
