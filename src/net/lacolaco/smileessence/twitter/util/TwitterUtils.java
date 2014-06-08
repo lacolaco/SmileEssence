@@ -259,4 +259,9 @@ public class TwitterUtils
     {
         return activity.getUserPreferenceHelper().getValue(R.string.key_setting_timelines, 20);
     }
+
+    public static Status getOriginalStatus(Status status)
+    {
+        return status.isRetweet() ? status.getRetweetedStatus() : status;
+    }
 }

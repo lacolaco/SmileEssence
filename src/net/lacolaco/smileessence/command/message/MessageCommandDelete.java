@@ -43,7 +43,7 @@ public class MessageCommandDelete extends MessageCommand implements IConfirmable
 
     public MessageCommandDelete(Activity activity, DirectMessage message, Account account)
     {
-        super(R.id.key_command_message_delete, activity, message);
+        super(-1, activity, message);
         this.account = account;
     }
 

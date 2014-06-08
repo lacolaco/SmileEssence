@@ -37,7 +37,7 @@ public class MessageCommandReply extends MessageCommand
 
     public MessageCommandReply(Activity activity, DirectMessage message)
     {
-        super(R.id.key_command_message_reply, activity, message);
+        super(-1, activity, message);
     }
 
     // --------------------- GETTER / SETTER METHODS ---------------------

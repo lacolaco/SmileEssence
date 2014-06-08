@@ -29,8 +29,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import net.lacolaco.smileessence.R;
-import net.lacolaco.smileessence.command.message.MessageCommandDelete;
-import net.lacolaco.smileessence.command.message.MessageCommandReply;
 import net.lacolaco.smileessence.command.status.*;
 import net.lacolaco.smileessence.command.user.*;
 import net.lacolaco.smileessence.viewmodel.IViewModel;
@@ -60,13 +58,9 @@ public abstract class Command implements IViewModel
     {
         List<Command> commands = new ArrayList<>();
         //Status
-        commands.add(new StatusCommandReply(activity, null));
         commands.add(new StatusCommandAddToReply(activity, null));
         commands.add(new StatusCommandReplyToAll(activity, null, null));
         commands.add(new StatusCommandOpenTalkView(activity, null, null));
-        commands.add(new StatusCommandFavorite(activity, null, null));
-        commands.add(new StatusCommandRetweet(activity, null, null));
-        commands.add(new StatusCommandDelete(activity, null, null));
         commands.add(new StatusCommandFavAndRT(activity, null, null));
         commands.add(new StatusCommandQuote(activity, null));
         commands.add(new StatusCommandShare(activity, null));
@@ -87,9 +81,6 @@ public abstract class Command implements IViewModel
         commands.add(new UserCommandOpenAclog(activity, null));
         commands.add(new UserCommandOpenTwilog(activity, null));
         commands.add(new UserCommandIntroduce(activity, null));
-        //Message
-        commands.add(new MessageCommandReply(activity, null));
-        commands.add(new MessageCommandDelete(activity, null, null));
         return commands;
     }
 

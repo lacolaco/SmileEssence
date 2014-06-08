@@ -190,8 +190,6 @@
     <string name="command_user_open_favstar">Open favstar</string>
     <string name="command_user_open_aclog">Open aclog</string>
     <string name="command_user_open_twilog">Open twilog</string>
-    <string name="command_user_follow">Follow</string>
-    <string name="command_user_unfollow">Unfollow</string>
     <string name="command_user_block">Block</string>
     <string name="command_user_unblock">Unblock</string>
     <string name="command_user_r4s">Report for spam</string>
@@ -200,10 +198,7 @@
     <string name="command_event_reply">Reply</string>
     <string name="command_message_reply">Reply</string>
     <string name="command_message_delete">Delete</string>
-    <string name="command_status_reply">Reply</string>
     <string name="command_status_reply_to_all">Reply to all</string>
-    <string name="command_status_favorite">Add to favorite</string>
-    <string name="command_status_retweet">Retweet</string>
     <string name="command_status_fav_and_rt">Retweet and favorite</string>
     <string name="command_status_quote">Quote</string>
     <string name="command_status_clipboard">Copy to clipboard</string>
@@ -212,7 +207,6 @@
     <string name="command_status_nanigaja">What\'s xxx</string>
     <string name="command_status_make_anonymous">Make anonymous</string>
     <string name="command_status_tofubuster">TofuBuster</string>
-    <string name="command_status_delete">Delete</string>
     <string name="command_status_open_talk_view">Show this talk</string>
     <string name="command_status_add_to_reply">Add to reply</string>
     <string name="command_status_add_to_ignore">Ignore this tweet in future</string>
