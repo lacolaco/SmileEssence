@@ -41,6 +41,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.command.CommandOpenURL;
 import net.lacolaco.smileessence.data.ImageCache;
 import net.lacolaco.smileessence.entity.Account;
@@ -51,6 +52,7 @@ import net.lacolaco.smileessence.twitter.task.UnfollowTask;
 import net.lacolaco.smileessence.twitter.task.UserTimelineTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.util.Themes;
+import net.lacolaco.smileessence.util.UIHandler;
 import net.lacolaco.smileessence.view.adapter.StatusListAdapter;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 import twitter4j.Relationship;
@@ -62,7 +64,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
 
     // ------------------------------ FIELDS ------------------------------
 
-    public static final String TAG = "userDialog";
+    public static final String USER_MENU_DIALOG = "userMenuDialog";
     private static final String KEY_USER_ID = "userID";
     private static final int ADAPTER_INDEX = 100;
     private TextView textViewScreenName;
@@ -264,7 +266,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
                 adapter.updateForce();
             }
         }.execute();
-        setRelationship(user, account, activity);
+        updateRelationship(activity, user.getId());
     }
 
     private void lockFollowButton(Activity activity)
@@ -279,45 +281,30 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         new CommandOpenURL(getActivity(), url).execute();
     }
 
-    private void openUserMenu(MainActivity activity, User user)
+    private void openUserMenu(final MainActivity activity, final User user)
     {
-        UserMenuDialogFragment menuFragment = new UserMenuDialogFragment();
-        menuFragment.setUserID(user.getId());
-        DialogHelper.showDialog(activity, menuFragment, TAG);
-    }
-
-    private void setRelationship(final User user, Account account, Activity activity)
-    {
-        Twitter twitter = new TwitterApi(account).getTwitter();
-        if(user.getId() == account.userID)
+        UserMenuDialogFragment menuFragment = new UserMenuDialogFragment()
         {
-            textViewFollowed.setText(R.string.user_detail_followed_is_me);
-            buttonFollow.setVisibility(View.GONE);
-        }
-        else
-        {
-            int theme = ((MainActivity) activity).getThemeIndex();
-            final Drawable blue = Themes.getStyledDrawable(activity, theme, R.attr.button_round_blue);
-            final Drawable red = Themes.getStyledDrawable(activity, theme, R.attr.button_round_red);
-            lockFollowButton(activity);
-            textViewFollowed.setText(R.string.user_detail_loading);
-            new ShowFriendshipTask(twitter, user.getId())
+            @Override
+            protected void executeCommand(Command command)
             {
-                @Override
-                protected void onPostExecute(Relationship relationship)
+                super.executeCommand(command);
+                new UIHandler()
                 {
-                    if(relationship != null)
+                    @Override
+                    public void run()
                     {
-                        boolean isFollowing = relationship.isSourceFollowingTarget();
-                        buttonFollow.setText(isFollowing ? R.string.user_detail_unfollow : R.string.user_detail_follow);
-                        buttonFollow.setBackground(isFollowing ? red : blue);
-                        buttonFollow.setTag(isFollowing);
-                        buttonFollow.setEnabled(true);
-                        textViewFollowed.setText(relationship.isSourceFollowedByTarget() ? R.string.user_detail_followed : R.string.user_detail_not_followed);
+                        if(UserDetailDialogFragment.this.isDetached())
+                        {
+                            return;
+                        }
+                        updateRelationship(activity, user.getId());
                     }
-                }
-            }.execute();
-        }
+                }.postDelayed(1000);
+            }
+        };
+        menuFragment.setUserID(user.getId());
+        DialogHelper.showDialog(activity, menuFragment, USER_MENU_DIALOG);
     }
 
     private void toggleFollowing(final User user, final Account account, final Activity activity)
@@ -333,7 +320,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
                 public void onPostExecute(User result)
                 {
                     super.onPostExecute(result);
-                    updateUser(result, user, account, activity);
+                    updateRelationship(activity, user.getId());
                     buttonFollow.setEnabled(true);
                 }
             }.execute();
@@ -346,22 +333,46 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
                 public void onPostExecute(User result)
                 {
                     super.onPostExecute(result);
-                    updateUser(result, user, account, activity);
+                    updateRelationship(activity, user.getId());
                     buttonFollow.setEnabled(true);
                 }
             }.execute();
         }
     }
 
-    private void updateUser(User newUser, User oldUser, Account account, Activity activity)
+    private void updateRelationship(Activity activity, final long userId)
     {
-        if(newUser != null)
+        MainActivity mainActivity = (MainActivity) activity;
+        Account account = mainActivity.getCurrentAccount();
+        Twitter twitter = new TwitterApi(account).getTwitter();
+        if(userId == account.userID)
         {
-            setRelationship(newUser, account, activity);
+            textViewFollowed.setText(R.string.user_detail_followed_is_me);
+            buttonFollow.setVisibility(View.GONE);
         }
         else
         {
-            setRelationship(oldUser, account, activity);
+            int theme = mainActivity.getThemeIndex();
+            final Drawable blue = Themes.getStyledDrawable(activity, theme, R.attr.button_round_blue);
+            final Drawable red = Themes.getStyledDrawable(activity, theme, R.attr.button_round_red);
+            lockFollowButton(activity);
+            textViewFollowed.setText(R.string.user_detail_loading);
+            new ShowFriendshipTask(twitter, userId)
+            {
+                @Override
+                protected void onPostExecute(Relationship relationship)
+                {
+                    if(relationship != null)
+                    {
+                        boolean isFollowing = relationship.isSourceFollowingTarget();
+                        buttonFollow.setText(isFollowing ? R.string.user_detail_unfollow : R.string.user_detail_follow);
+                        buttonFollow.setBackground(isFollowing ? red : blue);
+                        buttonFollow.setTag(isFollowing);
+                        buttonFollow.setEnabled(true);
+                        textViewFollowed.setText(relationship.isSourceFollowedByTarget() ? R.string.user_detail_followed : R.string.user_detail_not_followed);
+                    }
+                }
+            }.execute();
         }
     }
 }
