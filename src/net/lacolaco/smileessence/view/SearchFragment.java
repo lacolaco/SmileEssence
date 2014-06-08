@@ -61,6 +61,7 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
 
     // ------------------------------ FIELDS ------------------------------
 
+    public static final String SEARCH_QUERY_DIALOG = "searchQueryDialog";
     private EditText editText;
 
     // --------------------- GETTER / SETTER METHODS ---------------------
@@ -116,7 +117,6 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
     }
 
     // --------------------- Interface OnQueryChangeListener ---------------------
-
 
     @Override
     public void onQueryChange(String newQuery)
@@ -335,7 +335,7 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
                 editText.setText(query.query);
                 hideIME();
             }
-        });
+        }, SEARCH_QUERY_DIALOG);
     }
 
     private void search()

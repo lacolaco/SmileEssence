@@ -62,7 +62,7 @@ public class SelectSearchQueryDialogFragment extends MenuDialogFragment implemen
                 deleteQuery(command);
             }
         }, false);
-        return false;
+        return true;
     }
 
     // ------------------------ OVERRIDE METHODS ------------------------
