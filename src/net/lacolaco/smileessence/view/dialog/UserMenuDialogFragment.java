@@ -35,7 +35,6 @@ import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.command.CommandSearchOnTwitter;
-import net.lacolaco.smileessence.command.user.*;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
@@ -101,20 +100,21 @@ public class UserMenuDialogFragment extends MenuDialogFragment
 
     // -------------------------- OTHER METHODS --------------------------
 
+    public boolean addBottomCommands(Activity activity, User user, ArrayList<Command> commands)
+    {
+        return commands.add(new CommandSearchOnTwitter(activity, user.getScreenName()));
+    }
+
+    public boolean addMainCommands(Activity activity, User user, Account account, ArrayList<Command> commands)
+    {
+        return commands.addAll(Command.getUserCommands(activity, user, account));
+    }
+
     public List<Command> getCommands(Activity activity, User user, Account account)
     {
         ArrayList<Command> commands = new ArrayList<>();
-        commands.add(new UserCommandReply(activity, user));
-        commands.add(new UserCommandAddToReply(activity, user));
-        commands.add(new UserCommandSendMessage(activity, user, account));
-        commands.add(new UserCommandBlock(activity, user, account));
-        commands.add(new UserCommandUnblock(activity, user, account));
-        commands.add(new UserCommandReportForSpam(activity, user, account));
-        commands.add(new UserCommandOpenFavstar(activity, user));
-        commands.add(new UserCommandOpenAclog(activity, user));
-        commands.add(new UserCommandOpenTwilog(activity, user));
-        commands.add(new UserCommandIntroduce(activity, user));
-        commands.add(new CommandSearchOnTwitter(activity, user.getScreenName()));
+        addMainCommands(activity, user, account, commands);
+        addBottomCommands(activity, user, commands);
         return commands;
     }
 }

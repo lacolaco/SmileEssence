@@ -34,7 +34,6 @@ import android.widget.ListView;
 import net.lacolaco.smileessence.Application;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.command.Command;
-import net.lacolaco.smileessence.command.message.MessageCommand;
 import net.lacolaco.smileessence.command.status.StatusCommand;
 import net.lacolaco.smileessence.command.user.UserCommand;
 import net.lacolaco.smileessence.data.CommandSettingCache;
@@ -63,7 +62,7 @@ public class EditCommandActivity extends Activity
         editedCommands = new ArrayList<>();
         List<CheckBoxModel> checkBoxModels = new ArrayList<>();
         List<CommandSetting> commandSettings = CommandSetting.getAll();
-        List<Command> commands = Command.getAll(this);
+        List<Command> commands = Command.getAllCommands(this);
         for(Command command : commands)
         {
             if(command.getKey() < 0)
@@ -73,15 +72,11 @@ public class EditCommandActivity extends Activity
             String text;
             if(command instanceof StatusCommand)
             {
-                text = String.format("Status : %s", command.getText());
+                text = String.format("Tweet : %s", command.getText());
             }
             else if(command instanceof UserCommand)
             {
                 text = String.format("User : %s", command.getText());
-            }
-            else if(command instanceof MessageCommand)
-            {
-                text = String.format("Message : %s", command.getText());
             }
             else
             {

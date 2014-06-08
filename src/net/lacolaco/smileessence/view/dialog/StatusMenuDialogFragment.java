@@ -35,7 +35,6 @@ import android.widget.ListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.*;
-import net.lacolaco.smileessence.command.status.*;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TweetBuilder;
 import net.lacolaco.smileessence.twitter.TwitterApi;
@@ -146,25 +145,8 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
 
     // -------------------------- OTHER METHODS --------------------------
 
-    public List<Command> getCommands(Activity activity, Status status, Account account)
+    public void addBottomCommands(Activity activity, Status status, Account account, ArrayList<Command> commands)
     {
-        ArrayList<Command> commands = new ArrayList<>();
-        for(Command command : getURLCommands(activity, status))
-        {
-            commands.add(command);
-        }
-        commands.add(new StatusCommandAddToReply(activity, status));
-        commands.add(new StatusCommandReplyToAll(activity, status, account));
-        commands.add(new StatusCommandOpenTalkView(activity, status, account));
-        commands.add(new StatusCommandFavAndRT(activity, status, account));
-        commands.add(new StatusCommandQuote(activity, status));
-        commands.add(new StatusCommandShare(activity, status));
-        commands.add(new StatusCommandOpenInBrowser(activity, status));
-        commands.add(new StatusCommandClipboard(activity, status));
-        commands.add(new StatusCommandTofuBuster(activity, status));
-        commands.add(new StatusCommandNanigaja(activity, status, account));
-        commands.add(new StatusCommandMakeAnonymous(activity, status, account));
-        commands.add(new StatusCommandAddToIgnore(activity, status));
         commands.add(new CommandSaveAsTemplate(activity, TwitterUtils.getOriginalStatusText(status)));
         for(String screenName : TwitterUtils.getScreenNames(status, null))
         {
@@ -174,6 +156,27 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         {
             commands.add(command);
         }
+    }
+
+    public boolean addMainCommands(Activity activity, Status status, Account account, ArrayList<Command> commands)
+    {
+        return commands.addAll(Command.getStatusCommands(activity, status, account));
+    }
+
+    public void addTopCommands(Activity activity, Status status, ArrayList<Command> commands)
+    {
+        for(Command command : getURLCommands(activity, status))
+        {
+            commands.add(command);
+        }
+    }
+
+    public List<Command> getCommands(Activity activity, Status status, Account account)
+    {
+        ArrayList<Command> commands = new ArrayList<>();
+        addTopCommands(activity, status, commands);
+        addMainCommands(activity, status, account, commands);
+        addBottomCommands(activity, status, account, commands);
         return commands;
     }
 

@@ -31,7 +31,10 @@ import android.widget.TextView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.command.status.*;
 import net.lacolaco.smileessence.command.user.*;
+import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.viewmodel.IViewModel;
+import twitter4j.Status;
+import twitter4j.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,35 +55,47 @@ public abstract class Command implements IViewModel
         this.activity = activity;
     }
 
-    // --------------------------- CONSTRUCTORS ---------------------------
-
-    public static List<Command> getAll(Activity activity)
+    public static List<Command> getAllCommands(Activity activity)
     {
         List<Command> commands = new ArrayList<>();
-        //Status
-        commands.add(new StatusCommandAddToReply(activity, null));
-        commands.add(new StatusCommandReplyToAll(activity, null, null));
-        commands.add(new StatusCommandOpenTalkView(activity, null, null));
-        commands.add(new StatusCommandFavAndRT(activity, null, null));
-        commands.add(new StatusCommandQuote(activity, null));
-        commands.add(new StatusCommandShare(activity, null));
-        commands.add(new StatusCommandOpenInBrowser(activity, null));
-        commands.add(new StatusCommandClipboard(activity, null));
-        commands.add(new StatusCommandTofuBuster(activity, null));
-        commands.add(new StatusCommandNanigaja(activity, null, null));
-        commands.add(new StatusCommandMakeAnonymous(activity, null, null));
-        commands.add(new StatusCommandAddToIgnore(activity, null));
-        //User
-        commands.add(new UserCommandReply(activity, null));
-        commands.add(new UserCommandAddToReply(activity, null));
-        commands.add(new UserCommandSendMessage(activity, null, null));
-        commands.add(new UserCommandBlock(activity, null, null));
-        commands.add(new UserCommandUnblock(activity, null, null));
-        commands.add(new UserCommandReportForSpam(activity, null, null));
-        commands.add(new UserCommandOpenFavstar(activity, null));
-        commands.add(new UserCommandOpenAclog(activity, null));
-        commands.add(new UserCommandOpenTwilog(activity, null));
-        commands.add(new UserCommandIntroduce(activity, null));
+        commands.addAll(getStatusCommands(activity, null, null));
+        commands.addAll(getUserCommands(activity, null, null));
+        return commands;
+    }
+
+    public static List<Command> getUserCommands(Activity activity, User user, Account account)
+    {
+        List<Command> commands = new ArrayList<>();
+        commands.add(new UserCommandReply(activity, user));
+        commands.add(new UserCommandAddToReply(activity, user));
+        commands.add(new UserCommandSendMessage(activity, user, account));
+        commands.add(new UserCommandBlock(activity, user, account));
+        commands.add(new UserCommandUnblock(activity, user, account));
+        commands.add(new UserCommandReportForSpam(activity, user, account));
+        commands.add(new UserCommandOpenFavstar(activity, user));
+        commands.add(new UserCommandOpenAclog(activity, user));
+        commands.add(new UserCommandOpenTwilog(activity, user));
+        commands.add(new UserCommandIntroduce(activity, user));
+        return commands;
+    }
+
+    // --------------------------- CONSTRUCTORS ---------------------------
+
+    public static List<Command> getStatusCommands(Activity activity, Status status, Account account)
+    {
+        List<Command> commands = new ArrayList<>();
+        commands.add(new StatusCommandAddToReply(activity, status));
+        commands.add(new StatusCommandReplyToAll(activity, status, account));
+        commands.add(new StatusCommandOpenTalkView(activity, status, account));
+        commands.add(new StatusCommandFavAndRT(activity, status, account));
+        commands.add(new StatusCommandQuote(activity, status));
+        commands.add(new StatusCommandShare(activity, status));
+        commands.add(new StatusCommandOpenInBrowser(activity, status));
+        commands.add(new StatusCommandClipboard(activity, status));
+        commands.add(new StatusCommandTofuBuster(activity, status));
+        commands.add(new StatusCommandNanigaja(activity, status, account));
+        commands.add(new StatusCommandMakeAnonymous(activity, status, account));
+        commands.add(new StatusCommandAddToIgnore(activity, status));
         return commands;
     }
 
