@@ -30,7 +30,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.CommandOpenUserDetail;
-import net.lacolaco.smileessence.command.status.StatusCommandOpenChain;
+import net.lacolaco.smileessence.command.status.StatusCommandOpenTalkView;
 import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.notification.NotificationType;
 import net.lacolaco.smileessence.notification.Notificator;
@@ -239,7 +239,7 @@ public class IntentRouter
         if(id != -1)
         {
             Status status = TwitterUtils.tryGetStatus(activity.getCurrentAccount(), id);
-            StatusCommandOpenChain openChain = new StatusCommandOpenChain(activity, status, activity.getCurrentAccount());
+            StatusCommandOpenTalkView openChain = new StatusCommandOpenTalkView(activity, status, activity.getCurrentAccount());
             openChain.execute();
         }
         else

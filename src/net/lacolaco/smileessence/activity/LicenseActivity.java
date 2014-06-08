@@ -58,7 +58,7 @@ public class LicenseActivity extends Activity
 
     private String getMarkerString()
     {
-        return getString(R.string.dialog_licenses_list_marker);
+        return "-";
     }
 
     // ------------------------ OVERRIDE METHODS ------------------------

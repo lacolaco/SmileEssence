@@ -31,7 +31,7 @@ import net.lacolaco.smileessence.view.dialog.DialogHelper;
 import net.lacolaco.smileessence.view.dialog.TalkChainDialogFragment;
 import twitter4j.Status;
 
-public class StatusCommandOpenChain extends StatusCommand
+public class StatusCommandOpenTalkView extends StatusCommand
 {
 
     // ------------------------------ FIELDS ------------------------------
@@ -40,7 +40,7 @@ public class StatusCommandOpenChain extends StatusCommand
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
-    public StatusCommandOpenChain(Activity activity, Status status, Account account)
+    public StatusCommandOpenTalkView(Activity activity, Status status, Account account)
     {
         super(R.id.key_command_status_open_chain, activity, status);
         this.account = account;
@@ -51,7 +51,7 @@ public class StatusCommandOpenChain extends StatusCommand
     @Override
     public String getText()
     {
-        return getActivity().getString(R.string.command_open_status_chain);
+        return getActivity().getString(R.string.command_status_open_talk_view);
     }
 
     @Override

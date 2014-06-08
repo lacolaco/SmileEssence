@@ -31,4 +31,11 @@
     <string name="app_author">Developed by laco0416</string>
     <string name="app_thanks_to">Thanks to</string>
     <string name="thanks_to">miz_hi, yaplus, firstspring1845, ahiru3net, unyuho123</string>
+    <string name="library_name_activeandroid">ActiveAndroid</string>
+    <string name="library_name_guava">Guava</string>
+    <string name="library_name_twitter_text">twitter-text</string>
+    <string name="library_name_twitter4j">twitter4j</string>
+    <string name="library_name_crouton">Crouton</string>
+    <string name="library_name_volley">Volley</string>
+    <string name="library_name_pull_to_refresh">PullToRefresh</string>
 </resources>
