@@ -307,7 +307,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         }.execute();
     }
 
-    private void toggleFollowing(User user, final Account account, Activity activity)
+    private void toggleFollowing(final User user, final Account account, Activity activity)
     {
         buttonFollow.setText(R.string.user_detail_loading);
         buttonFollow.setBackground(activity.getResources().getDrawable(R.drawable.button_round_gray));
@@ -321,7 +321,14 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
                 public void onPostExecute(User result)
                 {
                     super.onPostExecute(result);
-                    setUserData(result, account);
+                    if(result != null)
+                    {
+                        setUserData(result, account);
+                    }
+                    else
+                    {
+                        setUserData(user, account);
+                    }
                 }
             }.execute();
         }
@@ -333,7 +340,14 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
                 public void onPostExecute(User result)
                 {
                     super.onPostExecute(result);
-                    setUserData(result, account);
+                    if(result != null)
+                    {
+                        setUserData(result, account);
+                    }
+                    else
+                    {
+                        setUserData(user, account);
+                    }
                 }
             }.execute();
         }
