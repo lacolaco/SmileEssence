@@ -56,6 +56,32 @@ public class MessageListAdapter extends CustomListAdapter<MessageViewModel>
     // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
+    public void addToBottom(MessageViewModel... items)
+    {
+        for(MessageViewModel item : items)
+        {
+            if(!preAdd(item))
+            {
+                continue;
+            }
+            super.addToBottom(items);
+        }
+    }
+
+    @Override
+    public void addToTop(MessageViewModel... items)
+    {
+        for(MessageViewModel item : items)
+        {
+            if(!preAdd(item))
+            {
+                continue;
+            }
+            super.addToTop(items);
+        }
+    }
+
+    @Override
     public void sort()
     {
         synchronized(LOCK)
@@ -89,5 +115,11 @@ public class MessageListAdapter extends CustomListAdapter<MessageViewModel>
             }
             return null;
         }
+    }
+
+    private boolean preAdd(MessageViewModel item)
+    {
+        removeByMessageID(item.getID());
+        return true;
     }
 }

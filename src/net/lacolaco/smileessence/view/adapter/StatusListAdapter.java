@@ -61,7 +61,7 @@ public class StatusListAdapter extends CustomListAdapter<StatusViewModel>
     {
         for(StatusViewModel item : items)
         {
-            if(preAdd(item))
+            if(!preAdd(item))
             {
                 continue;
             }
@@ -74,7 +74,7 @@ public class StatusListAdapter extends CustomListAdapter<StatusViewModel>
     {
         for(StatusViewModel item : items)
         {
-            if(preAdd(item))
+            if(!preAdd(item))
             {
                 continue;
             }
@@ -127,6 +127,6 @@ public class StatusListAdapter extends CustomListAdapter<StatusViewModel>
     private boolean preAdd(StatusViewModel item)
     {
         removeByStatusID(item.getID());
-        return isBlockUser(item);
+        return !isBlockUser(item);
     }
 }
