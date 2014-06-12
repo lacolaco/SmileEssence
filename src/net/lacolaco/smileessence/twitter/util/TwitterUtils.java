@@ -166,6 +166,29 @@ public class TwitterUtils
         return names;
     }
 
+    public static Collection<String> getScreenNames(DirectMessage message, String excludeScreenName)
+    {
+        ArrayList<String> names = new ArrayList<>();
+        names.add(message.getSenderScreenName());
+        names.add(message.getRecipientScreenName());
+        if(message.getUserMentionEntities() != null)
+        {
+            for(UserMentionEntity entity : message.getUserMentionEntities())
+            {
+                if(excludeScreenName != null && entity.getScreenName().equals(excludeScreenName))
+                {
+                    continue;
+                }
+                if(names.contains(entity.getScreenName()))
+                {
+                    continue;
+                }
+                names.add(entity.getScreenName());
+            }
+        }
+        return names;
+    }
+
     public static String getUserHomeURL(String screenName)
     {
         return String.format("https://twitter.com/%s", screenName);

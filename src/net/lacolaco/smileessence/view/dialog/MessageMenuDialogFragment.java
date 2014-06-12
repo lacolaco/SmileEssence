@@ -33,6 +33,7 @@ import android.widget.ListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.Command;
+import net.lacolaco.smileessence.command.CommandOpenURL;
 import net.lacolaco.smileessence.command.CommandOpenUserDetail;
 import net.lacolaco.smileessence.command.message.MessageCommandDelete;
 import net.lacolaco.smileessence.command.message.MessageCommandReply;
@@ -41,6 +42,8 @@ import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.viewmodel.MessageViewModel;
 import twitter4j.DirectMessage;
+import twitter4j.MediaEntity;
+import twitter4j.URLEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,9 +106,49 @@ public class MessageMenuDialogFragment extends MenuDialogFragment
         ArrayList<Command> commands = new ArrayList<>();
         commands.add(new MessageCommandReply(activity, message));
         commands.add(new MessageCommandDelete(activity, message, account));
-        commands.add(new CommandOpenUserDetail(activity, message.getSenderScreenName(), account));
-        commands.add(new CommandOpenUserDetail(activity, message.getRecipientScreenName(), account));
+        commands.addAll(getURLCommands(activity, message));
+        commands.addAll(getScreenNameCommands(activity, message, account));
         return commands;
+    }
+
+    public List<Command> getScreenNameCommands(Activity activity, DirectMessage message, Account account)
+    {
+        List<Command> commands = new ArrayList<>();
+        for(String screenName : TwitterUtils.getScreenNames(message, null))
+        {
+            commands.add(new CommandOpenUserDetail(activity, screenName, account));
+        }
+        return commands;
+    }
+
+    public List<Command> getURLCommands(Activity activity, DirectMessage message)
+    {
+        List<Command> commands = new ArrayList<>();
+        if(message.getURLEntities() != null)
+        {
+            for(URLEntity urlEntity : message.getURLEntities())
+            {
+                commands.add(new CommandOpenURL(activity, urlEntity.getExpandedURL()));
+            }
+        }
+        for(MediaEntity mediaEntity : getMediaEntities(message))
+        {
+            commands.add(new CommandOpenURL(activity, mediaEntity.getMediaURL()));
+        }
+        return commands;
+    }
+
+    private MediaEntity[] getMediaEntities(DirectMessage message)
+    {
+        if(message.getExtendedMediaEntities().length == 0)
+        {
+            // direct message's media is contained also in url entities.
+            return new MediaEntity[0];
+        }
+        else
+        {
+            return message.getExtendedMediaEntities();
+        }
     }
 
     private View getTitleView(MainActivity activity, Account account, DirectMessage message)
