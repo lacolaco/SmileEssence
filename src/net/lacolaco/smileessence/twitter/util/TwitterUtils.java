@@ -170,7 +170,10 @@ public class TwitterUtils
     {
         ArrayList<String> names = new ArrayList<>();
         names.add(message.getSenderScreenName());
-        names.add(message.getRecipientScreenName());
+        if(!message.getRecipientScreenName().equals(message.getSenderScreenName()))
+        {
+            names.add(message.getRecipientScreenName());
+        }
         if(message.getUserMentionEntities() != null)
         {
             for(UserMentionEntity entity : message.getUserMentionEntities())
