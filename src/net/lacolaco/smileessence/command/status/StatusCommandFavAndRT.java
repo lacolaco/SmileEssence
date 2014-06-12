@@ -60,16 +60,8 @@ public class StatusCommandFavAndRT extends StatusCommand implements IConfirmable
     @Override
     public boolean isEnabled()
     {
-        User user = getStatus().getUser();
-        if(user.isProtected())
-        {
-            return false;
-        }
-        if(user.getId() == account.userID)
-        {
-            return false;
-        }
-        return true;
+        User user = getOriginalStatus().getUser();
+        return !user.isProtected() && user.getId() != account.userID;
     }
 
     // -------------------------- OTHER METHODS --------------------------
