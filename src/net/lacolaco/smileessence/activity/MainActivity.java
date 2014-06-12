@@ -420,6 +420,11 @@ public class MainActivity extends Activity
         }
     }
 
+    public void forceFinish()
+    {
+        super.finish();
+    }
+
     public CustomListAdapter<?> getListAdapter(int i)
     {
         return adapterMap.get(i);
@@ -565,7 +570,7 @@ public class MainActivity extends Activity
         int count = TwitterUtils.getPagingCount(this);
         Twitter twitter = TwitterApi.getTwitter(currentAccount);
         Paging paging = TwitterUtils.getPaging(count);
-        initBlockUser(twitter);
+        initInvisibleUser(twitter);
         initUserListCache(twitter);
         initHome(twitter, paging);
         initMentions(twitter, paging);
@@ -646,11 +651,6 @@ public class MainActivity extends Activity
         pageIndexUserlist = addListPage(getString(R.string.page_name_list), UserListFragment.class, userListAdapter, ADAPTER_USERLIST, visible);
     }
 
-    public void forceFinish()
-    {
-        super.finish();
-    }
-
     private void getImageUri(int requestCode, int resultCode, Intent data)
     {
         if(resultCode != RESULT_OK)
@@ -670,11 +670,6 @@ public class MainActivity extends Activity
             uri = getCameraTempFilePath();
         }
         openPostPageWithImage(uri);
-    }
-
-    private void initBlockUser(Twitter twitter)
-    {
-        new BlockIDsTask(twitter, this).execute();
     }
 
     private void initCommandSetting()
@@ -704,6 +699,12 @@ public class MainActivity extends Activity
                 adapter.updateForce();
             }
         }.execute();
+    }
+
+    private void initInvisibleUser(Twitter twitter)
+    {
+        new BlockIDsTask(twitter).execute();
+        new MutesIDsTask(twitter).execute();
     }
 
     private void initMentions(final Twitter twitter, final Paging paging)

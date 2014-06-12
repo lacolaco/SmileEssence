@@ -38,7 +38,7 @@ public class UserCache
 
     private ConcurrentHashMap<Long, User> cache = new ConcurrentHashMap<>();
 
-    private ConcurrentLinkedQueue<Long> blockIDs = new ConcurrentLinkedQueue<>();
+    private ConcurrentLinkedQueue<Long> invisibleIDs = new ConcurrentLinkedQueue<>();
 
     // -------------------------- STATIC METHODS --------------------------
 
@@ -66,9 +66,9 @@ public class UserCache
         return cache.get(id);
     }
 
-    public boolean isBlockID(long id)
+    public boolean isInvisibleUserID(long id)
     {
-        return blockIDs.contains(Long.valueOf(id));
+        return invisibleIDs.contains(Long.valueOf(id));
     }
 
     /**
@@ -82,9 +82,9 @@ public class UserCache
         return cache.put(user.getId(), user);
     }
 
-    public void putBlockUser(long id)
+    public void putInvisibleUser(long id)
     {
-        blockIDs.add(id);
+        invisibleIDs.add(id);
     }
 
     /**
@@ -98,8 +98,8 @@ public class UserCache
         return cache.remove(id);
     }
 
-    public void removeBlockUser(long id)
+    public void removeInvisibleUser(long id)
     {
-        blockIDs.remove(Long.valueOf(id));
+        invisibleIDs.remove(Long.valueOf(id));
     }
 }

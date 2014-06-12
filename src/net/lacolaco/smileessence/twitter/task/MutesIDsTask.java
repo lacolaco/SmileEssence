@@ -33,12 +33,12 @@ import twitter4j.TwitterException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockIDsTask extends TwitterTask<Long[]>
+public class MutesIDsTask extends TwitterTask<Long[]>
 {
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
-    public BlockIDsTask(Twitter twitter)
+    public MutesIDsTask(Twitter twitter)
     {
         super(twitter);
     }
@@ -46,11 +46,11 @@ public class BlockIDsTask extends TwitterTask<Long[]>
     // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
-    protected void onPostExecute(Long[] blockIDs)
+    protected void onPostExecute(Long[] mutesIDs)
     {
-        for(Long blockID : blockIDs)
+        for(Long mutesID : mutesIDs)
         {
-            UserCache.getInstance().putInvisibleUser(blockID);
+            UserCache.getInstance().putInvisibleUser(mutesID);
         }
     }
 
@@ -63,9 +63,9 @@ public class BlockIDsTask extends TwitterTask<Long[]>
             long cursor = -1;
             do
             {
-                IDs blocksIDs = twitter.getBlocksIDs(cursor);
-                cursor = blocksIDs.getNextCursor();
-                for(long id : blocksIDs.getIDs())
+                IDs mutesIDs = twitter.getMutesIDs(cursor);
+                cursor = mutesIDs.getNextCursor();
+                for(long id : mutesIDs.getIDs())
                 {
                     idList.add(id);
                 }

@@ -121,7 +121,7 @@ public class StatusListAdapter extends CustomListAdapter<StatusViewModel>
 
     private boolean isBlockUser(StatusViewModel item)
     {
-        return UserCache.getInstance().isBlockID(item.getOriginalUserID());
+        return UserCache.getInstance().isInvisibleUserID(item.getOriginalUserID());
     }
 
     private boolean preAdd(StatusViewModel item)
