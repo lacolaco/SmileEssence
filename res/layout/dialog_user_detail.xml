@@ -318,13 +318,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ListView
+                <com.handmark.pulltorefresh.library.PullToRefreshListView
+                    xmlns:ptr="http://schemas.android.com/apk/res/net.lacolaco.smileessence"
                     android:id="@+id/listview_user_detail_timeline"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    ptr:ptrMode="both"
+                    ptr:ptrShowIndicator="false"
+                    android:overScrollMode="never"
+                    android:fastScrollEnabled="true"
                     android:dividerHeight="1px"
-                    android:divider="?attr/color_list_divider"
-                    android:clickable="false"/>
+                    android:divider="?attr/color_list_divider"/>
             </FrameLayout>
         </FrameLayout>
     </LinearLayout>

@@ -34,11 +34,10 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TabHost;
-import android.widget.TextView;
+import android.widget.*;
 import com.android.volley.toolbox.NetworkImageView;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.Command;
@@ -53,13 +52,16 @@ import net.lacolaco.smileessence.twitter.task.UserTimelineTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.util.Themes;
 import net.lacolaco.smileessence.util.UIHandler;
+import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.view.adapter.StatusListAdapter;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
+import twitter4j.Paging;
 import twitter4j.Relationship;
 import twitter4j.Twitter;
 import twitter4j.User;
 
-public class UserDetailDialogFragment extends DialogFragment implements View.OnClickListener
+public class UserDetailDialogFragment extends DialogFragment implements View.OnClickListener,
+        PullToRefreshBase.OnRefreshListener2<ListView>
 {
 
     // ------------------------------ FIELDS ------------------------------
@@ -81,7 +83,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
     private NetworkImageView imageViewIcon;
     private NetworkImageView imageViewHeader;
     private Button buttonFollow;
-    private ListView listViewTimeline;
+    private PullToRefreshListView listViewTimeline;
 
     // --------------------- GETTER / SETTER METHODS ---------------------
 
@@ -153,6 +155,65 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         }
     }
 
+    // --------------------- Interface OnRefreshListener2 ---------------------
+
+    @Override
+    public void onPullDownToRefresh(final PullToRefreshBase<ListView> refreshView)
+    {
+        final MainActivity activity = (MainActivity) getActivity();
+        final Account currentAccount = activity.getCurrentAccount();
+        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        final StatusListAdapter adapter = getListAdapter(activity);
+        Paging paging = TwitterUtils.getPaging(TwitterUtils.getPagingCount(activity));
+        if(adapter.getCount() > 0)
+        {
+            paging.setSinceId(adapter.getTopID());
+        }
+        new UserTimelineTask(twitter, getUserID(), paging)
+        {
+            @Override
+            protected void onPostExecute(twitter4j.Status[] statuses)
+            {
+                super.onPostExecute(statuses);
+                for(int i = statuses.length - 1; i >= 0; i--)
+                {
+                    twitter4j.Status status = statuses[i];
+                    adapter.addToTop(new StatusViewModel(status, currentAccount));
+                }
+                updateListView(refreshView.getRefreshableView(), adapter, true);
+                refreshView.onRefreshComplete();
+            }
+        }.execute();
+    }
+
+    @Override
+    public void onPullUpToRefresh(final PullToRefreshBase<ListView> refreshView)
+    {
+        final MainActivity activity = (MainActivity) getActivity();
+        final Account currentAccount = activity.getCurrentAccount();
+        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        final StatusListAdapter adapter = getListAdapter(activity);
+        Paging paging = TwitterUtils.getPaging(TwitterUtils.getPagingCount(activity));
+        if(adapter.getCount() > 0)
+        {
+            paging.setMaxId(adapter.getLastID() - 1);
+        }
+        new UserTimelineTask(twitter, getUserID(), paging)
+        {
+            @Override
+            protected void onPostExecute(twitter4j.Status[] statuses)
+            {
+                super.onPostExecute(statuses);
+                for(twitter4j.Status status : statuses)
+                {
+                    adapter.addToBottom(new StatusViewModel(status, currentAccount));
+                }
+                updateListView(refreshView.getRefreshableView(), adapter, false);
+                refreshView.onRefreshComplete();
+            }
+        }.execute();
+    }
+
     // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
@@ -186,23 +247,37 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         imageViewHeader = (NetworkImageView) v.findViewById(R.id.imageview_user_detail_header);
         buttonFollow = (Button) v.findViewById(R.id.button_user_detail_follow);
         buttonFollow.setOnClickListener(this);
-        listViewTimeline = (ListView) v.findViewById(R.id.listview_user_detail_timeline);
+        listViewTimeline = (PullToRefreshListView) v.findViewById(R.id.listview_user_detail_timeline);
         initUserData(user, account);
         TabHost tabHost = (TabHost) v.findViewById(android.R.id.tabhost);
         tabHost.setup();
-        TabHost.TabSpec tab1 = tabHost.newTabSpec("tab1")
-                                      .setContent(R.id.tab1)
-                                      .setIndicator(getString(R.string.user_detail_tab_info));
+        TabHost.TabSpec tab1 = tabHost.newTabSpec("tab1").setContent(R.id.tab1).setIndicator(getString(R.string.user_detail_tab_info));
         tabHost.addTab(tab1);
-        TabHost.TabSpec tab2 = tabHost.newTabSpec("tab2")
-                                      .setContent(R.id.tab2)
-                                      .setIndicator(getString(R.string.user_detail_tab_timeline));
+        TabHost.TabSpec tab2 = tabHost.newTabSpec("tab2").setContent(R.id.tab2).setIndicator(getString(R.string.user_detail_tab_timeline));
         tabHost.addTab(tab2);
         tabHost.setCurrentTab(0);
         return new AlertDialog.Builder(activity)
                 .setView(v)
                 .setCancelable(true)
                 .create();
+    }
+
+    private void executeUserTimelineTask(final User user, final Account account, final StatusListAdapter adapter)
+    {
+        Twitter twitter = TwitterApi.getTwitter(account);
+        new UserTimelineTask(twitter, user.getId())
+        {
+            @Override
+            protected void onPostExecute(twitter4j.Status[] statuses)
+            {
+                super.onPostExecute(statuses);
+                for(twitter4j.Status status : statuses)
+                {
+                    adapter.addToBottom(new StatusViewModel(status, account));
+                }
+                adapter.updateForce();
+            }
+        }.execute();
     }
 
     private String getHtmlDescription(String description)
@@ -216,6 +291,11 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         html = html.replaceAll("@([a-zA-Z0-9_]+)", "<a href=\"" + TwitterUtils.getUserHomeURL("$1") + "\">$0</a>");
         html = html.replaceAll("\r\n", "<br />");
         return html;
+    }
+
+    private StatusListAdapter getListAdapter(MainActivity activity)
+    {
+        return (StatusListAdapter) activity.getListAdapter(ADAPTER_INDEX);
     }
 
     private void initUserData(User user, final Account account)
@@ -251,21 +331,9 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         MainActivity activity = (MainActivity) getActivity();
         final StatusListAdapter adapter = new StatusListAdapter(activity);
         listViewTimeline.setAdapter(adapter);
+        listViewTimeline.setOnRefreshListener(this);
         activity.setListAdapter(ADAPTER_INDEX, adapter);
-        Twitter twitter = TwitterApi.getTwitter(account);
-        new UserTimelineTask(twitter, user.getId())
-        {
-            @Override
-            protected void onPostExecute(twitter4j.Status[] statuses)
-            {
-                super.onPostExecute(statuses);
-                for(twitter4j.Status status : statuses)
-                {
-                    adapter.addToBottom(new StatusViewModel(status, account));
-                }
-                adapter.updateForce();
-            }
-        }.execute();
+        executeUserTimelineTask(user, account, adapter);
         updateRelationship(activity, user.getId());
     }
 
@@ -307,6 +375,14 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         DialogHelper.showDialog(activity, menuFragment, USER_MENU_DIALOG);
     }
 
+    private void setFollowButtonState(boolean isFollowing, Drawable unfollowColor, Drawable followColor)
+    {
+        buttonFollow.setText(isFollowing ? R.string.user_detail_unfollow : R.string.user_detail_follow);
+        buttonFollow.setBackground(isFollowing ? unfollowColor : followColor);
+        buttonFollow.setTag(isFollowing);
+        buttonFollow.setEnabled(true);
+    }
+
     private void toggleFollowing(final User user, final Account account, final Activity activity)
     {
         lockFollowButton(activity);
@@ -340,6 +416,37 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         }
     }
 
+    protected void updateListView(AbsListView absListView, CustomListAdapter<?> adapter, boolean addedToTop)
+    {
+        int before = adapter.getCount();
+        adapter.notifyDataSetChanged(); // synchronized call (not adapter#updateForce())
+        int after = adapter.getCount();
+        int increments = after - before;
+        if(increments > 0)
+        {
+            adapter.setNotifiable(false);
+            if(addedToTop)
+            {
+                absListView.setSelection(increments + 1);
+                absListView.smoothScrollToPositionFromTop(increments, 0);
+                absListView.setSelection(increments);
+            }
+            else
+            {
+                absListView.smoothScrollToPositionFromTop(before, 0);
+            }
+
+            if(increments == 1)
+            {
+                adapter.setNotifiable(true);
+            }
+        }
+        else
+        {
+            adapter.setNotifiable(true);
+        }
+    }
+
     private void updateRelationship(Activity activity, final long userId)
     {
         MainActivity mainActivity = (MainActivity) activity;
@@ -353,10 +460,10 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         else
         {
             int theme = mainActivity.getThemeIndex();
-            final Drawable blue = Themes.getStyledDrawable(activity, theme, R.attr.button_round_blue);
-            final Drawable red = Themes.getStyledDrawable(activity, theme, R.attr.button_round_red);
             lockFollowButton(activity);
             textViewFollowed.setText(R.string.user_detail_loading);
+            final Drawable red = Themes.getStyledDrawable(activity, theme, R.attr.button_round_red);
+            final Drawable blue = Themes.getStyledDrawable(activity, theme, R.attr.button_round_blue);
             new ShowFriendshipTask(twitter, userId)
             {
                 @Override
@@ -365,11 +472,9 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
                     if(relationship != null)
                     {
                         boolean isFollowing = relationship.isSourceFollowingTarget();
-                        buttonFollow.setText(isFollowing ? R.string.user_detail_unfollow : R.string.user_detail_follow);
-                        buttonFollow.setBackground(isFollowing ? red : blue);
-                        buttonFollow.setTag(isFollowing);
-                        buttonFollow.setEnabled(true);
-                        textViewFollowed.setText(relationship.isSourceFollowedByTarget() ? R.string.user_detail_followed : R.string.user_detail_not_followed);
+                        boolean isFollowed = relationship.isSourceFollowedByTarget();
+                        setFollowButtonState(isFollowing, red, blue);
+                        textViewFollowed.setText(isFollowed ? R.string.user_detail_followed : R.string.user_detail_not_followed);
                     }
                 }
             }.execute();
