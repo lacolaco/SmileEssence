@@ -35,15 +35,15 @@ public class AccessTokenTask extends TwitterTask<AccessToken>
     // ------------------------------ FIELDS ------------------------------
 
     private final RequestToken requestToken;
-    private final String verifier;
+    private final String pinCode;
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
-    public AccessTokenTask(Twitter twitter, RequestToken requestToken, String verifier)
+    public AccessTokenTask(Twitter twitter, RequestToken requestToken, String pinCode)
     {
         super(twitter);
         this.requestToken = requestToken;
-        this.verifier = verifier;
+        this.pinCode = pinCode;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class AccessTokenTask extends TwitterTask<AccessToken>
     {
         try
         {
-            return twitter.getOAuthAccessToken(requestToken, verifier);
+            return twitter.getOAuthAccessToken(requestToken, pinCode);
         }
         catch(TwitterException e)
         {

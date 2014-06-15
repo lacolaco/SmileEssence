@@ -24,7 +24,6 @@
 
 package net.lacolaco.smileessence.twitter;
 
-import android.net.Uri;
 import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.twitter.task.AccessTokenTask;
 import net.lacolaco.smileessence.twitter.task.RequestTokenTask;
@@ -41,6 +40,10 @@ public class OAuthSession
     // ------------------------------ FIELDS ------------------------------
 
     public static final String CALLBACK_OAUTH = "oauth://smileessence";
+    public static final String KEY_TOKEN = "token";
+    public static final String KEY_TOKEN_SECRET = "tokenSecret";
+    public static final String KEY_SCREEN_NAME = "screenName";
+    public static final String KEY_USER_ID = "userID";
     private static final String OAUTH_VERIFIER = "oauth_verifier";
     private RequestToken requestToken;
 
@@ -49,7 +52,7 @@ public class OAuthSession
     public String getAuthorizationURL()
     {
         Twitter twitter = new TwitterFactory().getInstance();
-        RequestTokenTask task = new RequestTokenTask(twitter, CALLBACK_OAUTH);
+        RequestTokenTask task = new RequestTokenTask(twitter);
         task.execute();
         try
         {
@@ -66,11 +69,10 @@ public class OAuthSession
 
     // -------------------------- OTHER METHODS --------------------------
 
-    public AccessToken getAccessToken(Uri uri)
+    public AccessToken getAccessToken(String pinCode)
     {
         Twitter twitter = new TwitterFactory().getInstance();
-        String verifier = uri.getQueryParameter(OAUTH_VERIFIER);
-        AccessTokenTask task = new AccessTokenTask(twitter, requestToken, verifier);
+        AccessTokenTask task = new AccessTokenTask(twitter, requestToken, pinCode);
         task.execute();
         try
         {

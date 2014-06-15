@@ -34,14 +34,12 @@ public class RequestTokenTask extends TwitterTask<RequestToken>
 
     // ------------------------------ FIELDS ------------------------------
 
-    private final String callback;
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
-    public RequestTokenTask(Twitter twitter, String callback)
+    public RequestTokenTask(Twitter twitter)
     {
         super(twitter);
-        this.callback = callback;
     }
 
     @Override
@@ -49,7 +47,7 @@ public class RequestTokenTask extends TwitterTask<RequestToken>
     {
         try
         {
-            return twitter.getOAuthRequestToken(callback);
+            return twitter.getOAuthRequestToken();
         }
         catch(TwitterException e)
         {

@@ -28,7 +28,7 @@
           android:versionCode="9"
           android:versionName="@string/app_version">
 
-<uses-sdk
+    <uses-sdk
         android:minSdkVersion="17"
         android:targetSdkVersion="19"/>
 
@@ -54,8 +54,8 @@
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateHidden|adjustNothing">
-        <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <intent-filter android:label="@string/intent_post">
@@ -107,10 +107,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.WebViewActivity"
-            android:label="@string/activity_authenticate"
-            android:configChanges="keyboardHidden|orientation"/>
-        <activity
             android:name=".activity.SettingActivity"
             android:label="@string/activity_setting"
             android:configChanges="keyboardHidden|orientation"
@@ -139,5 +135,9 @@
             android:name=".activity.LicenseActivity"
             android:label="@string/activity_licenses"
             android:parentActivityName="net.lacolaco.smileessence.activity.SettingActivity"/>
+        <activity
+            android:name=".activity.OAuthActivity"
+            android:label="@string/activity_authenticate"
+            android:configChanges="keyboardHidden|orientation"/>
     </application>
 </manifest>

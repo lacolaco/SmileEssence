@@ -70,7 +70,6 @@ import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 import net.lacolaco.smileessence.viewmodel.UserListListAdapter;
 import net.lacolaco.smileessence.viewmodel.menu.MainActivityMenuHelper;
 import twitter4j.*;
-import twitter4j.auth.AccessToken;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -335,7 +334,7 @@ public class MainActivity extends Activity
         }
         else
         {
-            startOAuthSession();
+            startOAuthActivity();
         }
         Logger.debug("MainActivity:onCreate");
     }
@@ -839,8 +838,10 @@ public class MainActivity extends Activity
         }
         else
         {
-            AccessToken token = oauthSession.getAccessToken(data.getData());
-            Account account = new Account(token.getToken(), token.getTokenSecret(), token.getUserId(), token.getScreenName());
+            Account account = new Account(data.getStringExtra(OAuthSession.KEY_TOKEN),
+                                          data.getStringExtra(OAuthSession.KEY_TOKEN_SECRET),
+                                          data.getLongExtra(OAuthSession.KEY_USER_ID, -1L),
+                                          data.getStringExtra(OAuthSession.KEY_SCREEN_NAME));
             account.save();
             setCurrentAccount(account);
             setLastUsedAccountID(account);
@@ -865,21 +866,9 @@ public class MainActivity extends Activity
         setCurrentAccount(account);
     }
 
-    private void startOAuthSession()
+    private void startOAuthActivity()
     {
-        oauthSession = new OAuthSession();
-        String url = oauthSession.getAuthorizationURL();
-        if(!TextUtils.isEmpty(url))
-        {
-            Intent intent = new Intent(this, WebViewActivity.class);
-            intent.setData(Uri.parse(url));
-            startActivityForResult(intent, REQUEST_OAUTH);
-        }
-        else
-        {
-            new Notificator(this, R.string.notice_error_authenticate_request).makeToast().show();
-            finish();
-        }
+        startActivityForResult(new Intent(this, OAuthActivity.class), REQUEST_OAUTH);
     }
 
     private void startUserList(Twitter twitter, String listFullName)

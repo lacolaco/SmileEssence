@@ -31,7 +31,10 @@
     <string name="activity_authenticate">Authenticate</string>
     <string name="activity_licenses">Licenses</string>
     <string name="activity_edit_tab">Tabs Setting</string>
-    <string name="intent_post">つぶやく</string>
+    <string name="intent_post">Tweet</string>
+    <string name="message_oauth_text">Please get PIN code at a URL below, and input it.</string>
+    <string name="message_oauth_hint">PIN code</string>
+    <string name="message_oauth_authenticate">Authenticate</string>
     <string name="namestyle_s_n">ScreenName / Name</string>
     <string name="namestyle_n_s">Name / ScreenName</string>
     <string name="namestyle_s">ScreenName</string>

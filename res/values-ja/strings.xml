@@ -32,6 +32,9 @@
     <string name="activity_licenses">ライセンス</string>
     <string name="activity_edit_tab">タブ表示設定</string>
     <string name="intent_post">つぶやく</string>
+    <string name="message_oauth_text">下のリンクからPINコードを取得して入力してください</string>
+    <string name="message_oauth_hint">PINコード</string>
+    <string name="message_oauth_authenticate">認証</string>
     <string name="namestyle_s_n">ScreenName / Name</string>
     <string name="namestyle_n_s">Name / ScreenName</string>
     <string name="namestyle_s">ScreenName</string>
