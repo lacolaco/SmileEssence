@@ -107,9 +107,9 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
     @Override
     public void onClick(View v)
     {
-        MainActivity activity = (MainActivity) getActivity();
+        final MainActivity activity = (MainActivity) getActivity();
         final Account account = activity.getCurrentAccount();
-        User user = TwitterUtils.tryGetUser(account, getUserID());
+        final User user = TwitterUtils.tryGetUser(account, getUserID());
         switch(v.getId())
         {
             case R.id.imageview_user_detail_menu:
@@ -149,7 +149,14 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
             }
             case R.id.button_user_detail_follow:
             {
-                toggleFollowing(user, account, activity);
+                ConfirmDialogFragment.show(activity, getString(R.string.dialog_confirm_commands), new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        toggleFollowing(user, account, activity);
+                    }
+                });
                 break;
             }
         }
