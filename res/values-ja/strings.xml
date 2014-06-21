@@ -82,6 +82,7 @@
     <string name="setting_namestyle_title">名前の形式</string>
     <string name="setting_namestyle_dialog_title">名前の形式を選択</string>
     <string name="setting_read_morse">モールスの解読</string>
+    <string name="setting_extend_status_url">ツイートURLの展開</string>
     <string name="setting_category_system_title">システム設定</string>
     <string name="setting_safe_mode_title">セーフモード</string>
     <string name="setting_safe_mode_summary_on">確認ダイアログを表示する</string>

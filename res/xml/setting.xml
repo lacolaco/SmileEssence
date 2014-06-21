@@ -55,6 +55,10 @@
             android:title="@string/setting_read_morse"
             android:key="@string/key_setting_read_morse"
             android:defaultValue="true"/>
+        <SwitchPreference
+            android:title="@string/setting_extend_status_url"
+            android:key="@string/key_setting_extend_status_url"
+            android:defaultValue="true"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/setting_category_system_title">
         <SwitchPreference

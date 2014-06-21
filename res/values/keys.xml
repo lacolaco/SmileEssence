@@ -47,4 +47,5 @@
     <string name="key_page_search_position">pageSearchPosition</string>
     <string name="key_page_list_visibility">pageListVisibility</string>
     <string name="key_page_list_position">pageListPosition</string>
+    <string name="key_setting_extend_status_url">extendStatusURL</string>
 </resources>

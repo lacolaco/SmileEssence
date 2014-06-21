@@ -82,6 +82,7 @@
     <string name="setting_namestyle_title">Name style</string>
     <string name="setting_namestyle_dialog_title">Choose name style</string>
     <string name="setting_read_morse">Enable morse</string>
+    <string name="setting_extend_status_url">Extend status url</string>
     <string name="setting_category_system_title">System Setting</string>
     <string name="setting_safe_mode_title">Safe mode</string>
     <string name="setting_safe_mode_summary_on">Show confirm dialog</string>

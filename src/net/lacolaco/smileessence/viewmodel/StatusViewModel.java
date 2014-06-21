@@ -327,12 +327,13 @@ public class StatusViewModel implements IViewModel
     @Override
     public View getView(final Activity activity, final LayoutInflater inflater, View convertedView)
     {
-        return getView(activity, inflater, convertedView, false);
+        boolean extendStatusURL = new UserPreferenceHelper(activity).getValue(R.string.key_setting_extend_status_url, true);
+        return getView(activity, inflater, convertedView, extendStatusURL);
     }
 
     // -------------------------- OTHER METHODS --------------------------
 
-    public View getView(final Activity activity, final LayoutInflater inflater, View convertedView, boolean embedded)
+    public View getView(final Activity activity, final LayoutInflater inflater, View convertedView, boolean extendStatusURL)
     {
         if(convertedView == null)
         {
@@ -403,7 +404,7 @@ public class StatusViewModel implements IViewModel
         }));
         final ViewGroup embeddedStatus = (ViewGroup) convertedView.findViewById(R.id.view_status_embedded_status);
         embeddedStatus.removeAllViews();
-        if(!embedded)
+        if(extendStatusURL)
         {
             if(containsStatusURL())
             {
@@ -421,7 +422,7 @@ public class StatusViewModel implements IViewModel
                         public void onCallback(Status status)
                         {
                             StatusViewModel viewModel = new StatusViewModel(status, account);
-                            View embeddedHolder = viewModel.getView(activity, inflater, null, true);
+                            View embeddedHolder = viewModel.getView(activity, inflater, null, false);
                             embeddedStatus.addView(embeddedHolder, index);
                             finalConvertedView.invalidate();
                         }
