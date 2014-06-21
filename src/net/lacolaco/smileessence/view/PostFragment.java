@@ -216,6 +216,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
             textViewCount.setTextAppearance(getActivity(), android.R.style.TextAppearance_Widget_TextView);
             buttonTweet.setEnabled(true);
         }
+        setStateFromView();
     }
 
     @Override
@@ -382,7 +383,10 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
 
     private void setStateFromView()
     {
-        PostState.getState().beginTransaction().setText(editText.getText().toString()).setSelection(editText.getSelectionStart(), editText.getSelectionEnd()).commit();
+        PostState state = PostState.getState();
+        state.removeListener();
+        state.beginTransaction().setText(editText.getText().toString()).setSelection(editText.getSelectionStart(), editText.getSelectionEnd()).commit();
+        state.setListener(this);
     }
 
     private void showIME()

@@ -132,9 +132,8 @@ public class MainActivityMenuHelper
             }
             case R.id.actionbar_report:
             {
-                PostState.newState().beginTransaction()
-                         .setCursor(0)
-                         .setText(activity.getString(R.string.text_message_to_author, activity.getVersion()))
+                PostState.getState().beginTransaction()
+                         .appendText(activity.getString(R.string.text_message_to_author, activity.getVersion()))
                          .commitWithOpen(activity);
                 return true;
             }
