@@ -46,10 +46,7 @@ import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.view.adapter.PostState;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
-import twitter4j.HashtagEntity;
-import twitter4j.MediaEntity;
-import twitter4j.Status;
-import twitter4j.URLEntity;
+import twitter4j.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -296,7 +293,8 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
 
     private boolean isNotRetweetable(Account account, Status status)
     {
-        return !status.isRetweet() && status.getUser().getId() == account.userID;
+        User user = TwitterUtils.getOriginalStatus(status).getUser();
+        return status.getUser().isProtected() || status.getUser().getId() == account.userID;
     }
 
     private boolean isRetweetDeletable(Account account, Status status)
