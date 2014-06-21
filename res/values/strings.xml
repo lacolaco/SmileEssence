@@ -202,6 +202,8 @@
     <string name="command_status_reply_to_all">Reply to all</string>
     <string name="command_status_fav_and_rt">Retweet and favorite</string>
     <string name="command_status_quote">Quote</string>
+    <string name="command_status_quote_url">Permalink quote</string>
+    <string name="command_status_quote_text">Text quote</string>
     <string name="command_status_clipboard">Copy to clipboard</string>
     <string name="command_status_share">Share</string>
     <string name="command_status_open_in_browser">Open in browser</string>

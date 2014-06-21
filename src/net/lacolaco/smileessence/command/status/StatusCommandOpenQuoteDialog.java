@@ -26,17 +26,16 @@ package net.lacolaco.smileessence.command.status;
 
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
-import net.lacolaco.smileessence.activity.MainActivity;
-import net.lacolaco.smileessence.twitter.TweetBuilder;
-import net.lacolaco.smileessence.view.adapter.PostState;
+import net.lacolaco.smileessence.view.dialog.DialogHelper;
+import net.lacolaco.smileessence.view.dialog.QuoteDialogFragment;
 import twitter4j.Status;
 
-public class StatusCommandQuote extends StatusCommand
+public class StatusCommandOpenQuoteDialog extends StatusCommand
 {
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
-    public StatusCommandQuote(Activity activity, Status status)
+    public StatusCommandOpenQuoteDialog(Activity activity, Status status)
     {
         super(R.id.key_command_status_quote, activity, status);
     }
@@ -52,7 +51,7 @@ public class StatusCommandQuote extends StatusCommand
     @Override
     public boolean isEnabled()
     {
-        return !getStatus().getUser().isProtected();
+        return true;
     }
 
     // -------------------------- OTHER METHODS --------------------------
@@ -60,12 +59,9 @@ public class StatusCommandQuote extends StatusCommand
     @Override
     public boolean execute()
     {
-        TweetBuilder builder = new TweetBuilder().setQuotation(getOriginalStatus());
-        PostState.newState().beginTransaction()
-                 .setText(builder.buildText())
-                 .setInReplyToStatusID(getOriginalStatus().getId())
-                 .setCursor(0)
-                 .commitWithOpen((MainActivity) getActivity());
-        return true;
+        QuoteDialogFragment dialogFragment = new QuoteDialogFragment();
+        dialogFragment.setStatusID(getOriginalStatus().getId());
+        DialogHelper.showDialog(getActivity(), dialogFragment, "quoteDialog");
+        return false;
     }
 }

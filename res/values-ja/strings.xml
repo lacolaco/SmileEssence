@@ -202,6 +202,8 @@
     <string name="command_status_reply_to_all">全員にリプライを送る</string>
     <string name="command_status_fav_and_rt">ふぁぼ＆RTする</string>
     <string name="command_status_quote">引用する</string>
+    <string name="command_status_quote_url">URLを引用する</string>
+    <string name="command_status_quote_text">本文を引用する</string>
     <string name="command_status_clipboard">クリップボードにコピーする</string>
     <string name="command_status_share">共有する</string>
     <string name="command_status_open_in_browser">ブラウザで開く</string>

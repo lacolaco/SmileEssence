@@ -22,26 +22,23 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.command;
+package net.lacolaco.smileessence.command.status;
 
 import android.app.Activity;
-import net.lacolaco.smileessence.view.dialog.DialogHelper;
-import net.lacolaco.smileessence.view.dialog.HashtagDialogFragment;
-import twitter4j.HashtagEntity;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.twitter.TweetBuilder;
+import net.lacolaco.smileessence.view.adapter.PostState;
+import twitter4j.Status;
 
-public class CommandOpenHashtagDialog extends Command
+public class StatusCommandTextQuote extends StatusCommand
 {
-
-    // ------------------------------ FIELDS ------------------------------
-
-    private final HashtagEntity hashtagEntity;
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
-    public CommandOpenHashtagDialog(Activity activity, HashtagEntity hashtagEntity)
+    public StatusCommandTextQuote(Activity activity, Status status)
     {
-        super(-1, activity);
-        this.hashtagEntity = hashtagEntity;
+        super(-1, activity, status);
     }
 
     // --------------------- GETTER / SETTER METHODS ---------------------
@@ -49,13 +46,13 @@ public class CommandOpenHashtagDialog extends Command
     @Override
     public String getText()
     {
-        return "#" + hashtagEntity.getText();
+        return getActivity().getString(R.string.command_status_quote_text);
     }
 
     @Override
     public boolean isEnabled()
     {
-        return true;
+        return !getStatus().getUser().isProtected();
     }
 
     // -------------------------- OTHER METHODS --------------------------
@@ -63,9 +60,12 @@ public class CommandOpenHashtagDialog extends Command
     @Override
     public boolean execute()
     {
-        HashtagDialogFragment dialogFragment = new HashtagDialogFragment();
-        dialogFragment.setText(hashtagEntity.getText());
-        DialogHelper.showDialog(getActivity(), dialogFragment);
-        return false;
+        TweetBuilder builder = new TweetBuilder().setQuotation(getOriginalStatus());
+        PostState.newState().beginTransaction()
+                 .setText(builder.buildText())
+                 .setInReplyToStatusID(getOriginalStatus().getId())
+                 .setCursor(0)
+                 .commitWithOpen((MainActivity) getActivity());
+        return true;
     }
 }
