@@ -74,4 +74,14 @@
         android:src="?attr/icon_status_favorite_on"
         android:contentDescription=""/>
 
+    <LinearLayout
+        android:id="@+id/view_status_embedded_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/textview_status_footer"
+        android:layout_alignLeft="@+id/textview_status_text"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="1dp"
+        android:visibility="gone"/>
 </RelativeLayout>

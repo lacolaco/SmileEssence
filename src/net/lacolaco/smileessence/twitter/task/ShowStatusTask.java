@@ -50,7 +50,10 @@ public class ShowStatusTask extends TwitterTask<Status>
     @Override
     protected void onPostExecute(twitter4j.Status status)
     {
-        StatusCache.getInstance().put(status);
+        if(status != null)
+        {
+            StatusCache.getInstance().put(status);
+        }
     }
 
     @Override

@@ -69,21 +69,28 @@ public class UserMenuDialogFragment extends MenuDialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        MainActivity activity = (MainActivity) getActivity();
-        Account account = activity.getCurrentAccount();
-        User user = TwitterUtils.tryGetUser(account, getUserID());
-        List<Command> commands = getCommands(activity, user, account);
-        filterCommands(commands);
+        final MainActivity activity = (MainActivity) getActivity();
+        final Account account = activity.getCurrentAccount();
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
         ListView listView = (ListView) body.findViewById(R.id.listview_dialog_menu_list);
-        CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);
+        final CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);
         listView.setAdapter(adapter);
-        for(Command command : commands)
-        {
-            adapter.addToBottom(command);
-        }
-        adapter.update();
         listView.setOnItemClickListener(onItemClickListener);
+
+        TwitterUtils.tryGetUser(account, getUserID(), new TwitterUtils.UserCallback()
+        {
+            @Override
+            public void onCallback(User user)
+            {
+                List<Command> commands = getCommands(activity, user, account);
+                filterCommands(commands);
+                for(Command command : commands)
+                {
+                    adapter.addToBottom(command);
+                }
+                adapter.update();
+            }
+        });
 
         return new AlertDialog.Builder(activity)
                 .setView(body)

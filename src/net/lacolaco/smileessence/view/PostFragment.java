@@ -141,7 +141,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     public void onPostStateChange(final PostState postState)
     {
         Logger.debug("PostFragment PostStateChange");
-        MainActivity activity = (MainActivity) getActivity();
+        final MainActivity activity = (MainActivity) getActivity();
         if(editText != null)
         {
             editText.setText(postState.getText());
@@ -155,12 +155,18 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
             if(postState.getInReplyToStatusID() >= 0)
             {
                 viewGroupReply.setVisibility(View.VISIBLE);
-                View header = viewGroupReply.findViewById(R.id.layout_post_reply_status);
-                Account account = activity.getCurrentAccount();
-                Status status = TwitterUtils.tryGetStatus(account, postState.getInReplyToStatusID());
-                header = new StatusViewModel(status, account).getView(activity, activity.getLayoutInflater(), header);
-                header.setBackgroundColor(getResources().getColor(R.color.transparent));
-                header.setClickable(false);
+                final Account account = activity.getCurrentAccount();
+                TwitterUtils.tryGetStatus(account, postState.getInReplyToStatusID(), new TwitterUtils.StatusCallback()
+                {
+                    @Override
+                    public void onCallback(Status status)
+                    {
+                        View header = viewGroupReply.findViewById(R.id.layout_post_reply_status);
+                        header = new StatusViewModel(status, account).getView(activity, activity.getLayoutInflater(), header);
+                        header.setBackgroundColor(getResources().getColor(R.color.transparent));
+                        header.setClickable(false);
+                    }
+                });
                 ImageButton imageButtonDeleteReply = (ImageButton) viewGroupReply.findViewById(R.id.button_post_reply_delete);
                 imageButtonDeleteReply.setOnClickListener(this);
             }

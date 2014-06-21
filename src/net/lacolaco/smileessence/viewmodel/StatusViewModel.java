@@ -25,9 +25,11 @@
 package net.lacolaco.smileessence.viewmodel;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
@@ -49,7 +51,9 @@ import net.lacolaco.smileessence.view.dialog.UserDetailDialogFragment;
 import net.lacolaco.smileessence.view.listener.ListItemClickListener;
 import twitter4j.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class StatusViewModel implements IViewModel
 {
@@ -114,6 +118,24 @@ public class StatusViewModel implements IViewModel
             return retweetedStatus.createdAt;
         }
         return createdAt;
+    }
+
+    private List<Long> getEmbeddedStatusIDs()
+    {
+        ArrayList<Long> list = new ArrayList<>();
+        for(URLEntity url : urls)
+        {
+            Uri uri = Uri.parse(url.getExpandedURL());
+            if(uri.getHost().equals("twitter.com"))
+            {
+                String[] arr = uri.toString().split("/");
+                if(arr[arr.length - 2].equals("status"))
+                {
+                    list.add(Long.parseLong(arr[arr.length - 1]));
+                }
+            }
+        }
+        return list;
     }
 
     private String getFooterText()
@@ -303,7 +325,14 @@ public class StatusViewModel implements IViewModel
     // --------------------- Interface IViewModel ---------------------
 
     @Override
-    public View getView(final Activity activity, LayoutInflater inflater, View convertedView)
+    public View getView(final Activity activity, final LayoutInflater inflater, View convertedView)
+    {
+        return getView(activity, inflater, convertedView, false);
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    public View getView(final Activity activity, final LayoutInflater inflater, View convertedView, boolean embedded)
     {
         if(convertedView == null)
         {
@@ -372,10 +401,41 @@ public class StatusViewModel implements IViewModel
                 onClick(activity);
             }
         }));
+        final ViewGroup embeddedStatus = (ViewGroup) convertedView.findViewById(R.id.view_status_embedded_status);
+        embeddedStatus.removeAllViews();
+        if(!embedded)
+        {
+            if(containsStatusURL())
+            {
+                embeddedStatus.setVisibility(View.VISIBLE);
+                final Account account = ((MainActivity) activity).getCurrentAccount();
+                List<Long> embeddedStatusIDs = getEmbeddedStatusIDs();
+                for(int i = 0; i < embeddedStatusIDs.size(); i++)
+                {
+                    long id = embeddedStatusIDs.get(i);
+                    final int index = i;
+                    final View finalConvertedView = convertedView;
+                    TwitterUtils.tryGetStatus(account, id, new TwitterUtils.StatusCallback()
+                    {
+                        @Override
+                        public void onCallback(Status status)
+                        {
+                            StatusViewModel viewModel = new StatusViewModel(status, account);
+                            View embeddedHolder = viewModel.getView(activity, inflater, null, true);
+                            embeddedStatus.addView(embeddedHolder, index);
+                            finalConvertedView.invalidate();
+                        }
+                    });
+                }
+
+            }
+        }
+        else
+        {
+            embeddedStatus.setVisibility(View.GONE);
+        }
         return convertedView;
     }
-
-    // -------------------------- OTHER METHODS --------------------------
 
     public boolean isMention(String screenName)
     {
@@ -390,6 +450,11 @@ public class StatusViewModel implements IViewModel
     public boolean isRetweetOfMe(long userID)
     {
         return retweetedStatus != null && retweetedStatus.getUserID() == userID;
+    }
+
+    private boolean containsStatusURL()
+    {
+        return getEmbeddedStatusIDs().size() > 0;
     }
 
     private boolean isReadMorseEnabled(MainActivity activity)

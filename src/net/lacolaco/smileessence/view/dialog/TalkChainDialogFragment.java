@@ -72,17 +72,22 @@ public class TalkChainDialogFragment extends DialogFragment
     {
         MainActivity activity = (MainActivity) getActivity();
         final Account account = activity.getCurrentAccount();
-        Status status = TwitterUtils.tryGetStatus(account, getStatusID());
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_talk_list, null);
         ListView listView = (ListView) view.findViewById(R.id.listview_dialog_talk_list);
         final StatusListAdapter adapter = new StatusListAdapter(getActivity());
         listView.setAdapter(adapter);
-
-        adapter.addToTop(new StatusViewModel(status, account));
-        adapter.updateForce();
-        Twitter twitter = TwitterApi.getTwitter(account);
-        new GetTalkTask(twitter, account, adapter, status.getInReplyToStatusId()).execute();
+        TwitterUtils.tryGetStatus(account, getStatusID(), new TwitterUtils.StatusCallback()
+        {
+            @Override
+            public void onCallback(Status status)
+            {
+                adapter.addToTop(new StatusViewModel(status, account));
+                adapter.updateForce();
+                Twitter twitter = TwitterApi.getTwitter(account);
+                new GetTalkTask(twitter, account, adapter, status.getInReplyToStatusId()).execute();
+            }
+        });
 
         return new AlertDialog.Builder(activity)
                 .setTitle(R.string.dialog_title_talk_chain)

@@ -234,13 +234,19 @@ public class IntentRouter
         return false;
     }
 
-    private static void showTalkDialog(MainActivity activity, long id)
+    private static void showTalkDialog(final MainActivity activity, long id)
     {
         if(id != -1)
         {
-            Status status = TwitterUtils.tryGetStatus(activity.getCurrentAccount(), id);
-            StatusCommandOpenTalkView openChain = new StatusCommandOpenTalkView(activity, status, activity.getCurrentAccount());
-            openChain.execute();
+            TwitterUtils.tryGetStatus(activity.getCurrentAccount(), id, new TwitterUtils.StatusCallback()
+            {
+                @Override
+                public void onCallback(Status status)
+                {
+                    StatusCommandOpenTalkView openChain = new StatusCommandOpenTalkView(activity, status, activity.getCurrentAccount());
+                    openChain.execute();
+                }
+            });
         }
         else
         {

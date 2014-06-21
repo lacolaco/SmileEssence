@@ -78,40 +78,46 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
     // --------------------- Interface OnClickListener ---------------------
 
     @Override
-    public void onClick(View v)
+    public void onClick(final View v)
     {
         final MainActivity activity = (MainActivity) getActivity();
         final Account account = activity.getCurrentAccount();
-        final Status status = TwitterUtils.tryGetStatus(account, getStatusID());
-        switch(v.getId())
+        TwitterUtils.tryGetStatus(account, getStatusID(), new TwitterUtils.StatusCallback()
         {
-            case R.id.button_status_detail_reply:
+            @Override
+            public void onCallback(Status status)
             {
-                replyToStatus(activity, status);
-                break;
+                switch(v.getId())
+                {
+                    case R.id.button_status_detail_reply:
+                    {
+                        replyToStatus(activity, status);
+                        break;
+                    }
+                    case R.id.button_status_detail_retweet:
+                    {
+                        final Long retweetID = (Long) v.getTag();
+                        toggleRetweet(activity, account, status, retweetID);
+                        break;
+                    }
+                    case R.id.button_status_detail_favorite:
+                    {
+                        Boolean isFavorited = (Boolean) v.getTag();
+                        toggleFavorite(activity, account, status, isFavorited);
+                        break;
+                    }
+                    case R.id.button_status_detail_delete:
+                    {
+                        deleteStatus(activity, account, status);
+                        break;
+                    }
+                    default:
+                    {
+                        dismiss();
+                    }
+                }
             }
-            case R.id.button_status_detail_retweet:
-            {
-                final Long retweetID = (Long) v.getTag();
-                toggleRetweet(activity, account, status, retweetID);
-                break;
-            }
-            case R.id.button_status_detail_favorite:
-            {
-                Boolean isFavorited = (Boolean) v.getTag();
-                toggleFavorite(activity, account, status, isFavorited);
-                break;
-            }
-            case R.id.button_status_detail_delete:
-            {
-                deleteStatus(activity, account, status);
-                break;
-            }
-            default:
-            {
-                dismiss();
-            }
-        }
+        });
     }
 
     // ------------------------ OVERRIDE METHODS ------------------------
@@ -119,25 +125,34 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        MainActivity activity = (MainActivity) getActivity();
-        Account account = activity.getCurrentAccount();
-        Status status = TwitterUtils.tryGetStatus(account, getStatusID());
-        List<Command> commands = getCommands(activity, status, account);
-        filterCommands(commands);
+        final MainActivity activity = (MainActivity) getActivity();
+        final Account account = activity.getCurrentAccount();
+
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
         ListView listView = (ListView) body.findViewById(R.id.listview_dialog_menu_list);
-        CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);
+        final CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);
         listView.setAdapter(adapter);
-        for(Command command : commands)
-        {
-            adapter.addToBottom(command);
-        }
-        adapter.update();
         listView.setOnItemClickListener(onItemClickListener);
-        View header = getTitleView(activity, account, status);
-        header.setClickable(false);
 
-        return new AlertDialog.Builder(activity).setCustomTitle(header).setView(body).create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(activity).setView(body).create();
+        TwitterUtils.tryGetStatus(account, getStatusID(), new TwitterUtils.StatusCallback()
+        {
+            @Override
+            public void onCallback(Status status)
+            {
+                List<Command> commands = getCommands(activity, status, account);
+                filterCommands(commands);
+                for(Command command : commands)
+                {
+                    adapter.addToBottom(command);
+                }
+                adapter.update();
+                View header = getTitleView(activity, account, status);
+                header.setClickable(false);
+                alertDialog.setCustomTitle(header);
+            }
+        });
+        return alertDialog;
     }
 
     // -------------------------- OTHER METHODS --------------------------

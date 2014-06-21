@@ -69,23 +69,29 @@ public class QuoteDialogFragment extends MenuDialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        MainActivity activity = (MainActivity) getActivity();
-        Account account = activity.getCurrentAccount();
-        long statusID = getStatusID();
-        Status status = TwitterUtils.tryGetStatus(account, statusID);
-        List<Command> commands = getCommands(activity, status);
-        filterCommands(commands);
+        final MainActivity activity = (MainActivity) getActivity();
+
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
         ListView listView = (ListView) body.findViewById(R.id.listview_dialog_menu_list);
-        CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);
+        final CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);
         listView.setAdapter(adapter);
-        for(Command command : commands)
-        {
-            adapter.addToBottom(command);
-        }
-        adapter.update();
         listView.setOnItemClickListener(onItemClickListener);
-
+        Account account = activity.getCurrentAccount();
+        long statusID = getStatusID();
+        TwitterUtils.tryGetStatus(account, statusID, new TwitterUtils.StatusCallback()
+        {
+            @Override
+            public void onCallback(Status status)
+            {
+                List<Command> commands = getCommands(activity, status);
+                filterCommands(commands);
+                for(Command command : commands)
+                {
+                    adapter.addToBottom(command);
+                }
+                adapter.update();
+            }
+        });
         return new AlertDialog.Builder(activity).setView(body).setCancelable(true).create();
     }
 

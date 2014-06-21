@@ -62,53 +62,56 @@ public class TwitterUtils
     /**
      * Get status from api if not cached
      *
-     * @return null if api error
      */
-    public static Status tryGetStatus(Account account, long statusID)
+    public static void tryGetStatus(Account account, long statusID, final StatusCallback callback)
     {
         Status status = StatusCache.getInstance().get(statusID);
         if(status != null)
         {
-            return status;
+            callback.onCallback(status);
         }
-        ShowStatusTask task = new ShowStatusTask(new TwitterApi(account).getTwitter(), statusID);
-        task.execute();
-        try
+        else
         {
-            status = task.get();
+            ShowStatusTask task = new ShowStatusTask(new TwitterApi(account).getTwitter(), statusID)
+            {
+                @Override
+                protected void onPostExecute(twitter4j.Status status)
+                {
+                    super.onPostExecute(status);
+                    if(status != null)
+                    {
+                        callback.onCallback(status);
+                    }
+                }
+            };
+            task.execute();
         }
-        catch(InterruptedException | ExecutionException e)
-        {
-            e.printStackTrace();
-            Logger.error(e.toString());
-        }
-        return status;
     }
 
     /**
      * Get status from api if not cached
      *
-     * @return null if api error
      */
-    public static User tryGetUser(Account account, long userID)
+    public static void tryGetUser(Account account, long userID, final UserCallback callback)
     {
         User user = UserCache.getInstance().get(userID);
         if(user != null)
         {
-            return user;
+            callback.onCallback(user);
         }
-        ShowUserTask task = new ShowUserTask(new TwitterApi(account).getTwitter(), userID);
-        task.execute();
-        try
+        else
         {
-            user = task.get();
+            ShowUserTask task = new ShowUserTask(new TwitterApi(account).getTwitter(), userID)
+            {
+                @Override
+                protected void onPostExecute(User user)
+                {
+                    super.onPostExecute(user);
+                    callback.onCallback(user);
+                }
+            };
+            task.execute();
         }
-        catch(InterruptedException | ExecutionException e)
-        {
-            e.printStackTrace();
-            Logger.error(e.toString());
-        }
-        return user;
     }
 
     /**
@@ -289,5 +292,19 @@ public class TwitterUtils
     public static Status getOriginalStatus(Status status)
     {
         return status.isRetweet() ? status.getRetweetedStatus() : status;
+    }
+
+    // -------------------------- INNER CLASSES --------------------------
+
+    public interface StatusCallback
+    {
+
+        void onCallback(Status status);
+    }
+
+    public interface UserCallback
+    {
+
+        void onCallback(User user);
     }
 }

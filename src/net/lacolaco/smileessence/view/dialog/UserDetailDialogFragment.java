@@ -105,61 +105,67 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
     // --------------------- Interface OnClickListener ---------------------
 
     @Override
-    public void onClick(View v)
+    public void onClick(final View v)
     {
         final MainActivity activity = (MainActivity) getActivity();
         final Account account = activity.getCurrentAccount();
-        final User user = TwitterUtils.tryGetUser(account, getUserID());
-        switch(v.getId())
+        TwitterUtils.tryGetUser(account, getUserID(), new TwitterUtils.UserCallback()
         {
-            case R.id.imageview_user_detail_menu:
+            @Override
+            public void onCallback(final User user)
             {
-                openUserMenu(activity, user);
-                break;
-            }
-            case R.id.imageview_user_detail_icon:
-            {
-                openUrl(user.getBiggerProfileImageURLHttps());
-                break;
-            }
-            case R.id.textview_user_detail_screenname:
-            {
-                openUrl(TwitterUtils.getUserHomeURL(user.getScreenName()));
-                break;
-            }
-            case R.id.textview_user_detail_tweet_count:
-            {
-                openUrl(TwitterUtils.getUserHomeURL(user.getScreenName()));
-                break;
-            }
-            case R.id.textview_user_detail_friend_count:
-            {
-                openUrl(String.format("%s/following", TwitterUtils.getUserHomeURL(user.getScreenName())));
-                break;
-            }
-            case R.id.textview_user_detail_follower_count:
-            {
-                openUrl(String.format("%s/followers", TwitterUtils.getUserHomeURL(user.getScreenName())));
-                break;
-            }
-            case R.id.textview_user_detail_favorite_count:
-            {
-                openUrl(String.format("%s/favorites", TwitterUtils.getUserHomeURL(user.getScreenName())));
-                break;
-            }
-            case R.id.button_user_detail_follow:
-            {
-                ConfirmDialogFragment.show(activity, getString(R.string.dialog_confirm_commands), new Runnable()
+                switch(v.getId())
                 {
-                    @Override
-                    public void run()
+                    case R.id.imageview_user_detail_menu:
                     {
-                        toggleFollowing(user, account, activity);
+                        openUserMenu(activity, user);
+                        break;
                     }
-                });
-                break;
+                    case R.id.imageview_user_detail_icon:
+                    {
+                        openUrl(user.getBiggerProfileImageURLHttps());
+                        break;
+                    }
+                    case R.id.textview_user_detail_screenname:
+                    {
+                        openUrl(TwitterUtils.getUserHomeURL(user.getScreenName()));
+                        break;
+                    }
+                    case R.id.textview_user_detail_tweet_count:
+                    {
+                        openUrl(TwitterUtils.getUserHomeURL(user.getScreenName()));
+                        break;
+                    }
+                    case R.id.textview_user_detail_friend_count:
+                    {
+                        openUrl(String.format("%s/following", TwitterUtils.getUserHomeURL(user.getScreenName())));
+                        break;
+                    }
+                    case R.id.textview_user_detail_follower_count:
+                    {
+                        openUrl(String.format("%s/followers", TwitterUtils.getUserHomeURL(user.getScreenName())));
+                        break;
+                    }
+                    case R.id.textview_user_detail_favorite_count:
+                    {
+                        openUrl(String.format("%s/favorites", TwitterUtils.getUserHomeURL(user.getScreenName())));
+                        break;
+                    }
+                    case R.id.button_user_detail_follow:
+                    {
+                        ConfirmDialogFragment.show(activity, getString(R.string.dialog_confirm_commands), new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                toggleFollowing(user, account, activity);
+                            }
+                        });
+                        break;
+                    }
+                }
             }
-        }
+        });
     }
 
     // --------------------- Interface OnRefreshListener2 ---------------------
@@ -227,9 +233,6 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
         MainActivity activity = (MainActivity) getActivity();
-        Account account = activity.getCurrentAccount();
-        User user = TwitterUtils.tryGetUser(account, getUserID());
-
         View v = activity.getLayoutInflater().inflate(R.layout.dialog_user_detail, null);
         View menu = v.findViewById(R.id.imageview_user_detail_menu);
         menu.setOnClickListener(this);
@@ -255,7 +258,17 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         buttonFollow = (Button) v.findViewById(R.id.button_user_detail_follow);
         buttonFollow.setOnClickListener(this);
         listViewTimeline = (PullToRefreshListView) v.findViewById(R.id.listview_user_detail_timeline);
-        initUserData(user, account);
+
+        final Account account = activity.getCurrentAccount();
+        TwitterUtils.tryGetUser(account, getUserID(), new TwitterUtils.UserCallback()
+        {
+            @Override
+            public void onCallback(User user)
+            {
+                initUserData(user, account);
+            }
+        });
+
         TabHost tabHost = (TabHost) v.findViewById(android.R.id.tabhost);
         tabHost.setup();
         TabHost.TabSpec tab1 = tabHost.newTabSpec("tab1").setContent(R.id.tab1).setIndicator(getString(R.string.user_detail_tab_info));
