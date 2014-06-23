@@ -391,7 +391,9 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
     {
         PostState state = PostState.getState();
         state.removeListener();
-        state.beginTransaction().setText(editText.getText().toString()).setSelection(editText.getSelectionStart(), editText.getSelectionEnd()).commit();
+        state.beginTransaction()
+             .setText(editText.getText().toString())
+             .commit();
         state.setListener(this);
     }
 
