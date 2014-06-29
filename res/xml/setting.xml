@@ -58,7 +58,8 @@
         <SwitchPreference
             android:title="@string/setting_extend_status_url"
             android:key="@string/key_setting_extend_status_url"
-            android:defaultValue="true"/>
+            android:summary="@string/setting_extend_status_url_summary"
+            android:defaultValue="false"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/setting_category_system_title">
         <SwitchPreference
