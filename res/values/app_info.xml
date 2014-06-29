@@ -25,12 +25,12 @@
 
 <resources>
     <string name="app_name">SmileEssence</string>
-    <string name="app_version">1.0.4</string>
-    <string name="app_version_full">1.0.4 \"Dolphin\"</string>
+    <string name="app_version">1.0.5</string>
+    <string name="app_version_full">1.0.5 \"Dolphin\"</string>
     <string name="app_url">http://smileessence.lacolaco.net</string>
     <string name="app_author">Developed by laco0416</string>
     <string name="app_thanks_to">Thanks to</string>
-    <string name="thanks_to">miz_hi, yaplus, firstspring1845, ahiru3net, unyuho123, karno, ret156, vividtomato_</string>
+    <string name="thanks_to">miz_hi, yaplus, firstspring1845, ahiru3net, unyuho123, karno, ret156, vividtomato_, hoyo203</string>
     <string name="library_name_activeandroid">ActiveAndroid</string>
     <string name="library_name_guava">Guava</string>
     <string name="library_name_twitter_text">twitter-text</string>
