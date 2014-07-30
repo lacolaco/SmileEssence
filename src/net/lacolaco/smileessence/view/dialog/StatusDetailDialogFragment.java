@@ -224,7 +224,7 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
 
     private boolean isDeletable(Account account, Status status)
     {
-        boolean deletable = false;
+        boolean deletable;
         if(!status.isRetweet())
         {
             deletable = status.getUser().getId() == account.userID;
@@ -239,7 +239,7 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
     private boolean isNotRetweetable(Account account, Status status)
     {
         User user = TwitterUtils.getOriginalStatus(status).getUser();
-        return status.getUser().isProtected() || status.getUser().getId() == account.userID;
+        return user.isProtected() || user.getId() == account.userID;
     }
 
     private boolean isRetweetDeletable(Account account, Status status)

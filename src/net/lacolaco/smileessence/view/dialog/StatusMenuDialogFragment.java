@@ -27,10 +27,8 @@ package net.lacolaco.smileessence.view.dialog;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
@@ -45,8 +43,10 @@ import net.lacolaco.smileessence.twitter.task.UnfavoriteTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.view.adapter.PostState;
-import net.lacolaco.smileessence.viewmodel.StatusViewModel;
-import twitter4j.*;
+import twitter4j.HashtagEntity;
+import twitter4j.MediaEntity;
+import twitter4j.Status;
+import twitter4j.URLEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -232,46 +232,6 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         }
     }
 
-    private View getTitleView(MainActivity activity, Account account, Status status)
-    {
-        View view = activity.getLayoutInflater().inflate(R.layout.dialog_status_detail, null);
-        View statusHeader = view.findViewById(R.id.layout_status_header);
-        StatusViewModel statusViewModel = new StatusViewModel(status, account);
-        statusHeader = statusViewModel.getView(activity, activity.getLayoutInflater(), statusHeader);
-        statusHeader.setClickable(false);
-        int background = ((ColorDrawable) statusHeader.getBackground()).getColor();
-        view.setBackgroundColor(background);
-        ImageButton message = (ImageButton) view.findViewById(R.id.button_status_detail_reply);
-        message.setOnClickListener(this);
-        ImageButton retweet = (ImageButton) view.findViewById(R.id.button_status_detail_retweet);
-        if(isNotRetweetable(account, status))
-        {
-            retweet.setVisibility(View.GONE);
-        }
-        else if(isRetweetDeletable(account, status))
-        {
-            retweet.setImageDrawable(getResources().getDrawable(R.drawable.icon_retweet_on));
-            retweet.setTag(status.getId());
-        }
-        else
-        {
-            retweet.setTag(-1L);
-        }
-        retweet.setOnClickListener(this);
-        ImageButton favorite = (ImageButton) view.findViewById(R.id.button_status_detail_favorite);
-        favorite.setTag(statusViewModel.isFavorited());
-        if(statusViewModel.isFavorited())
-        {
-            favorite.setImageDrawable(getResources().getDrawable(R.drawable.icon_favorite_on));
-        }
-        favorite.setOnClickListener(this);
-        ImageButton delete = (ImageButton) view.findViewById(R.id.button_status_detail_delete);
-        boolean deletable = isDeletable(account, status);
-        delete.setVisibility(deletable ? View.VISIBLE : View.GONE);
-        delete.setOnClickListener(this);
-        return view;
-    }
-
     private ArrayList<Command> getURLCommands(Activity activity, Status status)
     {
         ArrayList<Command> commands = new ArrayList<>();
@@ -287,31 +247,6 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
             commands.add(new CommandOpenURL(activity, mediaEntity.getMediaURL()));
         }
         return commands;
-    }
-
-    private boolean isDeletable(Account account, Status status)
-    {
-        boolean deletable = false;
-        if(!status.isRetweet())
-        {
-            deletable = status.getUser().getId() == account.userID;
-        }
-        else
-        {
-            deletable = status.getRetweetedStatus().getUser().getId() == account.userID;
-        }
-        return deletable;
-    }
-
-    private boolean isNotRetweetable(Account account, Status status)
-    {
-        User user = TwitterUtils.getOriginalStatus(status).getUser();
-        return status.getUser().isProtected() || status.getUser().getId() == account.userID;
-    }
-
-    private boolean isRetweetDeletable(Account account, Status status)
-    {
-        return status.isRetweet() && status.getUser().getId() == account.userID;
     }
 
     private void replyToStatus(MainActivity activity, Status status)
