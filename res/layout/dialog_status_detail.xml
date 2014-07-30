@@ -36,6 +36,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <ListView
+            android:id="@+id/listview_status_detail_reply_to"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="100dp"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="?attr/color_list_divider"/>
+
         <include
             android:id="@+id/layout_status_header"
             layout="@layout/list_item_status"
@@ -50,10 +61,55 @@
             android:baselineAligned="false"
             android:layout_gravity="right">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingTop="2dp"
+                android:baselineAligned="false"
+                android:layout_gravity="left|center_vertical">
+
+                <ImageView
+                    android:id="@+id/image_status_detail_fav_count"
+                    style="?attr/custom_button_transparent"
+                    android:layout_width="24dp"
+                    android:layout_height="match_parent"
+                    android:padding="0dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_favorite_on"
+                    android:contentDescription=""/>
+
+                <TextView
+                    android:id="@+id/textview_status_detail_fav_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/orange"
+                    android:gravity="center_vertical"/>
+
+                <ImageView
+                    android:id="@+id/image_status_detail_rt_count"
+                    style="?attr/custom_button_transparent"
+                    android:layout_width="24dp"
+                    android:layout_height="match_parent"
+                    android:padding="0dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_retweet_on"
+                    android:contentDescription=""/>
+
+                <TextView
+                    android:id="@+id/textview_status_detail_rt_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/green"
+                    android:gravity="center_vertical"/>
+            </LinearLayout>
+
             <ImageButton
                 android:id="@+id/button_status_detail_reply"
                 style="?attr/custom_button_transparent"
-                android:layout_width="55dp"
+                android:layout_width="50dp"
                 android:layout_height="40dp"
                 android:padding="0dp"
                 android:layout_weight="1"
@@ -64,7 +120,7 @@
             <ImageButton
                 android:id="@+id/button_status_detail_retweet"
                 style="?attr/custom_button_transparent"
-                android:layout_width="55dp"
+                android:layout_width="50dp"
                 android:layout_height="40dp"
                 android:padding="0dp"
                 android:layout_weight="1"
@@ -75,7 +131,7 @@
             <ImageButton
                 android:id="@+id/button_status_detail_favorite"
                 style="?attr/custom_button_transparent"
-                android:layout_width="55dp"
+                android:layout_width="50dp"
                 android:layout_height="40dp"
                 android:padding="0dp"
                 android:layout_weight="1"
@@ -86,7 +142,7 @@
             <ImageButton
                 android:id="@+id/button_status_detail_delete"
                 style="?attr/custom_button_transparent"
-                android:layout_width="55dp"
+                android:layout_width="50dp"
                 android:layout_height="40dp"
                 android:padding="0dp"
                 android:layout_weight="1"
@@ -97,7 +153,7 @@
             <ImageButton
                 android:id="@+id/button_status_detail_menu"
                 style="?attr/custom_button_transparent"
-                android:layout_width="55dp"
+                android:layout_width="50dp"
                 android:layout_height="40dp"
                 android:padding="0dp"
                 android:layout_weight="1"
@@ -111,10 +167,13 @@
             android:layout_height="1px"
             android:background="?attr/color_list_divider"/>
 
-        <ListView
-            android:id="@+id/listview_status_detail_reply_to"
+        <LinearLayout
+            android:id="@+id/linearlayout_status_detail_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="100dp"/>
+            android:orientation="vertical"
+            android:background="?attr/page_background"
+            style="?attr/custom_button_transparent">
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

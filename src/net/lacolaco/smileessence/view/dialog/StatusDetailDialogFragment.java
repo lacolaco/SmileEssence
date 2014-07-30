@@ -24,16 +24,18 @@
 
 package net.lacolaco.smileessence.view.dialog;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ListView;
+import android.widget.*;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.command.Command;
+import net.lacolaco.smileessence.command.CommandOpenURL;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TweetBuilder;
@@ -45,9 +47,14 @@ import net.lacolaco.smileessence.twitter.task.UnfavoriteTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.PostState;
 import net.lacolaco.smileessence.view.adapter.StatusListAdapter;
+import net.lacolaco.smileessence.view.listener.ListItemClickListener;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
+import twitter4j.MediaEntity;
 import twitter4j.Status;
+import twitter4j.URLEntity;
 import twitter4j.User;
+
+import java.util.ArrayList;
 
 public class StatusDetailDialogFragment extends DialogFragment implements View.OnClickListener
 {
@@ -123,13 +130,6 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
         });
     }
 
-    private void openMenu(MainActivity activity)
-    {
-        StatusMenuDialogFragment fragment = new StatusMenuDialogFragment();
-        fragment.setStatusID(getStatusID());
-        DialogHelper.showDialog(activity, fragment, "statusMenuDialog");
-    }
-
     // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
@@ -189,11 +189,40 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
         statusHeader.setClickable(false);
         int background = ((ColorDrawable) statusHeader.getBackground()).getColor();
         view.setBackgroundColor(background);
+        ImageView favCountIcon = (ImageView) view.findViewById(R.id.image_status_detail_fav_count);
+        ImageView rtCountIcon = (ImageView) view.findViewById(R.id.image_status_detail_rt_count);
+        TextView favCountText = (TextView) view.findViewById(R.id.textview_status_detail_fav_count);
+        TextView rtCountText = (TextView) view.findViewById(R.id.textview_status_detail_rt_count);
+        int favoriteCount = TwitterUtils.getOriginalStatus(status).getFavoriteCount();
+        if(favoriteCount == 0)
+        {
+            favCountIcon.setVisibility(View.GONE);
+            favCountText.setVisibility(View.GONE);
+        }
+        else
+        {
+            favCountText.setText(Integer.toString(favoriteCount));
+        }
+        int retweetCount = TwitterUtils.getOriginalStatus(status).getRetweetCount();
+        if(retweetCount == 0)
+        {
+            rtCountIcon.setVisibility(View.GONE);
+            rtCountText.setVisibility(View.GONE);
+        }
+        else
+        {
+            rtCountText.setText(Integer.toString(retweetCount));
+        }
         ImageButton menu = (ImageButton) view.findViewById(R.id.button_status_detail_menu);
-        menu.setOnClickListener(this);
         ImageButton message = (ImageButton) view.findViewById(R.id.button_status_detail_reply);
-        message.setOnClickListener(this);
         ImageButton retweet = (ImageButton) view.findViewById(R.id.button_status_detail_retweet);
+        ImageButton favorite = (ImageButton) view.findViewById(R.id.button_status_detail_favorite);
+        ImageButton delete = (ImageButton) view.findViewById(R.id.button_status_detail_delete);
+        menu.setOnClickListener(this);
+        message.setOnClickListener(this);
+        retweet.setOnClickListener(this);
+        favorite.setOnClickListener(this);
+        delete.setOnClickListener(this);
         if(isNotRetweetable(account, status))
         {
             retweet.setVisibility(View.GONE);
@@ -207,19 +236,60 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
         {
             retweet.setTag(-1L);
         }
-        retweet.setOnClickListener(this);
-        ImageButton favorite = (ImageButton) view.findViewById(R.id.button_status_detail_favorite);
         favorite.setTag(statusViewModel.isFavorited());
         if(statusViewModel.isFavorited())
         {
             favorite.setImageDrawable(getResources().getDrawable(R.drawable.icon_favorite_on));
         }
-        favorite.setOnClickListener(this);
-        ImageButton delete = (ImageButton) view.findViewById(R.id.button_status_detail_delete);
         boolean deletable = isDeletable(account, status);
         delete.setVisibility(deletable ? View.VISIBLE : View.GONE);
-        delete.setOnClickListener(this);
+        LinearLayout commandsLayout = (LinearLayout) view.findViewById(R.id.linearlayout_status_detail_menu);
+        commandsLayout.setClickable(true);
+        for(final Command command : getURLCommands(activity, status))
+        {
+            View commandView = command.getView(activity, activity.getLayoutInflater(), null);
+            commandView.setBackgroundColor(getResources().getColor(R.color.transparent));
+            commandView.setOnClickListener(new ListItemClickListener(activity, new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    command.execute();
+                }
+            }));
+            commandsLayout.addView(commandView);
+        }
         return view;
+    }
+
+
+    private MediaEntity[] getMediaEntities(Status status)
+    {
+        if(status.getExtendedMediaEntities().length == 0)
+        {
+            return status.getMediaEntities();
+        }
+        else
+        {
+            return status.getExtendedMediaEntities();
+        }
+    }
+
+    private ArrayList<Command> getURLCommands(Activity activity, Status status)
+    {
+        ArrayList<Command> commands = new ArrayList<>();
+        if(status.getURLEntities() != null)
+        {
+            for(URLEntity urlEntity : status.getURLEntities())
+            {
+                commands.add(new CommandOpenURL(activity, urlEntity.getExpandedURL()));
+            }
+        }
+        for(MediaEntity mediaEntity : getMediaEntities(status))
+        {
+            commands.add(new CommandOpenURL(activity, mediaEntity.getMediaURL()));
+        }
+        return commands;
     }
 
     private boolean isDeletable(Account account, Status status)
@@ -245,6 +315,13 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
     private boolean isRetweetDeletable(Account account, Status status)
     {
         return status.isRetweet() && status.getUser().getId() == account.userID;
+    }
+
+    private void openMenu(MainActivity activity)
+    {
+        StatusMenuDialogFragment fragment = new StatusMenuDialogFragment();
+        fragment.setStatusID(getStatusID());
+        DialogHelper.showDialog(activity, fragment, "statusMenuDialog");
     }
 
     private void replyToStatus(MainActivity activity, Status status)

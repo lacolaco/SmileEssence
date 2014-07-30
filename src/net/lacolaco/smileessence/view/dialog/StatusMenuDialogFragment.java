@@ -32,7 +32,10 @@ import android.view.View;
 import android.widget.ListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
-import net.lacolaco.smileessence.command.*;
+import net.lacolaco.smileessence.command.Command;
+import net.lacolaco.smileessence.command.CommandOpenHashtagDialog;
+import net.lacolaco.smileessence.command.CommandOpenUserDetail;
+import net.lacolaco.smileessence.command.CommandSaveAsTemplate;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TweetBuilder;
 import net.lacolaco.smileessence.twitter.TwitterApi;
@@ -44,14 +47,12 @@ import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.view.adapter.PostState;
 import twitter4j.HashtagEntity;
-import twitter4j.MediaEntity;
 import twitter4j.Status;
-import twitter4j.URLEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatusMenuDialogFragment extends MenuDialogFragment implements View.OnClickListener
+public class StatusMenuDialogFragment extends MenuDialogFragment
 {
 
     // ------------------------------ FIELDS ------------------------------
@@ -70,54 +71,6 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         Bundle args = new Bundle();
         args.putLong(KEY_STATUS_ID, statusID);
         setArguments(args);
-    }
-
-    // ------------------------ INTERFACE METHODS ------------------------
-
-
-    // --------------------- Interface OnClickListener ---------------------
-
-    @Override
-    public void onClick(final View v)
-    {
-        final MainActivity activity = (MainActivity) getActivity();
-        final Account account = activity.getCurrentAccount();
-        TwitterUtils.tryGetStatus(account, getStatusID(), new TwitterUtils.StatusCallback()
-        {
-            @Override
-            public void onCallback(Status status)
-            {
-                switch(v.getId())
-                {
-                    case R.id.button_status_detail_reply:
-                    {
-                        replyToStatus(activity, status);
-                        break;
-                    }
-                    case R.id.button_status_detail_retweet:
-                    {
-                        final Long retweetID = (Long) v.getTag();
-                        toggleRetweet(activity, account, status, retweetID);
-                        break;
-                    }
-                    case R.id.button_status_detail_favorite:
-                    {
-                        Boolean isFavorited = (Boolean) v.getTag();
-                        toggleFavorite(activity, account, status, isFavorited);
-                        break;
-                    }
-                    case R.id.button_status_detail_delete:
-                    {
-                        deleteStatus(activity, account, status);
-                        break;
-                    }
-                    default:
-                    {
-                        dismiss();
-                    }
-                }
-            }
-        });
     }
 
     // ------------------------ OVERRIDE METHODS ------------------------
@@ -172,18 +125,9 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         return commands.addAll(Command.getStatusCommands(activity, status, account));
     }
 
-    public void addTopCommands(Activity activity, Status status, ArrayList<Command> commands)
-    {
-        for(Command command : getURLCommands(activity, status))
-        {
-            commands.add(command);
-        }
-    }
-
     public List<Command> getCommands(Activity activity, Status status, Account account)
     {
         ArrayList<Command> commands = new ArrayList<>();
-        addTopCommands(activity, status, commands);
         addMainCommands(activity, status, account, commands);
         addBottomCommands(activity, status, account, commands);
         return commands;
@@ -216,35 +160,6 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
             {
                 commands.add(new CommandOpenHashtagDialog(activity, hashtagEntity));
             }
-        }
-        return commands;
-    }
-
-    private MediaEntity[] getMediaEntities(Status status)
-    {
-        if(status.getExtendedMediaEntities().length == 0)
-        {
-            return status.getMediaEntities();
-        }
-        else
-        {
-            return status.getExtendedMediaEntities();
-        }
-    }
-
-    private ArrayList<Command> getURLCommands(Activity activity, Status status)
-    {
-        ArrayList<Command> commands = new ArrayList<>();
-        if(status.getURLEntities() != null)
-        {
-            for(URLEntity urlEntity : status.getURLEntities())
-            {
-                commands.add(new CommandOpenURL(activity, urlEntity.getExpandedURL()));
-            }
-        }
-        for(MediaEntity mediaEntity : getMediaEntities(status))
-        {
-            commands.add(new CommandOpenURL(activity, mediaEntity.getMediaURL()));
         }
         return commands;
     }
