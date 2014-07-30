@@ -255,6 +255,7 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
                 public void run()
                 {
                     command.execute();
+                    dismiss();
                 }
             }));
             commandsLayout.addView(commandView);
