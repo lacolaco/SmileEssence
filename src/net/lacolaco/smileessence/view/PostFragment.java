@@ -393,6 +393,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         state.removeListener();
         state.beginTransaction()
              .setText(editText.getText().toString())
+             .setSelection(editText.getSelectionStart(), editText.getSelectionEnd())
              .commit();
         state.setListener(this);
     }
