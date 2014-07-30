@@ -423,7 +423,7 @@ public class StatusViewModel implements IViewModel
                         {
                             StatusViewModel viewModel = new StatusViewModel(status, account);
                             View embeddedHolder = viewModel.getView(activity, inflater, null, false);
-                            embeddedStatus.addView(embeddedHolder, index);
+                            embeddedStatus.addView(embeddedHolder);
                             finalConvertedView.invalidate();
                         }
                     });
