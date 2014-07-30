@@ -61,7 +61,6 @@ public class TwitterUtils
 
     /**
      * Get status from api if not cached
-     *
      */
     public static void tryGetStatus(Account account, long statusID, final StatusCallback callback)
     {
@@ -88,9 +87,31 @@ public class TwitterUtils
         }
     }
 
+    public static Status tryGetStatus(Account account, long statusID)
+    {
+        Status status = StatusCache.getInstance().get(statusID);
+        if(status != null)
+        {
+            return status;
+        }
+        else
+        {
+            ShowStatusTask task = new ShowStatusTask(new TwitterApi(account).getTwitter(), statusID);
+            task.execute();
+            try
+            {
+                return task.get();
+            }
+            catch(InterruptedException | ExecutionException e)
+            {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    }
+
     /**
      * Get status from api if not cached
-     *
      */
     public static void tryGetUser(Account account, long userID, final UserCallback callback)
     {

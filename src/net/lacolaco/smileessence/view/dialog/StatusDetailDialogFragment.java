@@ -24,9 +24,9 @@
 
 package net.lacolaco.smileessence.view.dialog;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -34,7 +34,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
-import net.lacolaco.smileessence.command.*;
+import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TweetBuilder;
 import net.lacolaco.smileessence.twitter.TwitterApi;
@@ -43,15 +43,13 @@ import net.lacolaco.smileessence.twitter.task.FavoriteTask;
 import net.lacolaco.smileessence.twitter.task.RetweetTask;
 import net.lacolaco.smileessence.twitter.task.UnfavoriteTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
-import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.view.adapter.PostState;
+import net.lacolaco.smileessence.view.adapter.StatusListAdapter;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
-import twitter4j.*;
+import twitter4j.Status;
+import twitter4j.User;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class StatusMenuDialogFragment extends MenuDialogFragment implements View.OnClickListener
+public class StatusDetailDialogFragment extends DialogFragment implements View.OnClickListener
 {
 
     // ------------------------------ FIELDS ------------------------------
@@ -111,6 +109,11 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
                         deleteStatus(activity, account, status);
                         break;
                     }
+                    case R.id.button_status_detail_menu:
+                    {
+                        openMenu(activity);
+                        break;
+                    }
                     default:
                     {
                         dismiss();
@@ -118,6 +121,13 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
                 }
             }
         });
+    }
+
+    private void openMenu(MainActivity activity)
+    {
+        StatusMenuDialogFragment fragment = new StatusMenuDialogFragment();
+        fragment.setStatusID(getStatusID());
+        DialogHelper.showDialog(activity, fragment, "statusMenuDialog");
     }
 
     // ------------------------ OVERRIDE METHODS ------------------------
@@ -128,65 +138,28 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         final MainActivity activity = (MainActivity) getActivity();
         final Account account = activity.getCurrentAccount();
 
-        View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
-        ListView listView = (ListView) body.findViewById(R.id.listview_dialog_menu_list);
-        final CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);
+        Status status = StatusCache.getInstance().get(getStatusID());
+        View header = getTitleView(activity, account, status);
+        ListView listView = (ListView) header.findViewById(R.id.listview_status_detail_reply_to);
+        final StatusListAdapter adapter = new StatusListAdapter(getActivity());
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(onItemClickListener);
-
-        final AlertDialog alertDialog = new AlertDialog.Builder(activity).setView(body).create();
-        TwitterUtils.tryGetStatus(account, getStatusID(), new TwitterUtils.StatusCallback()
+        if(status.getInReplyToStatusId() == -1)
         {
-            @Override
-            public void onCallback(Status status)
+            listView.setVisibility(View.GONE);
+        }
+        else
+        {
+            TwitterUtils.tryGetStatus(account, status.getInReplyToStatusId(), new TwitterUtils.StatusCallback()
             {
-                List<Command> commands = getCommands(activity, status, account);
-                filterCommands(commands);
-                for(Command command : commands)
+                @Override
+                public void onCallback(Status status)
                 {
-                    adapter.addToBottom(command);
+                    adapter.addToTop(new StatusViewModel(status, account));
+                    adapter.updateForce();
                 }
-                adapter.update();
-            }
-        });
-        return alertDialog;
-    }
-
-    // -------------------------- OTHER METHODS --------------------------
-
-    public void addBottomCommands(Activity activity, Status status, Account account, ArrayList<Command> commands)
-    {
-        commands.add(new CommandSaveAsTemplate(activity, TwitterUtils.getOriginalStatusText(status)));
-        for(String screenName : TwitterUtils.getScreenNames(status, null))
-        {
-            commands.add(new CommandOpenUserDetail(activity, screenName, account));
+            });
         }
-        for(Command command : getHashtagCommands(activity, status))
-        {
-            commands.add(command);
-        }
-    }
-
-    public boolean addMainCommands(Activity activity, Status status, Account account, ArrayList<Command> commands)
-    {
-        return commands.addAll(Command.getStatusCommands(activity, status, account));
-    }
-
-    public void addTopCommands(Activity activity, Status status, ArrayList<Command> commands)
-    {
-        for(Command command : getURLCommands(activity, status))
-        {
-            commands.add(command);
-        }
-    }
-
-    public List<Command> getCommands(Activity activity, Status status, Account account)
-    {
-        ArrayList<Command> commands = new ArrayList<>();
-        addTopCommands(activity, status, commands);
-        addMainCommands(activity, status, account, commands);
-        addBottomCommands(activity, status, account, commands);
-        return commands;
+        return new AlertDialog.Builder(getActivity()).setView(header).create();
     }
 
     private void confirm(MainActivity activity, Runnable onYes)
@@ -207,31 +180,6 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         });
     }
 
-    private ArrayList<Command> getHashtagCommands(Activity activity, Status status)
-    {
-        ArrayList<Command> commands = new ArrayList<>();
-        if(status.getHashtagEntities() != null)
-        {
-            for(HashtagEntity hashtagEntity : status.getHashtagEntities())
-            {
-                commands.add(new CommandOpenHashtagDialog(activity, hashtagEntity));
-            }
-        }
-        return commands;
-    }
-
-    private MediaEntity[] getMediaEntities(Status status)
-    {
-        if(status.getExtendedMediaEntities().length == 0)
-        {
-            return status.getMediaEntities();
-        }
-        else
-        {
-            return status.getExtendedMediaEntities();
-        }
-    }
-
     private View getTitleView(MainActivity activity, Account account, Status status)
     {
         View view = activity.getLayoutInflater().inflate(R.layout.dialog_status_detail, null);
@@ -241,6 +189,8 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         statusHeader.setClickable(false);
         int background = ((ColorDrawable) statusHeader.getBackground()).getColor();
         view.setBackgroundColor(background);
+        ImageButton menu = (ImageButton) view.findViewById(R.id.button_status_detail_menu);
+        menu.setOnClickListener(this);
         ImageButton message = (ImageButton) view.findViewById(R.id.button_status_detail_reply);
         message.setOnClickListener(this);
         ImageButton retweet = (ImageButton) view.findViewById(R.id.button_status_detail_retweet);
@@ -270,23 +220,6 @@ public class StatusMenuDialogFragment extends MenuDialogFragment implements View
         delete.setVisibility(deletable ? View.VISIBLE : View.GONE);
         delete.setOnClickListener(this);
         return view;
-    }
-
-    private ArrayList<Command> getURLCommands(Activity activity, Status status)
-    {
-        ArrayList<Command> commands = new ArrayList<>();
-        if(status.getURLEntities() != null)
-        {
-            for(URLEntity urlEntity : status.getURLEntities())
-            {
-                commands.add(new CommandOpenURL(activity, urlEntity.getExpandedURL()));
-            }
-        }
-        for(MediaEntity mediaEntity : getMediaEntities(status))
-        {
-            commands.add(new CommandOpenURL(activity, mediaEntity.getMediaURL()));
-        }
-        return commands;
     }
 
     private boolean isDeletable(Account account, Status status)

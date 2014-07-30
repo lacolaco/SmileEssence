@@ -105,7 +105,7 @@ public class CustomListFragment extends Fragment implements AbsListView.OnScroll
     {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        int fragmentIndex = args.getInt(ADAPTER_INDEX);
+        fragmentIndex = args.getInt(ADAPTER_INDEX);
     }
 
     @Override

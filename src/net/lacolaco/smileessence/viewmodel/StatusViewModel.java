@@ -46,7 +46,7 @@ import net.lacolaco.smileessence.util.NameStyles;
 import net.lacolaco.smileessence.util.StringUtils;
 import net.lacolaco.smileessence.util.Themes;
 import net.lacolaco.smileessence.view.dialog.DialogHelper;
-import net.lacolaco.smileessence.view.dialog.StatusMenuDialogFragment;
+import net.lacolaco.smileessence.view.dialog.StatusDetailDialogFragment;
 import net.lacolaco.smileessence.view.dialog.UserDetailDialogFragment;
 import net.lacolaco.smileessence.view.listener.ListItemClickListener;
 import twitter4j.*;
@@ -460,12 +460,12 @@ public class StatusViewModel implements IViewModel
 
     private boolean isReadMorseEnabled(MainActivity activity)
     {
-        return ((MainActivity) activity).getUserPreferenceHelper().getValue(R.string.key_setting_read_morse, true);
+        return activity.getUserPreferenceHelper().getValue(R.string.key_setting_read_morse, true);
     }
 
     private void onClick(Activity activity)
     {
-        StatusMenuDialogFragment fragment = new StatusMenuDialogFragment();
+        StatusDetailDialogFragment fragment = new StatusDetailDialogFragment();
         fragment.setStatusID(getID());
         DialogHelper.showDialog(activity, fragment, STATUS_DIALOG);
     }
