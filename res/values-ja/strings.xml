@@ -179,6 +179,7 @@
     <string name="notice_search_query_deleted">クエリを削除しました</string>
     <string name="notice_no_template_exists">定型文が存在しません</string>
     <string name="notice_no_query_exists">クエリが存在しません</string>
+    <string name="notice_query_saved">クエリを保存しました</string>
     <string name="notice_tab_editted">タブ設定は次回起動時から有効になります</string>
     <string name="notice_error_show_status">ツイートを表示できませんでした</string>
     <string name="notice_error_show_user">ユーザーを表示できませんでした</string>

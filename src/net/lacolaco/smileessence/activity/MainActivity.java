@@ -46,7 +46,6 @@ import net.lacolaco.smileessence.data.CommandSettingCache;
 import net.lacolaco.smileessence.data.UserListCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.entity.CommandSetting;
-import net.lacolaco.smileessence.entity.SearchQuery;
 import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.notification.NotificationType;
 import net.lacolaco.smileessence.notification.Notificator;
@@ -137,6 +136,11 @@ public class MainActivity extends Activity
     private String getLastSearch()
     {
         return getAppPreferenceHelper().getValue(KEY_LAST_USED_SEARCH_QUERY, "");
+    }
+
+    public void setLastSearch(String query)
+    {
+        getAppPreferenceHelper().putValue(KEY_LAST_USED_SEARCH_QUERY, query);
     }
 
     private long getLastUsedAccountID()
@@ -243,15 +247,17 @@ public class MainActivity extends Activity
         this.streaming = streaming;
     }
 
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface Callback ---------------------
+
     public void setSelectedPageIndex(int position)
     {
         viewPager.setCurrentItem(position, true);
     }
 
-    // ------------------------ INTERFACE METHODS ------------------------
-
-
-    // --------------------- Interface Callback ---------------------
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event)
@@ -273,8 +279,6 @@ public class MainActivity extends Activity
             }
         }
     }
-
-    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public void finish()
@@ -379,6 +383,8 @@ public class MainActivity extends Activity
         Notificator.stopNotification();
     }
 
+    // -------------------------- OTHER METHODS --------------------------
+
     @Override
     protected void onResume()
     {
@@ -387,8 +393,6 @@ public class MainActivity extends Activity
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Notificator.startNotification();
     }
-
-    // -------------------------- OTHER METHODS --------------------------
 
     public int addListPage(String name, Class<? extends CustomListFragment> fragmentClass, CustomListAdapter<?> adapter, int adapterIndex, boolean visible)
     {
@@ -507,10 +511,9 @@ public class MainActivity extends Activity
 
     public void startNewSearch(final Twitter twitter, final String query)
     {
-        saveLastSearch(query);
+        setLastSearch(query);
         if(!TextUtils.isEmpty(query))
         {
-            SearchQuery.saveIfNotFound(query);
             final SearchListAdapter adapter = (SearchListAdapter) getListAdapter(ADAPTER_SEARCH);
             adapter.initSearch(query);
             adapter.clear();
@@ -847,11 +850,6 @@ public class MainActivity extends Activity
             setLastUsedAccountID(account);
             startMainLogic();
         }
-    }
-
-    private void saveLastSearch(String query)
-    {
-        getAppPreferenceHelper().putValue(KEY_LAST_USED_SEARCH_QUERY, query);
     }
 
     private void setTheme()

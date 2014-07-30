@@ -179,6 +179,7 @@
     <string name="notice_search_query_deleted">Query was deleted</string>
     <string name="notice_no_template_exists">No template exists</string>
     <string name="notice_no_query_exists">No query exists</string>
+    <string name="notice_query_saved">Query is saved</string>
     <string name="notice_tab_editted">Tab setting are enabled on next launch</string>
     <string name="notice_error_show_user">Can\'t show this user</string>
     <string name="notice_error_show_status">Can\'t show this status</string>

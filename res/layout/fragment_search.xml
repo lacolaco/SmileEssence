@@ -61,13 +61,23 @@
             android:id="@+id/button_search_execute"
             android:layout_width="40dp"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
+            android:layout_toLeftOf="@+id/button_search_save"
             style="?attr/custom_button_transparent"
             android:scaleType="centerCrop"
             android:src="?attr/icon_search"
             android:layout_gravity="fill"
             android:adjustViewBounds="false"/>
 
+        <ImageButton
+            android:id="@+id/button_search_save"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            style="?attr/custom_button_transparent"
+            android:scaleType="centerCrop"
+            android:src="?attr/icon_save"
+            android:layout_gravity="fill"
+            android:adjustViewBounds="false"/>
     </RelativeLayout>
 
     <FrameLayout

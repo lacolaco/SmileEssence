@@ -53,4 +53,5 @@
     <attr name="icon_garbage" format="reference"/>
     <attr name="icon_search" format="reference"/>
     <attr name="icon_labels" format="reference"/>
+    <attr name="icon_save" format="reference"/>
 </resources>

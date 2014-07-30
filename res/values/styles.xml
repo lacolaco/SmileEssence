@@ -55,6 +55,7 @@
         <item name="icon_garbage">@drawable/icon_garbage_white</item>
         <item name="icon_search">@drawable/icon_search_white</item>
         <item name="icon_labels">@drawable/icon_labels_white</item>
+        <item name="icon_save">@drawable/icon_save_white</item>
     </style>
 
     <style name="theme_light" parent="@android:style/Theme.Holo.Light.DarkActionBar">
@@ -87,6 +88,7 @@
         <item name="icon_garbage">@drawable/icon_garbage</item>
         <item name="icon_search">@drawable/icon_search</item>
         <item name="icon_labels">@drawable/icon_labels</item>
+        <item name="icon_save">@drawable/icon_save</item>
     </style>
 
     <style name="custom_button_transparent">

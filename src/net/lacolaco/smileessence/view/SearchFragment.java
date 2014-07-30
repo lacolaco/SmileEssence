@@ -102,6 +102,10 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
                 search();
                 break;
             }
+            case R.id.button_search_save:
+            {
+                saveQuery();
+            }
         }
     }
 
@@ -270,6 +274,8 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         buttonQueries.setOnClickListener(this);
         ImageButton buttonExecute = getExecuteButton(page);
         buttonExecute.setOnClickListener(this);
+        ImageButton buttonSave = getSaveButton(page);
+        buttonSave.setOnClickListener(this);
         editText = getEditText(page);
         editText.setOnFocusChangeListener(this);
         editText.setText(adapter.getQuery());
@@ -295,6 +301,11 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
     private ImageButton getQueriesButton(View page)
     {
         return (ImageButton) page.findViewById(R.id.button_search_queries);
+    }
+
+    private ImageButton getSaveButton(View page)
+    {
+        return (ImageButton) page.findViewById(R.id.button_search_save);
     }
 
     private void hideIME()
@@ -324,6 +335,11 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
                 if(editText.getText().toString().contentEquals(command.getQuery().query))
                 {
                     editText.setText("");
+                    mainActivity.setLastSearch("");
+                }
+                else
+                {
+                    mainActivity.setLastSearch(editText.getText().toString());
                 }
             }
 
@@ -336,6 +352,12 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
                 hideIME();
             }
         }, SEARCH_QUERY_DIALOG);
+    }
+
+    private void saveQuery()
+    {
+        SearchQuery.saveIfNotFound(editText.getText().toString());
+        Notificator.publish(getMainActivity(), R.string.notice_query_saved);
     }
 
     private void search()
