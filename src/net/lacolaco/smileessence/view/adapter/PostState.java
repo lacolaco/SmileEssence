@@ -221,8 +221,8 @@ public class PostState
         public void commitWithOpen(MainActivity activity)
         {
             DialogHelper.closeAll(activity);
-            activity.openPostPage();
             PostState.getState().copy(state).postStateChange();
+            activity.openPostPage();
         }
 
         public PostStateTransaction moveCursor(int length)
