@@ -30,13 +30,14 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.CommandOpenUserDetail;
-import net.lacolaco.smileessence.command.status.StatusCommandOpenTalkView;
 import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.notification.NotificationType;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.util.UIHandler;
 import net.lacolaco.smileessence.view.adapter.PostState;
+import net.lacolaco.smileessence.view.dialog.DialogHelper;
+import net.lacolaco.smileessence.view.dialog.StatusDetailDialogFragment;
 import twitter4j.Status;
 
 import java.util.regex.Matcher;
@@ -243,8 +244,9 @@ public class IntentRouter
                 @Override
                 public void onCallback(Status status)
                 {
-                    StatusCommandOpenTalkView openChain = new StatusCommandOpenTalkView(activity, status, activity.getCurrentAccount());
-                    openChain.execute();
+                    StatusDetailDialogFragment fragment = new StatusDetailDialogFragment();
+                    fragment.setStatusID(status.getId());
+                    DialogHelper.showDialog(activity, fragment);
                 }
             });
         }
