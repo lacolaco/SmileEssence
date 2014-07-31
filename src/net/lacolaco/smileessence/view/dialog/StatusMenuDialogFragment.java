@@ -37,15 +37,8 @@ import net.lacolaco.smileessence.command.CommandOpenHashtagDialog;
 import net.lacolaco.smileessence.command.CommandOpenUserDetail;
 import net.lacolaco.smileessence.command.CommandSaveAsTemplate;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.twitter.TweetBuilder;
-import net.lacolaco.smileessence.twitter.TwitterApi;
-import net.lacolaco.smileessence.twitter.task.DeleteStatusTask;
-import net.lacolaco.smileessence.twitter.task.FavoriteTask;
-import net.lacolaco.smileessence.twitter.task.RetweetTask;
-import net.lacolaco.smileessence.twitter.task.UnfavoriteTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
-import net.lacolaco.smileessence.view.adapter.PostState;
 import twitter4j.HashtagEntity;
 import twitter4j.Status;
 
@@ -133,24 +126,6 @@ public class StatusMenuDialogFragment extends MenuDialogFragment
         return commands;
     }
 
-    private void confirm(MainActivity activity, Runnable onYes)
-    {
-        ConfirmDialogFragment.show(activity, getString(R.string.dialog_confirm_commands), onYes);
-    }
-
-    private void deleteStatus(final MainActivity activity, final Account account, final Status status)
-    {
-        confirm(activity, new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                new DeleteStatusTask(TwitterApi.getTwitter(account), TwitterUtils.getOriginalStatus(status).getId(), activity).execute();
-                dismiss();
-            }
-        });
-    }
-
     private ArrayList<Command> getHashtagCommands(Activity activity, Status status)
     {
         ArrayList<Command> commands = new ArrayList<>();
@@ -162,51 +137,5 @@ public class StatusMenuDialogFragment extends MenuDialogFragment
             }
         }
         return commands;
-    }
-
-    private void replyToStatus(MainActivity activity, Status status)
-    {
-        Status originalStatus = TwitterUtils.getOriginalStatus(status);
-        TweetBuilder builder = new TweetBuilder().addScreenName(originalStatus.getUser().getScreenName());
-        String text = builder.buildText();
-        PostState.newState().beginTransaction()
-                 .setText(text)
-                 .setInReplyToStatusID(originalStatus.getId())
-                 .moveCursor(text.length())
-                 .commitWithOpen(activity);
-    }
-
-    private void toggleFavorite(MainActivity activity, Account account, Status status, Boolean isFavorited)
-    {
-        long statusID = status.isRetweet() ? status.getRetweetedStatus().getId() : status.getId();
-        if(isFavorited)
-        {
-            new UnfavoriteTask(TwitterApi.getTwitter(account), statusID, activity).execute();
-        }
-        else
-        {
-            new FavoriteTask(TwitterApi.getTwitter(account), statusID, activity).execute();
-        }
-        dismiss();
-    }
-
-    private void toggleRetweet(final MainActivity activity, final Account account, final Status status, final Long retweetID)
-    {
-        confirm(activity, new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                if(retweetID != -1L)
-                {
-                    new DeleteStatusTask(TwitterApi.getTwitter(account), retweetID, activity).execute();
-                }
-                else
-                {
-                    new RetweetTask(TwitterApi.getTwitter(account), TwitterUtils.getOriginalStatus(status).getId(), activity).execute();
-                }
-                dismiss();
-            }
-        });
     }
 }
