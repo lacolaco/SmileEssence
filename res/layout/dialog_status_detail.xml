@@ -109,7 +109,7 @@
             <ImageButton
                 android:id="@+id/button_status_detail_reply"
                 style="?attr/custom_button_transparent"
-                android:layout_width="50dp"
+                android:layout_width="45dp"
                 android:layout_height="40dp"
                 android:padding="0dp"
                 android:layout_weight="1"
@@ -120,7 +120,7 @@
             <ImageButton
                 android:id="@+id/button_status_detail_retweet"
                 style="?attr/custom_button_transparent"
-                android:layout_width="50dp"
+                android:layout_width="45dp"
                 android:layout_height="40dp"
                 android:padding="0dp"
                 android:layout_weight="1"
@@ -131,7 +131,7 @@
             <ImageButton
                 android:id="@+id/button_status_detail_favorite"
                 style="?attr/custom_button_transparent"
-                android:layout_width="50dp"
+                android:layout_width="45dp"
                 android:layout_height="40dp"
                 android:padding="0dp"
                 android:layout_weight="1"
@@ -142,7 +142,7 @@
             <ImageButton
                 android:id="@+id/button_status_detail_delete"
                 style="?attr/custom_button_transparent"
-                android:layout_width="50dp"
+                android:layout_width="45dp"
                 android:layout_height="40dp"
                 android:padding="0dp"
                 android:layout_weight="1"
@@ -153,7 +153,7 @@
             <ImageButton
                 android:id="@+id/button_status_detail_menu"
                 style="?attr/custom_button_transparent"
-                android:layout_width="50dp"
+                android:layout_width="45dp"
                 android:layout_height="40dp"
                 android:padding="0dp"
                 android:layout_weight="1"
