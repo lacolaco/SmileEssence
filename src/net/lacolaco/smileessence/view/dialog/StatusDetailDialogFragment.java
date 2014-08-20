@@ -143,13 +143,14 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
         ListView listView = (ListView) header.findViewById(R.id.listview_status_detail_reply_to);
         final StatusListAdapter adapter = new StatusListAdapter(getActivity());
         listView.setAdapter(adapter);
-        if(status.getInReplyToStatusId() == -1)
+        long inReplyToStatusId = TwitterUtils.getOriginalStatus(status).getInReplyToStatusId();
+        if(inReplyToStatusId == -1)
         {
             listView.setVisibility(View.GONE);
         }
         else
         {
-            TwitterUtils.tryGetStatus(account, status.getInReplyToStatusId(), new TwitterUtils.StatusCallback()
+            TwitterUtils.tryGetStatus(account, inReplyToStatusId, new TwitterUtils.StatusCallback()
             {
                 @Override
                 public void onCallback(Status status)
