@@ -46,4 +46,16 @@ public class StatusViewModelTest extends InstrumentationTestCase
         StatusViewModel status = new StatusViewModel(mock.getReplyMock(), account);
         assertNotSame(0L, status.getID());
     }
+
+    public void testMention() throws Exception
+    {
+        StatusViewModel status = new StatusViewModel(mock.getReplyMock(), account);
+        assertTrue(status.isMention(account.screenName));
+    }
+
+    public void testMyStatus() throws Exception
+    {
+        StatusViewModel status = new StatusViewModel(mock.getStatusMock(), account);
+        assertTrue(status.isMyStatus(account.userID));
+    }
 }

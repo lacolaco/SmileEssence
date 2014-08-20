@@ -440,7 +440,18 @@ public class StatusViewModel implements IViewModel
 
     public boolean isMention(String screenName)
     {
-        return text.contains(String.format("@%s", screenName));
+        if(mentions == null)
+        {
+            return false;
+        }
+        for(UserMentionEntity mention : mentions)
+        {
+            if(mention.getScreenName().equals(screenName))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isMyStatus(long userID)
