@@ -84,6 +84,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
     private NetworkImageView imageViewHeader;
     private Button buttonFollow;
     private PullToRefreshListView listViewTimeline;
+    private TabHost tabHost;
 
     // --------------------- GETTER / SETTER METHODS ---------------------
 
@@ -259,6 +260,14 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         buttonFollow.setOnClickListener(this);
         listViewTimeline = (PullToRefreshListView) v.findViewById(R.id.listview_user_detail_timeline);
 
+        tabHost = (TabHost) v.findViewById(android.R.id.tabhost);
+        tabHost.setup();
+        TabHost.TabSpec tab1 = tabHost.newTabSpec("tab1").setContent(R.id.tab1).setIndicator(getString(R.string.user_detail_tab_info));
+        tabHost.addTab(tab1);
+        TabHost.TabSpec tab2 = tabHost.newTabSpec("tab2").setContent(R.id.tab2).setIndicator(getString(R.string.user_detail_tab_timeline));
+        tabHost.addTab(tab2);
+        tabHost.setCurrentTab(0);
+
         final Account account = activity.getCurrentAccount();
         TwitterUtils.tryGetUser(account, getUserID(), new TwitterUtils.UserCallback()
         {
@@ -268,14 +277,6 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
                 initUserData(user, account);
             }
         });
-
-        TabHost tabHost = (TabHost) v.findViewById(android.R.id.tabhost);
-        tabHost.setup();
-        TabHost.TabSpec tab1 = tabHost.newTabSpec("tab1").setContent(R.id.tab1).setIndicator(getString(R.string.user_detail_tab_info));
-        tabHost.addTab(tab1);
-        TabHost.TabSpec tab2 = tabHost.newTabSpec("tab2").setContent(R.id.tab2).setIndicator(getString(R.string.user_detail_tab_timeline));
-        tabHost.addTab(tab2);
-        tabHost.setCurrentTab(0);
         return new AlertDialog.Builder(activity)
                 .setView(v)
                 .setCancelable(true)
@@ -284,6 +285,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
 
     private void executeUserTimelineTask(final User user, final Account account, final StatusListAdapter adapter)
     {
+        tabHost.getTabWidget().getChildTabViewAt(1).setVisibility(View.GONE);
         Twitter twitter = TwitterApi.getTwitter(account);
         new UserTimelineTask(twitter, user.getId())
         {
@@ -296,6 +298,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
                     adapter.addToBottom(new StatusViewModel(status, account));
                 }
                 adapter.updateForce();
+                tabHost.getTabWidget().getChildTabViewAt(1).setVisibility(View.VISIBLE);
             }
         }.execute();
     }
