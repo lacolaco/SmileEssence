@@ -37,6 +37,7 @@ import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.command.CommandOpenURL;
 import net.lacolaco.smileessence.command.CommandOpenUserDetail;
+import net.lacolaco.smileessence.command.message.MessageCommandClipboard;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.DeleteMessageTask;
@@ -147,6 +148,7 @@ public class MessageMenuDialogFragment extends MenuDialogFragment implements Vie
         ArrayList<Command> commands = new ArrayList<>();
         commands.addAll(getURLCommands(activity, message));
         commands.addAll(getScreenNameCommands(activity, message, account));
+        commands.add(new MessageCommandClipboard(activity, message));
         return commands;
     }
 
@@ -215,6 +217,9 @@ public class MessageMenuDialogFragment extends MenuDialogFragment implements Vie
         ImageButton delete = (ImageButton) view.findViewById(R.id.button_status_detail_delete);
         delete.setVisibility(isDeletable(account, message) ? View.VISIBLE : View.GONE);
         delete.setOnClickListener(this);
+        view.findViewById(R.id.button_status_detail_menu).setVisibility(View.GONE);
+        view.findViewById(R.id.image_status_detail_fav_count).setVisibility(View.GONE);
+        view.findViewById(R.id.image_status_detail_rt_count).setVisibility(View.GONE);
         return view;
     }
 
