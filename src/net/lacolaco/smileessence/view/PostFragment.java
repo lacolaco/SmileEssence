@@ -380,7 +380,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         setStateFromView();
         hideIME();
         PostMenuDialogFragment menuDialogFragment = new PostMenuDialogFragment();
-        DialogHelper.showDialog(getActivity(), menuDialogFragment);
+        DialogHelper.showDialog(getActivity(), menuDialogFragment, PostMenuDialogFragment.TAG);
     }
 
     private void removeImage()

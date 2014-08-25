@@ -54,7 +54,7 @@ public abstract class MenuDialogFragment extends DialogFragment
         if(command.execute())
         {
             dismiss();
-            DialogHelper.closeDialog(getActivity());
+            DialogHelper.closeAll(getActivity());
         }
     }
 

@@ -45,6 +45,8 @@ import java.util.List;
 public class PostMenuDialogFragment extends MenuDialogFragment
 {
 
+    public static final String TAG = "postMenu";
+
     // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
@@ -69,6 +71,16 @@ public class PostMenuDialogFragment extends MenuDialogFragment
                 .setView(body)
                 .setCancelable(true)
                 .create();
+    }
+
+    @Override
+    protected void executeCommand(Command command)
+    {
+        if(command.execute())
+        {
+            dismiss();
+            DialogHelper.close(getActivity(), TAG);
+        }
     }
 
     // -------------------------- OTHER METHODS --------------------------
