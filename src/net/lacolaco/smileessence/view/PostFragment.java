@@ -144,6 +144,8 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         final MainActivity activity = (MainActivity) getActivity();
         if(editText != null)
         {
+            final int start = postState.getSelectionStart();
+            final int end = postState.getSelectionEnd();
             editText.removeTextChangedListener(this);
             editText.setTextKeepState(postState.getText());
             editText.addTextChangedListener(this);
@@ -153,7 +155,7 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
                 @Override
                 public void run()
                 {
-                    editText.setSelection(postState.getSelectionStart(), postState.getSelectionEnd());
+                    editText.setSelection(start, end);
                 }
             }.postAtFrontOfQueue();
         }
