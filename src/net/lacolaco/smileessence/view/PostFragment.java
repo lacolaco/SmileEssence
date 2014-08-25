@@ -144,11 +144,18 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         final MainActivity activity = (MainActivity) getActivity();
         if(editText != null)
         {
-            editText.setText(postState.getText());
-            int start = postState.getSelectionStart();
-            int end = postState.getSelectionEnd();
-            editText.setSelection(start, end);
-            //            editText.clearFocus(); // 一旦外すことで再表示時にonFocusChangedイベントが発生する
+            editText.removeTextChangedListener(this);
+            editText.setTextKeepState(postState.getText());
+            editText.addTextChangedListener(this);
+            updateTextCount(editText.getText());
+            new UIHandler()
+            {
+                @Override
+                public void run()
+                {
+                    editText.setSelection(postState.getSelectionStart(), postState.getSelectionEnd());
+                }
+            }.postAtFrontOfQueue();
         }
         if(viewGroupReply != null)
         {
@@ -200,6 +207,11 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count)
+    {
+        updateTextCount(s);
+    }
+
+    public void updateTextCount(CharSequence s)
     {
         int remainingCount = 140 - TwitterUtils.getFixedTextLength(s.toString());
         if(!TextUtils.isEmpty(PostState.getState().getMediaFilePath()))
