@@ -90,6 +90,6 @@ public class CommandOpenUserDetail extends Command
             }
         }.execute();
 
-        return true;
+        return false;
     }
 }

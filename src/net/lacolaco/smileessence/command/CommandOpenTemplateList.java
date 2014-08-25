@@ -67,6 +67,6 @@ public class CommandOpenTemplateList extends Command
         }
         ChooseTemplateDialogFragment fragment = new ChooseTemplateDialogFragment();
         DialogHelper.showDialog(getActivity(), fragment);
-        return true;
+        return false;
     }
 }

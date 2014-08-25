@@ -39,6 +39,7 @@ import net.lacolaco.smileessence.command.CommandSaveAsTemplate;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
+import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 import twitter4j.HashtagEntity;
 import twitter4j.Status;
 
@@ -67,6 +68,17 @@ public class StatusMenuDialogFragment extends MenuDialogFragment
     }
 
     // ------------------------ OVERRIDE METHODS ------------------------
+
+
+    @Override
+    protected void executeCommand(Command command)
+    {
+        if(command.execute())
+        {
+            dismiss();
+            DialogHelper.close(getActivity(), StatusViewModel.STATUS_DIALOG);
+        }
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)

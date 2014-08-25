@@ -68,6 +68,6 @@ public class StatusCommandOpenTalkView extends StatusCommand
         TalkChainDialogFragment dialogFragment = new TalkChainDialogFragment();
         dialogFragment.setStatusID(getOriginalStatus().getId());
         DialogHelper.showDialog(getActivity(), dialogFragment);
-        return true;
+        return false;
     }
 }
