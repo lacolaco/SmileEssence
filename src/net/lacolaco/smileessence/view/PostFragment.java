@@ -168,12 +168,18 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
                 TwitterUtils.tryGetStatus(account, postState.getInReplyToStatusID(), new TwitterUtils.StatusCallback()
                 {
                     @Override
-                    public void onCallback(Status status)
+                    public void success(Status status)
                     {
                         View header = viewGroupReply.findViewById(R.id.layout_post_reply_status);
                         header = new StatusViewModel(status, account).getView(activity, activity.getLayoutInflater(), header);
                         header.setBackgroundColor(getResources().getColor(R.color.transparent));
                         header.setClickable(false);
+                    }
+
+                    @Override
+                    public void error()
+                    {
+                        viewGroupReply.setVisibility(View.GONE);
                     }
                 });
                 ImageButton imageButtonDeleteReply = (ImageButton) viewGroupReply.findViewById(R.id.button_post_reply_delete);

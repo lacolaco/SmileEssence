@@ -113,7 +113,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         TwitterUtils.tryGetUser(account, getUserID(), new TwitterUtils.UserCallback()
         {
             @Override
-            public void onCallback(final User user)
+            public void success(final User user)
             {
                 switch(v.getId())
                 {
@@ -165,6 +165,12 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
                         break;
                     }
                 }
+            }
+
+            @Override
+            public void error()
+            {
+                dismiss();
             }
         });
     }
@@ -272,9 +278,15 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         TwitterUtils.tryGetUser(account, getUserID(), new TwitterUtils.UserCallback()
         {
             @Override
-            public void onCallback(User user)
+            public void success(User user)
             {
                 initUserData(user, account);
+            }
+
+            @Override
+            public void error()
+            {
+                dismiss();
             }
         });
         return new AlertDialog.Builder(activity)

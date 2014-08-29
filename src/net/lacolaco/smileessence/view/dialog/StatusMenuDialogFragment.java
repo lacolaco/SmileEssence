@@ -95,7 +95,7 @@ public class StatusMenuDialogFragment extends MenuDialogFragment
         TwitterUtils.tryGetStatus(account, getStatusID(), new TwitterUtils.StatusCallback()
         {
             @Override
-            public void onCallback(Status status)
+            public void success(Status status)
             {
                 List<Command> commands = getCommands(activity, status, account);
                 Command.filter(commands);
@@ -104,6 +104,12 @@ public class StatusMenuDialogFragment extends MenuDialogFragment
                     adapter.addToBottom(command);
                 }
                 adapter.update();
+            }
+
+            @Override
+            public void error()
+            {
+                dismiss();
             }
         });
         return alertDialog;

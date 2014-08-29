@@ -80,7 +80,7 @@ public class UserMenuDialogFragment extends MenuDialogFragment
         TwitterUtils.tryGetUser(account, getUserID(), new TwitterUtils.UserCallback()
         {
             @Override
-            public void onCallback(User user)
+            public void success(User user)
             {
                 List<Command> commands = getCommands(activity, user, account);
                 Command.filter(commands);
@@ -89,6 +89,12 @@ public class UserMenuDialogFragment extends MenuDialogFragment
                     adapter.addToBottom(command);
                 }
                 adapter.update();
+            }
+
+            @Override
+            public void error()
+            {
+                dismiss();
             }
         });
 

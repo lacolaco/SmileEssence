@@ -81,7 +81,7 @@ public class QuoteDialogFragment extends MenuDialogFragment
         TwitterUtils.tryGetStatus(account, statusID, new TwitterUtils.StatusCallback()
         {
             @Override
-            public void onCallback(Status status)
+            public void success(Status status)
             {
                 List<Command> commands = getCommands(activity, status);
                 Command.filter(commands);
@@ -90,6 +90,12 @@ public class QuoteDialogFragment extends MenuDialogFragment
                     adapter.addToBottom(command);
                 }
                 adapter.update();
+            }
+
+            @Override
+            public void error()
+            {
+                dismiss();
             }
         });
         return new AlertDialog.Builder(activity).setView(body).setCancelable(true).create();

@@ -67,7 +67,7 @@ public class TwitterUtils
         Status status = StatusCache.getInstance().get(statusID);
         if(status != null)
         {
-            callback.onCallback(status);
+            callback.success(status);
             //update cache
             ShowStatusTask task = new ShowStatusTask(new TwitterApi(account).getTwitter(), statusID);
             task.execute();
@@ -82,7 +82,11 @@ public class TwitterUtils
                     super.onPostExecute(status);
                     if(status != null)
                     {
-                        callback.onCallback(status);
+                        callback.success(status);
+                    }
+                    else
+                    {
+                        callback.error();
                     }
                 }
             };
@@ -98,7 +102,7 @@ public class TwitterUtils
         User user = UserCache.getInstance().get(userID);
         if(user != null)
         {
-            callback.onCallback(user);
+            callback.success(user);
             ShowUserTask task = new ShowUserTask(new TwitterApi(account).getTwitter(), userID);
             task.execute();
         }
@@ -110,7 +114,15 @@ public class TwitterUtils
                 protected void onPostExecute(User user)
                 {
                     super.onPostExecute(user);
-                    callback.onCallback(user);
+                    if(user != null)
+                    {
+                        callback.success(user);
+                    }
+                    else
+                    {
+                        callback.error();
+                    }
+
                 }
             };
             task.execute();
@@ -302,12 +314,16 @@ public class TwitterUtils
     public interface StatusCallback
     {
 
-        void onCallback(Status status);
+        void success(Status status);
+
+        void error();
     }
 
     public interface UserCallback
     {
 
-        void onCallback(User user);
+        void success(User user);
+
+        void error();
     }
 }

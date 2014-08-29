@@ -132,7 +132,7 @@ public class IntentRouter
         else if(isStatusIntent(uri))
         {
             long id = getStatusID(uri);
-            showTalkDialog(activity, id);
+            showStatusDialog(activity, id);
         }
         else if(isUserIntent(uri))
         {
@@ -235,18 +235,24 @@ public class IntentRouter
         return false;
     }
 
-    private static void showTalkDialog(final MainActivity activity, long id)
+    private static void showStatusDialog(final MainActivity activity, long id)
     {
         if(id != -1)
         {
             TwitterUtils.tryGetStatus(activity.getCurrentAccount(), id, new TwitterUtils.StatusCallback()
             {
                 @Override
-                public void onCallback(Status status)
+                public void success(Status status)
                 {
                     StatusDetailDialogFragment fragment = new StatusDetailDialogFragment();
                     fragment.setStatusID(status.getId());
                     DialogHelper.showDialog(activity, fragment);
+                }
+
+                @Override
+                public void error()
+                {
+                    Notificator.publish(activity, R.string.error_intent_status_cannot_load, NotificationType.ALERT);
                 }
             });
         }

@@ -80,12 +80,18 @@ public class TalkChainDialogFragment extends DialogFragment
         TwitterUtils.tryGetStatus(account, getStatusID(), new TwitterUtils.StatusCallback()
         {
             @Override
-            public void onCallback(Status status)
+            public void success(Status status)
             {
                 adapter.addToTop(new StatusViewModel(status, account));
                 adapter.updateForce();
                 Twitter twitter = TwitterApi.getTwitter(account);
                 new GetTalkTask(twitter, account, adapter, status.getInReplyToStatusId()).execute();
+            }
+
+            @Override
+            public void error()
+            {
+                dismiss();
             }
         });
 

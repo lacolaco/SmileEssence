@@ -419,12 +419,18 @@ public class StatusViewModel implements IViewModel
                     TwitterUtils.tryGetStatus(account, id, new TwitterUtils.StatusCallback()
                     {
                         @Override
-                        public void onCallback(Status status)
+                        public void success(Status status)
                         {
                             StatusViewModel viewModel = new StatusViewModel(status, account);
                             View embeddedHolder = viewModel.getView(activity, inflater, null, false);
                             embeddedStatus.addView(embeddedHolder);
                             finalConvertedView.invalidate();
+                        }
+
+                        @Override
+                        public void error()
+                        {
+
                         }
                     });
                 }

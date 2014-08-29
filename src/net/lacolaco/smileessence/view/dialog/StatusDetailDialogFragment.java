@@ -91,7 +91,7 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
         TwitterUtils.tryGetStatus(account, getStatusID(), new TwitterUtils.StatusCallback()
         {
             @Override
-            public void onCallback(Status status)
+            public void success(Status status)
             {
                 switch(v.getId())
                 {
@@ -128,6 +128,12 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
                     }
                 }
             }
+
+            @Override
+            public void error()
+            {
+
+            }
         });
     }
 
@@ -154,10 +160,16 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
             TwitterUtils.tryGetStatus(account, inReplyToStatusId, new TwitterUtils.StatusCallback()
             {
                 @Override
-                public void onCallback(Status status)
+                public void success(Status status)
                 {
                     adapter.addToTop(new StatusViewModel(status, account));
                     adapter.updateForce();
+                }
+
+                @Override
+                public void error()
+                {
+
                 }
             });
         }

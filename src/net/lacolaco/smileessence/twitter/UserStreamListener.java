@@ -130,6 +130,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
                 statusListAdapter.updateForce();
             }
         }
+        StatusCache.getInstance().remove(statusDeletionNotice.getStatusId());
     }
 
     @Override
