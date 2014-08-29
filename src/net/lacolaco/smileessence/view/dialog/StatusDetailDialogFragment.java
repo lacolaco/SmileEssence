@@ -36,6 +36,7 @@ import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.command.CommandOpenURL;
+import net.lacolaco.smileessence.command.status.StatusCommandReplyToAll;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TweetBuilder;
@@ -246,7 +247,9 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
         delete.setVisibility(deletable ? View.VISIBLE : View.GONE);
         LinearLayout commandsLayout = (LinearLayout) view.findViewById(R.id.linearlayout_status_detail_menu);
         commandsLayout.setClickable(true);
-        for(final Command command : getURLCommands(activity, status))
+        ArrayList<Command> commands = getCommands(activity, status, account);
+        Command.filter(commands);
+        for(final Command command : commands)
         {
             View commandView = command.getView(activity, activity.getLayoutInflater(), null);
             commandView.setBackgroundColor(getResources().getColor(R.color.transparent));
@@ -277,9 +280,12 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
         }
     }
 
-    private ArrayList<Command> getURLCommands(Activity activity, Status status)
+    private ArrayList<Command> getCommands(Activity activity, Status status, Account account)
     {
         ArrayList<Command> commands = new ArrayList<>();
+        // ReplyToAll
+        commands.add(new StatusCommandReplyToAll(activity, status, account));
+        // URL
         if(status.getURLEntities() != null)
         {
             for(URLEntity urlEntity : status.getURLEntities())

@@ -84,7 +84,7 @@ public class QuoteDialogFragment extends MenuDialogFragment
             public void onCallback(Status status)
             {
                 List<Command> commands = getCommands(activity, status);
-                filterCommands(commands);
+                Command.filter(commands);
                 for(Command command : commands)
                 {
                     adapter.addToBottom(command);

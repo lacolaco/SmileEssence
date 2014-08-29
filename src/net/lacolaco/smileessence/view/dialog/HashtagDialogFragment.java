@@ -72,7 +72,7 @@ public class HashtagDialogFragment extends MenuDialogFragment
         Account account = activity.getCurrentAccount();
         String text = getHashtagText();
         List<Command> commands = getCommands(activity, text);
-        filterCommands(commands);
+        Command.filter(commands);
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
         ListView listView = (ListView) body.findViewById(R.id.listview_dialog_menu_list);
         CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);

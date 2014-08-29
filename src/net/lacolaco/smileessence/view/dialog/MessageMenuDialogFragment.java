@@ -107,7 +107,7 @@ public class MessageMenuDialogFragment extends MenuDialogFragment implements Vie
         Account account = activity.getCurrentAccount();
         DirectMessage message = TwitterUtils.tryGetMessage(account, getMessageID());
         List<Command> commands = getCommands(activity, message, account);
-        filterCommands(commands);
+        Command.filter(commands);
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
         ListView listView = (ListView) body.findViewById(R.id.listview_dialog_menu_list);
         CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);

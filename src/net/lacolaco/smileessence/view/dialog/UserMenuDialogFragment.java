@@ -83,7 +83,7 @@ public class UserMenuDialogFragment extends MenuDialogFragment
             public void onCallback(User user)
             {
                 List<Command> commands = getCommands(activity, user, account);
-                filterCommands(commands);
+                Command.filter(commands);
                 for(Command command : commands)
                 {
                     adapter.addToBottom(command);

@@ -30,10 +30,6 @@ import android.widget.AdapterView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.command.IConfirmable;
-import net.lacolaco.smileessence.data.CommandSettingCache;
-
-import java.util.Iterator;
-import java.util.List;
 
 public abstract class MenuDialogFragment extends DialogFragment
 {
@@ -55,27 +51,6 @@ public abstract class MenuDialogFragment extends DialogFragment
         {
             dismiss();
             DialogHelper.closeAll(getActivity());
-        }
-    }
-
-    protected final void filterCommands(List<Command> commands)
-    {
-        Iterator<Command> iterator = commands.iterator();
-        while(iterator.hasNext())
-        {
-            Command command = iterator.next();
-            if(!command.isEnabled())
-            {
-                iterator.remove();
-            }
-            else if(command.getKey() >= 0)
-            {
-                boolean visibility = CommandSettingCache.getInstance().get(command.getKey());
-                if(!visibility)
-                {
-                    iterator.remove();
-                }
-            }
         }
     }
 

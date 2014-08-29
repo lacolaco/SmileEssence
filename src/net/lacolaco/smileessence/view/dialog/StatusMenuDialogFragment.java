@@ -32,16 +32,15 @@ import android.view.View;
 import android.widget.ListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
-import net.lacolaco.smileessence.command.Command;
-import net.lacolaco.smileessence.command.CommandOpenHashtagDialog;
-import net.lacolaco.smileessence.command.CommandOpenUserDetail;
-import net.lacolaco.smileessence.command.CommandSaveAsTemplate;
+import net.lacolaco.smileessence.command.*;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 import twitter4j.HashtagEntity;
+import twitter4j.MediaEntity;
 import twitter4j.Status;
+import twitter4j.URLEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,7 +98,7 @@ public class StatusMenuDialogFragment extends MenuDialogFragment
             public void onCallback(Status status)
             {
                 List<Command> commands = getCommands(activity, status, account);
-                filterCommands(commands);
+                Command.filter(commands);
                 for(Command command : commands)
                 {
                     adapter.addToBottom(command);
@@ -115,6 +114,19 @@ public class StatusMenuDialogFragment extends MenuDialogFragment
     public void addBottomCommands(Activity activity, Status status, Account account, ArrayList<Command> commands)
     {
         commands.add(new CommandSaveAsTemplate(activity, TwitterUtils.getOriginalStatusText(status)));
+        // Media
+        if(status.getURLEntities() != null)
+        {
+            for(URLEntity urlEntity : status.getURLEntities())
+            {
+                commands.add(new CommandOpenURL(activity, urlEntity.getExpandedURL()));
+            }
+        }
+        for(MediaEntity mediaEntity : status.getExtendedMediaEntities().length == 0 ? status.getMediaEntities() : status.getExtendedMediaEntities())
+        {
+            commands.add(new CommandOpenURL(activity, mediaEntity.getMediaURL()));
+        }
+        //User
         for(String screenName : TwitterUtils.getScreenNames(status, null))
         {
             commands.add(new CommandOpenUserDetail(activity, screenName, account));

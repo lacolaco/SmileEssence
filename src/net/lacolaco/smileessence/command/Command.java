@@ -31,12 +31,14 @@ import android.widget.TextView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.command.status.*;
 import net.lacolaco.smileessence.command.user.*;
+import net.lacolaco.smileessence.data.CommandSettingCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.viewmodel.IViewModel;
 import twitter4j.Status;
 import twitter4j.User;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public abstract class Command implements IViewModel
@@ -97,6 +99,27 @@ public abstract class Command implements IViewModel
         commands.add(new StatusCommandMakeAnonymous(activity, status, account));
         commands.add(new StatusCommandAddToIgnore(activity, status));
         return commands;
+    }
+
+    public static void filter(List<Command> commands)
+    {
+        Iterator<Command> iterator = commands.iterator();
+        while(iterator.hasNext())
+        {
+            Command command = iterator.next();
+            if(!command.isEnabled())
+            {
+                iterator.remove();
+            }
+            else if(command.getKey() >= 0)
+            {
+                boolean visibility = CommandSettingCache.getInstance().get(command.getKey());
+                if(!visibility)
+                {
+                    iterator.remove();
+                }
+            }
+        }
     }
 
     // --------------------- GETTER / SETTER METHODS ---------------------
