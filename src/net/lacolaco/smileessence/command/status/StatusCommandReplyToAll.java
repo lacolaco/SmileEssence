@@ -68,8 +68,10 @@ public class StatusCommandReplyToAll extends StatusCommand
     public boolean execute()
     {
         TweetBuilder builder = new TweetBuilder().addScreenNames(TwitterUtils.getScreenNames(getStatus(), account.screenName));
+        String text = builder.buildText();
         PostState.newState().beginTransaction()
-                 .setText(builder.buildText())
+                 .setText(text)
+                 .setCursor(text.length())
                  .commitWithOpen((MainActivity) getActivity());
         return true;
     }
