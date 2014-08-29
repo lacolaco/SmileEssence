@@ -177,6 +177,7 @@
     <string name="notice_userlist_not_selected">No List is selected</string>
     <string name="notice_add_to_ignore">Added to ignore list</string>
     <string name="notice_search_query_deleted">Query was deleted</string>
+    <string name="notice_query_is_empty">Query is empty</string>
     <string name="notice_no_template_exists">No template exists</string>
     <string name="notice_no_query_exists">No query exists</string>
     <string name="notice_query_saved">Query is saved</string>

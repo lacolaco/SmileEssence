@@ -43,6 +43,7 @@ import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.command.CommandOpenSearch;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.entity.SearchQuery;
+import net.lacolaco.smileessence.notification.NotificationType;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.twitter.StatusFilter;
 import net.lacolaco.smileessence.twitter.TwitterApi;
@@ -375,8 +376,16 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
 
     private void saveQuery()
     {
-        SearchQuery.saveIfNotFound(editText.getText().toString());
-        Notificator.publish(getMainActivity(), R.string.notice_query_saved);
+        String text = editText.getText().toString();
+        if(TextUtils.isEmpty(text))
+        {
+            Notificator.publish(getMainActivity(), R.string.notice_query_is_empty, NotificationType.ALERT);
+        }
+        else
+        {
+            SearchQuery.saveIfNotFound(text);
+            Notificator.publish(getMainActivity(), R.string.notice_query_saved);
+        }
     }
 
     private void search()
@@ -384,7 +393,11 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         if(editText != null)
         {
             String text = editText.getText().toString();
-            if(!TextUtils.isEmpty(text))
+            if(TextUtils.isEmpty(text))
+            {
+                Notificator.publish(getMainActivity(), R.string.notice_query_is_empty, NotificationType.ALERT);
+            }
+            else
             {
                 getMainActivity().openSearchPage(text);
                 hideIME();

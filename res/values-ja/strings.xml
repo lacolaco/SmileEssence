@@ -177,6 +177,7 @@
     <string name="notice_userlist_not_selected">リストが選択されていません</string>
     <string name="notice_add_to_ignore">無視を決め込みました</string>
     <string name="notice_search_query_deleted">クエリを削除しました</string>
+    <string name="notice_query_is_empty">クエリが空です</string>
     <string name="notice_no_template_exists">定型文が存在しません</string>
     <string name="notice_no_query_exists">クエリが存在しません</string>
     <string name="notice_query_saved">クエリを保存しました</string>
