@@ -26,12 +26,15 @@ package net.lacolaco.smileessence.view;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Spannable;
 import android.text.TextUtils;
+import android.text.method.ArrowKeyMovementMethod;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import net.lacolaco.smileessence.R;
@@ -279,6 +282,22 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
         editText = getEditText(page);
         editText.setOnFocusChangeListener(this);
         editText.setText(adapter.getQuery());
+        editText.setMovementMethod(new ArrowKeyMovementMethod()
+        {
+            @Override
+            protected boolean right(TextView widget, Spannable buffer)
+            {
+                //Don't move page
+                return widget.getSelectionEnd() == widget.length() || super.right(widget, buffer);
+            }
+
+            @Override
+            protected boolean left(TextView widget, Spannable buffer)
+            {
+                //Don't move page
+                return widget.getSelectionStart() == 0 || super.left(widget, buffer);
+            }
+        });
         adapter.setOnQueryChangeListener(this);
         return page;
     }
