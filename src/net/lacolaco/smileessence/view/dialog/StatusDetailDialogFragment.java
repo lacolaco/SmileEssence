@@ -295,8 +295,6 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
     private ArrayList<Command> getCommands(Activity activity, Status status, Account account)
     {
         ArrayList<Command> commands = new ArrayList<>();
-        // ReplyToAll
-        commands.add(new StatusCommandReplyToAll(activity, status, account));
         // URL
         if(status.getURLEntities() != null)
         {
@@ -309,6 +307,8 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
         {
             commands.add(new CommandOpenURL(activity, mediaEntity.getMediaURL()));
         }
+        // ReplyToAll
+        commands.add(new StatusCommandReplyToAll(activity, status, account));
         return commands;
     }
 

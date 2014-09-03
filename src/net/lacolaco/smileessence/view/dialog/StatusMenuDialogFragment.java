@@ -120,6 +120,15 @@ public class StatusMenuDialogFragment extends MenuDialogFragment
     public void addBottomCommands(Activity activity, Status status, Account account, ArrayList<Command> commands)
     {
         commands.add(new CommandSaveAsTemplate(activity, TwitterUtils.getOriginalStatusText(status)));
+        //User
+        for(String screenName : TwitterUtils.getScreenNames(status, null))
+        {
+            commands.add(new CommandOpenUserDetail(activity, screenName, account));
+        }
+        for(Command command : getHashtagCommands(activity, status))
+        {
+            commands.add(command);
+        }
         // Media
         if(status.getURLEntities() != null)
         {
@@ -131,15 +140,6 @@ public class StatusMenuDialogFragment extends MenuDialogFragment
         for(MediaEntity mediaEntity : status.getExtendedMediaEntities().length == 0 ? status.getMediaEntities() : status.getExtendedMediaEntities())
         {
             commands.add(new CommandOpenURL(activity, mediaEntity.getMediaURL()));
-        }
-        //User
-        for(String screenName : TwitterUtils.getScreenNames(status, null))
-        {
-            commands.add(new CommandOpenUserDetail(activity, screenName, account));
-        }
-        for(Command command : getHashtagCommands(activity, status))
-        {
-            commands.add(command);
         }
     }
 
