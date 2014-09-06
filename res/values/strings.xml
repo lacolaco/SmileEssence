@@ -218,6 +218,7 @@
     <string name="command_status_add_to_reply">Add to reply</string>
     <string name="command_status_add_to_ignore">Ignore this tweet in future</string>
     <string name="command_post_morse">Parse to morse</string>
+    <string name="command_post_zekamashi">Zekamasize</string>
     <string name="command_open_template_list">Insert Templates</string>
     <string name="command_select_image_from_gallery">From gallery</string>
     <string name="command_select_image_from_camera">From camera</string>
