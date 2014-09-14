@@ -217,6 +217,7 @@
     <string name="command_status_add_to_reply">リプライ先に追加する</string>
     <string name="command_status_open_talk_view">会話ビューを開く</string>
     <string name="command_status_add_to_ignore">以後このツイートを無視する</string>
+    <string name="command_status_copy">入力欄にコピーする</string>
     <string name="command_post_morse">モールスに変換する</string>
     <string name="command_post_zekamashi">ぜかまし</string>
     <string name="command_open_template_list">定型文を挿入する</string>

@@ -94,6 +94,7 @@ public abstract class Command implements IViewModel
         commands.add(new StatusCommandShare(activity, status));
         commands.add(new StatusCommandOpenInBrowser(activity, status));
         commands.add(new StatusCommandClipboard(activity, status));
+        commands.add(new StatusCommandCopy(activity, status));
         commands.add(new StatusCommandSearchOnGoogle(activity, status));
         commands.add(new StatusCommandTofuBuster(activity, status));
         commands.add(new StatusCommandNanigaja(activity, status, account));

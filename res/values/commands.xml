@@ -47,4 +47,5 @@
     <item name="key_command_status_open_chain" type="id"/>
     <item name="key_command_status_add_to_ignore" type="id"/>
     <item name="key_command_status_search_on_google" type="id"/>
+    <item name="key_command_status_copy" type="id"/>
 </resources>

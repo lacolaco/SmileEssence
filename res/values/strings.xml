@@ -217,6 +217,7 @@
     <string name="command_status_open_talk_view">Show this talk</string>
     <string name="command_status_add_to_reply">Add to reply</string>
     <string name="command_status_add_to_ignore">Ignore this tweet in future</string>
+    <string name="command_status_copy">Copy to input area</string>
     <string name="command_post_morse">Parse to morse</string>
     <string name="command_post_zekamashi">Zekamasize</string>
     <string name="command_open_template_list">Insert Templates</string>
