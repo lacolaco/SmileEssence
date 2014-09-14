@@ -27,6 +27,7 @@ package net.lacolaco.smileessence.command.post;
 import android.app.Activity;
 import android.text.TextUtils;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.view.adapter.PostState;
 
 public class PostCommandZekamashi extends PostCommand
 {
@@ -51,7 +52,7 @@ public class PostCommandZekamashi extends PostCommand
     @Override
     public boolean isEnabled()
     {
-        return !TextUtils.isEmpty(getText());
+        return !TextUtils.isEmpty(PostState.getState().getText());
     }
 
     @Override

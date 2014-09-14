@@ -192,6 +192,7 @@
     <string name="notice_error_start_activity">Can\'t start any activity</string>
     <string name="notice_error_rate_limit">Rate limit exceeded</string>
     <string name="notice_error_search">Failed to search</string>
+    <string name="notice_no_command_exists">No command exists</string>
     <string name="command_user_reply">Reply</string>
     <string name="command_user_add_to_reply">Add to reply</string>
     <string name="command_user_open_favstar">Open favstar</string>

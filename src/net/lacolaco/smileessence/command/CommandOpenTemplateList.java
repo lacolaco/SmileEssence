@@ -27,7 +27,6 @@ package net.lacolaco.smileessence.command;
 import android.app.Activity;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Template;
-import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.view.dialog.ChooseTemplateDialogFragment;
 import net.lacolaco.smileessence.view.dialog.DialogHelper;
 
@@ -52,7 +51,7 @@ public class CommandOpenTemplateList extends Command
     @Override
     public boolean isEnabled()
     {
-        return true;
+        return !Template.getAll().isEmpty();
     }
 
     // -------------------------- OTHER METHODS --------------------------
@@ -60,11 +59,6 @@ public class CommandOpenTemplateList extends Command
     @Override
     public boolean execute()
     {
-        if(Template.getAll().size() == 0)
-        {
-            Notificator.publish(getActivity(), R.string.notice_no_template_exists);
-            return true;
-        }
         ChooseTemplateDialogFragment fragment = new ChooseTemplateDialogFragment();
         DialogHelper.showDialog(getActivity(), fragment);
         return false;

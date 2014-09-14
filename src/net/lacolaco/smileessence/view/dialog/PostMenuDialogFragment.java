@@ -38,6 +38,7 @@ import net.lacolaco.smileessence.command.post.PostCommandMakeAnonymous;
 import net.lacolaco.smileessence.command.post.PostCommandMorse;
 import net.lacolaco.smileessence.command.post.PostCommandZekamashi;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 
 import java.util.ArrayList;
@@ -57,6 +58,18 @@ public class PostMenuDialogFragment extends MenuDialogFragment
         Account account = activity.getCurrentAccount();
         List<Command> commands = getCommands(activity);
         Command.filter(commands);
+        if(commands.isEmpty())
+        {
+            Notificator.publish(getActivity(), R.string.notice_no_command_exists);
+            return new Dialog(activity)
+            {
+                @Override
+                public void show()
+                {
+                    dismiss();
+                }
+            };
+        }
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
         ListView listView = (ListView) body.findViewById(R.id.listview_dialog_menu_list);
         CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);

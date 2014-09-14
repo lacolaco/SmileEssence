@@ -192,6 +192,7 @@
     <string name="notice_error_start_activity">アクティビティを起動できませんでした</string>
     <string name="notice_error_rate_limit">レートリミットを超えています</string>
     <string name="notice_error_search">検索に失敗しました</string>
+    <string name="notice_no_command_exists">使用できるコマンドがありません</string>
     <string name="command_user_reply">リプライを送る</string>
     <string name="command_user_add_to_reply">リプライ先に追加する</string>
     <string name="command_user_open_favstar">Favstarを開く</string>
