@@ -59,7 +59,7 @@ public class StatusCommandReplyToAll extends StatusCommand
     @Override
     public boolean isEnabled()
     {
-        return TwitterUtils.getScreenNames(getStatus(), account.screenName).size() > 1;
+        return TwitterUtils.getScreenNames(getOriginalStatus(), account.screenName).size() > 1;
     }
 
     // -------------------------- OTHER METHODS --------------------------
@@ -67,7 +67,7 @@ public class StatusCommandReplyToAll extends StatusCommand
     @Override
     public boolean execute()
     {
-        TweetBuilder builder = new TweetBuilder().addScreenNames(TwitterUtils.getScreenNames(getStatus(), account.screenName));
+        TweetBuilder builder = new TweetBuilder().addScreenNames(TwitterUtils.getScreenNames(getOriginalStatus(), account.screenName));
         String text = builder.buildText();
         PostState.newState().beginTransaction()
                  .setText(text)

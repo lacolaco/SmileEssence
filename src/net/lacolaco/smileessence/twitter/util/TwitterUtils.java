@@ -170,16 +170,16 @@ public class TwitterUtils
         {
             for(UserMentionEntity entity : status.getUserMentionEntities())
             {
-                if(excludeScreenName != null && entity.getScreenName().equals(excludeScreenName))
-                {
-                    continue;
-                }
                 if(names.contains(entity.getScreenName()))
                 {
                     continue;
                 }
                 names.add(entity.getScreenName());
             }
+        }
+        if(excludeScreenName != null)
+        {
+            names.remove(excludeScreenName);
         }
         return names;
     }
@@ -196,16 +196,16 @@ public class TwitterUtils
         {
             for(UserMentionEntity entity : message.getUserMentionEntities())
             {
-                if(excludeScreenName != null && entity.getScreenName().equals(excludeScreenName))
-                {
-                    continue;
-                }
                 if(names.contains(entity.getScreenName()))
                 {
                     continue;
                 }
                 names.add(entity.getScreenName());
             }
+        }
+        if(excludeScreenName != null)
+        {
+            names.remove(excludeScreenName);
         }
         return names;
     }
