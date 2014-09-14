@@ -226,4 +226,5 @@
     <string name="command_create_search_page_dialog">Search page</string>
     <string name="command_paste_to_post">Paste to post</string>
     <string name="command_search_on_twitter">Search on Twitter</string>
+    <string name="command_search_on_google">Search on Google</string>
 </resources>

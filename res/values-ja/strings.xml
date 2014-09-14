@@ -225,4 +225,5 @@
     <string name="command_save_as_template">定型文として保存する</string>
     <string name="command_paste_to_post">投稿欄に貼り付ける</string>
     <string name="command_search_on_twitter">Twitterで検索する</string>
+    <string name="command_search_on_google">Googleで検索する</string>
 </resources>
