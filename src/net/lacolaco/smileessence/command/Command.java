@@ -100,6 +100,7 @@ public abstract class Command implements IViewModel
         commands.add(new StatusCommandNanigaja(activity, status, account));
         commands.add(new StatusCommandMakeAnonymous(activity, status, account));
         commands.add(new StatusCommandCongratulate(activity, status, account));
+        commands.add(new StatusCommandReview(activity, status));
         commands.add(new StatusCommandAddToIgnore(activity, status));
         return commands;
     }

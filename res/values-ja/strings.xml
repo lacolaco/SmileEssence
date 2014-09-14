@@ -72,6 +72,7 @@
     <string name="format_event_message">%sからのDMを受信</string>
     <string name="format_status_command_nanigaja">な～にが%sじゃ</string>
     <string name="format_status_command_make_anonymous">？？？「%s」</string>
+    <string name="format_status_review">%1$s\r\nコメント: \r\n@%2$s ( %3$s )</string>
     <string name="setting_category_display_title">表示設定</string>
     <string name="setting_category_display_summary">再起動後に有効になります</string>
     <string name="setting_text_size_title">文字サイズ</string>
@@ -137,6 +138,7 @@
     <string name="dialog_confirm_commands">実行しますか？</string>
     <string name="dialog_confirm_clear_account">本当に認証を削除しますか？</string>
     <string name="dialog_confirm_delete_query">クエリを削除しますか？</string>
+    <string name="dialog_review_rating_text">星いくつ付けますか？</string>
     <string name="notice_tweet_succeeded">投稿しました</string>
     <string name="notice_tweet_failed">投稿失敗しました</string>
     <string name="notice_favorite_succeeded">ふぁぼりました</string>
@@ -220,6 +222,7 @@
     <string name="command_status_add_to_ignore">以後このツイートを無視する</string>
     <string name="command_status_copy">入力欄にコピーする</string>
     <string name="command_status_congratulate">お祝いする</string>
+    <string name="command_status_review">レビューする</string>
     <string name="command_post_morse">モールスに変換する</string>
     <string name="command_post_zekamashi">ぜかまし</string>
     <string name="command_open_template_list">定型文を挿入する</string>

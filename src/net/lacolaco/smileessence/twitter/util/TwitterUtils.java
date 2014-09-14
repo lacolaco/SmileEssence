@@ -238,7 +238,7 @@ public class TwitterUtils
      */
     public static String getStatusURL(Status status)
     {
-        return String.format("https://twitter.com/%s/status/%s", status.getUser().getScreenName(), status.getId());
+        return String.format("https://twitter.com/%s/status/%s", getOriginalStatus(status).getUser().getScreenName(), getOriginalStatus(status).getId());
     }
 
     /**

@@ -71,6 +71,7 @@
     <string name="format_event_message">Received %s\'s message</string>
     <string name="format_status_command_nanigaja">What\'s %s</string>
     <string name="format_status_command_make_anonymous">"??? said \"%s\""</string>
+    <string name="format_status_review">%1$s\r\nCommant: \r\n@%2$s ( %3$s )</string>
     <string name="text_message_to_author">" #SmileEssence @laco0416 [%s]"</string>
     <string name="setting_category_display_title">Display Setting</string>
     <string name="setting_category_display_summary">Enable at next launch.</string>
@@ -136,6 +137,7 @@
     <string name="dialog_confirm_clear_account">Clear authentication, Really?</string>
     <string name="dialog_title_talk_chain">Talk View</string>
     <string name="dialog_title_select_userlist">Select a list</string>
+    <string name="dialog_review_rating_text">How many favs will you give?</string>
     <string name="dialog_confirm_delete_query">Delete this query, OK?</string>
     <string name="notice_favorite_succeeded">Succeeded to favorite</string>
     <string name="notice_favorite_failed">Failed to favorite</string>
@@ -220,6 +222,7 @@
     <string name="command_status_add_to_ignore">Ignore this tweet in future</string>
     <string name="command_status_copy">Copy to input area</string>
     <string name="command_status_congratulate">Congratulate</string>
+    <string name="command_status_review">Review this tweet</string>
     <string name="command_post_morse">Parse to morse</string>
     <string name="command_post_zekamashi">Zekamasize</string>
     <string name="command_open_template_list">Insert Templates</string>
