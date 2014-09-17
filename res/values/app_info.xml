@@ -25,7 +25,7 @@
 
 <resources>
     <string name="app_name">SmileEssence</string>
-    <string name="app_version">1.0.9 snapshot-1</string>
+    <string name="app_version">1.0.9</string>
     <string name="app_version_full">1.0.9 \"Dolphin\"</string>
     <string name="app_url">http://smileessence.lacolaco.net</string>
     <string name="app_author">Developed by laco0416</string>
