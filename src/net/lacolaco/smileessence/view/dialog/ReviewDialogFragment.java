@@ -124,9 +124,12 @@ public class ReviewDialogFragment extends DialogFragment implements View.OnClick
         }
         String formatString = getFormatString();
         String str = String.format(formatString,
-                                   builder.toString(), TwitterUtils.getOriginalStatus(status).getUser().getScreenName(), TwitterUtils.getStatusURL(status));
+                                   builder.toString(),
+                                   TwitterUtils.getOriginalStatus(status).getUser().getScreenName(),
+                                   TwitterUtils.getStatusURL(status));
         PostState.newState().beginTransaction()
                  .setText(str)
+                 .setInReplyToStatusID(statusID)
                  .setCursor(str.indexOf(":") + 2)
                  .commitWithOpen((MainActivity) getActivity());
     }
