@@ -48,7 +48,7 @@ public class TweetTask extends TwitterTask<Status>
 
     // ------------------------------ FIELDS ------------------------------
 
-    private static final int MEDIA_SIZE_LIMIT = 1 * 1024 * 1024;
+    private static final int MEDIA_SIZE_LIMIT = 2 * 1024 * 1024;
 
     private final StatusUpdate update;
     private final String mediaPath;
