@@ -270,17 +270,15 @@ public class TwitterUtils
         {
             return text;
         }
-        StringBuilder builder = new StringBuilder(text);
         if(entities.length == 0)
         {
-            return builder.toString();
+            return text;
         }
-        for(int i = entities.length - 1; i >= 0; i--)
+        for(URLEntity entity : entities)
         {
-            URLEntity entity = entities[i];
-            builder.replace(entity.getStart(), entity.getEnd(), expand ? entity.getExpandedURL() : entity.getDisplayURL());
+            text = text.replace(entity.getURL(), expand ? entity.getExpandedURL() : entity.getDisplayURL());
         }
-        return builder.toString();
+        return text;
     }
 
     /**
