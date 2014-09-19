@@ -24,12 +24,9 @@
 
 package net.lacolaco.smileessence.view.adapter;
 
-import android.text.TextUtils;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.view.dialog.DialogHelper;
 import twitter4j.StatusUpdate;
-
-import java.io.File;
 
 public class PostState
 {
@@ -125,7 +122,8 @@ public class PostState
      */
     public StatusUpdate toStatusUpdate()
     {
-        return new StatusUpdate(getText()).inReplyToStatusId(getInReplyToStatusID()).media(TextUtils.isEmpty(getMediaFilePath()) ? null : new File(getMediaFilePath()));
+        return new StatusUpdate(getText())
+                .inReplyToStatusId(getInReplyToStatusID());
     }
 
     private PostState copy(PostState another)

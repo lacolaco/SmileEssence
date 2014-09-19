@@ -25,6 +25,10 @@
 package net.lacolaco.smileessence.twitter.task;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
+import android.text.TextUtils;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.logging.Logger;
@@ -35,21 +39,80 @@ import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class TweetTask extends TwitterTask<Status>
 {
 
     // ------------------------------ FIELDS ------------------------------
 
+    private static final int MEDIA_SIZE_LIMIT = 1 * 1024 * 1024;
+
     private final StatusUpdate update;
+    private final String mediaPath;
     private final Activity activity;
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
     public TweetTask(Twitter twitter, StatusUpdate update, Activity activity)
     {
+        this(twitter, update, null, activity);
+    }
+
+    public TweetTask(Twitter twitter, StatusUpdate update, String mediaPath, Activity activity)
+    {
         super(twitter);
         this.update = update;
+        this.mediaPath = mediaPath;
         this.activity = activity;
+    }
+
+    // --------------------- GETTER / SETTER METHODS ---------------------
+
+    public File getMediaFile()
+    {
+        File file = new File(mediaPath);
+        if(file.length() >= MEDIA_SIZE_LIMIT)
+        {
+            BitmapFactory.Options opt = new BitmapFactory.Options();
+            opt.inJustDecodeBounds = true; //decoder is not return bitmap but set option
+            BitmapFactory.decodeFile(mediaPath, opt);
+            String tempFilePath = "temp.jpg";
+            File compressedFile = new File(Environment.getExternalStorageDirectory() + "/" + tempFilePath);
+            FileOutputStream fos = null;
+            try
+            {
+                fos = new FileOutputStream(compressedFile);
+                float ratio = (float) file.length() / (float) MEDIA_SIZE_LIMIT;
+                BitmapFactory.Options resizeOpt = new BitmapFactory.Options();
+                resizeOpt.inPurgeable = true;
+                resizeOpt.inSampleSize = (int) Math.ceil(ratio);
+                Bitmap bitmap = BitmapFactory.decodeFile(mediaPath, resizeOpt);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                bitmap.recycle();
+                return compressedFile;
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                Logger.error(e);
+            }
+            finally
+            {
+                try
+                {
+                    fos.close();
+                }
+                catch(IOException e)
+                {
+                    e.printStackTrace();
+                    Logger.error(e);
+                }
+            }
+        }
+        return file;
     }
 
     // ------------------------ OVERRIDE METHODS ------------------------
@@ -73,7 +136,19 @@ public class TweetTask extends TwitterTask<Status>
     {
         try
         {
-            return twitter.tweets().updateStatus(update);
+            if(TextUtils.isEmpty(mediaPath))
+            {
+                return twitter.tweets().updateStatus(update);
+            }
+            else
+            {
+                File mediaFile = getMediaFile();
+                if(mediaFile.exists())
+                {
+                    update.setMedia(mediaFile);
+                }
+                return twitter.tweets().updateStatus(update);
+            }
         }
         catch(TwitterException e)
         {

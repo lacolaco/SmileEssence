@@ -436,13 +436,14 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
 
     private void submitPost()
     {
+        hideIME();
         setStateFromView();
-        StatusUpdate statusUpdate = PostState.getState().toStatusUpdate();
+        PostState state = PostState.getState();
+        StatusUpdate statusUpdate = state.toStatusUpdate();
         MainActivity mainActivity = (MainActivity) getActivity();
-        TweetTask tweetTask = new TweetTask(TwitterApi.getTwitter(mainActivity.getCurrentAccount()), statusUpdate, mainActivity);
+        TweetTask tweetTask = new TweetTask(TwitterApi.getTwitter(mainActivity.getCurrentAccount()), statusUpdate, state.getMediaFilePath(), mainActivity);
         tweetTask.execute();
         PostState.newState().beginTransaction().commit();
-        hideIME();
         mainActivity.setSelectedPageIndex(MainActivity.ADAPTER_HOME);
     }
 }
