@@ -53,6 +53,7 @@ public class TweetTask extends TwitterTask<Status>
     private final StatusUpdate update;
     private final String mediaPath;
     private final Activity activity;
+    private String tempFilePath;
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
@@ -79,8 +80,8 @@ public class TweetTask extends TwitterTask<Status>
             BitmapFactory.Options opt = new BitmapFactory.Options();
             opt.inJustDecodeBounds = true; //decoder is not return bitmap but set option
             BitmapFactory.decodeFile(mediaPath, opt);
-            String tempFilePath = "temp.jpg";
-            File compressedFile = new File(Environment.getExternalStorageDirectory() + "/" + tempFilePath);
+            tempFilePath = Environment.getExternalStorageDirectory() + "/temp.jpg";
+            File compressedFile = new File(tempFilePath);
             FileOutputStream fos = null;
             try
             {
@@ -147,7 +148,12 @@ public class TweetTask extends TwitterTask<Status>
                 {
                     update.setMedia(mediaFile);
                 }
-                return twitter.tweets().updateStatus(update);
+                twitter4j.Status status = twitter.tweets().updateStatus(update);
+                if(tempFilePath != null)
+                {
+                    new File(tempFilePath).delete();
+                }
+                return status;
             }
         }
         catch(TwitterException e)
