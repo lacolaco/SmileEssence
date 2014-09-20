@@ -92,6 +92,8 @@
     <string name="setting_notify_on_unfavorited_title">あんふぁぼ通知</string>
     <string name="setting_notify_on_unfavorited_summary_on">有効</string>
     <string name="setting_notify_on_unfavorited_summary_off">無効</string>
+    <string name="setting_resize_post_image">画像のリサイズ</string>
+    <string name="setting_resize_post_image_summary">投稿する大きな画像を圧縮</string>
     <string name="setting_timelines_title">タイムライン取得件数</string>
     <string name="setting_timelines_summary_format">更新時に新しいツイートを%s件取得する</string>
     <string name="setting_timelines_dialog_title">取得件数の設定</string>

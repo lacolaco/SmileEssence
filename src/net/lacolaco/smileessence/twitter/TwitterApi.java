@@ -36,6 +36,7 @@ public class TwitterApi
 
     // ------------------------------ FIELDS ------------------------------
 
+    public static final int MEDIA_SIZE_LIMIT = 2 * 1024 * 1024;
     private final String token;
     private final String tokenSecret;
 

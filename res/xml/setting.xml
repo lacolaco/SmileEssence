@@ -69,6 +69,11 @@
             android:key="@string/key_setting_show_confirm_dialog"
             android:defaultValue="true"/>
         <SwitchPreference
+            android:title="@string/setting_resize_post_image"
+            android:summary="@string/setting_resize_post_image_summary"
+            android:key="@string/key_setting_resize_post_image"
+            android:defaultValue="true"/>
+        <SwitchPreference
             android:title="@string/setting_notify_on_unfavorited_title"
             android:summaryOn="@string/setting_notify_on_unfavorited_summary_on"
             android:summaryOff="@string/setting_notify_on_unfavorited_summary_off"

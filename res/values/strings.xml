@@ -89,6 +89,8 @@
     <string name="setting_safe_mode_title">Safe mode</string>
     <string name="setting_safe_mode_summary_on">Show confirm dialog</string>
     <string name="setting_safe_mode_summary_off">No confirmation</string>
+    <string name="setting_resize_post_image">Resize image</string>
+    <string name="setting_resize_post_image_summary">Compress large image for tweet</string>
     <string name="setting_notify_on_unfavorited_title">On unfavorited</string>
     <string name="setting_notify_on_unfavorited_summary_on">Notify</string>
     <string name="setting_notify_on_unfavorited_summary_off">No Notice</string>

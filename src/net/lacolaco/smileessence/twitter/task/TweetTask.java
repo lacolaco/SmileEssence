@@ -34,6 +34,8 @@ import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.notification.NotificationType;
 import net.lacolaco.smileessence.notification.Notificator;
+import net.lacolaco.smileessence.preference.UserPreferenceHelper;
+import net.lacolaco.smileessence.twitter.TwitterApi;
 import twitter4j.Status;
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
@@ -47,8 +49,6 @@ public class TweetTask extends TwitterTask<Status>
 {
 
     // ------------------------------ FIELDS ------------------------------
-
-    private static final int MEDIA_SIZE_LIMIT = 2 * 1024 * 1024;
 
     private final StatusUpdate update;
     private final String mediaPath;
@@ -75,7 +75,8 @@ public class TweetTask extends TwitterTask<Status>
     public File getMediaFile()
     {
         File file = new File(mediaPath);
-        if(file.length() >= MEDIA_SIZE_LIMIT)
+        boolean resizeFlag = new UserPreferenceHelper(activity).getValue(R.string.key_setting_resize_post_image, false);
+        if(file.length() >= TwitterApi.MEDIA_SIZE_LIMIT && resizeFlag)
         {
             BitmapFactory.Options opt = new BitmapFactory.Options();
             opt.inJustDecodeBounds = true; //decoder is not return bitmap but set option
@@ -86,7 +87,7 @@ public class TweetTask extends TwitterTask<Status>
             try
             {
                 fos = new FileOutputStream(compressedFile);
-                float ratio = (float) file.length() / (float) MEDIA_SIZE_LIMIT;
+                float ratio = (float) file.length() / (float) TwitterApi.MEDIA_SIZE_LIMIT;
                 BitmapFactory.Options resizeOpt = new BitmapFactory.Options();
                 resizeOpt.inPurgeable = true;
                 resizeOpt.inSampleSize = (int) Math.ceil(ratio);
