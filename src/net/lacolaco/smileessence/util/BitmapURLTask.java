@@ -63,8 +63,10 @@ public class BitmapURLTask extends AsyncTask<Void, Void, Bitmap>
     @Override
     protected Bitmap doInBackground(Void... params)
     {
-        try(InputStream inputStream = new URL(url).openStream())
+        InputStream inputStream = null;
+        try
         {
+            inputStream = new URL(url).openStream();
             BitmapFactory.Options opt = new BitmapFactory.Options();
             opt.inPurgeable = true; // GC可能にする
             return BitmapFactory.decodeStream(inputStream, null, opt);
@@ -73,6 +75,17 @@ public class BitmapURLTask extends AsyncTask<Void, Void, Bitmap>
         {
             e.printStackTrace();
             return null;
+        }
+        finally
+        {
+            try
+            {
+                inputStream.close();
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 }
