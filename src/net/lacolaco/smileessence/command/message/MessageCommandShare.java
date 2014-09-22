@@ -22,52 +22,49 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.twitter.task;
+package net.lacolaco.smileessence.command.message;
 
-import net.lacolaco.smileessence.data.DirectMessageCache;
-import net.lacolaco.smileessence.logging.Logger;
+import android.app.Activity;
+import android.content.Intent;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.twitter.util.TwitterUtils;
+import net.lacolaco.smileessence.util.IntentUtils;
 import twitter4j.DirectMessage;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
 
-public class ShowDirectMessageTask extends TwitterTask<DirectMessage>
+public class MessageCommandShare extends MessageCommand
 {
-
-    // ------------------------------ FIELDS ------------------------------
-
-    private final long messageID;
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
-    public ShowDirectMessageTask(Twitter twitter, long messageID)
+    public MessageCommandShare(Activity activity, DirectMessage message)
     {
-        super(twitter);
-        this.messageID = messageID;
+        super(R.id.key_command_message_share, activity, message);
     }
 
-    // ------------------------ OVERRIDE METHODS ------------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
-    protected void onPostExecute(DirectMessage directMessage)
+    public String getText()
     {
-        if(directMessage != null)
-        {
-            DirectMessageCache.getInstance().put(directMessage);
-        }
+        return getActivity().getString(R.string.command_status_share);
     }
 
     @Override
-    protected DirectMessage doInBackground(Void... params)
+    public boolean isEnabled()
     {
-        try
-        {
-            return twitter.directMessages().showDirectMessage(messageID);
-        }
-        catch(TwitterException e)
-        {
-            e.printStackTrace();
-            Logger.error(e.toString());
-            return null;
-        }
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
+    public boolean execute()
+    {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, TwitterUtils.getMessageSummary(getMessage()));
+        IntentUtils.startActivityIfFound(getActivity(), intent);
+        return true;
     }
 }

@@ -32,7 +32,6 @@ import net.lacolaco.smileessence.data.DirectMessageCache;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.data.UserCache;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.ShowDirectMessageTask;
 import net.lacolaco.smileessence.twitter.task.ShowStatusTask;
@@ -41,7 +40,6 @@ import twitter4j.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.concurrent.ExecutionException;
 
 public class TwitterUtils
 {
@@ -131,28 +129,36 @@ public class TwitterUtils
 
     /**
      * Get direct message from api if not cached
-     *
-     * @return null if api error
      */
-    public static DirectMessage tryGetMessage(Account account, long messageID)
+    public static void tryGetMessage(Account account, long messageID, final MessageCallback callback)
     {
         DirectMessage message = DirectMessageCache.getInstance().get(messageID);
         if(message != null)
         {
-            return message;
+            callback.success(message);
+            ShowDirectMessageTask task = new ShowDirectMessageTask(new TwitterApi(account).getTwitter(), messageID);
+            task.execute();
         }
-        ShowDirectMessageTask task = new ShowDirectMessageTask(new TwitterApi(account).getTwitter(), messageID);
-        task.execute();
-        try
+        else
         {
-            message = task.get();
+            ShowDirectMessageTask task = new ShowDirectMessageTask(new TwitterApi(account).getTwitter(), messageID)
+            {
+                @Override
+                protected void onPostExecute(DirectMessage directMessage)
+                {
+                    super.onPostExecute(directMessage);
+                    if(directMessage != null)
+                    {
+                        callback.success(directMessage);
+                    }
+                    else
+                    {
+                        callback.error();
+                    }
+                }
+            };
+            task.execute();
         }
-        catch(InterruptedException | ExecutionException e)
-        {
-            e.printStackTrace();
-            Logger.error(e.getMessage());
-        }
-        return message;
     }
 
     /**
@@ -307,6 +313,11 @@ public class TwitterUtils
         return StatusCache.getInstance().get((status.isRetweet() ? status.getRetweetedStatus() : status).getId());
     }
 
+    public static String getMessageSummary(DirectMessage message)
+    {
+        return String.format("@%s: %s", message.getSender().getScreenName(), message.getText());
+    }
+
     // -------------------------- INNER CLASSES --------------------------
 
     public interface StatusCallback
@@ -321,6 +332,14 @@ public class TwitterUtils
     {
 
         void success(User user);
+
+        void error();
+    }
+
+    public interface MessageCallback
+    {
+
+        void success(DirectMessage message);
 
         void error();
     }

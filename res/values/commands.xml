@@ -50,4 +50,7 @@
     <item name="key_command_status_copy" type="id"/>
     <item name="key_command_status_congratulate" type="id"/>
     <item name="key_command_status_review" type="id"/>
+    <item name="key_command_message_share" type="id"/>
+    <item name="key_command_message_search_on_google" type="id"/>
+    <item name="key_command_message_tofubuster" type="id"/>
 </resources>

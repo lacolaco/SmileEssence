@@ -29,11 +29,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.command.message.MessageCommandClipboard;
+import net.lacolaco.smileessence.command.message.MessageCommandSearchOnGoogle;
+import net.lacolaco.smileessence.command.message.MessageCommandShare;
+import net.lacolaco.smileessence.command.message.MessageCommandTofuBuster;
 import net.lacolaco.smileessence.command.status.*;
 import net.lacolaco.smileessence.command.user.*;
 import net.lacolaco.smileessence.data.CommandSettingCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.viewmodel.IViewModel;
+import twitter4j.DirectMessage;
 import twitter4j.Status;
 import twitter4j.User;
 
@@ -81,8 +86,6 @@ public abstract class Command implements IViewModel
         return commands;
     }
 
-    // --------------------------- CONSTRUCTORS ---------------------------
-
     public static List<Command> getStatusCommands(Activity activity, Status status, Account account)
     {
         List<Command> commands = new ArrayList<>();
@@ -104,6 +107,18 @@ public abstract class Command implements IViewModel
         commands.add(new StatusCommandAddToIgnore(activity, status));
         return commands;
     }
+
+    public static List<Command> getMessageCommands(Activity activity, DirectMessage message, Account account)
+    {
+        List<Command> commands = new ArrayList<>();
+        commands.add(new MessageCommandShare(activity, message));
+        commands.add(new MessageCommandClipboard(activity, message));
+        commands.add(new MessageCommandSearchOnGoogle(activity, message));
+        commands.add(new MessageCommandTofuBuster(activity, message));
+        return commands;
+    }
+
+    // --------------------------- CONSTRUCTORS ---------------------------
 
     public static void filter(List<Command> commands)
     {

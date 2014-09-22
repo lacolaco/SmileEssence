@@ -27,31 +27,25 @@ package net.lacolaco.smileessence.view.dialog;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
-import net.lacolaco.smileessence.command.Command;
-import net.lacolaco.smileessence.command.CommandOpenURL;
-import net.lacolaco.smileessence.command.CommandOpenUserDetail;
-import net.lacolaco.smileessence.command.message.MessageCommandClipboard;
+import net.lacolaco.smileessence.command.*;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.twitter.TwitterApi;
-import net.lacolaco.smileessence.twitter.task.DeleteMessageTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.viewmodel.MessageViewModel;
 import twitter4j.DirectMessage;
+import twitter4j.HashtagEntity;
 import twitter4j.MediaEntity;
 import twitter4j.URLEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessageMenuDialogFragment extends MenuDialogFragment implements View.OnClickListener
+public class MessageMenuDialogFragment extends MenuDialogFragment
 {
 
     // ------------------------------ FIELDS ------------------------------
@@ -72,99 +66,69 @@ public class MessageMenuDialogFragment extends MenuDialogFragment implements Vie
         setArguments(args);
     }
 
-    // ------------------------ INTERFACE METHODS ------------------------
-
-
-    // --------------------- Interface OnClickListener ---------------------
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
-    public void onClick(View v)
+    protected void executeCommand(Command command)
     {
-        final MainActivity activity = (MainActivity) getActivity();
-        final Account account = activity.getCurrentAccount();
-        final DirectMessage message = TwitterUtils.tryGetMessage(account, getMessageID());
-        switch(v.getId())
+        if(command.execute())
         {
-            case R.id.button_status_detail_reply:
-            {
-                openSendMessageDialog(message);
-                break;
-            }
-            case R.id.button_status_detail_delete:
-            {
-                deleteMessage(account, message);
-                break;
-            }
+            dismiss();
+            DialogHelper.close(getActivity(), MessageViewModel.DETAIL_DIALOG);
         }
     }
-
-    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        MainActivity activity = (MainActivity) getActivity();
-        Account account = activity.getCurrentAccount();
-        DirectMessage message = TwitterUtils.tryGetMessage(account, getMessageID());
-        List<Command> commands = getCommands(activity, message, account);
-        Command.filter(commands);
+        final MainActivity activity = (MainActivity) getActivity();
+        final Account account = activity.getCurrentAccount();
+
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
         ListView listView = (ListView) body.findViewById(R.id.listview_dialog_menu_list);
-        CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);
+        final CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);
         listView.setAdapter(adapter);
-        for(Command command : commands)
-        {
-            adapter.addToBottom(command);
-        }
-        adapter.update();
         listView.setOnItemClickListener(onItemClickListener);
-        View header = getTitleView(activity, account, message);
-        header.setClickable(false);
 
-        return new AlertDialog.Builder(activity)
-                .setCustomTitle(header)
-                .setView(body)
-                .setCancelable(true)
-                .create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(activity).setView(body).create();
+        TwitterUtils.tryGetMessage(account, getMessageID(), new TwitterUtils.MessageCallback()
+        {
+            @Override
+            public void success(DirectMessage message)
+            {
+                List<Command> commands = getCommands(activity, message, account);
+                Command.filter(commands);
+                for(Command command : commands)
+                {
+                    adapter.addToBottom(command);
+                }
+                adapter.update();
+            }
+
+            @Override
+            public void error()
+            {
+                dismiss();
+            }
+        });
+        return alertDialog;
     }
 
     // -------------------------- OTHER METHODS --------------------------
 
-    public void deleteMessage(final Account account, final DirectMessage message)
+    public void addBottomCommands(Activity activity, DirectMessage message, Account account, ArrayList<Command> commands)
     {
-        ConfirmDialogFragment.show(getActivity(), getString(R.string.dialog_confirm_commands), new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                new DeleteMessageTask(new TwitterApi(account).getTwitter(), message.getId(), getActivity()).execute();
-                dismiss();
-            }
-        });
-    }
-
-    public List<Command> getCommands(Activity activity, DirectMessage message, Account account)
-    {
-        ArrayList<Command> commands = new ArrayList<>();
-        commands.addAll(getURLCommands(activity, message));
-        commands.addAll(getScreenNameCommands(activity, message, account));
-        commands.add(new MessageCommandClipboard(activity, message));
-        return commands;
-    }
-
-    public List<Command> getScreenNameCommands(Activity activity, DirectMessage message, Account account)
-    {
-        List<Command> commands = new ArrayList<>();
+        commands.add(new CommandSaveAsTemplate(activity, message.getText()));
+        //User
         for(String screenName : TwitterUtils.getScreenNames(message, null))
         {
             commands.add(new CommandOpenUserDetail(activity, screenName, account));
         }
-        return commands;
-    }
-
-    public List<Command> getURLCommands(Activity activity, DirectMessage message)
-    {
-        List<Command> commands = new ArrayList<>();
+        for(Command command : getHashtagCommands(activity, message))
+        {
+            commands.add(command);
+        }
+        // Media
         if(message.getURLEntities() != null)
         {
             for(URLEntity urlEntity : message.getURLEntities())
@@ -172,59 +136,35 @@ public class MessageMenuDialogFragment extends MenuDialogFragment implements Vie
                 commands.add(new CommandOpenURL(activity, urlEntity.getExpandedURL()));
             }
         }
-        for(MediaEntity mediaEntity : getMediaEntities(message))
+        for(MediaEntity mediaEntity : message.getExtendedMediaEntities().length == 0 ? message.getMediaEntities() : message.getExtendedMediaEntities())
         {
             commands.add(new CommandOpenURL(activity, mediaEntity.getMediaURL()));
         }
+    }
+
+    public boolean addMainCommands(Activity activity, DirectMessage message, Account account, ArrayList<Command> commands)
+    {
+        return commands.addAll(Command.getMessageCommands(activity, message, account));
+    }
+
+    public List<Command> getCommands(Activity activity, DirectMessage message, Account account)
+    {
+        ArrayList<Command> commands = new ArrayList<>();
+        addMainCommands(activity, message, account, commands);
+        addBottomCommands(activity, message, account, commands);
         return commands;
     }
 
-    public void openSendMessageDialog(DirectMessage message)
+    private ArrayList<Command> getHashtagCommands(Activity activity, DirectMessage status)
     {
-        SendMessageDialogFragment dialogFragment = new SendMessageDialogFragment();
-        dialogFragment.setScreenName(message.getSenderScreenName());
-        DialogHelper.showDialog(getActivity(), dialogFragment);
-    }
-
-    private MediaEntity[] getMediaEntities(DirectMessage message)
-    {
-        if(message.getExtendedMediaEntities().length == 0)
+        ArrayList<Command> commands = new ArrayList<>();
+        if(status.getHashtagEntities() != null)
         {
-            // direct message's media is contained also in url entities.
-            return new MediaEntity[0];
+            for(HashtagEntity hashtagEntity : status.getHashtagEntities())
+            {
+                commands.add(new CommandOpenHashtagDialog(activity, hashtagEntity));
+            }
         }
-        else
-        {
-            return message.getExtendedMediaEntities();
-        }
-    }
-
-    private View getTitleView(MainActivity activity, Account account, DirectMessage message)
-    {
-        View view = activity.getLayoutInflater().inflate(R.layout.dialog_status_detail, null);
-        View messageHeader = view.findViewById(R.id.layout_status_header);
-        MessageViewModel statusViewModel = new MessageViewModel(message, account);
-        messageHeader = statusViewModel.getView(activity, activity.getLayoutInflater(), messageHeader);
-        messageHeader.setClickable(false);
-        int background = ((ColorDrawable) messageHeader.getBackground()).getColor();
-        view.setBackgroundColor(background);
-        ImageButton reply = (ImageButton) view.findViewById(R.id.button_status_detail_reply);
-        reply.setOnClickListener(this);
-        ImageButton retweet = (ImageButton) view.findViewById(R.id.button_status_detail_retweet);
-        retweet.setVisibility(View.GONE);
-        ImageButton favorite = (ImageButton) view.findViewById(R.id.button_status_detail_favorite);
-        favorite.setVisibility(View.GONE);
-        ImageButton delete = (ImageButton) view.findViewById(R.id.button_status_detail_delete);
-        delete.setVisibility(isDeletable(account, message) ? View.VISIBLE : View.GONE);
-        delete.setOnClickListener(this);
-        view.findViewById(R.id.button_status_detail_menu).setVisibility(View.GONE);
-        view.findViewById(R.id.image_status_detail_fav_count).setVisibility(View.GONE);
-        view.findViewById(R.id.image_status_detail_rt_count).setVisibility(View.GONE);
-        return view;
-    }
-
-    private boolean isDeletable(Account account, DirectMessage message)
-    {
-        return message.getSenderId() == account.userID;
+        return commands;
     }
 }

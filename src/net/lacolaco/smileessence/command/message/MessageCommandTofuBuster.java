@@ -22,52 +22,58 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.twitter.task;
+package net.lacolaco.smileessence.command.message;
 
-import net.lacolaco.smileessence.data.DirectMessageCache;
-import net.lacolaco.smileessence.logging.Logger;
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.notification.Notificator;
 import twitter4j.DirectMessage;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
 
-public class ShowDirectMessageTask extends TwitterTask<DirectMessage>
+public class MessageCommandTofuBuster extends MessageCommand
 {
-
-    // ------------------------------ FIELDS ------------------------------
-
-    private final long messageID;
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
-    public ShowDirectMessageTask(Twitter twitter, long messageID)
+    public MessageCommandTofuBuster(Activity activity, DirectMessage message)
     {
-        super(twitter);
-        this.messageID = messageID;
+        super(R.id.key_command_message_tofubuster, activity, message);
     }
 
-    // ------------------------ OVERRIDE METHODS ------------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
-    protected void onPostExecute(DirectMessage directMessage)
+    public String getText()
     {
-        if(directMessage != null)
-        {
-            DirectMessageCache.getInstance().put(directMessage);
-        }
+        return getActivity().getString(R.string.command_status_tofubuster);
     }
 
     @Override
-    protected DirectMessage doInBackground(Void... params)
+    public boolean isEnabled()
     {
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
+    public boolean execute()
+    {
+        String ACTION_SHOW_TEXT = "com.product.kanzmrsw.tofubuster.ACTION_SHOW_TEXT";
+        String text = getMessage().getText();
+        Intent i = new Intent(ACTION_SHOW_TEXT);
+        i.putExtra(Intent.EXTRA_TEXT, text);
+        i.putExtra(Intent.EXTRA_SUBJECT, getActivity().getString(R.string.app_name));
+        i.putExtra("isCopyEnabled", true);
         try
         {
-            return twitter.directMessages().showDirectMessage(messageID);
+            getActivity().startActivity(i);
         }
-        catch(TwitterException e)
+        catch(ActivityNotFoundException e)
         {
-            e.printStackTrace();
-            Logger.error(e.toString());
-            return null;
+            new Notificator(getActivity(), R.string.notice_tofubuster_not_found).publish();
         }
+        return true;
     }
 }

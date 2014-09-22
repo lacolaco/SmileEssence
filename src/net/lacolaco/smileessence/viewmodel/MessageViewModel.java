@@ -40,7 +40,7 @@ import net.lacolaco.smileessence.util.NameStyles;
 import net.lacolaco.smileessence.util.StringUtils;
 import net.lacolaco.smileessence.util.Themes;
 import net.lacolaco.smileessence.view.dialog.DialogHelper;
-import net.lacolaco.smileessence.view.dialog.MessageMenuDialogFragment;
+import net.lacolaco.smileessence.view.dialog.MessageDetailDialogFragment;
 import net.lacolaco.smileessence.view.dialog.UserDetailDialogFragment;
 import net.lacolaco.smileessence.view.listener.ListItemClickListener;
 import twitter4j.DirectMessage;
@@ -52,6 +52,7 @@ public class MessageViewModel implements IViewModel
 
     // ------------------------------ FIELDS ------------------------------
 
+    public static final String DETAIL_DIALOG = "messageDetail";
     private final long id;
     private final long senderID;
     private final String senderScreenName;
@@ -194,7 +195,7 @@ public class MessageViewModel implements IViewModel
             @Override
             public void run()
             {
-                MessageMenuDialogFragment dialogFragment = new MessageMenuDialogFragment();
+                MessageDetailDialogFragment dialogFragment = new MessageDetailDialogFragment();
                 dialogFragment.setMessageID(getID());
                 DialogHelper.showDialog(activity, dialogFragment);
             }

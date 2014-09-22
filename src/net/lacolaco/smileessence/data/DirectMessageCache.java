@@ -26,6 +26,7 @@ package net.lacolaco.smileessence.data;
 
 import twitter4j.DirectMessage;
 
+import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DirectMessageCache
@@ -51,6 +52,16 @@ public class DirectMessageCache
     }
 
     // -------------------------- OTHER METHODS --------------------------
+
+    /**
+     * Get all elements
+     *
+     * @return cached all message
+     */
+    public Collection<DirectMessage> all()
+    {
+        return cache.values();
+    }
 
     /**
      * Get message by id

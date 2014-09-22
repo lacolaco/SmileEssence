@@ -22,52 +22,46 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.twitter.task;
+package net.lacolaco.smileessence.command.message;
 
-import net.lacolaco.smileessence.data.DirectMessageCache;
-import net.lacolaco.smileessence.logging.Logger;
+import android.app.Activity;
+import net.lacolaco.smileessence.R;
+import net.lacolaco.smileessence.view.dialog.DialogHelper;
+import net.lacolaco.smileessence.view.dialog.SearchOnGoogleDialogFragment;
 import twitter4j.DirectMessage;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
 
-public class ShowDirectMessageTask extends TwitterTask<DirectMessage>
+public class MessageCommandSearchOnGoogle extends MessageCommand
 {
-
-    // ------------------------------ FIELDS ------------------------------
-
-    private final long messageID;
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
-    public ShowDirectMessageTask(Twitter twitter, long messageID)
+    public MessageCommandSearchOnGoogle(Activity activity, DirectMessage message)
     {
-        super(twitter);
-        this.messageID = messageID;
+        super(R.id.key_command_message_search_on_google, activity, message);
     }
 
-    // ------------------------ OVERRIDE METHODS ------------------------
+    // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
-    protected void onPostExecute(DirectMessage directMessage)
+    public String getText()
     {
-        if(directMessage != null)
-        {
-            DirectMessageCache.getInstance().put(directMessage);
-        }
+        return getActivity().getString(R.string.command_search_on_google);
     }
 
     @Override
-    protected DirectMessage doInBackground(Void... params)
+    public boolean isEnabled()
     {
-        try
-        {
-            return twitter.directMessages().showDirectMessage(messageID);
-        }
-        catch(TwitterException e)
-        {
-            e.printStackTrace();
-            Logger.error(e.toString());
-            return null;
-        }
+        return true;
+    }
+
+    // -------------------------- OTHER METHODS --------------------------
+
+    @Override
+    public boolean execute()
+    {
+        SearchOnGoogleDialogFragment dialogFragment = new SearchOnGoogleDialogFragment();
+        dialogFragment.setText(getMessage().getText());
+        DialogHelper.showDialog(getActivity(), dialogFragment);
+        return false;
     }
 }
