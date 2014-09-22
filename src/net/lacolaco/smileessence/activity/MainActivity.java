@@ -57,10 +57,7 @@ import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.UserStreamListener;
 import net.lacolaco.smileessence.twitter.task.*;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
-import net.lacolaco.smileessence.util.BitmapURLTask;
-import net.lacolaco.smileessence.util.NetworkHelper;
-import net.lacolaco.smileessence.util.Themes;
-import net.lacolaco.smileessence.util.UIHandler;
+import net.lacolaco.smileessence.util.*;
 import net.lacolaco.smileessence.view.*;
 import net.lacolaco.smileessence.view.adapter.*;
 import net.lacolaco.smileessence.view.dialog.ConfirmDialogFragment;
@@ -247,17 +244,15 @@ public class MainActivity extends Activity
         this.streaming = streaming;
     }
 
-    // ------------------------ INTERFACE METHODS ------------------------
-
-
-    // --------------------- Interface Callback ---------------------
-
     public void setSelectedPageIndex(int position)
     {
         viewPager.setCurrentItem(position, true);
     }
 
-    // ------------------------ OVERRIDE METHODS ------------------------
+    // ------------------------ INTERFACE METHODS ------------------------
+
+
+    // --------------------- Interface Callback ---------------------
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event)
@@ -279,6 +274,8 @@ public class MainActivity extends Activity
             }
         }
     }
+
+    // ------------------------ OVERRIDE METHODS ------------------------
 
     @Override
     public void finish()
@@ -383,8 +380,6 @@ public class MainActivity extends Activity
         Notificator.stopNotification();
     }
 
-    // -------------------------- OTHER METHODS --------------------------
-
     @Override
     protected void onResume()
     {
@@ -393,6 +388,8 @@ public class MainActivity extends Activity
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Notificator.startNotification();
     }
+
+    // -------------------------- OTHER METHODS --------------------------
 
     public int addListPage(String name, Class<? extends CustomListFragment> fragmentClass, CustomListAdapter<?> adapter, int adapterIndex, boolean visible)
     {
@@ -445,6 +442,7 @@ public class MainActivity extends Activity
             Cursor c = getContentResolver().query(uri, null, null, null, null);
             c.moveToFirst();
             String path = c.getString(c.getColumnIndex(MediaStore.MediaColumns.DATA));
+            BitmapOptimizer.rotateImageByExif(path);
             PostState.getState().beginTransaction()
                      .setMediaFilePath(path)
                      .commitWithOpen(this);
