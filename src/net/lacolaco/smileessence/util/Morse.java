@@ -110,7 +110,7 @@ public class Morse
                 sb.append(tok);
             }
         }
-        return sb.toString().trim();
+        return sb.toString();
     }
 
     private static String toRightMorse(String str)
