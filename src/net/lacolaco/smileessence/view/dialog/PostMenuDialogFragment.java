@@ -61,14 +61,7 @@ public class PostMenuDialogFragment extends MenuDialogFragment
         if(commands.isEmpty())
         {
             Notificator.publish(getActivity(), R.string.notice_no_command_exists);
-            return new Dialog(activity)
-            {
-                @Override
-                public void show()
-                {
-                    dismiss();
-                }
-            };
+            return new DisposeDialog(getActivity());
         }
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
         ListView listView = (ListView) body.findViewById(R.id.listview_dialog_menu_list);

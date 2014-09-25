@@ -40,6 +40,7 @@ import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.command.CommandOpenURL;
 import net.lacolaco.smileessence.data.DirectMessageCache;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.DeleteMessageTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
@@ -130,6 +131,11 @@ public class MessageDetailDialogFragment extends DialogFragment implements View.
         final Account account = activity.getCurrentAccount();
 
         DirectMessage selectedMessage = DirectMessageCache.getInstance().get(getMessageID());
+        if(selectedMessage == null)
+        {
+            Notificator.publish(getActivity(), R.string.notice_error_get_messages);
+            return new DisposeDialog(getActivity());
+        }
         View header = getTitleView(activity, account, selectedMessage);
         ListView listView = (ListView) header.findViewById(R.id.listview_status_detail_reply_to);
         final MessageListAdapter adapter = new MessageListAdapter(getActivity());
@@ -183,19 +189,7 @@ public class MessageDetailDialogFragment extends DialogFragment implements View.
                 }
             });
         }
-
-        return new AlertDialog.Builder(
-
-                getActivity()
-
-        ).
-
-                 setView(header)
-
-         .
-
-                 create();
-
+        return new AlertDialog.Builder(getActivity()).setView(header).create();
     }
 
     // -------------------------- OTHER METHODS --------------------------
