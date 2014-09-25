@@ -24,12 +24,15 @@
 
 package net.lacolaco.smileessence.util;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.os.Environment;
 import net.lacolaco.smileessence.logging.Logger;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -39,7 +42,7 @@ public class BitmapOptimizer
 
     // -------------------------- STATIC METHODS --------------------------
 
-    public static void rotateImageByExif(String filePath)
+    public static String rotateImageByExif(Activity activity, String filePath)
     {
         filePath = filePath.replace("file://", "");
         int degree = getRotateDegreeFromExif(filePath);
@@ -65,8 +68,12 @@ public class BitmapOptimizer
                 opt.inSampleSize = scale;
                 bitmap = BitmapFactory.decodeFile(filePath, opt);
                 rotatedImage = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), mat, true);
-                out = new FileOutputStream(filePath);
+                File file = new File(filePath);
+                String outPath = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/" + file.getName();
+                Logger.debug(outPath);
+                out = new FileOutputStream(outPath);
                 rotatedImage.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                return outPath;
             }
             catch(Exception e)
             {
@@ -97,6 +104,7 @@ public class BitmapOptimizer
                 }
             }
         }
+        return filePath;
     }
 
     private static int getRotateDegreeFromExif(String filePath)

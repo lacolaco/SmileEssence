@@ -25,12 +25,10 @@
 package net.lacolaco.smileessence.util;
 
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
-import android.provider.MediaStore;
 import android.widget.ImageView;
 
 public class BitmapThumbnailTask extends AsyncTask<Void, Void, Bitmap>
@@ -67,15 +65,16 @@ public class BitmapThumbnailTask extends AsyncTask<Void, Void, Bitmap>
     {
         BitmapFactory.Options opt = new BitmapFactory.Options();
         opt.inPurgeable = true; // GC可能にする
-        //opt.inSampleSize = 2;
-        ContentResolver resolver = activity.getContentResolver();
-        Cursor cursor = resolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.ImageColumns.DATA + " = ?", new String[]{filePath}, null);
-        if(cursor.moveToFirst())
-        {
-            // サムネイルの取得
-            long id = cursor.getLong(cursor.getColumnIndex("_id"));
-            return MediaStore.Images.Thumbnails.getThumbnail(resolver, id, MediaStore.Images.Thumbnails.MICRO_KIND, opt);
-        }
-        return null;
+        opt.inSampleSize = 2;
+        //        ContentResolver resolver = activity.getContentResolver();
+        //        Cursor cursor = resolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.ImageColumns.DATA + " = ?", new String[]{filePath}, null);
+        //        if(cursor.moveToFirst())
+        //        {
+        //            // サムネイルの取得
+        //            long id = cursor.getLong(cursor.getColumnIndex("_id"));
+        //            return MediaStore.Images.Thumbnails.getThumbnail(resolver, id, MediaStore.Images.Thumbnails.MICRO_KIND, opt);
+        //        }
+        //        return null;
+        return ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(filePath), 100, 100, ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
     }
 }

@@ -442,9 +442,9 @@ public class MainActivity extends Activity
             Cursor c = getContentResolver().query(uri, null, null, null, null);
             c.moveToFirst();
             String path = c.getString(c.getColumnIndex(MediaStore.MediaColumns.DATA));
-            BitmapOptimizer.rotateImageByExif(path);
+            String rotatedPath = BitmapOptimizer.rotateImageByExif(this, path);
             PostState.getState().beginTransaction()
-                     .setMediaFilePath(path)
+                     .setMediaFilePath(rotatedPath)
                      .commitWithOpen(this);
             Notificator.publish(this, R.string.notice_select_image_succeeded);
         }
