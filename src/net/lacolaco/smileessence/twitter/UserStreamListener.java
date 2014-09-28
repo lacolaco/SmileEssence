@@ -26,9 +26,7 @@ package net.lacolaco.smileessence.twitter;
 
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
-import net.lacolaco.smileessence.data.FavoriteCache;
-import net.lacolaco.smileessence.data.StatusCache;
-import net.lacolaco.smileessence.data.UserListCache;
+import net.lacolaco.smileessence.data.*;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.view.adapter.MessageListAdapter;
@@ -164,6 +162,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         MessageListAdapter messages = (MessageListAdapter) activity.getListAdapter(MainActivity.ADAPTER_MESSAGES);
         messages.removeByMessageID(directMessageId);
         messages.updateForce();
+        DirectMessageCache.getInstance().remove(directMessageId);
     }
 
     @Override
@@ -174,13 +173,13 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onFavorite(User source, User target, Status favoritedStatus)
     {
+        StatusCache.getInstance().put(favoritedStatus);
         if(isMe(target))
         {
             addToHistory(new EventViewModel(EnumEvent.FAVORITED, source, favoritedStatus));
         }
         if(isMe(source))
         {
-            StatusCache.getInstance().put(favoritedStatus);
             FavoriteCache.getInstance().put(favoritedStatus, true);
             activity.getListAdapter(MainActivity.ADAPTER_HOME).update();
             activity.getListAdapter(MainActivity.ADAPTER_MENTIONS).update();
@@ -190,6 +189,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onUnfavorite(User source, User target, Status unfavoritedStatus)
     {
+        StatusCache.getInstance().put(unfavoritedStatus);
         boolean unfavNoticeEnabled = activity.getUserPreferenceHelper().getValue(R.string.key_setting_notify_on_unfavorited, true);
         if(isMe(target) && unfavNoticeEnabled)
         {
@@ -197,7 +197,6 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         }
         if(isMe(source))
         {
-            StatusCache.getInstance().put(unfavoritedStatus);
             FavoriteCache.getInstance().put(unfavoritedStatus, false);
             activity.getListAdapter(MainActivity.ADAPTER_HOME).update();
             activity.getListAdapter(MainActivity.ADAPTER_MENTIONS).update();
@@ -207,6 +206,8 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onFollow(User source, User followedUser)
     {
+        UserCache.getInstance().put(source);
+        UserCache.getInstance().put(followedUser);
         if(isMe(followedUser))
         {
             addToHistory(new EventViewModel(EnumEvent.FOLLOWED, source));
@@ -221,6 +222,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     @Override
     public void onDirectMessage(DirectMessage directMessage)
     {
+        DirectMessageCache.getInstance().put(directMessage);
         if(isMe(directMessage.getRecipient()))
         {
             addToHistory(new EventViewModel(EnumEvent.RECEIVE_MESSAGE, directMessage.getSender()));
