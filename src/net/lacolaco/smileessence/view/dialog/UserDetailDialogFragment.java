@@ -44,6 +44,7 @@ import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.command.CommandOpenURL;
 import net.lacolaco.smileessence.data.ImageCache;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.FollowTask;
 import net.lacolaco.smileessence.twitter.task.ShowFriendshipTask;
@@ -280,7 +281,15 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
             @Override
             public void success(User user)
             {
-                initUserData(user, account);
+                try
+                {
+                    initUserData(user, account);
+                }
+                catch(Exception e)
+                {
+                    Logger.error(e);
+                    error();
+                }
             }
 
             @Override
