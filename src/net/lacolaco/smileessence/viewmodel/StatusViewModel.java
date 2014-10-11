@@ -131,7 +131,7 @@ public class StatusViewModel implements IViewModel
                 String[] arr = uri.toString().split("/");
                 if(arr[arr.length - 2].equals("status"))
                 {
-                    list.add(Long.parseLong(arr[arr.length - 1]));
+                    list.add(Long.parseLong(arr[arr.length - 1].split("\\?")[0]));
                 }
             }
         }
