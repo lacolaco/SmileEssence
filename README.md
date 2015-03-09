@@ -8,7 +8,7 @@ SmileEssence
 #How to Fork
 
 + Clone this repository.
-+ Add file `src/twitter4j.properties` and write your application's API keys.
++ Add file `src/main/resources/twitter4j.properties` and write your application's API keys.
 
 ```
 # twitter4j.properties

@@ -1,12 +1,5 @@
-.idea
-bin
-gen
-out
-/Test Results - SmileEssenceTest.html
+.gradle
 /local.properties
-/proguard-project.txt
-/SmileEssenceTest/local.properties
-/SmileEssenceTest/proguard-project.txt
-/src/twitter4j.properties
-/SmileEssenceTest/assets/tokens.json
-/Test Results - AllTest.html
+/.idea/workspace.xml
+/.idea/libraries
+/build

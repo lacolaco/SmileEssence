@@ -1,0 +1,52 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "net.lacolaco.smileessence"
+        minSdkVersion 19
+        targetSdkVersion 19
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt' // なにこれ！！
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.navercorp.pulltorefresh:library:3.2.3@aar'
+    compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
+        exclude group: 'com.google.android', module: 'support-v4'
+    }
+    compile 'com.mcxiaoke.volley:library:1.0.+@aar'
+    compile 'org.twitter4j:twitter4j-core:4.0.2'
+    compile 'org.twitter4j:twitter4j-media-support:4.0.2'
+    compile 'org.twitter4j:twitter4j-stream:4.0.2'
+    compile 'com.google.guava:guava:16.0.1'
+    compile 'com.twitter:twitter-text:1.6.1'
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.android.support:support-v13:21.0.3'
+}
