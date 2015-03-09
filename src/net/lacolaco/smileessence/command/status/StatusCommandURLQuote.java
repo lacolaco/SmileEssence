@@ -52,7 +52,7 @@ public class StatusCommandURLQuote extends StatusCommand
     @Override
     public boolean isEnabled()
     {
-        return !getStatus().getUser().isProtected();
+        return true;
     }
 
     // -------------------------- OTHER METHODS --------------------------
