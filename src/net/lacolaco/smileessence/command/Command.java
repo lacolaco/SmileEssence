@@ -90,7 +90,6 @@ public abstract class Command implements IViewModel
     {
         List<Command> commands = new ArrayList<>();
         commands.add(new StatusCommandAddToReply(activity, status));
-        commands.add(new StatusCommandReplyToAll(activity, status, account));
         commands.add(new StatusCommandOpenTalkView(activity, status, account));
         commands.add(new StatusCommandFavAndRT(activity, status, account));
         commands.add(new StatusCommandOpenQuoteDialog(activity, status));
