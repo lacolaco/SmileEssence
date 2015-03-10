@@ -214,6 +214,7 @@
     <string name="command_status_quote_url">Permalink quote</string>
     <string name="command_status_quote_text">Text quote</string>
     <string name="command_status_clipboard">Copy to clipboard</string>
+    <string name="command_status_copy_url_to_clipboard">Copy permalink to clipboard</string>
     <string name="command_status_share">Share</string>
     <string name="command_status_open_in_browser">Open in browser</string>
     <string name="command_status_nanigaja">What\'s xxx</string>
