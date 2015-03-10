@@ -29,10 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import net.lacolaco.smileessence.R;
-import net.lacolaco.smileessence.command.message.MessageCommandClipboard;
-import net.lacolaco.smileessence.command.message.MessageCommandSearchOnGoogle;
-import net.lacolaco.smileessence.command.message.MessageCommandShare;
-import net.lacolaco.smileessence.command.message.MessageCommandTofuBuster;
+import net.lacolaco.smileessence.command.message.*;
 import net.lacolaco.smileessence.command.status.*;
 import net.lacolaco.smileessence.command.user.*;
 import net.lacolaco.smileessence.data.CommandSettingCache;
@@ -96,7 +93,7 @@ public abstract class Command implements IViewModel
         commands.add(new StatusCommandOpenQuoteDialog(activity, status));
         commands.add(new StatusCommandShare(activity, status));
         commands.add(new StatusCommandOpenInBrowser(activity, status));
-        commands.add(new StatusCommandClipboard(activity, status));
+        commands.add(new StatusCommandCopyTextToClipboard(activity, status));
         commands.add(new StatusCommandCopyURLToClipboard(activity, status));
         commands.add(new StatusCommandCopy(activity, status));
         commands.add(new StatusCommandSearchOnGoogle(activity, status));
@@ -113,7 +110,7 @@ public abstract class Command implements IViewModel
     {
         List<Command> commands = new ArrayList<>();
         commands.add(new MessageCommandShare(activity, message));
-        commands.add(new MessageCommandClipboard(activity, message));
+        commands.add(new MessageCommandCopyTextToClipboard(activity, message));
         commands.add(new MessageCommandSearchOnGoogle(activity, message));
         commands.add(new MessageCommandTofuBuster(activity, message));
         return commands;
