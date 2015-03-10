@@ -22,23 +22,23 @@
  * SOFTWARE.
  */
 
-package net.lacolaco.smileessence.command.message;
+package net.lacolaco.smileessence.command.status;
 
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.notification.Notificator;
-import twitter4j.DirectMessage;
+import twitter4j.Status;
 
-public class MessageCommandClipboard extends MessageCommand
+public class StatusCommandCopyTextToClipboard extends StatusCommand
 {
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
-    public MessageCommandClipboard(Activity activity, DirectMessage message)
+    public StatusCommandCopyTextToClipboard(Activity activity, Status status)
     {
-        super(-1, activity, message);
+        super(R.id.key_command_status_copy_text_to_clipboard, activity, status);
     }
 
     // --------------------- GETTER / SETTER METHODS ---------------------
@@ -46,7 +46,7 @@ public class MessageCommandClipboard extends MessageCommand
     @Override
     public String getText()
     {
-        return getActivity().getString(R.string.command_status_clipboard);
+        return getActivity().getString(R.string.command_status_copy_text_to_clipboard);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class MessageCommandClipboard extends MessageCommand
     public boolean execute()
     {
         ClipboardManager manager = (ClipboardManager) getActivity().getSystemService(Activity.CLIPBOARD_SERVICE);
-        manager.setPrimaryClip(ClipData.newPlainText("message text", getMessage().getText()));
+        manager.setPrimaryClip(ClipData.newPlainText("tweet text", getOriginalStatus().getText()));
         Notificator.publish(getActivity(), R.string.notice_copy_clipboard);
         return true;
     }

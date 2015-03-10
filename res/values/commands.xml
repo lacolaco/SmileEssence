@@ -27,7 +27,8 @@
     <item name="key_command_status_reply_to_all" type="id"/>
     <item name="key_command_status_fav_and_rt" type="id"/>
     <item name="key_command_status_quote" type="id"/>
-    <item name="key_command_status_clipboard" type="id"/>
+    <item name="key_command_status_copy_text_to_clipboard" type="id"/>
+    <item name="key_command_status_copy_url_to_clipboard" type="id"/>
     <item name="key_command_status_share" type="id"/>
     <item name="key_command_status_open_in_browser" type="id"/>
     <item name="key_command_status_nanigaja" type="id"/>
