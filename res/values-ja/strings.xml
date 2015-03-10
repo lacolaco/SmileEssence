@@ -208,7 +208,6 @@
     <string name="command_user_introduce">このユーザーを紹介する</string>
     <string name="command_user_send_message">DMを送る</string>
     <string name="command_event_reply">リプライを送る</string>
-    <string name="command_status_reply_to_all">全員にリプライを送る</string>
     <string name="command_status_fav_and_rt">ふぁぼ＆RTする</string>
     <string name="command_status_quote">引用する</string>
     <string name="command_status_quote_url">URLを引用する</string>

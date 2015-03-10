@@ -36,7 +36,6 @@ import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.command.CommandOpenURL;
-import net.lacolaco.smileessence.command.status.StatusCommandReplyToAll;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TweetBuilder;
@@ -97,7 +96,7 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
                 {
                     case R.id.button_status_detail_reply:
                     {
-                        replyToStatus(activity, status);
+                        replyToStatus(activity, account, status);
                         break;
                     }
                     case R.id.button_status_detail_retweet:
@@ -307,8 +306,6 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
         {
             commands.add(new CommandOpenURL(activity, mediaEntity.getMediaURL()));
         }
-        // ReplyToAll
-        commands.add(new StatusCommandReplyToAll(activity, status, account));
         return commands;
     }
 
@@ -344,15 +341,23 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
         DialogHelper.showDialog(activity, fragment, "statusMenuDialog");
     }
 
-    private void replyToStatus(MainActivity activity, Status status)
+    private void replyToStatus(MainActivity activity, Account account, Status status)
     {
         Status originalStatus = TwitterUtils.getOriginalStatus(status);
-        TweetBuilder builder = new TweetBuilder().addScreenName(originalStatus.getUser().getScreenName());
+        TweetBuilder builder = new TweetBuilder();
+        if(account.userID == originalStatus.getUser().getId())
+        {
+            builder.addScreenName(account.screenName);
+        }
+        builder.addScreenNames(TwitterUtils.getScreenNames(originalStatus, account.screenName));
+
         String text = builder.buildText();
+        int selStart = originalStatus.getUser().getScreenName().length() + 2; // "@" and " "
+
         PostState.newState().beginTransaction()
-                 .setText(text)
+                 .insertText(0, text)
                  .setInReplyToStatusID(originalStatus.getId())
-                 .moveCursor(text.length())
+                 .setSelection(selStart, text.length())
                  .commitWithOpen(activity);
     }
 
