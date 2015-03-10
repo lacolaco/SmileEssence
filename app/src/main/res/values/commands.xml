@@ -24,7 +24,6 @@
   -->
 
 <resources>
-    <item name="key_command_status_reply_to_all" type="id"/>
     <item name="key_command_status_fav_and_rt" type="id"/>
     <item name="key_command_status_quote" type="id"/>
     <item name="key_command_status_copy_text_to_clipboard" type="id"/>
