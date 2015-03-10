@@ -159,7 +159,7 @@ public class IntentRouter
     private static long getStatusID(Uri uri)
     {
         String str = "-1";
-        String[] arrayOfString = uri.toString().split("/");
+        String[] arrayOfString = uri.getPath().toString().split("/");
         for(int i = 0; i < arrayOfString.length; i++)
         {
             if(arrayOfString[i].startsWith("status"))
