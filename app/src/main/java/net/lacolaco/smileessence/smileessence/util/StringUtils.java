@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2012-2014 lacolaco.net
+ * Copyright (c) 2012-2015 lacolaco.net
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,20 +39,30 @@ public class StringUtils
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
 
-        if(cal.get(Calendar.YEAR) == current.get(Calendar.YEAR))
+        if(isSameYear(current, cal))
         {
-            if(cal.get(Calendar.DAY_OF_YEAR) == current.get(Calendar.DAY_OF_YEAR))
+            if(isSameDay(current, cal))
             {
-                return new SimpleDateFormat("hh:mm:ss").format(date);
+                return new SimpleDateFormat("HH:mm:ss").format(date);
             }
             else
             {
-                return new SimpleDateFormat("MM/dd hh:mm:ss").format(date);
+                return new SimpleDateFormat("MM/dd HH:mm:ss").format(date);
             }
         }
         else
         {
-            return new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(date);
+            return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(date);
         }
+    }
+
+    private static boolean isSameDay(Calendar current, Calendar cal)
+    {
+        return cal.get(Calendar.DAY_OF_YEAR) == current.get(Calendar.DAY_OF_YEAR);
+    }
+
+    private static boolean isSameYear(Calendar current, Calendar cal)
+    {
+        return cal.get(Calendar.YEAR) == current.get(Calendar.YEAR);
     }
 }
