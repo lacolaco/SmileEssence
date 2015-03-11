@@ -67,7 +67,6 @@ public class SearchTask extends TwitterTask<QueryResult>
         Configuration config = activity.getResources().getConfiguration();
         Query query = new Query();
         query.setQuery(queryString);
-        query.setLang(config.locale.getLanguage());
         query.setCount(TwitterUtils.getPagingCount(activity));
         query.setResultType(Query.RECENT);
         return query;
