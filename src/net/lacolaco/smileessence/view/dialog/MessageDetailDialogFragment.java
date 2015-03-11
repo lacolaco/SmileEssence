@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2012-2014 lacolaco.net
+ * Copyright (c) 2012-2015 lacolaco.net
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +32,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import com.google.common.collect.Lists;
 import net.lacolaco.smileessence.R;
@@ -45,6 +46,7 @@ import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.DeleteMessageTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.MessageListAdapter;
+import net.lacolaco.smileessence.view.listener.ListItemClickListener;
 import net.lacolaco.smileessence.viewmodel.MessageViewModel;
 import twitter4j.DirectMessage;
 import twitter4j.MediaEntity;
@@ -261,6 +263,26 @@ public class MessageDetailDialogFragment extends DialogFragment implements View.
         delete.setOnClickListener(this);
         ImageButton menuButton = (ImageButton) view.findViewById(R.id.button_status_detail_menu);
         menuButton.setOnClickListener(this);
+        LinearLayout commandsLayout = (LinearLayout) view.findViewById(R.id.linearlayout_status_detail_menu);
+        commandsLayout.setClickable(true);
+        // commands
+        ArrayList<Command> commands = getCommands(activity, message, account);
+        Command.filter(commands);
+        for(final Command command : commands)
+        {
+            View commandView = command.getView(activity, activity.getLayoutInflater(), null);
+            commandView.setBackgroundColor(getResources().getColor(R.color.transparent));
+            commandView.setOnClickListener(new ListItemClickListener(activity, new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    command.execute();
+                    dismiss();
+                }
+            }));
+            commandsLayout.addView(commandView);
+        }
         // status only parts
         view.findViewById(R.id.button_status_detail_retweet).setVisibility(View.GONE);
         view.findViewById(R.id.button_status_detail_favorite).setVisibility(View.GONE);
