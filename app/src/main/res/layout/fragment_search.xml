@@ -88,7 +88,7 @@
         android:paddingBottom="2dp"/>
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView
-        xmlns:ptr="http://schemas.android.com/apk/res/net.lacolaco.smileessence"
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/listview_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

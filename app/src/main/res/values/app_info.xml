@@ -24,7 +24,7 @@
   -->
 
 <resources>
-    <string name="app_name">SmileEssence</string>
+    <string name="app_name">rSmileEssence</string>
     <string name="app_version">1.0.10.2</string>
     <string name="app_version_full">1.0.10 \"Dolphin\"</string>
     <string name="app_url">http://smileessence.lacolaco.net</string>

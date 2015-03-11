@@ -319,7 +319,7 @@
                 android:layout_height="wrap_content">
 
                 <com.handmark.pulltorefresh.library.PullToRefreshListView
-                    xmlns:ptr="http://schemas.android.com/apk/res/net.lacolaco.smileessence"
+                    xmlns:ptr="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/listview_user_detail_timeline"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

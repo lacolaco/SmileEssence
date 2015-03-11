@@ -29,7 +29,7 @@
              android:layout_height="match_parent">
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView
-        xmlns:ptr="http://schemas.android.com/apk/res/net.lacolaco.smileessence"
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/fragment_list_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
