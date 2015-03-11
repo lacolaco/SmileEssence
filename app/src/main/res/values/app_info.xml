@@ -2,7 +2,7 @@
 <!--
   ~ The MIT License (MIT)
   ~
-  ~ Copyright (c) 2012-2014 lacolaco.net
+  ~ Copyright (c) 2012-2015 lacolaco.net
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,8 @@
 
 <resources>
     <string name="app_name">rSmileEssence</string>
-    <string name="app_version">1.0.10.2</string>
-    <string name="app_version_full">1.0.10 \"Dolphin\"</string>
+    <string name="app_version">1.0.11</string>
+    <string name="app_version_full">1.0.11 \"Dolphin\"</string>
     <string name="app_url">http://smileessence.lacolaco.net</string>
     <string name="app_author">Developed by laco0416</string>
     <string name="app_thanks_to">Thanks to</string>
