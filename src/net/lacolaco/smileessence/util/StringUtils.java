@@ -35,12 +35,13 @@ public class StringUtils
 
     public static String dateToString(Date date)
     {
+        Calendar current = Calendar.getInstance();
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
 
-        if(cal.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR))
+        if(cal.get(Calendar.YEAR) == current.get(Calendar.YEAR))
         {
-            if(cal.get(Calendar.DAY_OF_YEAR) == Calendar.getInstance().get(Calendar.DAY_OF_YEAR))
+            if(cal.get(Calendar.DAY_OF_YEAR) == current.get(Calendar.DAY_OF_YEAR))
             {
                 return new SimpleDateFormat("hh:mm:ss").format(date);
             }
