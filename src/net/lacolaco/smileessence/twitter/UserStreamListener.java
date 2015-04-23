@@ -29,6 +29,7 @@ import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.data.*;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
+import net.lacolaco.smileessence.view.adapter.EventListAdapter;
 import net.lacolaco.smileessence.view.adapter.MessageListAdapter;
 import net.lacolaco.smileessence.view.adapter.StatusListAdapter;
 import net.lacolaco.smileessence.viewmodel.EnumEvent;
@@ -295,7 +296,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
 
     private void addToHistory(EventViewModel mentioned)
     {
-        CustomListAdapter<?> history = activity.getListAdapter(MainActivity.ADAPTER_HISTORY);
+        EventListAdapter history = (EventListAdapter) activity.getListAdapter(MainActivity.ADAPTER_HISTORY);
         Notificator.publish(activity, mentioned.getFormattedString(activity));
         history.addToTop(mentioned);
         history.update();
