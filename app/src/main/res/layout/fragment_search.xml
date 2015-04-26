@@ -25,77 +25,76 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/layout_search_config"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp">
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp">
 
         <ImageButton
             android:id="@+id/button_search_queries"
+            style="?attr/custom_button_transparent"
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            style="?attr/custom_button_transparent"
-            android:scaleType="centerCrop"
-            android:src="?attr/icon_labels"
             android:layout_gravity="fill"
-            android:adjustViewBounds="false"/>
+            android:adjustViewBounds="false"
+            android:scaleType="centerCrop"
+            android:src="?attr/icon_labels" />
 
         <EditText
             android:id="@+id/edittext_search"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/button_search_queries"
             android:layout_toLeftOf="@+id/button_search_execute"
-            android:inputType="text"/>
+            android:layout_toRightOf="@+id/button_search_queries"
+            android:inputType="text" />
 
         <ImageButton
             android:id="@+id/button_search_execute"
+            style="?attr/custom_button_transparent"
             android:layout_width="40dp"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/button_search_save"
-            style="?attr/custom_button_transparent"
-            android:scaleType="centerCrop"
-            android:src="?attr/icon_search"
             android:layout_gravity="fill"
-            android:adjustViewBounds="false"/>
+            android:layout_toLeftOf="@+id/button_search_save"
+            android:adjustViewBounds="false"
+            android:scaleType="centerCrop"
+            android:src="?attr/icon_search" />
 
         <ImageButton
             android:id="@+id/button_search_save"
+            style="?attr/custom_button_transparent"
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            style="?attr/custom_button_transparent"
-            android:scaleType="centerCrop"
-            android:src="?attr/icon_save"
             android:layout_gravity="fill"
-            android:adjustViewBounds="false"/>
+            android:adjustViewBounds="false"
+            android:scaleType="centerCrop"
+            android:src="?attr/icon_save" />
     </RelativeLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?attr/color_list_divider"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"/>
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp" />
 
-    <com.handmark.pulltorefresh.library.PullToRefreshListView
-        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+    <com.handmark.pulltorefresh.library.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res/net.lacolaco.smileessence"
         android:id="@+id/listview_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        ptr:ptrMode="both"
-        ptr:ptrShowIndicator="false"
-        android:overScrollMode="never"
-        android:fastScrollEnabled="true"
+        android:divider="?attr/color_list_divider"
         android:dividerHeight="1px"
-        android:divider="?attr/color_list_divider"/>
+        android:fastScrollEnabled="true"
+        android:overScrollMode="never"
+        ptr:ptrMode="both"
+        ptr:ptrShowIndicator="false" />
 </LinearLayout>

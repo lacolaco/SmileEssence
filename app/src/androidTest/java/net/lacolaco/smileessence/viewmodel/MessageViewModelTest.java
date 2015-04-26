@@ -25,23 +25,22 @@
 package net.lacolaco.smileessence.viewmodel;
 
 import android.test.InstrumentationTestCase;
+
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.util.TwitterMock;
+
 import twitter4j.DirectMessage;
 
-public class MessageViewModelTest extends InstrumentationTestCase
-{
+public class MessageViewModelTest extends InstrumentationTestCase {
 
     TwitterMock mock;
 
     @Override
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         mock = new TwitterMock(getInstrumentation().getContext());
     }
 
-    public void testNewInstance() throws Exception
-    {
+    public void testNewInstance() throws Exception {
         DirectMessage dm = mock.getDirectMessageMock();
         MessageViewModel viewModel = new MessageViewModel(dm, new Account(mock.getAccessToken(), mock.getAccessTokenSecret(), mock.getUserMock().getId(), mock.getUserMock().getScreenName()));
         assertEquals(dm.getId(), viewModel.getID());

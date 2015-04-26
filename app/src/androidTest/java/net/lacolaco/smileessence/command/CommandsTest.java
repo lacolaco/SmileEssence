@@ -25,22 +25,20 @@
 package net.lacolaco.smileessence.command;
 
 import android.test.ActivityInstrumentationTestCase2;
+
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.util.TwitterMock;
 
-public class CommandsTest extends ActivityInstrumentationTestCase2<MainActivity>
-{
+public class CommandsTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     TwitterMock mock;
 
-    public CommandsTest()
-    {
+    public CommandsTest() {
         super(MainActivity.class);
     }
 
     @Override
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         mock = new TwitterMock(getInstrumentation().getContext());
     }
 

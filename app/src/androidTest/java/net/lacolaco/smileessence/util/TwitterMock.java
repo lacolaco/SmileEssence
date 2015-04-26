@@ -26,83 +26,85 @@ package net.lacolaco.smileessence.util;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+
+import net.lacolaco.smileessence.BuildConfig;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TwitterApi;
-import twitter4j.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class TwitterMock
-{
+import twitter4j.DirectMessage;
+import twitter4j.JSONException;
+import twitter4j.JSONObject;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterObjectFactory;
+import twitter4j.User;
+
+public class TwitterMock {
 
     AssetManager assets;
 
-    public TwitterMock(Context context)
-    {
+    public TwitterMock(Context context) {
         assets = context.getAssets();
     }
 
-    private String getJson(String fileName) throws IOException
-    {
-        try(InputStream is = assets.open(fileName);
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader reader = new BufferedReader(isr))
-        {
-            String buffer = "";
+    private String getJson(String fileName) throws IOException {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(assets.open(fileName)));
+            StringBuilder builder = new StringBuilder();
             String str;
-            while((str = reader.readLine()) != null)
-            {
-                buffer += str;
+            while ((str = reader.readLine()) != null) {
+                builder.append(str);
             }
-            return buffer;
+            return builder.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                reader.close();
+            }
         }
+        return null;
     }
 
-    public Status getStatusMock() throws IOException, TwitterException
-    {
+    public Status getStatusMock() throws IOException, TwitterException {
         return TwitterObjectFactory.createStatus(getJson("status.json"));
     }
 
-    public Status getReplyMock() throws IOException, TwitterException
-    {
+    public Status getReplyMock() throws IOException, TwitterException {
         return TwitterObjectFactory.createStatus(getJson("reply.json"));
     }
 
-    public Status getRetweetMock() throws IOException, TwitterException
-    {
+    public Status getRetweetMock() throws IOException, TwitterException {
         return TwitterObjectFactory.createStatus(getJson("retweet.json"));
     }
 
-    public User getUserMock() throws IOException, TwitterException
-    {
+    public User getUserMock() throws IOException, TwitterException {
         return TwitterObjectFactory.createUser(getJson("user.json"));
     }
 
-    public DirectMessage getDirectMessageMock() throws IOException, TwitterException
-    {
+    public DirectMessage getDirectMessageMock() throws IOException, TwitterException {
         return TwitterObjectFactory.createDirectMessage(getJson("directmessage.json"));
     }
 
-    public String getAccessToken() throws IOException, JSONException
-    {
-        return new JSONObject(getJson("tokens.json")).getString("token");
+    public String getAccessToken() throws IOException, JSONException {
+        return BuildConfig.ACCESS_TOKEN;
     }
 
-    public String getAccessTokenSecret() throws IOException, JSONException
-    {
-        return new JSONObject(getJson("tokens.json")).getString("token_secret");
+    public String getAccessTokenSecret() throws IOException, JSONException {
+        return BuildConfig.ACCESS_TOKEN_SECRET;
     }
 
-    public Twitter getTwitterMock() throws IOException, JSONException
-    {
+    public Twitter getTwitterMock() throws IOException, JSONException {
         return new TwitterApi(getAccessToken(), getAccessTokenSecret()).getTwitter();
     }
 
-    public Account getAccount() throws IOException, TwitterException, JSONException
-    {
+    public Account getAccount() throws IOException, TwitterException, JSONException {
         return new Account(getAccessToken(), getAccessTokenSecret(), getUserMock().getId(), getUserMock().getScreenName());
     }
 }

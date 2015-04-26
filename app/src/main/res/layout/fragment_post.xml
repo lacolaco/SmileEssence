@@ -25,9 +25,9 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/page_background">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/page_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,33 +40,33 @@
             android:id="@+id/post_inreplyto_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:background="?attr/button_round_orange">
+            android:background="?attr/button_round_orange"
+            android:visibility="gone">
 
             <include
                 android:id="@+id/layout_post_reply_status"
                 layout="@layout/list_item_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <ImageButton
                 android:id="@+id/button_post_reply_delete"
+                style="?attr/custom_button_transparent"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                style="?attr/custom_button_transparent"
-                android:src="?attr/icon_post_delete"
-                android:scaleType="fitStart"/>
+                android:scaleType="fitStart"
+                android:src="?attr/icon_post_delete" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:baselineAligned="false">
+            android:layout_marginTop="10dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                     android:inputType="text|textMultiLine"
                     android:minHeight="60dp">
 
-                    <requestFocus/>
+                    <requestFocus />
                 </EditText>
             </FrameLayout>
 
@@ -90,23 +90,23 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-            <ImageButton
+                <ImageButton
                     android:id="@+id/button_post_delete"
+                    style="?attr/custom_button_transparent"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:layout_alignParentTop="true"
-                    style="?attr/custom_button_transparent"
-                    android:src="?attr/icon_post_delete"
-                    android:scaleType="fitCenter"/>
+                    android:scaleType="fitCenter"
+                    android:src="?attr/icon_post_delete" />
 
                 <TextView
                     android:id="@+id/post_text_count"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:layout_alignParentBottom="true"
-                    android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                    android:freezesText="true"
                     android:gravity="center_horizontal|center_vertical"
-                    android:freezesText="true"/>
+                    android:textAppearance="@android:style/TextAppearance.Widget.TextView" />
             </RelativeLayout>
 
         </LinearLayout>
@@ -114,64 +114,64 @@
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:alignmentMode="alignBounds"
             android:baselineAligned="false"
-            android:orientation="horizontal"
             android:columnCount="8"
-            android:rowCount="1"
-            android:alignmentMode="alignBounds">
+            android:orientation="horizontal"
+            android:rowCount="1">
 
             <ImageButton
                 android:id="@+id/button_post_media"
+                style="?attr/custom_button_transparent"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                style="?attr/custom_button_transparent"
-                android:scaleType="centerCrop"
-                android:src="?attr/icon_post_picture"
                 android:layout_column="0"
-                android:layout_row="0"
                 android:layout_gravity="fill"
-                android:adjustViewBounds="false"/>
+                android:layout_row="0"
+                android:adjustViewBounds="false"
+                android:scaleType="centerCrop"
+                android:src="?attr/icon_post_picture" />
 
             <Space
                 android:layout_width="10dp"
                 android:layout_height="match_parent"
-                android:layout_column="1"/>
+                android:layout_column="1" />
 
             <ImageButton
                 android:id="@+id/button_post_menu"
+                style="?attr/custom_button_transparent"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                style="?attr/custom_button_transparent"
-                android:scaleType="centerCrop"
-                android:src="?attr/icon_post_row"
                 android:layout_column="2"
-                android:layout_row="0"
                 android:layout_gravity="fill"
-                android:adjustViewBounds="false"/>
+                android:layout_row="0"
+                android:adjustViewBounds="false"
+                android:scaleType="centerCrop"
+                android:src="?attr/icon_post_row" />
 
             <Space
                 android:layout_width="10dp"
                 android:layout_height="match_parent"
-                android:layout_column="3"/>
+                android:layout_column="3" />
 
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="fill"
                 android:layout_column="4"
                 android:layout_columnSpan="4"
+                android:layout_gravity="fill"
                 android:layout_row="0"
                 android:background="?attr/button_round_blue">
 
                 <Button
                     android:id="@+id/button_post_tweet"
+                    style="?attr/custom_button_transparent"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    style="?attr/custom_button_transparent"
                     android:text="@string/post_button_tweet"
-                    android:textStyle="bold"
-                    android:textColor="?attr/button_blue_foreground"/>
+                    android:textColor="?attr/button_blue_foreground"
+                    android:textStyle="bold" />
             </FrameLayout>
         </GridLayout>
 
@@ -186,16 +186,16 @@
                 android:id="@+id/image_post_media"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:clickable="true"/>
+                android:clickable="true" />
 
             <ImageButton
                 android:id="@+id/button_post_media_delete"
+                style="?attr/custom_button_transparent"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
-                style="?attr/custom_button_transparent"
-                android:src="?attr/icon_post_delete"
-                android:scaleType="fitStart"/>
+                android:scaleType="fitStart"
+                android:src="?attr/icon_post_delete" />
         </LinearLayout>
     </LinearLayout>
 

@@ -1,18 +1,31 @@
-SmileEssence
+SmileEssence [![Build Status](https://travis-ci.org/laco0416/SmileEssence.svg)](https://travis-ci.org/laco0416/SmileEssence)
 ============
 
-![icon](https://raw.githubusercontent.com/laco0416/SmileEssence/master/res/drawable-hdpi/icon_application.png)
+![icon](https://raw.githubusercontent.com/laco0416/SmileEssence/master/icon_application.png)
 
 [Official Web Site](http://smileessence.lacolaco.net)
 
 #How to Fork
 
 + Clone this repository.
-+ Write your application's API keys to `src/main/resources/twitter4j.properties` and `src/debug/resources/twitter4j.properties`.
++ Add file `app/tokens.properties` and write your application's API keys.
 
 ```
-# twitter4j.properties
+# tokens.properties
 
-oauth.consumerKey=YOUR_API_KEY
-oauth.consumerSecret=YOUR_API_KEY_SECRET
+consumerKey=YOUR_API_KEY
+consumerSecret=YOUR_API_KEY_SECRET
+```
+
+# Testing
+
+Give your `access_token` and `access_token_secret` of above consumer app.
+
+```
+# tokens.properties
+
+consumerKey=***
+consumerSecret=***
+accessToken=***
+accessTokenSecret=***
 ```

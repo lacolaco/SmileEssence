@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ The MIT License (MIT)
   ~
   ~ Copyright (c) 2012-2014 lacolaco.net
@@ -24,20 +23,20 @@
   -->
 
 <resources>
-    <item name="actionbar_search" type="id"/>
-    <item name="actionbar_settings" type="id"/>
-    <item name="actionbar_setting" type="id"/>
-    <item name="actionbar_edit_templates" type="id"/>
-    <item name="actionbar_edit_extraction" type="id"/>
-    <item name="actionbar_edit_commands" type="id"/>
-    <item name="actionbar_services" type="id"/>
-    <item name="actionbar_report" type="id"/>
-    <item name="actionbar_favstar" type="id"/>
-    <item name="actionbar_aclog" type="id"/>
-    <item name="actionbar_twilog" type="id"/>
-    <item name="fragment_setting" type="id"/>
-    <item name="menu_edit_list_add" type="id"/>
-    <item name="menu_edit_command_all_on" type="id"/>
-    <item name="actionbar_post" type="id"/>
-    <item name="actionbar_edit_tabs" type="id"/>
+    <item name="actionbar_search" type="id" />
+    <item name="actionbar_settings" type="id" />
+    <item name="actionbar_setting" type="id" />
+    <item name="actionbar_edit_templates" type="id" />
+    <item name="actionbar_edit_extraction" type="id" />
+    <item name="actionbar_edit_commands" type="id" />
+    <item name="actionbar_services" type="id" />
+    <item name="actionbar_report" type="id" />
+    <item name="actionbar_favstar" type="id" />
+    <item name="actionbar_aclog" type="id" />
+    <item name="actionbar_twilog" type="id" />
+    <item name="fragment_setting" type="id" />
+    <item name="menu_edit_list_add" type="id" />
+    <item name="menu_edit_command_all_on" type="id" />
+    <item name="actionbar_post" type="id" />
+    <item name="actionbar_edit_tabs" type="id" />
 </resources>

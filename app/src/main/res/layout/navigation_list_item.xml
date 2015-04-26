@@ -25,20 +25,20 @@
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:orientation="vertical"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="@android:color/transparent"
-             android:paddingTop="6dp"
-             android:paddingBottom="6dp"
-             android:paddingLeft="5dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    android:paddingBottom="6dp"
+    android:paddingLeft="5dp"
+    android:paddingTop="6dp">
 
     <TextView
         android:id="@+id/navigation_list_item_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="left|center_vertical"
         android:textAppearance="@android:style/TextAppearance.Holo.Medium.Inverse"
-        android:textColor="@color/white"
-        android:gravity="left|center_vertical"/>
+        android:textColor="@color/white" />
 
 </FrameLayout>

@@ -25,18 +25,17 @@
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <com.handmark.pulltorefresh.library.PullToRefreshListView
-        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+    <com.handmark.pulltorefresh.library.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res/net.lacolaco.smileessence"
         android:id="@+id/fragment_list_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        ptr:ptrMode="both"
-        ptr:ptrShowIndicator="false"
-        android:overScrollMode="never"
-        android:fastScrollEnabled="true"
+        android:divider="?attr/color_list_divider"
         android:dividerHeight="1px"
-        android:divider="?attr/color_list_divider"/>
+        android:fastScrollEnabled="true"
+        android:overScrollMode="never"
+        ptr:ptrMode="both"
+        ptr:ptrShowIndicator="false" />
 </FrameLayout>

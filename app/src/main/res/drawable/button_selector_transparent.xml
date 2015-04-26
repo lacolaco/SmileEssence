@@ -27,15 +27,15 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_enabled="false">
-        <color android:color="@color/gray_dark"/>
+        <color android:color="@color/gray_dark" />
     </item>
     <item android:state_enabled="true" android:state_pressed="true">
-        <color android:color="@color/metro_blue"/>
+        <color android:color="@color/metro_blue" />
     </item>
     <item android:state_enabled="true" android:state_pressed="false">
-        <color android:color="@color/transparent"/>
+        <color android:color="@color/transparent" />
     </item>
     <item android:state_enabled="true">
-        <color android:color="@color/transparent"/>
+        <color android:color="@color/transparent" />
     </item>
 </selector>

@@ -2,4 +2,8 @@
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
+.DS_Store
 /build
+tokens.properties
+*Test.html
+gradlew.bat

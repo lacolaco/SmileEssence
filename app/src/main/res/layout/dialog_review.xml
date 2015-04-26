@@ -24,13 +24,12 @@
   ~ SOFTWARE.
   -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/page_background"
     android:orientation="vertical"
-    android:padding="15dp"
-    android:background="?attr/page_background">
+    android:padding="15dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,7 +37,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
         android:text="@string/dialog_review_rating_text"
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <RatingBar
         android:id="@+id/rating_review"
@@ -46,7 +45,7 @@
         android:layout_height="wrap_content"
         android:max="5"
         android:rating="1"
-        android:stepSize="1"/>
+        android:stepSize="1" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -56,12 +55,12 @@
 
         <Button
             android:id="@+id/button_submit"
+            style="?attr/custom_button_transparent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            style="?attr/custom_button_transparent"
             android:text="@string/alert_dialog_ok"
-            android:textStyle="bold"
-            android:textColor="?attr/button_blue_foreground"/>
+            android:textColor="?attr/button_blue_foreground"
+            android:textStyle="bold" />
     </FrameLayout>
 </LinearLayout>

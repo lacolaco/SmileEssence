@@ -25,10 +25,10 @@
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:orientation="vertical"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="?android:attr/activatedBackgroundIndicator">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/activatedBackgroundIndicator"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView_menuItem_simple"
@@ -37,5 +37,5 @@
         android:layout_marginBottom="14dp"
         android:layout_marginTop="14dp"
         android:paddingLeft="10dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"/>
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 </FrameLayout>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ The MIT License (MIT)
   ~
   ~ Copyright (c) 2012-2014 lacolaco.net
@@ -24,34 +23,34 @@
   -->
 
 <resources>
-    <attr name="page_background" format="color"/>
-    <attr name="icon_post_delete" format="reference"/>
-    <attr name="icon_post_picture" format="reference"/>
-    <attr name="icon_post_row" format="reference"/>
-    <attr name="button_blue_background" format="color"/>
-    <attr name="button_blue_foreground" format="color"/>
-    <attr name="button_round_blue" format="reference"/>
-    <attr name="button_red_background" format="color"/>
-    <attr name="button_red_foreground" format="color"/>
-    <attr name="button_round_red" format="reference"/>
-    <attr name="button_round_orange" format="reference"/>
-    <attr name="custom_button_transparent" format="reference"/>
-    <attr name="icon_status_favorite_on" format="reference"/>
-    <attr name="color_status_text_header" format="color"/>
-    <attr name="color_status_text_normal" format="color"/>
-    <attr name="color_status_text_footer" format="color"/>
-    <attr name="color_status_text_mine" format="color"/>
-    <attr name="color_status_bg_retweet" format="color"/>
-    <attr name="color_status_bg_mention" format="color"/>
-    <attr name="color_status_bg_normal" format="color"/>
-    <attr name="color_list_divider" format="color"/>
-    <attr name="color_message_text_header" format="color"/>
-    <attr name="color_message_bg_normal" format="color"/>
-    <attr name="icon_message" format="reference"/>
-    <attr name="icon_retweet_off" format="reference"/>
-    <attr name="icon_favorite_off" format="reference"/>
-    <attr name="icon_garbage" format="reference"/>
-    <attr name="icon_search" format="reference"/>
-    <attr name="icon_labels" format="reference"/>
-    <attr name="icon_save" format="reference"/>
+    <attr name="page_background" format="color" />
+    <attr name="icon_post_delete" format="reference" />
+    <attr name="icon_post_picture" format="reference" />
+    <attr name="icon_post_row" format="reference" />
+    <attr name="button_blue_background" format="color" />
+    <attr name="button_blue_foreground" format="color" />
+    <attr name="button_round_blue" format="reference" />
+    <attr name="button_red_background" format="color" />
+    <attr name="button_red_foreground" format="color" />
+    <attr name="button_round_red" format="reference" />
+    <attr name="button_round_orange" format="reference" />
+    <attr name="custom_button_transparent" format="reference" />
+    <attr name="icon_status_favorite_on" format="reference" />
+    <attr name="color_status_text_header" format="color" />
+    <attr name="color_status_text_normal" format="color" />
+    <attr name="color_status_text_footer" format="color" />
+    <attr name="color_status_text_mine" format="color" />
+    <attr name="color_status_bg_retweet" format="color" />
+    <attr name="color_status_bg_mention" format="color" />
+    <attr name="color_status_bg_normal" format="color" />
+    <attr name="color_list_divider" format="color" />
+    <attr name="color_message_text_header" format="color" />
+    <attr name="color_message_bg_normal" format="color" />
+    <attr name="icon_message" format="reference" />
+    <attr name="icon_retweet_off" format="reference" />
+    <attr name="icon_favorite_off" format="reference" />
+    <attr name="icon_garbage" format="reference" />
+    <attr name="icon_search" format="reference" />
+    <attr name="icon_labels" format="reference" />
+    <attr name="icon_save" format="reference" />
 </resources>

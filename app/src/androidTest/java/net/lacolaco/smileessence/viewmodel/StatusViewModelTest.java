@@ -25,36 +25,32 @@
 package net.lacolaco.smileessence.viewmodel;
 
 import android.test.InstrumentationTestCase;
+
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.util.TwitterMock;
 
-public class StatusViewModelTest extends InstrumentationTestCase
-{
+public class StatusViewModelTest extends InstrumentationTestCase {
 
     TwitterMock mock;
     Account account;
 
     @Override
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         mock = new TwitterMock(getInstrumentation().getContext());
         account = new Account(mock.getAccessToken(), mock.getAccessTokenSecret(), mock.getUserMock().getId(), mock.getUserMock().getScreenName());
     }
 
-    public void testID() throws Exception
-    {
+    public void testID() throws Exception {
         StatusViewModel status = new StatusViewModel(mock.getReplyMock(), account);
         assertNotSame(0L, status.getID());
     }
 
-    public void testMention() throws Exception
-    {
+    public void testMention() throws Exception {
         StatusViewModel status = new StatusViewModel(mock.getReplyMock(), account);
         assertTrue(status.isMention(account.screenName));
     }
 
-    public void testMyStatus() throws Exception
-    {
+    public void testMyStatus() throws Exception {
         StatusViewModel status = new StatusViewModel(mock.getStatusMock(), account);
         assertTrue(status.isMyStatus(account.userID));
     }

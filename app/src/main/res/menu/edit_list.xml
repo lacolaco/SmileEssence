@@ -28,5 +28,5 @@
     <item
         android:id="@+id/menu_edit_list_delete"
         android:icon="@android:drawable/ic_menu_delete"
-        android:showAsAction="always"/>
+        android:showAsAction="always" />
 </menu>

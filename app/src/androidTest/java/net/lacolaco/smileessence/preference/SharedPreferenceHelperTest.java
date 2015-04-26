@@ -26,40 +26,34 @@ package net.lacolaco.smileessence.preference;
 
 import android.test.InstrumentationTestCase;
 
-public class SharedPreferenceHelperTest extends InstrumentationTestCase
-{
+public class SharedPreferenceHelperTest extends InstrumentationTestCase {
 
     SharedPreferenceHelper helper;
 
     @Override
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         //can't create on test context.
         helper = new SharedPreferenceHelper(getInstrumentation().getTargetContext(), "TestPreference");
         assertTrue(helper.putValue("test.sample", "test"));
         assertTrue(helper.putValue("test.empty", ""));
     }
 
-    public void testGetProperty() throws Exception
-    {
+    public void testGetProperty() throws Exception {
         String sample = helper.getValue("test.sample", "");
         assertEquals("test", sample);
     }
 
-    public void testSetProperty() throws Exception
-    {
+    public void testSetProperty() throws Exception {
         assertTrue(helper.putValue("test.sample", "test1"));
         assertEquals("test1", helper.getValue("test.sample", ""));
     }
 
-    public void testGetEmptyValue() throws Exception
-    {
+    public void testGetEmptyValue() throws Exception {
         String empty = helper.getValue("test.empty", "");
         assertEquals("", empty);
     }
 
-    public void testNotExists() throws Exception
-    {
+    public void testNotExists() throws Exception {
         String notExists = helper.getValue("test.null", "");
         assertEquals("", notExists);
     }

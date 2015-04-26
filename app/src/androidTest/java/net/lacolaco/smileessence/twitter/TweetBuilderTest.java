@@ -25,23 +25,22 @@
 package net.lacolaco.smileessence.twitter;
 
 import android.test.InstrumentationTestCase;
+
 import net.lacolaco.smileessence.util.TwitterMock;
+
 import twitter4j.Status;
 import twitter4j.User;
 
-public class TweetBuilderTest extends InstrumentationTestCase
-{
+public class TweetBuilderTest extends InstrumentationTestCase {
 
     TwitterMock mock;
 
     @Override
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         mock = new TwitterMock(getInstrumentation().getContext());
     }
 
-    public void testBuilder() throws Exception
-    {
+    public void testBuilder() throws Exception {
         User user = mock.getUserMock();
         Status status = mock.getReplyMock();
         TweetBuilder builder = new TweetBuilder();

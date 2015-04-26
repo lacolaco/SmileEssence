@@ -25,29 +25,29 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?android:attr/activatedBackgroundIndicator"
-                android:baselineAligned="true">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/activatedBackgroundIndicator"
+    android:baselineAligned="true"
+    android:orientation="horizontal">
 
     <CheckBox
         android:id="@+id/checkBox_menuItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingLeft="10dp"
-        android:paddingBottom="16dp"
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@+id/edittext_editable_checkbox"
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
+        android:paddingBottom="16dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="16dp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
         android:id="@+id/edittext_editable_checkbox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingRight="16dp"
+        android:layout_alignParentRight="true"
         android:paddingBottom="16dp"
-        android:layout_alignParentRight="true"/>
+        android:paddingRight="16dp"
+        android:paddingTop="16dp" />
 </RelativeLayout>

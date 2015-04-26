@@ -25,16 +25,16 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="5dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp">
 
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/imageview_status_icon"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:id="@+id/textview_status_header"
@@ -43,25 +43,25 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/imageview_status_icon"
-        android:gravity="top"/>
+        android:gravity="top" />
 
     <TextView
         android:id="@+id/textview_status_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textview_status_header"
         android:layout_alignLeft="@+id/textview_status_header"
         android:layout_alignParentRight="true"
+        android:layout_below="@+id/textview_status_header"
         android:layout_marginBottom="3dp"
-        android:layout_marginTop="1dp"/>
+        android:layout_marginTop="1dp" />
 
     <TextView
         android:id="@+id/textview_status_footer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textview_status_text"
         android:layout_alignLeft="@+id/textview_status_text"
-        android:layout_marginRight="2dp"/>
+        android:layout_below="@+id/textview_status_text"
+        android:layout_marginRight="2dp" />
 
     <ImageView
         android:id="@+id/imageview_status_favorited"
@@ -71,17 +71,17 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_alignTop="@+id/textview_status_header"
-        android:src="?attr/icon_status_favorite_on"
-        android:contentDescription=""/>
+        android:contentDescription=""
+        android:src="?attr/icon_status_favorite_on" />
 
     <LinearLayout
         android:id="@+id/view_status_embedded_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@+id/textview_status_footer"
         android:layout_alignLeft="@+id/textview_status_text"
-        android:layout_marginTop="3dp"
+        android:layout_below="@+id/textview_status_footer"
         android:layout_marginRight="1dp"
-        android:visibility="gone"/>
+        android:layout_marginTop="3dp"
+        android:orientation="vertical"
+        android:visibility="gone" />
 </RelativeLayout>

@@ -25,29 +25,29 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/layout_search_config"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp">
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp">
 
         <ImageButton
             android:id="@+id/button_userlist_lists"
+            style="?attr/custom_button_transparent"
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            style="?attr/custom_button_transparent"
-            android:scaleType="centerCrop"
-            android:src="?attr/icon_labels"
             android:layout_gravity="fill"
-            android:adjustViewBounds="false"/>
+            android:adjustViewBounds="false"
+            android:scaleType="centerCrop"
+            android:src="?attr/icon_labels" />
 
         <TextView
             android:id="@+id/textview_userlist_name"
@@ -56,25 +56,24 @@
             android:layout_alignParentRight="true"
             android:layout_toRightOf="@+id/button_userlist_lists"
             android:gravity="center_vertical"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault"/>
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault" />
     </RelativeLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?attr/color_list_divider"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"/>
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp" />
 
-    <com.handmark.pulltorefresh.library.PullToRefreshListView
-        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+    <com.handmark.pulltorefresh.library.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res/net.lacolaco.smileessence"
         android:id="@+id/listview_userlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        ptr:ptrMode="both"
-        ptr:ptrShowIndicator="false"
-        android:overScrollMode="never"
-        android:fastScrollEnabled="true"
+        android:divider="?attr/color_list_divider"
         android:dividerHeight="1px"
-        android:divider="?attr/color_list_divider"/>
+        android:fastScrollEnabled="true"
+        android:overScrollMode="never"
+        ptr:ptrMode="both"
+        ptr:ptrShowIndicator="false" />
 </LinearLayout>

@@ -25,86 +25,71 @@
 package net.lacolaco.smileessence.viewmodel;
 
 import android.test.InstrumentationTestCase;
+
 import net.lacolaco.smileessence.util.TwitterMock;
 
-public class UserViewModelTest extends InstrumentationTestCase
-{
+public class UserViewModelTest extends InstrumentationTestCase {
 
     UserViewModel user;
 
     @Override
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         user = new UserViewModel(new TwitterMock(getInstrumentation().getContext()).getUserMock());
     }
 
-    public void testID() throws Exception
-    {
+    public void testID() throws Exception {
         assertNotSame(0L, user.getID());
     }
 
-    public void testScreenName() throws Exception
-    {
+    public void testScreenName() throws Exception {
         assertNotNull(user.getScreenName());
     }
 
-    public void testName() throws Exception
-    {
+    public void testName() throws Exception {
         assertNotNull(user.getName());
     }
 
-    public void testDescription() throws Exception
-    {
+    public void testDescription() throws Exception {
         assertNotNull(user.getDescription());
     }
 
-    public void testLocation() throws Exception
-    {
+    public void testLocation() throws Exception {
         assertNotNull(user.getLocation());
     }
 
-    public void testURL() throws Exception
-    {
+    public void testURL() throws Exception {
         assertNotNull(user.getURL());
     }
 
-    public void testIconURL() throws Exception
-    {
+    public void testIconURL() throws Exception {
         assertNotNull(user.getIconURL());
     }
 
-    public void testBannerURL() throws Exception
-    {
+    public void testBannerURL() throws Exception {
         assertNotNull(user.getBannerURL());
     }
 
-    public void testStatusCount() throws Exception
-    {
+    public void testStatusCount() throws Exception {
         assertNotSame(0, user.getStatusesCount());
     }
 
-    public void testFriendCount() throws Exception
-    {
+    public void testFriendCount() throws Exception {
         assertNotSame(0, user.getFriendsCount());
     }
 
-    public void testFollowerCount() throws Exception
-    {
+    public void testFollowerCount() throws Exception {
         assertNotSame(0, user.getFollowersCount());
     }
 
-    public void testFavoriteCount() throws Exception
-    {
+    public void testFavoriteCount() throws Exception {
         assertNotSame(0, user.getFavoritesCount());
     }
 
-    public void testProtected() throws Exception
-    {
+    public void testProtected() throws Exception {
         assertFalse(user.isProtected());
     }
 
-    public void testMarked() throws Exception
-    {
+    public void testMarked() throws Exception {
         assertFalse(user.isVerified());
     }
 }

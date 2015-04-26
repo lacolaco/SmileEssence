@@ -25,9 +25,9 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -38,49 +38,47 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:orientation="horizontal"
-            android:paddingBottom="15dp"
-            android:gravity="center_horizontal">
+            android:paddingBottom="15dp">
 
             <ImageView
-                android:src="@drawable/icon_application"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/icon_application" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="vertical"
-                android:padding="10dp"
-                android:gravity="center_vertical">
+                android:padding="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/app_name"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/app_version_full"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/app_author"
-                    android:textSize="16sp"
-                    />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/app_url"
-                    android:textSize="12sp"
                     android:autoLink="web"
-                    />
+                    android:text="@string/app_url"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -91,15 +89,15 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/app_thanks_to"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/thanks_to"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
     </LinearLayout>
 </ScrollView>

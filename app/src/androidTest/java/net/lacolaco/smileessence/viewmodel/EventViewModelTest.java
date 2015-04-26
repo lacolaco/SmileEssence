@@ -27,26 +27,25 @@ package net.lacolaco.smileessence.viewmodel;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.test.InstrumentationTestCase;
+
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.util.TwitterMock;
+
 import twitter4j.Status;
 import twitter4j.User;
 
 import java.util.Locale;
 
-public class EventViewModelTest extends InstrumentationTestCase
-{
+public class EventViewModelTest extends InstrumentationTestCase {
 
     TwitterMock mock;
 
     @Override
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         mock = new TwitterMock(getInstrumentation().getContext());
     }
 
-    public void testNewInstance() throws Exception
-    {
+    public void testNewInstance() throws Exception {
         Context context = getInstrumentation().getTargetContext();
         Status status = mock.getReplyMock();
         User source = mock.getUserMock();

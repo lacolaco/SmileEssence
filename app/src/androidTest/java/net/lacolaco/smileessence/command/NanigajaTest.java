@@ -24,52 +24,55 @@
 
 package net.lacolaco.smileessence.command;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.test.ActivityInstrumentationTestCase2;
+
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.status.StatusCommandNanigaja;
 import net.lacolaco.smileessence.util.TwitterMock;
+
+import java.util.Locale;
+
 import twitter4j.Status;
 
-public class NanigajaTest extends ActivityInstrumentationTestCase2<MainActivity>
-{
+public class NanigajaTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     private TwitterMock mock;
 
-    public NanigajaTest()
-    {
+    public NanigajaTest() {
         super(MainActivity.class);
     }
 
     @Override
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         this.mock = new TwitterMock(getInstrumentation().getContext());
+        Context context = getActivity();
+        Configuration config = context.getResources().getConfiguration();
+        config.locale = Locale.JAPANESE;
+        context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
     }
 
-    public void testBuildNormal() throws Exception
-    {
+    public void testBuildNormal() throws Exception {
         Status status = mock.getStatusMock();
         StatusCommandNanigaja nanigaja = new StatusCommandNanigaja(getActivity(), status, mock.getAccount());
         assertEquals("な～にが" + status.getText() + "じゃ", nanigaja.build());
     }
 
-    public void testBuildReply() throws Exception
-    {
+    public void testBuildReply() throws Exception {
         Status status = mock.getReplyMock();
         StatusCommandNanigaja nanigaja = new StatusCommandNanigaja(getActivity(), status, mock.getAccount());
         assertTrue(nanigaja.build().startsWith("@" + status.getUser().getScreenName() + " な～にが"));
     }
 
-    public void testBuildRetweet() throws Exception
-    {
+    public void testBuildRetweet() throws Exception {
         Status status = mock.getRetweetMock();
         StatusCommandNanigaja nanigaja = new StatusCommandNanigaja(getActivity(), status, mock.getAccount());
         assertTrue(nanigaja.build().startsWith("@" + status.getRetweetedStatus().getUser().getScreenName() + " な～にが"));
     }
 
     @Override
-    public void tearDown() throws Exception
-    {
+    public void tearDown() throws Exception {
         getActivity().forceFinish();
     }
 }

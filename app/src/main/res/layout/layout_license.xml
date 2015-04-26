@@ -25,36 +25,35 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:orientation="vertical"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:padding="10dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
 
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Notices of files:"
-            android:id="@+id/textView"
             android:layout_gravity="left|center_vertical"
+            android:text="Notices of files:"
             android:textSize="20dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/linear_license_files"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
             android:paddingLeft="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
-        </LinearLayout>
+            android:paddingTop="10dp"></LinearLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -63,14 +62,14 @@
             android:padding="10dp">
 
             <TextView
+                android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/apache"
-                android:id="@+id/textView4"
                 android:layout_gravity="center_vertical|left"
+                android:text="@string/apache"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
                 android:textColor="@color/gray_dark_dark"
-                android:typeface="monospace"/>
+                android:typeface="monospace" />
 
         </FrameLayout>
 

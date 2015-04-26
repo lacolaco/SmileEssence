@@ -25,17 +25,18 @@
 package net.lacolaco.smileessence.twitter;
 
 import android.test.ActivityInstrumentationTestCase2;
+
 import net.lacolaco.smileessence.activity.MainActivity;
-import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.util.TwitterMock;
+import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
+
 import twitter4j.DirectMessage;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
 import twitter4j.User;
 
-public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<MainActivity>
-{
+public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     TwitterMock mock;
     UserStreamListener listener;
@@ -43,204 +44,122 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
     private User user;
     private String secret;
 
-    public UserStreamListenerTest()
-    {
+    public UserStreamListenerTest() {
         super(MainActivity.class);
     }
 
     @Override
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         mock = new TwitterMock(getInstrumentation().getContext());
         listener = new UserStreamListener(getActivity());
         token = mock.getAccessToken();
         secret = mock.getAccessTokenSecret();
         user = mock.getUserMock();
-    }
-
-    public void testOnStatus() throws Exception
-    {
-        final Status status = mock.getRetweetMock();
-        getActivity().runOnUiThread(new Runnable()
-        {
+        getActivity().runOnUiThread(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 Account account = new Account(token, secret, user.getId(), user.getScreenName());
                 getActivity().setCurrentAccount(account);
-                getActivity().startMainLogic();
-                listener.onStatus(status);
+                getActivity().initializeView();
             }
         });
-        Thread.sleep(1000);
-        assertEquals(1, getActivity().getListAdapter(MainActivity.ADAPTER_HOME).getCount());
-        assertEquals(status.getRetweetedStatus(), StatusCache.getInstance().get(status.getRetweetedStatus().getId()));
+        Thread.sleep(500);
     }
 
-    public void testOnStatusDelete() throws Exception
-    {
+    public void testOnStatus() throws Exception {
+        final Status status = mock.getStatusMock();
+        CustomListAdapter<?> home = getActivity().getListAdapter(MainActivity.ADAPTER_HOME);
+        listener.onStatus(status);
+        home.updateForce();
+        Thread.sleep(500);
+        assertEquals(1, home.getCount());
+        listener.onDeletionNotice(new StatusDeletionNotice() {
+            @Override
+            public long getStatusId() {
+                return status.getId();
+            }
+
+            @Override
+            public long getUserId() {
+                return status.getUser().getId();
+            }
+
+            @Override
+            public int compareTo(StatusDeletionNotice another) {
+                return 0;
+            }
+        });
+        home.updateForce();
+        Thread.sleep(500);
+        assertEquals(0, home.getCount());
+    }
+
+    public void testOnMention() throws Exception {
         final Status status = mock.getReplyMock();
-        getActivity().runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                Account account = new Account(token, secret, user.getId(), user.getScreenName());
-                getActivity().setCurrentAccount(account);
-                getActivity().startMainLogic();
-                listener.onStatus(status);
-                listener.onDeletionNotice(new StatusDeletionNotice()
-                {
-                    @Override
-                    public long getStatusId()
-                    {
-                        return status.getId();
-                    }
-
-                    @Override
-                    public long getUserId()
-                    {
-                        return status.getUser().getId();
-                    }
-
-                    @Override
-                    public int compareTo(StatusDeletionNotice another)
-                    {
-                        return 0;
-                    }
-                });
-            }
-        });
-        Thread.sleep(1000);
-        assertEquals(0, getActivity().getListAdapter(MainActivity.ADAPTER_HOME).getCount());
+        CustomListAdapter<?> mentions = getActivity().getListAdapter(MainActivity.ADAPTER_MENTIONS);
+        listener.onStatus(status);
+        mentions.updateForce();
+        Thread.sleep(500);
+        assertEquals(1, mentions.getCount());
     }
 
-    public void testOnMention() throws Exception
-    {
-        final Status status = mock.getReplyMock();
-        getActivity().runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                Account account = new Account(token, secret, user.getId(), user.getScreenName());
-                getActivity().setCurrentAccount(account);
-                getActivity().startMainLogic();
-                listener.onStatus(status);
-            }
-        });
-        Thread.sleep(1000);
-        assertEquals(1, getActivity().getListAdapter(MainActivity.ADAPTER_MENTIONS).getCount());
-        assertEquals(1, getActivity().getListAdapter(MainActivity.ADAPTER_HISTORY).getCount());
-    }
-
-    public void testOnRetweeted() throws Exception
-    {
+    public void testOnRetweeted() throws Exception {
         final Status status = mock.getRetweetMock();
-        getActivity().runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                Account account = new Account(token, secret, user.getId(), user.getScreenName());
-                getActivity().setCurrentAccount(account);
-                getActivity().startMainLogic();
-                listener.onStatus(status);
-            }
-        });
-        Thread.sleep(1000);
-        assertEquals(1, getActivity().getListAdapter(MainActivity.ADAPTER_HOME).getCount());
-        assertEquals(0, getActivity().getListAdapter(MainActivity.ADAPTER_HISTORY).getCount());
+        listener.onStatus(status);
+        CustomListAdapter<?> home = getActivity().getListAdapter(MainActivity.ADAPTER_HOME);
+        home.updateForce();
+        Thread.sleep(500);
+        assertEquals(1, home.getCount());
     }
 
-    public void testOnFavorited() throws Exception
-    {
+    public void testOnFavorited() throws Exception {
         final Status status = mock.getReplyMock();
         final User source = status.getUser();
-        getActivity().runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                Account account = new Account(token, secret, user.getId(), user.getScreenName());
-                getActivity().setCurrentAccount(account);
-                getActivity().startMainLogic();
-                listener.onFavorite(source, user, status);
-                listener.onUnfavorite(source, user, status);
-            }
-        });
-        Thread.sleep(1000);
-        assertEquals(2, getActivity().getListAdapter(MainActivity.ADAPTER_HISTORY).getCount());
+        CustomListAdapter<?> history = getActivity().getListAdapter(MainActivity.ADAPTER_HISTORY);
+        listener.onFavorite(source, user, status);
+        history.updateForce();
+        Thread.sleep(500);
+        assertEquals(1, history.getCount());
+        listener.onUnfavorite(source, user, status);
+        history.updateForce();
+        Thread.sleep(500);
+        assertEquals(2, history.getCount());
     }
 
-    public void testOnFollow() throws Exception
-    {
+    public void testOnFollow() throws Exception {
         final User source = mock.getUserMock();
-        getActivity().runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                Account account = new Account(token, secret, user.getId(), user.getScreenName());
-                getActivity().setCurrentAccount(account);
-                getActivity().startMainLogic();
-                listener.onFollow(source, user);
-            }
-        });
-        Thread.sleep(1000);
-        assertEquals(1, getActivity().getListAdapter(MainActivity.ADAPTER_HISTORY).getCount());
+        CustomListAdapter<?> history = getActivity().getListAdapter(MainActivity.ADAPTER_HISTORY);
+        listener.onFollow(source, user);
+        history.updateForce();
+        Thread.sleep(500);
+        assertEquals(1, history.getCount());
     }
 
-    public void testOnBlock() throws Exception
-    {
+    public void testOnBlock() throws Exception {
         final User source = mock.getUserMock();
-        getActivity().runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                Account account = new Account(token, secret, user.getId(), user.getScreenName());
-                getActivity().setCurrentAccount(account);
-                getActivity().startMainLogic();
-                listener.onBlock(source, user);
-                listener.onUnblock(source, user);
-            }
-        });
-        Thread.sleep(1000);
-        assertEquals(2, getActivity().getListAdapter(MainActivity.ADAPTER_HISTORY).getCount());
+        CustomListAdapter<?> history = getActivity().getListAdapter(MainActivity.ADAPTER_HISTORY);
+        listener.onBlock(source, user);
+        listener.onUnblock(source, user);
+        history.updateForce();
+        Thread.sleep(500);
+        assertEquals(2, history.getCount());
     }
 
-    public void testOnDirectMessage() throws Exception
-    {
+    public void testOnDirectMessage() throws Exception {
         final DirectMessage message = mock.getDirectMessageMock();
-        getActivity().runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                Account account = new Account(token, secret, user.getId(), user.getScreenName());
-                getActivity().setCurrentAccount(account);
-                getActivity().startMainLogic();
-                listener.onDirectMessage(message);
-            }
-        });
-        Thread.sleep(1000);
-        assertEquals(1, getActivity().getListAdapter(MainActivity.ADAPTER_MESSAGES).getCount());
-        getActivity().runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                listener.onDeletionNotice(message.getId(), message.getSenderId());
-            }
-        });
-        Thread.sleep(1000);
-        assertEquals(0, getActivity().getListAdapter(MainActivity.ADAPTER_MESSAGES).getCount());
+        CustomListAdapter<?> messages = getActivity().getListAdapter(MainActivity.ADAPTER_MESSAGES);
+        listener.onDirectMessage(message);
+        messages.updateForce();
+        Thread.sleep(500);
+        assertEquals(1, messages.getCount());
+        listener.onDeletionNotice(message.getId(), message.getSenderId());
+        messages.updateForce();
+        Thread.sleep(500);
+        assertEquals(0, messages.getCount());
     }
 
     @Override
-    protected void tearDown() throws Exception
-    {
+    protected void tearDown() throws Exception {
         getActivity().forceFinish();
     }
 }

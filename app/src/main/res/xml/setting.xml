@@ -27,79 +27,79 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="@string/setting_category_display_title"
-        android:summary="@string/setting_category_display_summary">
+        android:summary="@string/setting_category_display_summary"
+        android:title="@string/setting_category_display_title">
         <EditTextPreference
-            android:title="@string/setting_text_size_title"
-            android:key="@string/key_setting_text_size"
             android:defaultValue="10"
-            android:maxLength="2"
-            android:dialogTitle="@string/setting_text_size_dialog_title"
             android:dialogMessage="@string/setting_text_size_dialog_message"
-            android:numeric="decimal"/>
+            android:dialogTitle="@string/setting_text_size_dialog_title"
+            android:key="@string/key_setting_text_size"
+            android:maxLength="2"
+            android:numeric="decimal"
+            android:title="@string/setting_text_size_title" />
         <ListPreference
-            android:title="@string/setting_theme_title"
-            android:key="@string/key_setting_theme"
+            android:defaultValue="0"
             android:dialogTitle="@string/setting_theme_dialog_title"
             android:entries="@array/setting_theme_names"
             android:entryValues="@array/setting_theme_ids"
-            android:defaultValue="0"/>
+            android:key="@string/key_setting_theme"
+            android:title="@string/setting_theme_title" />
         <ListPreference
-            android:title="@string/setting_namestyle_title"
-            android:key="@string/key_setting_namestyle"
+            android:defaultValue="0"
             android:dialogTitle="@string/setting_namestyle_dialog_title"
             android:entries="@array/setting_namestyle_names"
             android:entryValues="@array/setting_namestyle_ids"
-            android:defaultValue="0"/>
+            android:key="@string/key_setting_namestyle"
+            android:title="@string/setting_namestyle_title" />
         <SwitchPreference
-            android:title="@string/setting_read_morse"
+            android:defaultValue="true"
             android:key="@string/key_setting_read_morse"
-            android:defaultValue="true"/>
+            android:title="@string/setting_read_morse" />
         <SwitchPreference
-            android:title="@string/setting_extend_status_url"
+            android:defaultValue="false"
             android:key="@string/key_setting_extend_status_url"
             android:summary="@string/setting_extend_status_url_summary"
-            android:defaultValue="false"/>
+            android:title="@string/setting_extend_status_url" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/setting_category_system_title">
         <SwitchPreference
-            android:title="@string/setting_safe_mode_title"
-            android:summaryOn="@string/setting_safe_mode_summary_on"
-            android:summaryOff="@string/setting_safe_mode_summary_off"
+            android:defaultValue="true"
             android:key="@string/key_setting_show_confirm_dialog"
-            android:defaultValue="true"/>
+            android:summaryOff="@string/setting_safe_mode_summary_off"
+            android:summaryOn="@string/setting_safe_mode_summary_on"
+            android:title="@string/setting_safe_mode_title" />
         <SwitchPreference
-            android:title="@string/setting_resize_post_image"
-            android:summary="@string/setting_resize_post_image_summary"
+            android:defaultValue="true"
             android:key="@string/key_setting_resize_post_image"
-            android:defaultValue="true"/>
+            android:summary="@string/setting_resize_post_image_summary"
+            android:title="@string/setting_resize_post_image" />
         <SwitchPreference
-            android:title="@string/setting_notify_on_unfavorited_title"
-            android:summaryOn="@string/setting_notify_on_unfavorited_summary_on"
-            android:summaryOff="@string/setting_notify_on_unfavorited_summary_off"
+            android:defaultValue="false"
             android:key="@string/key_setting_notify_on_unfavorited"
-            android:defaultValue="false"/>
+            android:summaryOff="@string/setting_notify_on_unfavorited_summary_off"
+            android:summaryOn="@string/setting_notify_on_unfavorited_summary_on"
+            android:title="@string/setting_notify_on_unfavorited_title" />
         <EditTextPreference
-            android:title="@string/setting_timelines_title"
-            android:summary="@string/setting_timelines_summary_format"
-            android:key="@string/key_setting_timelines"
-            android:dialogTitle="@string/setting_timelines_dialog_title"
-            android:dialogMessage="@string/setting_timelines_dialog_message"
             android:defaultValue="20"
-            android:maxLength="3"/>
+            android:dialogMessage="@string/setting_timelines_dialog_message"
+            android:dialogTitle="@string/setting_timelines_dialog_title"
+            android:key="@string/key_setting_timelines"
+            android:maxLength="3"
+            android:summary="@string/setting_timelines_summary_format"
+            android:title="@string/setting_timelines_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/setting_category_about_title">
         <Preference
-            android:title="@string/setting_application_information_title"
-            android:key="@string/key_setting_application_information"/>
+            android:key="@string/key_setting_application_information"
+            android:title="@string/setting_application_information_title" />
         <Preference
-            android:title="@string/setting_licenses_title"
-            android:key="@string/key_setting_licenses"/>
+            android:key="@string/key_setting_licenses"
+            android:title="@string/setting_licenses_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/setting_category_account_title">
         <Preference
-            android:title="@string/setting_delete_authentication_title"
+            android:key="@string/key_setting_clear_account"
             android:summary="@string/setting_delete_authentication_summary"
-            android:key="@string/key_setting_clear_account"/>
+            android:title="@string/setting_delete_authentication_title" />
     </PreferenceCategory>
 </PreferenceScreen>

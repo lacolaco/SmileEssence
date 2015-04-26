@@ -25,6 +25,7 @@
 package net.lacolaco.smileessence.command;
 
 import android.test.ActivityInstrumentationTestCase2;
+
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.post.PostCommandInsert;
 import net.lacolaco.smileessence.command.post.PostCommandMorse;
@@ -32,30 +33,25 @@ import net.lacolaco.smileessence.command.post.PostCommandZekamashi;
 import net.lacolaco.smileessence.util.Morse;
 import net.lacolaco.smileessence.view.adapter.PostState;
 
-public class PostCommandsTest extends ActivityInstrumentationTestCase2<MainActivity>
-{
+public class PostCommandsTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
-    public PostCommandsTest()
-    {
+    public PostCommandsTest() {
         super(MainActivity.class);
     }
 
     @Override
-    public void tearDown() throws Exception
-    {
+    public void tearDown() throws Exception {
         getActivity().forceFinish();
     }
 
-    public void testMorse() throws Exception
-    {
+    public void testMorse() throws Exception {
         PostState.getState().removeListener();
         String s = "テスト（テスト）";
         PostCommandMorse morse = new PostCommandMorse(getActivity());
         assertEquals(Morse.jaToMorse(s), morse.build(s));
     }
 
-    public void testSubString() throws Exception
-    {
+    public void testSubString() throws Exception {
         String s = "テスト（テスト）";
         PostCommandMorse morse = new PostCommandMorse(getActivity());
         PostState.getState().removeListener();
@@ -64,16 +60,14 @@ public class PostCommandsTest extends ActivityInstrumentationTestCase2<MainActiv
         assertEquals(Morse.jaToMorse("テスト") + "（テスト）", PostState.getState().getText());
     }
 
-    public void testInsert() throws Exception
-    {
+    public void testInsert() throws Exception {
         String s = "テスト";
         String inserted = "AAA";
         PostCommandInsert insert = new PostCommandInsert(getActivity(), inserted);
         assertEquals("テストAAA", insert.build(s));
     }
 
-    public void testZekamashi() throws Exception
-    {
+    public void testZekamashi() throws Exception {
         String s = "(しまかぜ)";
         PostCommandZekamashi zekamashi = new PostCommandZekamashi(getActivity());
         assertEquals("(ぜかまし)", zekamashi.build(s));

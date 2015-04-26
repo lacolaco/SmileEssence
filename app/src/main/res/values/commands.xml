@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ The MIT License (MIT)
   ~
   ~ Copyright (c) 2012-2014 lacolaco.net
@@ -24,33 +23,33 @@
   -->
 
 <resources>
-    <item name="key_command_status_fav_and_rt" type="id"/>
-    <item name="key_command_status_quote" type="id"/>
-    <item name="key_command_status_copy_text_to_clipboard" type="id"/>
-    <item name="key_command_status_copy_url_to_clipboard" type="id"/>
-    <item name="key_command_status_share" type="id"/>
-    <item name="key_command_status_open_in_browser" type="id"/>
-    <item name="key_command_status_nanigaja" type="id"/>
-    <item name="key_command_status_make_anonymous" type="id"/>
-    <item name="key_command_status_tofubuster" type="id"/>
-    <item name="key_command_user_reply" type="id"/>
-    <item name="key_command_user_add_to_reply" type="id"/>
-    <item name="key_command_user_open_favstar" type="id"/>
-    <item name="key_command_user_open_aclog" type="id"/>
-    <item name="key_command_user_open_twilog" type="id"/>
-    <item name="key_command_user_block" type="id"/>
-    <item name="key_command_user_unblock" type="id"/>
-    <item name="key_command_user_r4s" type="id"/>
-    <item name="key_command_user_introduce" type="id"/>
-    <item name="key_command_user_send_message" type="id"/>
-    <item name="key_command_status_add_to_reply" type="id"/>
-    <item name="key_command_status_open_chain" type="id"/>
-    <item name="key_command_status_add_to_ignore" type="id"/>
-    <item name="key_command_status_search_on_google" type="id"/>
-    <item name="key_command_status_copy" type="id"/>
-    <item name="key_command_status_congratulate" type="id"/>
-    <item name="key_command_status_review" type="id"/>
-    <item name="key_command_message_share" type="id"/>
-    <item name="key_command_message_search_on_google" type="id"/>
-    <item name="key_command_message_tofubuster" type="id"/>
+    <item name="key_command_status_fav_and_rt" type="id" />
+    <item name="key_command_status_quote" type="id" />
+    <item name="key_command_status_copy_text_to_clipboard" type="id" />
+    <item name="key_command_status_copy_url_to_clipboard" type="id" />
+    <item name="key_command_status_share" type="id" />
+    <item name="key_command_status_open_in_browser" type="id" />
+    <item name="key_command_status_nanigaja" type="id" />
+    <item name="key_command_status_make_anonymous" type="id" />
+    <item name="key_command_status_tofubuster" type="id" />
+    <item name="key_command_user_reply" type="id" />
+    <item name="key_command_user_add_to_reply" type="id" />
+    <item name="key_command_user_open_favstar" type="id" />
+    <item name="key_command_user_open_aclog" type="id" />
+    <item name="key_command_user_open_twilog" type="id" />
+    <item name="key_command_user_block" type="id" />
+    <item name="key_command_user_unblock" type="id" />
+    <item name="key_command_user_r4s" type="id" />
+    <item name="key_command_user_introduce" type="id" />
+    <item name="key_command_user_send_message" type="id" />
+    <item name="key_command_status_add_to_reply" type="id" />
+    <item name="key_command_status_open_chain" type="id" />
+    <item name="key_command_status_add_to_ignore" type="id" />
+    <item name="key_command_status_search_on_google" type="id" />
+    <item name="key_command_status_copy" type="id" />
+    <item name="key_command_status_congratulate" type="id" />
+    <item name="key_command_status_review" type="id" />
+    <item name="key_command_message_share" type="id" />
+    <item name="key_command_message_search_on_google" type="id" />
+    <item name="key_command_message_tofubuster" type="id" />
 </resources>

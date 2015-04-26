@@ -24,12 +24,11 @@
   ~ SOFTWARE.
   -->
 
-<TabHost
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/page_background"
-    android:id="@android:id/tabhost">
+    android:background="?attr/page_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,7 +38,7 @@
         <TabWidget
             android:id="@android:id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <FrameLayout
             android:id="@android:id/tabcontent"
@@ -64,18 +63,18 @@
                             android:id="@+id/imageview_user_detail_header"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:scaleType="fitCenter"
-                            android:layout_gravity="top"/>
+                            android:layout_gravity="top"
+                            android:scaleType="fitCenter" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:orientation="vertical"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"
+                            android:background="#a018181a"
                             android:gravity="center_horizontal"
-                            android:background="#a018181a">
+                            android:orientation="vertical"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp">
 
                             <com.android.volley.toolbox.NetworkImageView
                                 android:id="@+id/imageview_user_detail_icon"
@@ -83,13 +82,13 @@
                                 android:layout_height="72dp"
                                 android:layout_margin="5dp"
                                 android:background="@android:color/background_light"
-                                android:clickable="true"/>
+                                android:clickable="true" />
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical"
                                 android:gravity="center_horizontal"
+                                android:orientation="vertical"
                                 android:padding="5dp">
 
                                 <TextView
@@ -98,16 +97,16 @@
                                     android:layout_height="wrap_content"
                                     android:text="name"
                                     android:textColor="@android:color/background_light"
-                                    android:textSize="20dp"/>
+                                    android:textSize="20dp" />
 
                                 <TextView
                                     android:id="@+id/textview_user_detail_screenname"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:clickable="true"
                                     android:text="screen_name"
                                     android:textColor="@android:color/holo_blue_light"
-                                    android:textSize="16dp"
-                                    android:clickable="true"/>
+                                    android:textSize="16dp" />
 
                                 <TextView
                                     android:id="@+id/textview_user_detail_locate"
@@ -115,15 +114,15 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
                                     android:text="locate"
-                                    android:textColor="@android:color/background_light"/>
+                                    android:textColor="@android:color/background_light" />
 
                                 <TextView
                                     android:id="@+id/textview_user_detail_url"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:autoLink="web"
                                     android:gravity="center"
-                                    android:text="url"
-                                    android:autoLink="web"/>
+                                    android:text="url" />
                             </LinearLayout>
 
                         </LinearLayout>
@@ -132,18 +131,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right|bottom"
-                            android:paddingBottom="10dp"
+                            android:gravity="right"
                             android:orientation="vertical"
-                            android:gravity="right">
+                            android:paddingBottom="10dp">
 
                             <ImageView
                                 android:id="@+id/imageview_user_detail_menu"
+                                style="?attr/custom_button_transparent"
                                 android:layout_width="45dp"
                                 android:layout_height="45dp"
-                                android:src="@drawable/icon_row_w"
-                                style="?attr/custom_button_transparent"
                                 android:clickable="true"
-                                android:contentDescription=""/>
+                                android:contentDescription=""
+                                android:src="@drawable/icon_row_w" />
                         </LinearLayout>
 
                     </FrameLayout>
@@ -151,13 +150,13 @@
                     <FrameLayout
                         android:layout_width="fill_parent"
                         android:layout_height="1px"
-                        android:background="?attr/color_list_divider"/>
+                        android:background="?attr/color_list_divider" />
 
                     <TableLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:stretchColumns="0,1,2,3"
-                        android:paddingTop="5dp">
+                        android:paddingTop="5dp"
+                        android:stretchColumns="0,1,2,3">
 
                         <TableRow
                             android:layout_width="match_parent"
@@ -168,44 +167,44 @@
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_column="0"
+                                android:clickable="true"
                                 android:gravity="center_horizontal"
                                 android:text="0"
-                                android:textSize="20dp"
                                 android:textColor="@android:color/holo_blue_light"
-                                android:clickable="true"/>
+                                android:textSize="20dp" />
 
                             <TextView
                                 android:id="@+id/textview_user_detail_friend_count"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_column="1"
+                                android:clickable="true"
                                 android:gravity="center_horizontal"
                                 android:text="0"
-                                android:textSize="20dp"
                                 android:textColor="@android:color/holo_blue_light"
-                                android:clickable="true"/>
+                                android:textSize="20dp" />
 
                             <TextView
                                 android:id="@+id/textview_user_detail_follower_count"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_column="2"
+                                android:clickable="true"
                                 android:gravity="center_horizontal"
                                 android:text="0"
-                                android:textSize="20dp"
                                 android:textColor="@android:color/holo_blue_light"
-                                android:clickable="true"/>
+                                android:textSize="20dp" />
 
                             <TextView
                                 android:id="@+id/textview_user_detail_favorite_count"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_column="3"
+                                android:clickable="true"
                                 android:gravity="center_horizontal"
                                 android:text="0"
-                                android:textSize="20dp"
                                 android:textColor="@android:color/holo_blue_light"
-                                android:clickable="true"/>
+                                android:textSize="20dp" />
 
                         </TableRow>
 
@@ -216,28 +215,28 @@
                                 android:layout_height="wrap_content"
                                 android:layout_column="0"
                                 android:gravity="center_horizontal"
-                                android:text="@string/user_detail_tweets"/>
+                                android:text="@string/user_detail_tweets" />
 
                             <TextView
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_column="1"
                                 android:gravity="center_horizontal"
-                                android:text="@string/user_detail_following"/>
+                                android:text="@string/user_detail_following" />
 
                             <TextView
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_column="2"
                                 android:gravity="center_horizontal"
-                                android:text="@string/user_detail_followers"/>
+                                android:text="@string/user_detail_followers" />
 
                             <TextView
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_column="3"
                                 android:gravity="center_horizontal"
-                                android:text="@string/user_detail_favorites"/>
+                                android:text="@string/user_detail_favorites" />
                         </TableRow>
 
                     </TableLayout>
@@ -246,70 +245,70 @@
                         android:layout_width="fill_parent"
                         android:layout_height="1px"
                         android:layout_marginTop="5dp"
-                        android:background="?attr/color_list_divider"/>
+                        android:background="?attr/color_list_divider" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:paddingRight="10dp"
-                        android:paddingLeft="10dp">
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
                             android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
                             android:layout_marginTop="15dp"
-                            android:layout_centerVertical="true">
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/textview_user_detail_followed"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="right"
-                                android:text="followed"/>
+                                android:text="followed" />
 
                             <TextView
                                 android:id="@+id/texttview_user_detail_protected"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_horizontal"
-                                android:text="@string/user_detail_protected"/>
+                                android:text="@string/user_detail_protected" />
                         </LinearLayout>
 
                         <Button
                             android:id="@+id/button_user_detail_follow"
+                            style="?attr/custom_button_transparent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/user_detail_follow"
-                            android:textColor="@color/white"
-                            android:textSize="15dp"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="15dp"
-                            android:layout_marginTop="15dp"
-                            android:background="?attr/button_round_blue"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            style="?attr/custom_button_transparent"/>
+                            android:layout_marginTop="15dp"
+                            android:background="?attr/button_round_blue"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:text="@string/user_detail_follow"
+                            android:textColor="@color/white"
+                            android:textSize="15dp" />
 
                     </RelativeLayout>
 
                     <FrameLayout
                         android:layout_width="fill_parent"
                         android:layout_height="1px"
-                        android:background="?attr/color_list_divider"/>
+                        android:background="?attr/color_list_divider" />
 
                     <TextView
                         android:id="@+id/textview_user_detail_description"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:minLines="4"
+                        android:paddingBottom="5dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:text="bio"
-                        android:minLines="4"/>
+                        android:text="bio" />
                 </LinearLayout>
             </ScrollView>
 
@@ -318,17 +317,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.handmark.pulltorefresh.library.PullToRefreshListView
-                    xmlns:ptr="http://schemas.android.com/apk/res-auto"
+                <com.handmark.pulltorefresh.library.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res/net.lacolaco.smileessence"
                     android:id="@+id/listview_user_detail_timeline"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    ptr:ptrMode="both"
-                    ptr:ptrShowIndicator="false"
-                    android:overScrollMode="never"
-                    android:fastScrollEnabled="true"
+                    android:divider="?attr/color_list_divider"
                     android:dividerHeight="1px"
-                    android:divider="?attr/color_list_divider"/>
+                    android:fastScrollEnabled="true"
+                    android:overScrollMode="never"
+                    ptr:ptrMode="both"
+                    ptr:ptrShowIndicator="false" />
             </FrameLayout>
         </FrameLayout>
     </LinearLayout>

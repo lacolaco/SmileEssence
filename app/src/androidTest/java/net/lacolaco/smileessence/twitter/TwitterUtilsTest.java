@@ -25,24 +25,24 @@
 package net.lacolaco.smileessence.twitter;
 
 import android.test.InstrumentationTestCase;
+
 import junit.framework.Assert;
+
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.util.TwitterMock;
+
 import twitter4j.Status;
 
-public class TwitterUtilsTest extends InstrumentationTestCase
-{
+public class TwitterUtilsTest extends InstrumentationTestCase {
 
-    public void testLength() throws Exception
-    {
+    public void testLength() throws Exception {
         String text = "test";
         Assert.assertEquals(text.length(), TwitterUtils.getFixedTextLength(text));
         text = "test.com";
         assertNotSame(text.length(), TwitterUtils.getFixedTextLength(text));
     }
 
-    public void testURL() throws Exception
-    {
+    public void testURL() throws Exception {
         String screenName = "laco0416";
 
         assertEquals("https://twitter.com/laco0416", TwitterUtils.getUserHomeURL(screenName));
@@ -51,8 +51,7 @@ public class TwitterUtilsTest extends InstrumentationTestCase
         assertEquals("http://twilog.org/laco0416", TwitterUtils.getTwilogURL(screenName));
     }
 
-    public void testScreenNames() throws Exception
-    {
+    public void testScreenNames() throws Exception {
         TwitterMock mock = new TwitterMock(getInstrumentation().getContext());
         Status retweetMock = mock.getRetweetMock();
         assertEquals(3, TwitterUtils.getScreenNames(retweetMock, null).size());

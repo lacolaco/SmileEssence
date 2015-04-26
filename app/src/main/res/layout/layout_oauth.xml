@@ -25,16 +25,16 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center_vertical|center_horizontal"
-              android:layout_margin="15dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp"
+    android:gravity="center_vertical|center_horizontal"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/message_oauth_text"/>
+        android:text="@string/message_oauth_text" />
 
     <TextView
         android:id="@+id/textView_oauth_link"
@@ -42,23 +42,23 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="10dp"
-        android:autoLink="web"/>
+        android:autoLink="web" />
 
     <EditText
         android:id="@+id/editText_oauth_pin"
         android:layout_width="200sp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:hint="@string/message_oauth_hint"
         android:inputType="number"
-        android:maxLength="7"
-        android:hint="@string/message_oauth_hint"/>
+        android:maxLength="7" />
 
     <Button
         android:id="@+id/button_oauth_auth"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/message_oauth_authenticate"/>
+        android:text="@string/message_oauth_authenticate" />
 </LinearLayout>
