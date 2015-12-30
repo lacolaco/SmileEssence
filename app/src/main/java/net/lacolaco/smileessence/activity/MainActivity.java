@@ -330,6 +330,7 @@ public class MainActivity extends Activity {
             }
             startActivityForResult(new Intent(this, OAuthActivity.class), REQUEST_OAUTH);
         } else {
+            Account.deleteAll();
             startActivityForResult(new Intent(this, ConsumerActivity.class), REQUEST_CONSUMER);
         }
     }

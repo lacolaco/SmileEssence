@@ -29,8 +29,8 @@ android {
         minSdkVersion 17
         maxSdkVersion 23
         targetSdkVersion 23
-        versionCode 25
-        versionName "1.0.11.1"
+        versionCode 26
+        versionName "1.0.12"
         buildConfigField "String", "CONSUMER_KEY", "\"${consumerKey}\""
         buildConfigField "String", "CONSUMER_SECRET", "\"${consumerSecret}\""
         buildConfigField "String", "ACCESS_TOKEN", "\"${accessToken}\""
