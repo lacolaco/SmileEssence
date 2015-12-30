@@ -67,7 +67,7 @@ public class SelectSearchQueryDialogFragment extends MenuDialogFragment implemen
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MainActivity activity = (MainActivity) getActivity();
-        Account account = activity.getCurrentAccount();
+        Account account = activity.getAccount();
         List<Command> commands = getCommands(activity);
         Command.filter(commands);
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);

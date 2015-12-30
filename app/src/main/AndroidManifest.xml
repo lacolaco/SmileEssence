@@ -132,5 +132,9 @@
             android:name=".activity.OAuthActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/activity_authenticate" />
+        <activity
+            android:name=".activity.ConsumerActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/activity_consumer" />
     </application>
 </manifest>

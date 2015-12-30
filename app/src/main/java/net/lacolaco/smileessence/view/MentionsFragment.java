@@ -30,6 +30,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.twitter.Consumer;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.MentionsTimelineTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
@@ -56,8 +57,9 @@ public class MentionsFragment extends CustomListFragment {
     @Override
     public void onPullDownToRefresh(final PullToRefreshBase<ListView> refreshView) {
         final MainActivity activity = (MainActivity) getActivity();
-        final Account currentAccount = activity.getCurrentAccount();
-        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
         final StatusListAdapter adapter = getListAdapter(activity);
         Paging paging = TwitterUtils.getPaging(TwitterUtils.getPagingCount(activity));
         if (adapter.getCount() > 0) {
@@ -69,7 +71,7 @@ public class MentionsFragment extends CustomListFragment {
                 super.onPostExecute(statuses);
                 for (int i = statuses.length - 1; i >= 0; i--) {
                     twitter4j.Status status = statuses[i];
-                    adapter.addToTop(new StatusViewModel(status, currentAccount));
+                    adapter.addToTop(new StatusViewModel(status, account));
                 }
                 updateListViewWithNotice(refreshView.getRefreshableView(), adapter, true);
                 refreshView.onRefreshComplete();
@@ -80,8 +82,9 @@ public class MentionsFragment extends CustomListFragment {
     @Override
     public void onPullUpToRefresh(final PullToRefreshBase<ListView> refreshView) {
         final MainActivity activity = (MainActivity) getActivity();
-        final Account currentAccount = activity.getCurrentAccount();
-        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
         final StatusListAdapter adapter = getListAdapter(activity);
         Paging paging = TwitterUtils.getPaging(TwitterUtils.getPagingCount(activity));
         if (adapter.getCount() > 0) {
@@ -92,7 +95,7 @@ public class MentionsFragment extends CustomListFragment {
             protected void onPostExecute(twitter4j.Status[] statuses) {
                 super.onPostExecute(statuses);
                 for (twitter4j.Status status : statuses) {
-                    adapter.addToBottom(new StatusViewModel(status, currentAccount));
+                    adapter.addToBottom(new StatusViewModel(status, account));
                 }
                 updateListViewWithNotice(refreshView.getRefreshableView(), adapter, false);
                 refreshView.onRefreshComplete();

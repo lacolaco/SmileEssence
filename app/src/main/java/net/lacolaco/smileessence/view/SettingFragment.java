@@ -35,9 +35,12 @@ import android.text.TextUtils;
 
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.LicenseActivity;
+import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.notification.Notificator;
+import net.lacolaco.smileessence.preference.AppPreferenceHelper;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
+import net.lacolaco.smileessence.twitter.Consumer;
 import net.lacolaco.smileessence.view.dialog.ConfirmDialogFragment;
 import net.lacolaco.smileessence.view.dialog.DialogHelper;
 import net.lacolaco.smileessence.view.dialog.SimpleDialogFragment;
@@ -46,6 +49,7 @@ import static android.content.SharedPreferences.OnSharedPreferenceChangeListener
 
 public class SettingFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener,
         Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener {
+    private AppPreferenceHelper appPreferenceHelper;
 
     // ------------------------ INTERFACE METHODS ------------------------
 
@@ -86,7 +90,7 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
     // --------------------- Interface OnPreferenceClickListener ---------------------
 
     @Override
-    public boolean onPreferenceClick(Preference preference) {
+    public boolean onPreferenceClick(final Preference preference) {
         String key = preference.getKey();
         if (key.contentEquals(getString(R.string.key_setting_application_information))) {
             SimpleDialogFragment informationDialog = SimpleDialogFragment.newInstance(
@@ -104,6 +108,16 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
             }, false);
         } else if (key.contentEquals(getString(R.string.key_setting_licenses))) {
             openLicenseActivity();
+        } else if (key.contentEquals(getString(R.string.key_setting_clear_consumer))) {
+            ConfirmDialogFragment.show(getActivity(), getString(R.string.dialog_confirm_clear_consumer), new Runnable() {
+                @Override
+                public void run() {
+                    Notificator.publish(getActivity(), R.string.notice_cleared_consumer);
+                    Account.deleteAll();
+                    Consumer.clear(appPreferenceHelper);
+                    finishActivity();
+                }
+            }, false);
         }
         return true;
     }
@@ -138,6 +152,9 @@ public class SettingFragment extends PreferenceFragment implements OnSharedPrefe
         clearAccount.setOnPreferenceClickListener(this);
         Preference license = findPreference(R.string.key_setting_licenses);
         license.setOnPreferenceClickListener(this);
+        Preference clearConsumer = findPreference(R.string.key_setting_clear_consumer);
+        clearConsumer.setOnPreferenceClickListener(this);
+        appPreferenceHelper = new AppPreferenceHelper(this.getActivity());
     }
 
     @Override

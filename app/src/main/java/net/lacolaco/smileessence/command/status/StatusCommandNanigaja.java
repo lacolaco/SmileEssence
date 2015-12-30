@@ -30,7 +30,6 @@ import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.command.IConfirmable;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TweetBuilder;
-import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.FavoriteTask;
 import net.lacolaco.smileessence.twitter.task.TweetTask;
 
@@ -42,12 +41,14 @@ public class StatusCommandNanigaja extends StatusCommand implements IConfirmable
 
     // ------------------------------ FIELDS ------------------------------
 
+    private final Twitter twitter;
     private final Account account;
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
-    public StatusCommandNanigaja(Activity activity, Status status, Account account) {
+    public StatusCommandNanigaja(Activity activity, Status status, Twitter twitter, Account account) {
         super(R.id.key_command_status_nanigaja, activity, status);
+        this.twitter = twitter;
         this.account = account;
     }
 
@@ -86,7 +87,6 @@ public class StatusCommandNanigaja extends StatusCommand implements IConfirmable
         StatusUpdate update = new TweetBuilder().setText(build())
                 .setInReplyToStatusID(status.getId())
                 .build();
-        Twitter twitter = new TwitterApi(account).getTwitter();
         new TweetTask(twitter, update, getActivity()).execute();
         new FavoriteTask(twitter, status.getId(), getActivity()).execute();
         return true;

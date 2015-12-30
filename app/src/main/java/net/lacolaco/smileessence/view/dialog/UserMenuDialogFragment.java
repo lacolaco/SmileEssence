@@ -37,13 +37,16 @@ import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.command.CommandSearchOnTwitter;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.twitter.Consumer;
+import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 
-import twitter4j.User;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import twitter4j.Twitter;
+import twitter4j.User;
 
 public class UserMenuDialogFragment extends MenuDialogFragment {
 
@@ -68,17 +71,20 @@ public class UserMenuDialogFragment extends MenuDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final MainActivity activity = (MainActivity) getActivity();
-        final Account account = activity.getCurrentAccount();
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        final Twitter twitter = TwitterApi.getTwitter(consumer, account);
+
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
         ListView listView = (ListView) body.findViewById(R.id.listview_dialog_menu_list);
         final CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(onItemClickListener);
 
-        TwitterUtils.tryGetUser(account, getUserID(), new TwitterUtils.UserCallback() {
+        TwitterUtils.tryGetUser(twitter, account, getUserID(), new TwitterUtils.UserCallback() {
             @Override
             public void success(User user) {
-                List<Command> commands = getCommands(activity, user, account);
+                List<Command> commands = getCommands(activity, user, twitter, account);
                 Command.filter(commands);
                 for (Command command : commands) {
                     adapter.addToBottom(command);
@@ -110,13 +116,13 @@ public class UserMenuDialogFragment extends MenuDialogFragment {
         return commands.add(new CommandSearchOnTwitter(activity, user.getScreenName()));
     }
 
-    public boolean addMainCommands(Activity activity, User user, Account account, ArrayList<Command> commands) {
-        return commands.addAll(Command.getUserCommands(activity, user, account));
+    public boolean addMainCommands(Activity activity, User user, Twitter twitter, Account account, ArrayList<Command> commands) {
+        return commands.addAll(Command.getUserCommands(activity, user, twitter, account));
     }
 
-    public List<Command> getCommands(Activity activity, User user, Account account) {
+    public List<Command> getCommands(Activity activity, User user, Twitter twitter, Account account) {
         ArrayList<Command> commands = new ArrayList<>();
-        addMainCommands(activity, user, account, commands);
+        addMainCommands(activity, user, twitter, account, commands);
         addBottomCommands(activity, user, commands);
         return commands;
     }

@@ -43,6 +43,8 @@ import com.twitter.Validator;
 
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
+import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.twitter.Consumer;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.SendMessageTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
@@ -156,7 +158,9 @@ public class SendMessageDialogFragment extends DialogFragment implements TextWat
 
     private void sendMessage() {
         MainActivity activity = (MainActivity) getActivity();
-        Twitter twitter = TwitterApi.getTwitter(activity.getCurrentAccount());
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
         String text = editText.getText().toString();
         new SendMessageTask(twitter, screenName, text, activity).execute();
         hideIME();

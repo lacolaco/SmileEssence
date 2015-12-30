@@ -41,6 +41,7 @@ import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.notification.Notificator;
+import net.lacolaco.smileessence.twitter.Consumer;
 import net.lacolaco.smileessence.twitter.StatusFilter;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.UserListStatusesTask;
@@ -92,8 +93,9 @@ public class UserListFragment extends CustomListFragment implements View.OnClick
     @Override
     public void onPullDownToRefresh(final PullToRefreshBase<ListView> refreshView) {
         final MainActivity activity = getMainActivity();
-        final Account currentAccount = activity.getCurrentAccount();
-        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
         final UserListListAdapter adapter = getListAdapter(activity);
         String listFullName = adapter.getListFullName();
         if (TextUtils.isEmpty(listFullName)) {
@@ -116,7 +118,7 @@ public class UserListFragment extends CustomListFragment implements View.OnClick
                 super.onPostExecute(statuses);
                 for (int i = statuses.length - 1; i >= 0; i--) {
                     twitter4j.Status status = statuses[i];
-                    StatusViewModel statusViewModel = new StatusViewModel(status, activity.getCurrentAccount());
+                    StatusViewModel statusViewModel = new StatusViewModel(status, account);
                     adapter.addToTop(statusViewModel);
                     StatusFilter.filter(activity, statusViewModel);
                 }
@@ -129,8 +131,9 @@ public class UserListFragment extends CustomListFragment implements View.OnClick
     @Override
     public void onPullUpToRefresh(final PullToRefreshBase<ListView> refreshView) {
         final MainActivity activity = getMainActivity();
-        final Account currentAccount = activity.getCurrentAccount();
-        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
         final UserListListAdapter adapter = getListAdapter(activity);
         String listFullName = adapter.getListFullName();
         if (TextUtils.isEmpty(listFullName)) {
@@ -153,7 +156,7 @@ public class UserListFragment extends CustomListFragment implements View.OnClick
                 super.onPostExecute(statuses);
                 for (int i = 0; i < statuses.length; i++) {
                     twitter4j.Status status = statuses[i];
-                    StatusViewModel statusViewModel = new StatusViewModel(status, activity.getCurrentAccount());
+                    StatusViewModel statusViewModel = new StatusViewModel(status, account);
                     adapter.addToBottom(statusViewModel);
                     StatusFilter.filter(activity, statusViewModel);
                 }

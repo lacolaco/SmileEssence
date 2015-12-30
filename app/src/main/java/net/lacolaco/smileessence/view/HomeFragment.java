@@ -30,6 +30,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.twitter.Consumer;
 import net.lacolaco.smileessence.twitter.StatusFilter;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.HomeTimelineTask;
@@ -69,9 +70,11 @@ public class HomeFragment extends CustomListFragment {
             }.post();
             return;
         }
-        final Account currentAccount = activity.getCurrentAccount();
-        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
         final StatusListAdapter adapter = getListAdapter(activity);
+
         Paging paging = TwitterUtils.getPaging(TwitterUtils.getPagingCount(activity));
         if (adapter.getCount() > 0) {
             paging.setSinceId(adapter.getTopID());
@@ -82,7 +85,7 @@ public class HomeFragment extends CustomListFragment {
                 super.onPostExecute(statuses);
                 for (int i = statuses.length - 1; i >= 0; i--) {
                     twitter4j.Status status = statuses[i];
-                    StatusViewModel viewModel = new StatusViewModel(status, currentAccount);
+                    StatusViewModel viewModel = new StatusViewModel(status, account);
                     adapter.addToTop(viewModel);
                     StatusFilter.filter(activity, viewModel);
                 }
@@ -95,8 +98,10 @@ public class HomeFragment extends CustomListFragment {
     @Override
     public void onPullUpToRefresh(final PullToRefreshBase<ListView> refreshView) {
         final MainActivity activity = (MainActivity) getActivity();
-        final Account currentAccount = activity.getCurrentAccount();
-        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
+
         final StatusListAdapter adapter = getListAdapter(activity);
         Paging paging = TwitterUtils.getPaging(TwitterUtils.getPagingCount(activity));
         if (adapter.getCount() > 0) {
@@ -107,7 +112,7 @@ public class HomeFragment extends CustomListFragment {
             protected void onPostExecute(twitter4j.Status[] statuses) {
                 super.onPostExecute(statuses);
                 for (twitter4j.Status status : statuses) {
-                    StatusViewModel viewModel = new StatusViewModel(status, currentAccount);
+                    StatusViewModel viewModel = new StatusViewModel(status, account);
                     adapter.addToBottom(viewModel);
                     StatusFilter.filter(activity, viewModel);
                 }

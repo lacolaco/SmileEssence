@@ -66,7 +66,7 @@ public class HashtagDialogFragment extends MenuDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MainActivity activity = (MainActivity) getActivity();
-        Account account = activity.getCurrentAccount();
+        Account account = activity.getAccount();
         String text = getHashtagText();
         List<Command> commands = getCommands(activity, text);
         Command.filter(commands);

@@ -51,7 +51,7 @@ public class SelectImageDialogFragment extends MenuDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MainActivity activity = (MainActivity) getActivity();
-        Account account = activity.getCurrentAccount();
+        Account account = activity.getAccount();
         List<Command> commands = getCommands(activity);
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
         ListView listView = (ListView) body.findViewById(R.id.listview_dialog_menu_list);

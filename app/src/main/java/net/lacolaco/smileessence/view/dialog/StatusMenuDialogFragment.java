@@ -33,19 +33,26 @@ import android.widget.ListView;
 
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
-import net.lacolaco.smileessence.command.*;
+import net.lacolaco.smileessence.command.Command;
+import net.lacolaco.smileessence.command.CommandOpenHashtagDialog;
+import net.lacolaco.smileessence.command.CommandOpenURL;
+import net.lacolaco.smileessence.command.CommandOpenUserDetail;
+import net.lacolaco.smileessence.command.CommandSaveAsTemplate;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.twitter.Consumer;
+import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import twitter4j.HashtagEntity;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
+import twitter4j.Twitter;
 import twitter4j.URLEntity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class StatusMenuDialogFragment extends MenuDialogFragment {
 
@@ -79,7 +86,9 @@ public class StatusMenuDialogFragment extends MenuDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final MainActivity activity = (MainActivity) getActivity();
-        final Account account = activity.getCurrentAccount();
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        final Twitter twitter = TwitterApi.getTwitter(consumer, account);
 
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
         ListView listView = (ListView) body.findViewById(R.id.listview_dialog_menu_list);
@@ -88,10 +97,10 @@ public class StatusMenuDialogFragment extends MenuDialogFragment {
         listView.setOnItemClickListener(onItemClickListener);
 
         final AlertDialog alertDialog = new AlertDialog.Builder(activity).setView(body).create();
-        TwitterUtils.tryGetStatus(account, getStatusID(), new TwitterUtils.StatusCallback() {
+        TwitterUtils.tryGetStatus(twitter, account, getStatusID(), new TwitterUtils.StatusCallback() {
             @Override
             public void success(Status status) {
-                List<Command> commands = getCommands(activity, status, account);
+                List<Command> commands = getCommands(activity, status, twitter, account);
                 Command.filter(commands);
                 for (Command command : commands) {
                     adapter.addToBottom(command);
@@ -109,11 +118,11 @@ public class StatusMenuDialogFragment extends MenuDialogFragment {
 
     // -------------------------- OTHER METHODS --------------------------
 
-    public void addBottomCommands(Activity activity, Status status, Account account, ArrayList<Command> commands) {
+    public void addBottomCommands(Activity activity, Status status, Twitter twitter, Account account, ArrayList<Command> commands) {
         commands.add(new CommandSaveAsTemplate(activity, TwitterUtils.getOriginalStatusText(status)));
         //User
         for (String screenName : TwitterUtils.getScreenNames(status, null)) {
-            commands.add(new CommandOpenUserDetail(activity, screenName, account));
+            commands.add(new CommandOpenUserDetail(activity, screenName, twitter));
         }
         for (Command command : getHashtagCommands(activity, status)) {
             commands.add(command);
@@ -129,14 +138,14 @@ public class StatusMenuDialogFragment extends MenuDialogFragment {
         }
     }
 
-    public boolean addMainCommands(Activity activity, Status status, Account account, ArrayList<Command> commands) {
-        return commands.addAll(Command.getStatusCommands(activity, status, account));
+    public boolean addMainCommands(Activity activity, Status status, Twitter twitter, Account account, ArrayList<Command> commands) {
+        return commands.addAll(Command.getStatusCommands(activity, status, twitter, account));
     }
 
-    public List<Command> getCommands(Activity activity, Status status, Account account) {
+    public List<Command> getCommands(Activity activity, Status status, Twitter twitter, Account account) {
         ArrayList<Command> commands = new ArrayList<>();
-        addMainCommands(activity, status, account, commands);
-        addBottomCommands(activity, status, account, commands);
+        addMainCommands(activity, status, twitter, account, commands);
+        addBottomCommands(activity, status, twitter, account, commands);
         return commands;
     }
 

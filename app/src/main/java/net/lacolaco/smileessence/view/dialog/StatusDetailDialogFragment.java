@@ -31,7 +31,11 @@ import android.app.DialogFragment;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.*;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
@@ -39,6 +43,7 @@ import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.command.CommandOpenURL;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.twitter.Consumer;
 import net.lacolaco.smileessence.twitter.TweetBuilder;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.DeleteStatusTask;
@@ -51,12 +56,13 @@ import net.lacolaco.smileessence.view.adapter.StatusListAdapter;
 import net.lacolaco.smileessence.view.listener.ListItemClickListener;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 
+import java.util.ArrayList;
+
 import twitter4j.MediaEntity;
 import twitter4j.Status;
+import twitter4j.Twitter;
 import twitter4j.URLEntity;
 import twitter4j.User;
-
-import java.util.ArrayList;
 
 public class StatusDetailDialogFragment extends DialogFragment implements View.OnClickListener {
 
@@ -84,8 +90,10 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
     @Override
     public void onClick(final View v) {
         final MainActivity activity = (MainActivity) getActivity();
-        final Account account = activity.getCurrentAccount();
-        TwitterUtils.tryGetStatus(account, getStatusID(), new TwitterUtils.StatusCallback() {
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        final Twitter twitter = TwitterApi.getTwitter(consumer, account);
+        TwitterUtils.tryGetStatus(twitter, account, getStatusID(), new TwitterUtils.StatusCallback() {
             @Override
             public void success(Status status) {
                 switch (v.getId()) {
@@ -95,16 +103,16 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
                     }
                     case R.id.button_status_detail_retweet: {
                         final Long retweetID = (Long) v.getTag();
-                        toggleRetweet(activity, account, status, retweetID);
+                        toggleRetweet(activity, twitter, status, retweetID);
                         break;
                     }
                     case R.id.button_status_detail_favorite: {
                         Boolean isFavorited = (Boolean) v.getTag();
-                        toggleFavorite(activity, account, status, isFavorited);
+                        toggleFavorite(activity, twitter, status, isFavorited);
                         break;
                     }
                     case R.id.button_status_detail_delete: {
-                        deleteStatus(activity, account, status);
+                        deleteStatus(activity, twitter, status);
                         break;
                     }
                     case R.id.button_status_detail_menu: {
@@ -129,7 +137,9 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final MainActivity activity = (MainActivity) getActivity();
-        final Account account = activity.getCurrentAccount();
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
 
         Status status = StatusCache.getInstance().get(getStatusID());
         View header = getTitleView(activity, account, status);
@@ -140,7 +150,7 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
         if (inReplyToStatusId == -1) {
             listView.setVisibility(View.GONE);
         } else {
-            TwitterUtils.tryGetStatus(account, inReplyToStatusId, new TwitterUtils.StatusCallback() {
+            TwitterUtils.tryGetStatus(twitter, account, inReplyToStatusId, new TwitterUtils.StatusCallback() {
                 @Override
                 public void success(Status status) {
                     adapter.addToTop(new StatusViewModel(status, account));
@@ -160,11 +170,11 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
         ConfirmDialogFragment.show(activity, getString(R.string.dialog_confirm_commands), onYes);
     }
 
-    private void deleteStatus(final MainActivity activity, final Account account, final Status status) {
+    private void deleteStatus(final MainActivity activity, final Twitter twitter, final Status status) {
         confirm(activity, new Runnable() {
             @Override
             public void run() {
-                new DeleteStatusTask(TwitterApi.getTwitter(account), TwitterUtils.getOriginalStatus(status).getId(), activity).execute();
+                new DeleteStatusTask(twitter, TwitterUtils.getOriginalStatus(status).getId(), activity).execute();
                 dismiss();
             }
         });
@@ -305,24 +315,24 @@ public class StatusDetailDialogFragment extends DialogFragment implements View.O
                 .commitWithOpen(activity);
     }
 
-    private void toggleFavorite(MainActivity activity, Account account, Status status, Boolean isFavorited) {
+    private void toggleFavorite(MainActivity activity, Twitter twitter, Status status, Boolean isFavorited) {
         long statusID = status.isRetweet() ? status.getRetweetedStatus().getId() : status.getId();
         if (isFavorited) {
-            new UnfavoriteTask(TwitterApi.getTwitter(account), statusID, activity).execute();
+            new UnfavoriteTask(twitter, statusID, activity).execute();
         } else {
-            new FavoriteTask(TwitterApi.getTwitter(account), statusID, activity).execute();
+            new FavoriteTask(twitter, statusID, activity).execute();
         }
         dismiss();
     }
 
-    private void toggleRetweet(final MainActivity activity, final Account account, final Status status, final Long retweetID) {
+    private void toggleRetweet(final MainActivity activity, final Twitter twitter, final Status status, final Long retweetID) {
         confirm(activity, new Runnable() {
             @Override
             public void run() {
                 if (retweetID != -1L) {
-                    new DeleteStatusTask(TwitterApi.getTwitter(account), retweetID, activity).execute();
+                    new DeleteStatusTask(twitter, retweetID, activity).execute();
                 } else {
-                    new RetweetTask(TwitterApi.getTwitter(account), TwitterUtils.getOriginalStatus(status).getId(), activity).execute();
+                    new RetweetTask(twitter, TwitterUtils.getOriginalStatus(status).getId(), activity).execute();
                 }
                 dismiss();
             }

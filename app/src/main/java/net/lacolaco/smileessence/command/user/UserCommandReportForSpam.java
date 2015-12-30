@@ -32,18 +32,21 @@ import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.ReportForSpamTask;
 
+import twitter4j.Twitter;
 import twitter4j.User;
 
 public class UserCommandReportForSpam extends UserCommand implements IConfirmable {
 
     // ------------------------------ FIELDS ------------------------------
 
+    private final Twitter twitter;
     private final Account account;
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
-    public UserCommandReportForSpam(Activity activity, User user, Account account) {
+    public UserCommandReportForSpam(Activity activity, User user, Twitter twitter, Account account) {
         super(R.id.key_command_user_r4s, activity, user);
+        this.twitter = twitter;
         this.account = account;
     }
 
@@ -63,7 +66,7 @@ public class UserCommandReportForSpam extends UserCommand implements IConfirmabl
 
     @Override
     public boolean execute() {
-        new ReportForSpamTask(new TwitterApi(account).getTwitter(), getUser().getId(), getActivity()).execute();
+        new ReportForSpamTask(this.twitter, getUser().getId(), getActivity()).execute();
         return true;
     }
 }

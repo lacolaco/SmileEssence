@@ -37,7 +37,6 @@ import java.io.InputStreamReader;
 
 import twitter4j.DirectMessage;
 import twitter4j.JSONException;
-import twitter4j.JSONObject;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -101,7 +100,7 @@ public class TwitterMock {
     }
 
     public Twitter getTwitterMock() throws IOException, JSONException {
-        return new TwitterApi(getAccessToken(), getAccessTokenSecret()).getTwitter();
+        return new TwitterApi(BuildConfig.CONSUMER_KEY, BuildConfig.CONSUMER_SECRET, getAccessToken(), getAccessTokenSecret()).getTwitter();
     }
 
     public Account getAccount() throws IOException, TwitterException, JSONException {

@@ -44,6 +44,7 @@ import net.lacolaco.smileessence.command.CommandOpenURL;
 import net.lacolaco.smileessence.data.DirectMessageCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.notification.Notificator;
+import net.lacolaco.smileessence.twitter.Consumer;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.DeleteMessageTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
@@ -53,6 +54,7 @@ import net.lacolaco.smileessence.viewmodel.MessageViewModel;
 
 import twitter4j.DirectMessage;
 import twitter4j.MediaEntity;
+import twitter4j.Twitter;
 import twitter4j.URLEntity;
 
 import java.util.ArrayList;
@@ -85,8 +87,10 @@ public class MessageDetailDialogFragment extends DialogFragment implements View.
     @Override
     public void onClick(final View v) {
         final MainActivity activity = (MainActivity) getActivity();
-        final Account account = activity.getCurrentAccount();
-        TwitterUtils.tryGetMessage(account, getMessageID(), new TwitterUtils.MessageCallback() {
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        final Twitter twitter = TwitterApi.getTwitter(consumer, account);
+        TwitterUtils.tryGetMessage(twitter, account, getMessageID(), new TwitterUtils.MessageCallback() {
             @Override
             public void success(DirectMessage message) {
                 switch (v.getId()) {
@@ -95,7 +99,7 @@ public class MessageDetailDialogFragment extends DialogFragment implements View.
                         break;
                     }
                     case R.id.button_status_detail_delete: {
-                        deleteMessage(account, message);
+                        deleteMessage(twitter, message);
                         break;
                     }
                     case R.id.button_status_detail_menu: {
@@ -120,7 +124,9 @@ public class MessageDetailDialogFragment extends DialogFragment implements View.
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MainActivity activity = (MainActivity) getActivity();
-        final Account account = activity.getCurrentAccount();
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
 
         DirectMessage selectedMessage = DirectMessageCache.getInstance().get(getMessageID());
         if (selectedMessage == null) {
@@ -155,7 +161,7 @@ public class MessageDetailDialogFragment extends DialogFragment implements View.
         if (replyToMessageId == -1) {
             listView.setVisibility(View.GONE);
         } else {
-            TwitterUtils.tryGetMessage(account, replyToMessageId, new TwitterUtils.MessageCallback() {
+            TwitterUtils.tryGetMessage(twitter, account, replyToMessageId, new TwitterUtils.MessageCallback() {
                 @Override
                 public void success(DirectMessage message) {
                     adapter.addToTop(new MessageViewModel(message, account));
@@ -173,11 +179,11 @@ public class MessageDetailDialogFragment extends DialogFragment implements View.
 
     // -------------------------- OTHER METHODS --------------------------
 
-    public void deleteMessage(final Account account, final DirectMessage message) {
+    public void deleteMessage(final Twitter twitter, final DirectMessage message) {
         ConfirmDialogFragment.show(getActivity(), getString(R.string.dialog_confirm_commands), new Runnable() {
             @Override
             public void run() {
-                new DeleteMessageTask(new TwitterApi(account).getTwitter(), message.getId(), getActivity()).execute();
+                new DeleteMessageTask(twitter, message.getId(), getActivity()).execute();
                 dismiss();
             }
         });

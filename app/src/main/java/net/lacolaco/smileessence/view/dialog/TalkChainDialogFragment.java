@@ -37,6 +37,7 @@ import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.logging.Logger;
+import net.lacolaco.smileessence.twitter.Consumer;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.StatusListAdapter;
@@ -69,18 +70,19 @@ public class TalkChainDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MainActivity activity = (MainActivity) getActivity();
-        final Account account = activity.getCurrentAccount();
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        final Twitter twitter = TwitterApi.getTwitter(consumer, account);
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_talk_list, null);
         ListView listView = (ListView) view.findViewById(R.id.listview_dialog_talk_list);
         final StatusListAdapter adapter = new StatusListAdapter(getActivity());
         listView.setAdapter(adapter);
-        TwitterUtils.tryGetStatus(account, getStatusID(), new TwitterUtils.StatusCallback() {
+        TwitterUtils.tryGetStatus(twitter, account, getStatusID(), new TwitterUtils.StatusCallback() {
             @Override
             public void success(Status status) {
                 adapter.addToTop(new StatusViewModel(status, account));
                 adapter.updateForce();
-                Twitter twitter = TwitterApi.getTwitter(account);
                 new GetTalkTask(twitter, account, adapter, status.getInReplyToStatusId()).execute();
             }
 

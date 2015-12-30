@@ -30,20 +30,48 @@ import android.view.View;
 import android.widget.TextView;
 
 import net.lacolaco.smileessence.R;
-import net.lacolaco.smileessence.command.message.*;
-import net.lacolaco.smileessence.command.status.*;
-import net.lacolaco.smileessence.command.user.*;
+import net.lacolaco.smileessence.command.message.MessageCommandCopyTextToClipboard;
+import net.lacolaco.smileessence.command.message.MessageCommandSearchOnGoogle;
+import net.lacolaco.smileessence.command.message.MessageCommandShare;
+import net.lacolaco.smileessence.command.message.MessageCommandTofuBuster;
+import net.lacolaco.smileessence.command.status.StatusCommandAddToIgnore;
+import net.lacolaco.smileessence.command.status.StatusCommandAddToReply;
+import net.lacolaco.smileessence.command.status.StatusCommandCongratulate;
+import net.lacolaco.smileessence.command.status.StatusCommandCopy;
+import net.lacolaco.smileessence.command.status.StatusCommandCopyTextToClipboard;
+import net.lacolaco.smileessence.command.status.StatusCommandCopyURLToClipboard;
+import net.lacolaco.smileessence.command.status.StatusCommandFavAndRT;
+import net.lacolaco.smileessence.command.status.StatusCommandMakeAnonymous;
+import net.lacolaco.smileessence.command.status.StatusCommandNanigaja;
+import net.lacolaco.smileessence.command.status.StatusCommandOpenInBrowser;
+import net.lacolaco.smileessence.command.status.StatusCommandOpenQuoteDialog;
+import net.lacolaco.smileessence.command.status.StatusCommandOpenTalkView;
+import net.lacolaco.smileessence.command.status.StatusCommandReview;
+import net.lacolaco.smileessence.command.status.StatusCommandSearchOnGoogle;
+import net.lacolaco.smileessence.command.status.StatusCommandShare;
+import net.lacolaco.smileessence.command.status.StatusCommandTofuBuster;
+import net.lacolaco.smileessence.command.user.UserCommandAddToReply;
+import net.lacolaco.smileessence.command.user.UserCommandBlock;
+import net.lacolaco.smileessence.command.user.UserCommandIntroduce;
+import net.lacolaco.smileessence.command.user.UserCommandOpenAclog;
+import net.lacolaco.smileessence.command.user.UserCommandOpenFavstar;
+import net.lacolaco.smileessence.command.user.UserCommandOpenTwilog;
+import net.lacolaco.smileessence.command.user.UserCommandReply;
+import net.lacolaco.smileessence.command.user.UserCommandReportForSpam;
+import net.lacolaco.smileessence.command.user.UserCommandSendMessage;
+import net.lacolaco.smileessence.command.user.UserCommandUnblock;
 import net.lacolaco.smileessence.data.CommandSettingCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.viewmodel.IViewModel;
 
-import twitter4j.DirectMessage;
-import twitter4j.Status;
-import twitter4j.User;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import twitter4j.DirectMessage;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.User;
 
 public abstract class Command implements IViewModel {
 
@@ -61,19 +89,19 @@ public abstract class Command implements IViewModel {
 
     public static List<Command> getAllCommands(Activity activity) {
         List<Command> commands = new ArrayList<>();
-        commands.addAll(getStatusCommands(activity, null, null));
-        commands.addAll(getUserCommands(activity, null, null));
+        commands.addAll(getStatusCommands(activity, null, null, null));
+        commands.addAll(getUserCommands(activity, null, null, null));
         return commands;
     }
 
-    public static List<Command> getUserCommands(Activity activity, User user, Account account) {
+    public static List<Command> getUserCommands(Activity activity, User user, Twitter twitter, Account account) {
         List<Command> commands = new ArrayList<>();
         commands.add(new UserCommandReply(activity, user));
         commands.add(new UserCommandAddToReply(activity, user));
         commands.add(new UserCommandSendMessage(activity, user, account));
-        commands.add(new UserCommandBlock(activity, user, account));
-        commands.add(new UserCommandUnblock(activity, user, account));
-        commands.add(new UserCommandReportForSpam(activity, user, account));
+        commands.add(new UserCommandBlock(activity, user, twitter, account));
+        commands.add(new UserCommandUnblock(activity, user, twitter, account));
+        commands.add(new UserCommandReportForSpam(activity, user, twitter, account));
         commands.add(new UserCommandOpenFavstar(activity, user));
         commands.add(new UserCommandOpenAclog(activity, user));
         commands.add(new UserCommandOpenTwilog(activity, user));
@@ -81,11 +109,11 @@ public abstract class Command implements IViewModel {
         return commands;
     }
 
-    public static List<Command> getStatusCommands(Activity activity, Status status, Account account) {
+    public static List<Command> getStatusCommands(Activity activity, Status status, Twitter twitter, Account account) {
         List<Command> commands = new ArrayList<>();
         commands.add(new StatusCommandAddToReply(activity, status));
         commands.add(new StatusCommandOpenTalkView(activity, status, account));
-        commands.add(new StatusCommandFavAndRT(activity, status, account));
+        commands.add(new StatusCommandFavAndRT(activity, status, twitter, account));
         commands.add(new StatusCommandOpenQuoteDialog(activity, status));
         commands.add(new StatusCommandShare(activity, status));
         commands.add(new StatusCommandOpenInBrowser(activity, status));
@@ -94,9 +122,9 @@ public abstract class Command implements IViewModel {
         commands.add(new StatusCommandCopy(activity, status));
         commands.add(new StatusCommandSearchOnGoogle(activity, status));
         commands.add(new StatusCommandTofuBuster(activity, status));
-        commands.add(new StatusCommandNanigaja(activity, status, account));
-        commands.add(new StatusCommandMakeAnonymous(activity, status, account));
-        commands.add(new StatusCommandCongratulate(activity, status, account));
+        commands.add(new StatusCommandNanigaja(activity, status, twitter, account));
+        commands.add(new StatusCommandMakeAnonymous(activity, status, twitter, account));
+        commands.add(new StatusCommandCongratulate(activity, status, twitter));
         commands.add(new StatusCommandReview(activity, status));
         commands.add(new StatusCommandAddToIgnore(activity, status));
         return commands;

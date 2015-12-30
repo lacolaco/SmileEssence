@@ -59,7 +59,7 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
             @Override
             public void run() {
                 Account account = new Account(token, secret, user.getId(), user.getScreenName());
-                getActivity().setCurrentAccount(account);
+                getActivity().setAccount(account);
                 getActivity().initializeView();
             }
         });
@@ -120,10 +120,6 @@ public class UserStreamListenerTest extends ActivityInstrumentationTestCase2<Mai
         history.updateForce();
         Thread.sleep(500);
         assertEquals(1, history.getCount());
-        listener.onUnfavorite(source, user, status);
-        history.updateForce();
-        Thread.sleep(500);
-        assertEquals(2, history.getCount());
     }
 
     public void testOnFollow() throws Exception {

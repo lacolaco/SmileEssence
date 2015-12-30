@@ -29,23 +29,25 @@ import android.app.Activity;
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.command.IConfirmable;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.FavoriteTask;
 import net.lacolaco.smileessence.twitter.task.RetweetTask;
 
 import twitter4j.Status;
+import twitter4j.Twitter;
 import twitter4j.User;
 
 public class StatusCommandFavAndRT extends StatusCommand implements IConfirmable {
 
     // ------------------------------ FIELDS ------------------------------
 
+    private final Twitter twitter;
     private final Account account;
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
-    public StatusCommandFavAndRT(Activity activity, Status status, Account account) {
+    public StatusCommandFavAndRT(Activity activity, Status status, Twitter twitter, Account account) {
         super(R.id.key_command_status_fav_and_rt, activity, status);
+        this.twitter = twitter;
         this.account = account;
     }
 
@@ -59,15 +61,15 @@ public class StatusCommandFavAndRT extends StatusCommand implements IConfirmable
     @Override
     public boolean isEnabled() {
         User user = getOriginalStatus().getUser();
-        return !user.isProtected() && user.getId() != account.userID;
+        return !user.isProtected() && user.getId() != this.account.userID;
     }
 
     // -------------------------- OTHER METHODS --------------------------
 
     @Override
     public boolean execute() {
-        new FavoriteTask(new TwitterApi(account).getTwitter(), getOriginalStatus().getId(), getActivity()).execute();
-        new RetweetTask(new TwitterApi(account).getTwitter(), getOriginalStatus().getId(), getActivity()).execute();
+        new FavoriteTask(this.twitter, getOriginalStatus().getId(), getActivity()).execute();
+        new RetweetTask(this.twitter, getOriginalStatus().getId(), getActivity()).execute();
         return true;
     }
 }

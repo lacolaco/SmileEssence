@@ -54,7 +54,7 @@ public class PostMenuDialogFragment extends MenuDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MainActivity activity = (MainActivity) getActivity();
-        Account account = activity.getCurrentAccount();
+        Account account = activity.getAccount();
         List<Command> commands = getCommands(activity);
         Command.filter(commands);
         if (commands.isEmpty()) {

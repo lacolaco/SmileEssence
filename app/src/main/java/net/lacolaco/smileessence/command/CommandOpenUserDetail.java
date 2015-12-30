@@ -30,11 +30,13 @@ import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.notification.NotificationType;
 import net.lacolaco.smileessence.notification.Notificator;
+import net.lacolaco.smileessence.twitter.Consumer;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.ShowUserTask;
 import net.lacolaco.smileessence.view.dialog.DialogHelper;
 import net.lacolaco.smileessence.view.dialog.UserDetailDialogFragment;
 
+import twitter4j.Twitter;
 import twitter4j.User;
 
 public class CommandOpenUserDetail extends Command {
@@ -42,21 +44,21 @@ public class CommandOpenUserDetail extends Command {
     // ------------------------------ FIELDS ------------------------------
 
     private final String screenName;
-    private final Account account;
+    private final Twitter twitter;
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
-    public CommandOpenUserDetail(Activity activity, String screenName, Account account) {
+    public CommandOpenUserDetail(Activity activity, String screenName, Twitter twitter) {
         super(-1, activity);
         this.screenName = screenName;
-        this.account = account;
+        this.twitter = twitter;
     }
 
     // --------------------- GETTER / SETTER METHODS ---------------------
 
     @Override
     public String getText() {
-        return String.format("@%s", screenName);
+        return String.format("@%s", this.screenName);
     }
 
     @Override
@@ -68,7 +70,7 @@ public class CommandOpenUserDetail extends Command {
 
     @Override
     public boolean execute() {
-        new ShowUserTask(new TwitterApi(account).getTwitter(), screenName) {
+        new ShowUserTask(this.twitter, this.screenName) {
             @Override
             protected void onPostExecute(User user) {
                 super.onPostExecute(user);

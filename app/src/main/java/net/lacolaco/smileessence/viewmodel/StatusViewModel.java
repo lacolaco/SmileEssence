@@ -42,6 +42,8 @@ import net.lacolaco.smileessence.data.ImageCache;
 import net.lacolaco.smileessence.data.UserCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
+import net.lacolaco.smileessence.twitter.Consumer;
+import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.util.Morse;
 import net.lacolaco.smileessence.util.NameStyles;
@@ -348,13 +350,15 @@ public class StatusViewModel implements IViewModel {
         if (extendStatusURL) {
             if (containsStatusURL()) {
                 embeddedStatus.setVisibility(View.VISIBLE);
-                final Account account = ((MainActivity) activity).getCurrentAccount();
+                final Account account = ((MainActivity) activity).getAccount();
+                final Consumer consumer = ((MainActivity) activity).getConsumer();
+                Twitter twitter = TwitterApi.getTwitter(consumer, account);
                 List<Long> embeddedStatusIDs = getEmbeddedStatusIDs();
                 for (int i = 0; i < embeddedStatusIDs.size(); i++) {
                     long id = embeddedStatusIDs.get(i);
                     final int index = i;
                     final View finalConvertedView = convertedView;
-                    TwitterUtils.tryGetStatus(account, id, new TwitterUtils.StatusCallback() {
+                    TwitterUtils.tryGetStatus(twitter, account, id, new TwitterUtils.StatusCallback() {
                         @Override
                         public void success(Status status) {
                             StatusViewModel viewModel = new StatusViewModel(status, account);

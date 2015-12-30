@@ -47,6 +47,7 @@ import net.lacolaco.smileessence.command.CommandOpenURL;
 import net.lacolaco.smileessence.data.ImageCache;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.logging.Logger;
+import net.lacolaco.smileessence.twitter.Consumer;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.FollowTask;
 import net.lacolaco.smileessence.twitter.task.ShowFriendshipTask;
@@ -109,8 +110,11 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
     @Override
     public void onClick(final View v) {
         final MainActivity activity = (MainActivity) getActivity();
-        final Account account = activity.getCurrentAccount();
-        TwitterUtils.tryGetUser(account, getUserID(), new TwitterUtils.UserCallback() {
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        final Twitter twitter = TwitterApi.getTwitter(consumer, account);
+
+        TwitterUtils.tryGetUser(twitter, account, getUserID(), new TwitterUtils.UserCallback() {
             @Override
             public void success(final User user) {
                 switch (v.getId()) {
@@ -146,7 +150,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
                         ConfirmDialogFragment.show(activity, getString(R.string.dialog_confirm_commands), new Runnable() {
                             @Override
                             public void run() {
-                                toggleFollowing(user, account, activity);
+                                toggleFollowing(user, twitter, activity);
                             }
                         });
                         break;
@@ -166,8 +170,10 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
     @Override
     public void onPullDownToRefresh(final PullToRefreshBase<ListView> refreshView) {
         final MainActivity activity = (MainActivity) getActivity();
-        final Account currentAccount = activity.getCurrentAccount();
-        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
+
         final StatusListAdapter adapter = getListAdapter(activity);
         Paging paging = TwitterUtils.getPaging(TwitterUtils.getPagingCount(activity));
         if (adapter.getCount() > 0) {
@@ -179,7 +185,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
                 super.onPostExecute(statuses);
                 for (int i = statuses.length - 1; i >= 0; i--) {
                     twitter4j.Status status = statuses[i];
-                    adapter.addToTop(new StatusViewModel(status, currentAccount));
+                    adapter.addToTop(new StatusViewModel(status, account));
                 }
                 updateListView(refreshView.getRefreshableView(), adapter, true);
                 refreshView.onRefreshComplete();
@@ -190,8 +196,10 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
     @Override
     public void onPullUpToRefresh(final PullToRefreshBase<ListView> refreshView) {
         final MainActivity activity = (MainActivity) getActivity();
-        final Account currentAccount = activity.getCurrentAccount();
-        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
+
         final StatusListAdapter adapter = getListAdapter(activity);
         Paging paging = TwitterUtils.getPaging(TwitterUtils.getPagingCount(activity));
         if (adapter.getCount() > 0) {
@@ -202,7 +210,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
             protected void onPostExecute(twitter4j.Status[] statuses) {
                 super.onPostExecute(statuses);
                 for (twitter4j.Status status : statuses) {
-                    adapter.addToBottom(new StatusViewModel(status, currentAccount));
+                    adapter.addToBottom(new StatusViewModel(status, account));
                 }
                 updateListView(refreshView.getRefreshableView(), adapter, false);
                 refreshView.onRefreshComplete();
@@ -249,12 +257,15 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         tabHost.addTab(tab2);
         tabHost.setCurrentTab(0);
 
-        final Account account = activity.getCurrentAccount();
-        TwitterUtils.tryGetUser(account, getUserID(), new TwitterUtils.UserCallback() {
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        final Twitter twitter = TwitterApi.getTwitter(consumer, account);
+
+        TwitterUtils.tryGetUser(twitter, account, getUserID(), new TwitterUtils.UserCallback() {
             @Override
             public void success(User user) {
                 try {
-                    initUserData(user, account);
+                    initUserData(user, twitter, account);
                 } catch (Exception e) {
                     Logger.error(e);
                     error();
@@ -272,9 +283,8 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
                 .create();
     }
 
-    private void executeUserTimelineTask(final User user, final Account account, final StatusListAdapter adapter) {
+    private void executeUserTimelineTask(final User user, Twitter twitter ,final Account account, final StatusListAdapter adapter) {
         tabHost.getTabWidget().getChildTabViewAt(1).setVisibility(View.GONE);
-        Twitter twitter = TwitterApi.getTwitter(account);
         new UserTimelineTask(twitter, user.getId()) {
             @Override
             protected void onPostExecute(twitter4j.Status[] statuses) {
@@ -303,7 +313,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         return (StatusListAdapter) activity.getListAdapter(ADAPTER_INDEX);
     }
 
-    private void initUserData(User user, final Account account) {
+    private void initUserData(User user, Twitter twitter, final Account account) {
         textViewName.setText(user.getName());
         textViewScreenName.setText(user.getScreenName());
         if (TextUtils.isEmpty(user.getLocation())) {
@@ -331,7 +341,7 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         listViewTimeline.setAdapter(adapter);
         listViewTimeline.setOnRefreshListener(this);
         activity.setListAdapter(ADAPTER_INDEX, adapter);
-        executeUserTimelineTask(user, account, adapter);
+        executeUserTimelineTask(user, twitter, account, adapter);
         updateRelationship(activity, user.getId());
     }
 
@@ -372,10 +382,9 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
         buttonFollow.setEnabled(true);
     }
 
-    private void toggleFollowing(final User user, final Account account, final Activity activity) {
+    private void toggleFollowing(final User user, final Twitter twitter, final Activity activity) {
         lockFollowButton(activity);
         Boolean isFollowing = buttonFollow.getTag() != null ? (Boolean) buttonFollow.getTag() : false;
-        Twitter twitter = new TwitterApi(account).getTwitter();
         if (isFollowing) {
             new UnfollowTask(twitter, user.getId(), activity) {
                 @Override
@@ -422,8 +431,10 @@ public class UserDetailDialogFragment extends DialogFragment implements View.OnC
 
     private void updateRelationship(Activity activity, final long userId) {
         MainActivity mainActivity = (MainActivity) activity;
-        Account account = mainActivity.getCurrentAccount();
-        Twitter twitter = new TwitterApi(account).getTwitter();
+        final Account account = mainActivity.getAccount();
+        final Consumer consumer = mainActivity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
+
         if (userId == account.userID) {
             textViewFollowed.setText(R.string.user_detail_followed_is_me);
             buttonFollow.setVisibility(View.GONE);

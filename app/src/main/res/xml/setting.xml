@@ -101,5 +101,9 @@
             android:key="@string/key_setting_clear_account"
             android:summary="@string/setting_delete_authentication_summary"
             android:title="@string/setting_delete_authentication_title" />
+        <Preference
+            android:key="@string/key_setting_clear_consumer"
+            android:summary="@string/setting_delete_consumer_summary"
+            android:title="@string/setting_delete_consumer_title" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -35,6 +35,8 @@ import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.*;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.twitter.Consumer;
+import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 import net.lacolaco.smileessence.viewmodel.MessageViewModel;
@@ -42,6 +44,7 @@ import net.lacolaco.smileessence.viewmodel.MessageViewModel;
 import twitter4j.DirectMessage;
 import twitter4j.HashtagEntity;
 import twitter4j.MediaEntity;
+import twitter4j.Twitter;
 import twitter4j.URLEntity;
 
 import java.util.ArrayList;
@@ -78,7 +81,9 @@ public class MessageMenuDialogFragment extends MenuDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final MainActivity activity = (MainActivity) getActivity();
-        final Account account = activity.getCurrentAccount();
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        final Twitter twitter = TwitterApi.getTwitter(consumer, account);
 
         View body = activity.getLayoutInflater().inflate(R.layout.dialog_menu_list, null);
         ListView listView = (ListView) body.findViewById(R.id.listview_dialog_menu_list);
@@ -87,10 +92,10 @@ public class MessageMenuDialogFragment extends MenuDialogFragment {
         listView.setOnItemClickListener(onItemClickListener);
 
         final AlertDialog alertDialog = new AlertDialog.Builder(activity).setView(body).create();
-        TwitterUtils.tryGetMessage(account, getMessageID(), new TwitterUtils.MessageCallback() {
+        TwitterUtils.tryGetMessage(twitter, account, getMessageID(), new TwitterUtils.MessageCallback() {
             @Override
             public void success(DirectMessage message) {
-                List<Command> commands = getCommands(activity, message, account);
+                List<Command> commands = getCommands(activity, message, twitter, account);
                 Command.filter(commands);
                 for (Command command : commands) {
                     adapter.addToBottom(command);
@@ -108,11 +113,11 @@ public class MessageMenuDialogFragment extends MenuDialogFragment {
 
     // -------------------------- OTHER METHODS --------------------------
 
-    public void addBottomCommands(Activity activity, DirectMessage message, Account account, ArrayList<Command> commands) {
+    public void addBottomCommands(Activity activity, DirectMessage message, Twitter twitter, Account account, ArrayList<Command> commands) {
         commands.add(new CommandSaveAsTemplate(activity, message.getText()));
         //User
         for (String screenName : TwitterUtils.getScreenNames(message, null)) {
-            commands.add(new CommandOpenUserDetail(activity, screenName, account));
+            commands.add(new CommandOpenUserDetail(activity, screenName, twitter));
         }
         for (Command command : getHashtagCommands(activity, message)) {
             commands.add(command);
@@ -128,14 +133,14 @@ public class MessageMenuDialogFragment extends MenuDialogFragment {
         }
     }
 
-    public boolean addMainCommands(Activity activity, DirectMessage message, Account account, ArrayList<Command> commands) {
+    public boolean addMainCommands(Activity activity, DirectMessage message, Twitter twitter, Account account, ArrayList<Command> commands) {
         return commands.addAll(Command.getMessageCommands(activity, message, account));
     }
 
-    public List<Command> getCommands(Activity activity, DirectMessage message, Account account) {
+    public List<Command> getCommands(Activity activity, DirectMessage message, Twitter twitter, Account account) {
         ArrayList<Command> commands = new ArrayList<>();
-        addMainCommands(activity, message, account, commands);
-        addBottomCommands(activity, message, account, commands);
+        addMainCommands(activity, message, twitter, account, commands);
+        addBottomCommands(activity, message, twitter, account, commands);
         return commands;
     }
 

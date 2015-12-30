@@ -53,6 +53,7 @@ import net.lacolaco.smileessence.notification.NotificationType;
 import net.lacolaco.smileessence.notification.Notificator;
 import net.lacolaco.smileessence.preference.AppPreferenceHelper;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
+import net.lacolaco.smileessence.twitter.Consumer;
 import net.lacolaco.smileessence.twitter.OAuthSession;
 import net.lacolaco.smileessence.twitter.StatusFilter;
 import net.lacolaco.smileessence.twitter.TwitterApi;
@@ -81,6 +82,7 @@ public class MainActivity extends Activity {
     public static final int REQUEST_OAUTH = 10;
     public static final int REQUEST_GET_PICTURE_FROM_GALLERY = 11;
     public static final int REQUEST_GET_PICTURE_FROM_CAMERA = 12;
+    public static final int REQUEST_CONSUMER = 20;
     public static final int PAGE_GONE = -1;
     public static final int PAGE_POST = 0;
     public static final int ADAPTER_HOME = 1;
@@ -99,7 +101,8 @@ public class MainActivity extends Activity {
     private ViewPager viewPager;
     private PageListAdapter pagerAdapter;
     private OAuthSession oauthSession;
-    private Account currentAccount;
+    private Consumer consumer;
+    private Account account;
     private TwitterStream stream;
     private HashMap<Integer, CustomListAdapter<?>> adapterMap = new HashMap<>();
     private boolean streaming = false;
@@ -119,12 +122,12 @@ public class MainActivity extends Activity {
         this.cameraTempFilePath = cameraTempFilePath;
     }
 
-    public Account getCurrentAccount() {
-        return currentAccount;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setCurrentAccount(Account account) {
-        this.currentAccount = account;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     private String getLastSearch() {
@@ -133,15 +136,6 @@ public class MainActivity extends Activity {
 
     public void setLastSearch(String query) {
         getAppPreferenceHelper().putValue(KEY_LAST_USED_SEARCH_QUERY, query);
-    }
-
-    private long getLastUsedAccountID() {
-        String id = getAppPreferenceHelper().getValue(KEY_LAST_USED_ACCOUNT_ID, "");
-        if (TextUtils.isEmpty(id)) {
-            return PAGE_GONE;
-        } else {
-            return Long.parseLong(id);
-        }
     }
 
     private void setLastUsedAccountID(Account account) {
@@ -198,11 +192,6 @@ public class MainActivity extends Activity {
 
     public String getVersion() {
         return BuildConfig.VERSION_NAME;
-    }
-
-    private boolean isAuthorized() {
-        long lastUsedAccountID = getLastUsedAccountID();
-        return lastUsedAccountID >= 0 && Account.load(Account.class, lastUsedAccountID) != null;
     }
 
     /**
@@ -266,12 +255,49 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_OAUTH: {
-                receiveOAuth(requestCode, resultCode, data);
+                if (resultCode != RESULT_OK) {
+                    Logger.error(requestCode);
+                    Notificator.publish(this, R.string.notice_error_authenticate);
+                    finish();
+                } else {
+                    Account account = new Account(
+                            data.getStringExtra(OAuthSession.KEY_TOKEN),
+                            data.getStringExtra(OAuthSession.KEY_TOKEN_SECRET),
+                            data.getLongExtra(OAuthSession.KEY_USER_ID, -1L),
+                            data.getStringExtra(OAuthSession.KEY_SCREEN_NAME));
+                    account.save();
+                    setAccount(account);
+                    setLastUsedAccountID(account);
+                    startMainLogic();
+                }
                 break;
             }
             case REQUEST_GET_PICTURE_FROM_GALLERY:
             case REQUEST_GET_PICTURE_FROM_CAMERA: {
-                getImageUri(requestCode, resultCode, data);
+                if (resultCode != RESULT_OK) {
+                    Logger.error(requestCode);
+                    Notificator.publish(this, R.string.notice_select_image_failed);
+                    finish();
+                    return;
+                }
+                Uri uri;
+                if (requestCode == REQUEST_GET_PICTURE_FROM_GALLERY) {
+                    uri = data.getData();
+                } else {
+                    uri = getCameraTempFilePath();
+                }
+                openPostPageWithImage(uri);
+                break;
+            }
+            case REQUEST_CONSUMER: {
+                if (resultCode != RESULT_OK) {
+                    Logger.error(requestCode);
+                    Notificator.publish(this, R.string.notice_error_authenticate);
+                    finish();
+                    return;
+                }
+                Consumer.save(getAppPreferenceHelper(), data.getStringExtra("consumerKey"), data.getStringExtra("consumerSecret"));
+                initializeApp();
                 break;
             }
         }
@@ -279,17 +305,33 @@ public class MainActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Logger.debug("MainActivity:onCreate");
         setTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        if (isAuthorized()) {
-            setupAccount();
-            startMainLogic();
-            IntentRouter.onNewIntent(this, getIntent());
+        initializeApp();
+    }
+
+    private void initializeApp(){
+        Consumer consumer = Consumer.load(getAppPreferenceHelper());
+        if (consumer != null) {
+            this.consumer = consumer;
+            System.out.printf("CK: %s, CS: %s\n", this.consumer.key, this.consumer.secret);
+            String id = getAppPreferenceHelper().getValue(KEY_LAST_USED_ACCOUNT_ID, "-1");
+            long lastUsedAccountID = Long.parseLong(id);
+            if (lastUsedAccountID > 0) {
+                Account a = Account.load(Account.class, lastUsedAccountID);
+                if (a != null) {
+                    setAccount(a);
+                    startMainLogic();
+                    IntentRouter.onNewIntent(this, getIntent());
+                    return;
+                }
+            }
+            startActivityForResult(new Intent(this, OAuthActivity.class), REQUEST_OAUTH);
         } else {
-            startOAuthActivity();
+            startActivityForResult(new Intent(this, ConsumerActivity.class), REQUEST_CONSUMER);
         }
-        Logger.debug("MainActivity:onCreate");
     }
 
     @Override
@@ -396,12 +438,12 @@ public class MainActivity extends Activity {
      * Open search page with given query
      */
     public void openSearchPage(final String query) {
-        startNewSearch(TwitterApi.getTwitter(getCurrentAccount()), query);
+        startNewSearch(TwitterApi.getTwitter(this.consumer, this.account), query);
         openSearchPage();
     }
 
     public void openUserListPage(String listFullName) {
-        startUserList(TwitterApi.getTwitter(getCurrentAccount()), listFullName);
+        startUserList(TwitterApi.getTwitter(this.consumer, this.account), listFullName);
         openUserListPage();
     }
 
@@ -444,7 +486,7 @@ public class MainActivity extends Activity {
                         for (int i = tweets.size() - 1; i >= 0; i--) {
                             twitter4j.Status status = tweets.get(i);
                             if (!status.isRetweet()) {
-                                StatusViewModel viewModel = new StatusViewModel(status, getCurrentAccount());
+                                StatusViewModel viewModel = new StatusViewModel(status, getAccount());
                                 adapter.addToTop(viewModel);
                                 StatusFilter.filter(MainActivity.this, viewModel);
                             }
@@ -464,7 +506,7 @@ public class MainActivity extends Activity {
         if (stream != null) {
             stream.shutdown();
         }
-        stream = new TwitterApi(currentAccount).getTwitterStream();
+        stream = new TwitterApi(this.consumer, this.account).getTwitterStream();
         UserStreamListener listener = new UserStreamListener(this);
         stream.addListener(listener);
         stream.addConnectionLifeCycleListener(listener);
@@ -477,7 +519,7 @@ public class MainActivity extends Activity {
             return false;
         }
         int count = TwitterUtils.getPagingCount(this);
-        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        Twitter twitter = TwitterApi.getTwitter(this.consumer, this.account);
         Paging paging = TwitterUtils.getPaging(count);
         initInvisibleUser(twitter);
         initUserListCache(twitter);
@@ -491,9 +533,9 @@ public class MainActivity extends Activity {
     }
 
     public void updateActionBarIcon() {
-        Twitter twitter = new TwitterApi(currentAccount).getTwitter();
+        Twitter twitter = new TwitterApi(this.consumer, this.account).getTwitter();
         final ImageView homeIcon = (ImageView) findViewById(android.R.id.home);
-        ShowUserTask userTask = new ShowUserTask(twitter, currentAccount.userID) {
+        ShowUserTask userTask = new ShowUserTask(twitter, account.userID) {
             @Override
             protected void onPostExecute(User user) {
                 super.onPostExecute(user);
@@ -549,22 +591,6 @@ public class MainActivity extends Activity {
         pageIndexUserlist = addListPage(getString(R.string.page_name_list), UserListFragment.class, userListAdapter, ADAPTER_USERLIST, visible);
     }
 
-    private void getImageUri(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK) {
-            Logger.error(requestCode);
-            Notificator.publish(this, R.string.notice_select_image_failed);
-            finish();
-            return;
-        }
-        Uri uri;
-        if (requestCode == REQUEST_GET_PICTURE_FROM_GALLERY) {
-            uri = data.getData();
-        } else {
-            uri = getCameraTempFilePath();
-        }
-        openPostPageWithImage(uri);
-    }
-
     private void initCommandSetting() {
         List<CommandSetting> commandSettings = CommandSetting.getAll();
         for (CommandSetting setting : commandSettings) {
@@ -579,7 +605,7 @@ public class MainActivity extends Activity {
                 super.onPostExecute(statuses);
                 StatusListAdapter adapter = (StatusListAdapter) getListAdapter(ADAPTER_HOME);
                 for (twitter4j.Status status : statuses) {
-                    StatusViewModel statusViewModel = new StatusViewModel(status, currentAccount);
+                    StatusViewModel statusViewModel = new StatusViewModel(status, account);
                     adapter.addToBottom(statusViewModel);
                     StatusFilter.filter(MainActivity.this, statusViewModel);
                 }
@@ -600,7 +626,7 @@ public class MainActivity extends Activity {
                 super.onPostExecute(statuses);
                 StatusListAdapter adapter = (StatusListAdapter) getListAdapter(ADAPTER_MENTIONS);
                 for (twitter4j.Status status : statuses) {
-                    adapter.addToBottom(new StatusViewModel(status, currentAccount));
+                    adapter.addToBottom(new StatusViewModel(status, account));
                 }
                 adapter.updateForce();
             }
@@ -617,7 +643,7 @@ public class MainActivity extends Activity {
                 super.onPostExecute(directMessages);
                 MessageListAdapter adapter = (MessageListAdapter) getListAdapter(ADAPTER_MESSAGES);
                 for (DirectMessage message : directMessages) {
-                    adapter.addToBottom(new MessageViewModel(message, currentAccount));
+                    adapter.addToBottom(new MessageViewModel(message, account));
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -628,7 +654,7 @@ public class MainActivity extends Activity {
                 super.onPostExecute(directMessages);
                 MessageListAdapter adapter = (MessageListAdapter) getListAdapter(ADAPTER_MESSAGES);
                 for (DirectMessage message : directMessages) {
-                    adapter.addToBottom(new MessageViewModel(message, currentAccount));
+                    adapter.addToBottom(new MessageViewModel(message, account));
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -692,35 +718,9 @@ public class MainActivity extends Activity {
         setSelectedPageIndex(pageIndexUserlist);
     }
 
-    private void receiveOAuth(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK) {
-            Logger.error(requestCode);
-            Notificator.publish(this, R.string.notice_error_authenticate);
-            finish();
-        } else {
-            Account account = new Account(data.getStringExtra(OAuthSession.KEY_TOKEN),
-                    data.getStringExtra(OAuthSession.KEY_TOKEN_SECRET),
-                    data.getLongExtra(OAuthSession.KEY_USER_ID, -1L),
-                    data.getStringExtra(OAuthSession.KEY_SCREEN_NAME));
-            account.save();
-            setCurrentAccount(account);
-            setLastUsedAccountID(account);
-            startMainLogic();
-        }
-    }
-
     private void setTheme() {
         ((Application) getApplication()).setThemeIndex(getUserPreferenceHelper().getValue(R.string.key_setting_theme, 0));
         setTheme(Themes.getTheme(getThemeIndex()));
-    }
-
-    private void setupAccount() {
-        Account account = Account.load(Account.class, getLastUsedAccountID());
-        setCurrentAccount(account);
-    }
-
-    private void startOAuthActivity() {
-        startActivityForResult(new Intent(this, OAuthActivity.class), REQUEST_OAUTH);
     }
 
     private void startUserList(Twitter twitter, String listFullName) {
@@ -734,12 +734,16 @@ public class MainActivity extends Activity {
             protected void onPostExecute(twitter4j.Status[] statuses) {
                 super.onPostExecute(statuses);
                 for (twitter4j.Status status : statuses) {
-                    StatusViewModel statusViewModel = new StatusViewModel(status, getCurrentAccount());
+                    StatusViewModel statusViewModel = new StatusViewModel(status, getAccount());
                     adapter.addToBottom(statusViewModel);
                     StatusFilter.filter(MainActivity.this, statusViewModel);
                 }
                 adapter.updateForce();
             }
         }.execute();
+    }
+
+    public Consumer getConsumer() {
+        return consumer;
     }
 }

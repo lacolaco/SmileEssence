@@ -35,6 +35,8 @@ android {
         buildConfigField "String", "CONSUMER_SECRET", "\"${consumerSecret}\""
         buildConfigField "String", "ACCESS_TOKEN", "\"${accessToken}\""
         buildConfigField "String", "ACCESS_TOKEN_SECRET", "\"${accessTokenSecret}\""
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -56,8 +58,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     //    compile 'com.android.support:appcompat-v7:22.1.0'
     compile 'com.android.support:support-v13:23.1.1'
-    // volley
-    compile project(':modules/volley')
     // crouton
     compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
         // exclusion is not necessary, but generally a good idea.
@@ -73,5 +73,11 @@ dependencies {
     compile 'com.twitter:twitter-text:1.6.1'
     // guava
     compile 'com.google.guava:guava:18.0'
+
+    testCompile 'junit:junit:4.12'
+    androidTestCompile 'com.android.support.test:runner:0.4'
+    androidTestCompile 'com.android.support.test:rules:0.4'
+    androidTestCompile 'com.android.support:support-annotations:23.1.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
 
 }

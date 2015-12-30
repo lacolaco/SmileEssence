@@ -34,9 +34,17 @@ import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.ArrowKeyMovementMethod;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.twitter.Validator;
 
@@ -45,6 +53,7 @@ import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.preference.UserPreferenceHelper;
+import net.lacolaco.smileessence.twitter.Consumer;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.TweetTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
@@ -57,10 +66,11 @@ import net.lacolaco.smileessence.view.dialog.PostMenuDialogFragment;
 import net.lacolaco.smileessence.view.dialog.SelectImageDialogFragment;
 import net.lacolaco.smileessence.viewmodel.StatusViewModel;
 
+import java.io.File;
+
 import twitter4j.Status;
 import twitter4j.StatusUpdate;
-
-import java.io.File;
+import twitter4j.Twitter;
 
 public class PostFragment extends Fragment implements TextWatcher, View.OnFocusChangeListener, View.OnClickListener,
         PostState.OnPostStateChangeListener {
@@ -147,8 +157,10 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         if (viewGroupReply != null) {
             if (postState.getInReplyToStatusID() >= 0) {
                 viewGroupReply.setVisibility(View.VISIBLE);
-                final Account account = activity.getCurrentAccount();
-                TwitterUtils.tryGetStatus(account, postState.getInReplyToStatusID(), new TwitterUtils.StatusCallback() {
+                final Account account = activity.getAccount();
+                final Consumer consumer = activity.getConsumer();
+                Twitter twitter = TwitterApi.getTwitter(consumer, account);
+                TwitterUtils.tryGetStatus(twitter, account, postState.getInReplyToStatusID(), new TwitterUtils.StatusCallback() {
                     @Override
                     public void success(Status status) {
                         View header = viewGroupReply.findViewById(R.id.layout_post_reply_status);
@@ -379,10 +391,13 @@ public class PostFragment extends Fragment implements TextWatcher, View.OnFocusC
         setStateFromView();
         PostState state = PostState.getState();
         StatusUpdate statusUpdate = state.toStatusUpdate();
-        MainActivity mainActivity = (MainActivity) getActivity();
-        TweetTask tweetTask = new TweetTask(TwitterApi.getTwitter(mainActivity.getCurrentAccount()), statusUpdate, state.getMediaFilePath(), mainActivity);
+        MainActivity activity = (MainActivity) getActivity();
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
+        TweetTask tweetTask = new TweetTask(twitter, statusUpdate, state.getMediaFilePath(), activity);
         tweetTask.execute();
         PostState.newState().beginTransaction().commit();
-        mainActivity.setSelectedPageIndex(MainActivity.ADAPTER_HOME);
+        activity.setSelectedPageIndex(MainActivity.ADAPTER_HOME);
     }
 }

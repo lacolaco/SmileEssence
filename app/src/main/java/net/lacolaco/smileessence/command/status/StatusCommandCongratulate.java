@@ -28,29 +28,27 @@ import android.app.Activity;
 
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.command.IConfirmable;
-import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TweetBuilder;
-import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.FavoriteTask;
 import net.lacolaco.smileessence.twitter.task.TweetTask;
+
+import java.util.Random;
 
 import twitter4j.Status;
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
 
-import java.util.Random;
-
 public class StatusCommandCongratulate extends StatusCommand implements IConfirmable {
 
     // ------------------------------ FIELDS ------------------------------
 
-    private final Account account;
+    private final Twitter twitter;
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
-    public StatusCommandCongratulate(Activity activity, Status status, Account account) {
+    public StatusCommandCongratulate(Activity activity, Status status, Twitter twitter) {
         super(R.id.key_command_status_congratulate, activity, status);
-        this.account = account;
+        this.twitter = twitter;
     }
 
     // --------------------- GETTER / SETTER METHODS ---------------------
@@ -93,9 +91,8 @@ public class StatusCommandCongratulate extends StatusCommand implements IConfirm
         StatusUpdate update = new TweetBuilder().setText(build())
                 .setInReplyToStatusID(status.getId())
                 .build();
-        Twitter twitter = new TwitterApi(account).getTwitter();
-        new TweetTask(twitter, update, getActivity()).execute();
-        new FavoriteTask(twitter, status.getId(), getActivity()).execute();
+        new TweetTask(this.twitter, update, getActivity()).execute();
+        new FavoriteTask(this.twitter, status.getId(), getActivity()).execute();
         return true;
     }
 }

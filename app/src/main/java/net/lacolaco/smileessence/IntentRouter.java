@@ -31,9 +31,12 @@ import android.text.TextUtils;
 
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.command.CommandOpenUserDetail;
+import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.logging.Logger;
 import net.lacolaco.smileessence.notification.NotificationType;
 import net.lacolaco.smileessence.notification.Notificator;
+import net.lacolaco.smileessence.twitter.Consumer;
+import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.util.UIHandler;
 import net.lacolaco.smileessence.view.adapter.PostState;
@@ -41,6 +44,7 @@ import net.lacolaco.smileessence.view.dialog.DialogHelper;
 import net.lacolaco.smileessence.view.dialog.StatusDetailDialogFragment;
 
 import twitter4j.Status;
+import twitter4j.Twitter;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -188,8 +192,12 @@ public class IntentRouter {
     }
 
     private static void showStatusDialog(final MainActivity activity, long id) {
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
+
         if (id != -1) {
-            TwitterUtils.tryGetStatus(activity.getCurrentAccount(), id, new TwitterUtils.StatusCallback() {
+            TwitterUtils.tryGetStatus(twitter, activity.getAccount(), id, new TwitterUtils.StatusCallback() {
                 @Override
                 public void success(Status status) {
                     StatusDetailDialogFragment fragment = new StatusDetailDialogFragment();
@@ -208,7 +216,10 @@ public class IntentRouter {
     }
 
     private static void showUserDialog(MainActivity activity, String screenName) {
-        CommandOpenUserDetail openUserDetail = new CommandOpenUserDetail(activity, screenName, activity.getCurrentAccount());
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
+        CommandOpenUserDetail openUserDetail = new CommandOpenUserDetail(activity, screenName, twitter);
         openUserDetail.execute();
     }
 

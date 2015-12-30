@@ -37,6 +37,8 @@ import android.widget.TextView;
 
 import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.notification.Notificator;
+import net.lacolaco.smileessence.preference.AppPreferenceHelper;
+import net.lacolaco.smileessence.twitter.Consumer;
 import net.lacolaco.smileessence.twitter.OAuthSession;
 
 import java.io.File;
@@ -63,7 +65,7 @@ public class OAuthActivity extends Activity implements View.OnClickListener, Tex
         authButton.setOnClickListener(this);
         authButton.setEnabled(false);
 
-        oauthSession = new OAuthSession();
+        oauthSession = new OAuthSession(Consumer.load(new AppPreferenceHelper(this)));
         String url = oauthSession.getAuthorizationURL();
         if (!TextUtils.isEmpty(url)) {
             linkTextView.setText(url);

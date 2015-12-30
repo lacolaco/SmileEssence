@@ -29,11 +29,15 @@
     <string name="activity_edit_command">コマンド設定</string>
     <string name="activity_authenticate">認証</string>
     <string name="activity_licenses">ライセンス</string>
+    <string name="activity_consumer">コンシューマセットアップ</string>
     <string name="activity_edit_tab">タブ表示設定</string>
     <string name="intent_post">つぶやく</string>
     <string name="message_oauth_text">下のリンクからPINコードを取得して入力してください</string>
     <string name="message_oauth_hint">PINコード</string>
     <string name="message_oauth_authenticate">認証</string>
+    <string name="message_consumer_text">ConsumerIDを入力してください.\n (PCで https://ses-cloud.appspot.com にアクセスして取得)</string>
+    <string name="message_consumer_hint">ConsumerID</string>
+    <string name="message_consumer_fetch">コンシューマ情報を取得</string>
     <string name="namestyle_s_n">ScreenName / Name</string>
     <string name="namestyle_n_s">Name / ScreenName</string>
     <string name="namestyle_s">ScreenName</string>
@@ -103,6 +107,8 @@
     <string name="setting_category_account_title">アカウント</string>
     <string name="setting_delete_authentication_title">認証情報を削除する</string>
     <string name="setting_delete_authentication_summary">次回起動時に再認証が必要です</string>
+    <string name="setting_delete_consumer_title">コンシューマキーをリセットする</string>
+    <string name="setting_delete_consumer_summary">次回起動時に再セットアップが必要です</string>
     <string name="error_setting_text_size_range">8から24の間で設定してください</string>
     <string name="error_setting_text_size_not_number">数を入力してください</string>
     <string name="error_setting_timelines_range">1から200の間で設定してください</string>
@@ -138,6 +144,7 @@
     <string name="dialog_confirm_finish_app">終了しますか？</string>
     <string name="dialog_confirm_commands">実行しますか？</string>
     <string name="dialog_confirm_clear_account">本当に認証を削除しますか？</string>
+    <string name="dialog_confirm_clear_consumer">本当にコンシューマ情報を削除しますか？</string>
     <string name="dialog_confirm_delete_query">クエリを削除しますか？</string>
     <string name="dialog_review_rating_text">星いくつ付けますか？</string>
     <string name="notice_tweet_succeeded">投稿しました</string>
@@ -176,6 +183,7 @@
     <string name="notice_add_to_reply">リプライ先に追加しました</string>
     <string name="notice_theme_changed">テーマは再起動後に有効になります</string>
     <string name="notice_cleared_account">認証情報が削除されました。 再起動後に認証してください</string>
+    <string name="notice_cleared_consumer">コンシューマ情報が削除されました。 再起動後に認証してください</string>
     <string name="notice_copy_clipboard">クリップボードにコピーしました</string>
     <string name="notice_userlist_not_selected">リストが選択されていません</string>
     <string name="notice_add_to_ignore">無視を決め込みました</string>

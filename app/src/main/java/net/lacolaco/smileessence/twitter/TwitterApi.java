@@ -24,7 +24,6 @@
 
 package net.lacolaco.smileessence.twitter;
 
-import net.lacolaco.smileessence.BuildConfig;
 import net.lacolaco.smileessence.entity.Account;
 
 import twitter4j.Twitter;
@@ -40,45 +39,49 @@ public class TwitterApi {
     // ------------------------------ FIELDS ------------------------------
 
     public static final int MEDIA_SIZE_LIMIT = 2 * 1024 * 1024;
+    private final String consumerKey;
+    private final String consumerSecret;
     private final String token;
     private final String tokenSecret;
 
     // -------------------------- STATIC METHODS --------------------------
 
-    public TwitterApi(Account account) {
+    public TwitterApi(Consumer consumer, Account account) {
+        this.consumerKey = consumer.key;
+        this.consumerSecret = consumer.secret;
         this.token = account.accessToken;
         this.tokenSecret = account.accessSecret;
     }
 
     // --------------------------- CONSTRUCTORS ---------------------------
 
-    public TwitterApi(String token, String tokenSecret) {
+    public TwitterApi(String consumerKey, String consumerSecret, String token, String tokenSecret) {
+        this.consumerKey = consumerKey;
+        this.consumerSecret = consumerSecret;
         this.token = token;
         this.tokenSecret = tokenSecret;
     }
 
-    public static Configuration getConf() {
+    public static Configuration getConf(String consumerKey, String consumerSecret) {
         ConfigurationBuilder conf = new ConfigurationBuilder();
-        conf.setOAuthConsumerKey(BuildConfig.CONSUMER_KEY);
-        conf.setOAuthConsumerSecret(BuildConfig.CONSUMER_SECRET);
+        conf.setOAuthConsumerKey(consumerKey);
+        conf.setOAuthConsumerSecret(consumerSecret);
         conf.setDebugEnabled(true);
         return conf.build();
     }
 
-    public static Twitter getTwitter(Account account) {
-        return new TwitterApi(account).getTwitter();
+    public static Twitter getTwitter(Consumer consumer, Account account) {
+        return new TwitterApi(consumer, account).getTwitter();
     }
 
-    // --------------------- GETTER / SETTER METHODS ---------------------
-
     public Twitter getTwitter() {
-        Twitter twitter = new TwitterFactory(getConf()).getInstance();
+        Twitter twitter = new TwitterFactory(getConf(consumerKey, consumerSecret)).getInstance();
         twitter.setOAuthAccessToken(new AccessToken(token, tokenSecret));
         return twitter;
     }
 
     public TwitterStream getTwitterStream() {
-        TwitterStream stream = new TwitterStreamFactory(getConf()).getInstance();
+        TwitterStream stream = new TwitterStreamFactory(getConf(consumerKey, consumerSecret)).getInstance();
         stream.setOAuthAccessToken(new AccessToken(token, tokenSecret));
         return stream;
     }

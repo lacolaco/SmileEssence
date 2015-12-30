@@ -30,7 +30,6 @@ import net.lacolaco.smileessence.R;
 import net.lacolaco.smileessence.command.IConfirmable;
 import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.twitter.TweetBuilder;
-import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.FavoriteTask;
 import net.lacolaco.smileessence.twitter.task.TweetTask;
 
@@ -42,12 +41,14 @@ public class StatusCommandMakeAnonymous extends StatusCommand implements IConfir
 
     // ------------------------------ FIELDS ------------------------------
 
+    private final Twitter twitter;
     private final Account account;
 
     // -------------------------- STATIC METHODS --------------------------
 
-    public StatusCommandMakeAnonymous(Activity activity, Status status, Account account) {
+    public StatusCommandMakeAnonymous(Activity activity, Status status, Twitter twitter, Account account) {
         super(R.id.key_command_status_make_anonymous, activity, status);
+        this.twitter = twitter;
         this.account = account;
     }
 
@@ -82,10 +83,9 @@ public class StatusCommandMakeAnonymous extends StatusCommand implements IConfir
 
     @Override
     public boolean execute() {
-        StatusUpdate update = new TweetBuilder().setText(build(getActivity(), getOriginalStatus(), account)).build();
-        Twitter twitter = new TwitterApi(account).getTwitter();
-        new TweetTask(twitter, update, getActivity()).execute();
-        new FavoriteTask(twitter, getOriginalStatus().getId(), getActivity()).execute();
+        StatusUpdate update = new TweetBuilder().setText(build(getActivity(), getOriginalStatus(), this.account)).build();
+        new TweetTask(this.twitter, update, getActivity()).execute();
+        new FavoriteTask(this.twitter, getOriginalStatus().getId(), getActivity()).execute();
         return true;
     }
 }

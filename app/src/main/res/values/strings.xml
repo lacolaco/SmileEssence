@@ -28,12 +28,16 @@
     <string name="activity_edit_extraction">Extraction Setting</string>
     <string name="activity_edit_command">Command Setting</string>
     <string name="activity_authenticate">Authenticate</string>
+    <string name="activity_consumer">Consumer</string>
     <string name="activity_licenses">Licenses</string>
     <string name="activity_edit_tab">Tabs Setting</string>
     <string name="intent_post">Tweet</string>
     <string name="message_oauth_text">Please get PIN code at a URL below, and input it.</string>
     <string name="message_oauth_hint">PIN code</string>
     <string name="message_oauth_authenticate">Authenticate</string>
+    <string name="message_consumer_text">Input ConsumerID.\n (Visit https://ses-cloud.appspot.com on PC)</string>
+    <string name="message_consumer_hint">ConsumerID</string>
+    <string name="message_consumer_fetch">Fetch</string>
     <string name="namestyle_s_n">ScreenName / Name</string>
     <string name="namestyle_n_s">Name / ScreenName</string>
     <string name="namestyle_s">ScreenName</string>
@@ -100,6 +104,8 @@
     <string name="setting_category_about_title">About</string>
     <string name="setting_delete_authentication_title">Delete authentication</string>
     <string name="setting_delete_authentication_summary">Please authenticate again on next launch</string>
+    <string name="setting_delete_consumer_title">Reset consumer</string>
+    <string name="setting_delete_consumer_summary">Please setup again on next launch</string>
     <string name="setting_category_account_title">Account</string>
     <string name="setting_application_information_title">Application information</string>
     <string name="setting_licenses_title">Licenses</string>
@@ -136,6 +142,7 @@
     <string name="dialog_title_select_search_query">Select search query</string>
     <string name="dialog_confirm_commands">Execute, OK?</string>
     <string name="dialog_confirm_clear_account">Clear authentication, Really?</string>
+    <string name="dialog_confirm_clear_consumer">Clear consumer, Really?</string>
     <string name="dialog_title_talk_chain">Talk View</string>
     <string name="dialog_title_select_userlist">Select a list</string>
     <string name="dialog_review_rating_text">How many favs will you give?</string>
@@ -176,6 +183,7 @@
     <string name="notice_add_to_reply">Added to reply</string>
     <string name="notice_theme_changed">Theme will be enabled on next launch</string>
     <string name="notice_cleared_account">Authentication was cleared. Please authorize on next launch</string>
+    <string name="notice_cleared_consumer">Consumer was cleared. Please setup on next launch</string>
     <string name="notice_copy_clipboard">Copied to clipboard</string>
     <string name="notice_userlist_not_selected">No List is selected</string>
     <string name="notice_add_to_ignore">Added to ignore list</string>

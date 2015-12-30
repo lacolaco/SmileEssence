@@ -47,6 +47,7 @@ import net.lacolaco.smileessence.entity.Account;
 import net.lacolaco.smileessence.entity.SearchQuery;
 import net.lacolaco.smileessence.notification.NotificationType;
 import net.lacolaco.smileessence.notification.Notificator;
+import net.lacolaco.smileessence.twitter.Consumer;
 import net.lacolaco.smileessence.twitter.StatusFilter;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.SearchTask;
@@ -130,8 +131,9 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
     @Override
     public void onPullDownToRefresh(final PullToRefreshBase<ListView> refreshView) {
         final MainActivity activity = getMainActivity();
-        final Account currentAccount = activity.getCurrentAccount();
-        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
         final SearchListAdapter adapter = getListAdapter(activity);
         String queryString = adapter.getQuery();
         if (TextUtils.isEmpty(queryString)) {
@@ -157,7 +159,7 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
                     for (int i = tweets.size() - 1; i >= 0; i--) {
                         twitter4j.Status status = tweets.get(i);
                         if (!status.isRetweet()) {
-                            StatusViewModel viewModel = new StatusViewModel(status, currentAccount);
+                            StatusViewModel viewModel = new StatusViewModel(status, account);
                             adapter.addToTop(viewModel);
                             StatusFilter.filter(activity, viewModel);
                         }
@@ -173,8 +175,9 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
     @Override
     public void onPullUpToRefresh(final PullToRefreshBase<ListView> refreshView) {
         final MainActivity activity = getMainActivity();
-        final Account currentAccount = activity.getCurrentAccount();
-        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
         final SearchListAdapter adapter = getListAdapter(activity);
         String queryString = adapter.getQuery();
         if (TextUtils.isEmpty(queryString)) {
@@ -199,7 +202,7 @@ public class SearchFragment extends CustomListFragment implements View.OnClickLi
                     List<twitter4j.Status> tweets = queryResult.getTweets();
                     for (twitter4j.Status status : tweets) {
                         if (!status.isRetweet()) {
-                            StatusViewModel viewModel = new StatusViewModel(status, currentAccount);
+                            StatusViewModel viewModel = new StatusViewModel(status, account);
                             adapter.addToBottom(viewModel);
                             StatusFilter.filter(activity, viewModel);
                         }

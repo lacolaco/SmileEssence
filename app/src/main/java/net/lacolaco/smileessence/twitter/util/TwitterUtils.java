@@ -34,15 +34,20 @@ import net.lacolaco.smileessence.data.DirectMessageCache;
 import net.lacolaco.smileessence.data.StatusCache;
 import net.lacolaco.smileessence.data.UserCache;
 import net.lacolaco.smileessence.entity.Account;
-import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.ShowDirectMessageTask;
 import net.lacolaco.smileessence.twitter.task.ShowStatusTask;
 import net.lacolaco.smileessence.twitter.task.ShowUserTask;
 
-import twitter4j.*;
-
 import java.util.ArrayList;
 import java.util.Collection;
+
+import twitter4j.DirectMessage;
+import twitter4j.Paging;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.URLEntity;
+import twitter4j.User;
+import twitter4j.UserMentionEntity;
 
 public class TwitterUtils {
 
@@ -61,15 +66,15 @@ public class TwitterUtils {
     /**
      * Get status from api if not cached
      */
-    public static void tryGetStatus(Account account, long statusID, final StatusCallback callback) {
+    public static void tryGetStatus(Twitter twitter, Account account, long statusID, final StatusCallback callback) {
         Status status = StatusCache.getInstance().get(statusID);
         if (status != null) {
             callback.success(status);
             //update cache
-            ShowStatusTask task = new ShowStatusTask(new TwitterApi(account).getTwitter(), statusID);
+            ShowStatusTask task = new ShowStatusTask(twitter, statusID);
             task.execute();
         } else {
-            ShowStatusTask task = new ShowStatusTask(new TwitterApi(account).getTwitter(), statusID) {
+            ShowStatusTask task = new ShowStatusTask(twitter, statusID) {
                 @Override
                 protected void onPostExecute(twitter4j.Status status) {
                     super.onPostExecute(status);
@@ -87,14 +92,14 @@ public class TwitterUtils {
     /**
      * Get status from api if not cached
      */
-    public static void tryGetUser(Account account, long userID, final UserCallback callback) {
+    public static void tryGetUser(Twitter twitter, Account account, long userID, final UserCallback callback) {
         User user = UserCache.getInstance().get(userID);
         if (user != null) {
             callback.success(user);
-            ShowUserTask task = new ShowUserTask(new TwitterApi(account).getTwitter(), userID);
+            ShowUserTask task = new ShowUserTask(twitter, userID);
             task.execute();
         } else {
-            ShowUserTask task = new ShowUserTask(new TwitterApi(account).getTwitter(), userID) {
+            ShowUserTask task = new ShowUserTask(twitter, userID) {
                 @Override
                 protected void onPostExecute(User user) {
                     super.onPostExecute(user);
@@ -113,14 +118,14 @@ public class TwitterUtils {
     /**
      * Get direct message from api if not cached
      */
-    public static void tryGetMessage(Account account, long messageID, final MessageCallback callback) {
+    public static void tryGetMessage(Twitter twitter, Account account, long messageID, final MessageCallback callback) {
         DirectMessage message = DirectMessageCache.getInstance().get(messageID);
         if (message != null) {
             callback.success(message);
-            ShowDirectMessageTask task = new ShowDirectMessageTask(new TwitterApi(account).getTwitter(), messageID);
+            ShowDirectMessageTask task = new ShowDirectMessageTask(twitter, messageID);
             task.execute();
         } else {
-            ShowDirectMessageTask task = new ShowDirectMessageTask(new TwitterApi(account).getTwitter(), messageID) {
+            ShowDirectMessageTask task = new ShowDirectMessageTask(twitter, messageID) {
                 @Override
                 protected void onPostExecute(DirectMessage directMessage) {
                     super.onPostExecute(directMessage);

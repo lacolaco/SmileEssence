@@ -54,7 +54,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
     // --------------------- GETTER / SETTER METHODS ---------------------
 
     private long getMyID() {
-        return activity.getCurrentAccount().userID;
+        return activity.getAccount().userID;
     }
 
     private int getPagerCount() {
@@ -90,7 +90,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         if (isIgnoredStatus(status)) {
             return;
         }
-        StatusViewModel viewModel = new StatusViewModel(status, activity.getCurrentAccount());
+        StatusViewModel viewModel = new StatusViewModel(status, activity.getAccount());
         addToHome(viewModel);
         if (status.isRetweet()) {
             if (viewModel.isRetweetOfMe()) {
@@ -196,7 +196,7 @@ public class UserStreamListener implements twitter4j.UserStreamListener, Connect
         if (isMe(directMessage.getRecipient())) {
             addToHistory(new EventViewModel(EnumEvent.RECEIVE_MESSAGE, directMessage.getSender()));
         }
-        MessageViewModel message = new MessageViewModel(directMessage, activity.getCurrentAccount());
+        MessageViewModel message = new MessageViewModel(directMessage, activity.getAccount());
         addToMessages(message);
     }
 

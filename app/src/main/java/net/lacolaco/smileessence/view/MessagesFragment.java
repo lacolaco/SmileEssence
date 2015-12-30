@@ -30,6 +30,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 
 import net.lacolaco.smileessence.activity.MainActivity;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.twitter.Consumer;
 import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.task.DirectMessagesTask;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
@@ -60,8 +61,9 @@ public class MessagesFragment extends CustomListFragment {
     @Override
     public void onPullDownToRefresh(final PullToRefreshBase<ListView> refreshView) {
         final MainActivity activity = (MainActivity) getActivity();
-        final Account currentAccount = activity.getCurrentAccount();
-        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
         final MessageListAdapter adapter = getListAdapter(activity);
         Paging paging = TwitterUtils.getPaging(TwitterUtils.getPagingCount(activity));
         if (adapter.getCount() > 0) {
@@ -72,7 +74,7 @@ public class MessagesFragment extends CustomListFragment {
             protected void onPostExecute(DirectMessage[] directMessages) {
                 super.onPostExecute(directMessages);
                 for (int i = directMessages.length - 1; i >= 0; i--) {
-                    adapter.addToTop(new MessageViewModel(directMessages[i], currentAccount));
+                    adapter.addToTop(new MessageViewModel(directMessages[i], account));
                 }
                 updateListViewWithNotice(refreshView.getRefreshableView(), adapter, true);
                 refreshView.onRefreshComplete();
@@ -83,8 +85,9 @@ public class MessagesFragment extends CustomListFragment {
     @Override
     public void onPullUpToRefresh(final PullToRefreshBase<ListView> refreshView) {
         final MainActivity activity = (MainActivity) getActivity();
-        final Account currentAccount = activity.getCurrentAccount();
-        Twitter twitter = TwitterApi.getTwitter(currentAccount);
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
         final MessageListAdapter adapter = getListAdapter(activity);
         Paging paging = TwitterUtils.getPaging(TwitterUtils.getPagingCount(activity));
         if (adapter.getCount() > 0) {
@@ -95,7 +98,7 @@ public class MessagesFragment extends CustomListFragment {
             protected void onPostExecute(DirectMessage[] directMessages) {
                 super.onPostExecute(directMessages);
                 for (DirectMessage directMessage : directMessages) {
-                    adapter.addToBottom(new MessageViewModel(directMessage, currentAccount));
+                    adapter.addToBottom(new MessageViewModel(directMessage, account));
                 }
                 updateListViewWithNotice(refreshView.getRefreshableView(), adapter, false);
                 refreshView.onRefreshComplete();

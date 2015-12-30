@@ -47,11 +47,14 @@ public class OAuthSession {
     public static final String KEY_USER_ID = "userID";
     private static final String OAUTH_VERIFIER = "oauth_verifier";
     private RequestToken requestToken;
+    private Consumer consumer;
 
-    // --------------------- GETTER / SETTER METHODS ---------------------
+    public OAuthSession(Consumer consumer) {
+        this.consumer = consumer;
+    }
 
     public String getAuthorizationURL() {
-        Twitter twitter = new TwitterFactory(TwitterApi.getConf()).getInstance();
+        Twitter twitter = new TwitterFactory(TwitterApi.getConf(consumer.key, consumer.secret)).getInstance();
         RequestTokenTask task = new RequestTokenTask(twitter);
         task.execute();
         try {
@@ -67,7 +70,7 @@ public class OAuthSession {
     // -------------------------- OTHER METHODS --------------------------
 
     public AccessToken getAccessToken(String pinCode) {
-        Twitter twitter = new TwitterFactory(TwitterApi.getConf()).getInstance();
+        Twitter twitter = new TwitterFactory(TwitterApi.getConf(consumer.key, consumer.secret)).getInstance();
         AccessTokenTask task = new AccessTokenTask(twitter, requestToken, pinCode);
         task.execute();
         try {

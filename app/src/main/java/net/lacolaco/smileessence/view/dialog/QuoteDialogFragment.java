@@ -37,10 +37,13 @@ import net.lacolaco.smileessence.command.Command;
 import net.lacolaco.smileessence.command.status.StatusCommandTextQuote;
 import net.lacolaco.smileessence.command.status.StatusCommandURLQuote;
 import net.lacolaco.smileessence.entity.Account;
+import net.lacolaco.smileessence.twitter.Consumer;
+import net.lacolaco.smileessence.twitter.TwitterApi;
 import net.lacolaco.smileessence.twitter.util.TwitterUtils;
 import net.lacolaco.smileessence.view.adapter.CustomListAdapter;
 
 import twitter4j.Status;
+import twitter4j.Twitter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,9 +77,11 @@ public class QuoteDialogFragment extends MenuDialogFragment {
         final CustomListAdapter<Command> adapter = new CustomListAdapter<>(activity, Command.class);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(onItemClickListener);
-        Account account = activity.getCurrentAccount();
+        final Account account = activity.getAccount();
+        final Consumer consumer = activity.getConsumer();
+        Twitter twitter = TwitterApi.getTwitter(consumer, account);
         long statusID = getStatusID();
-        TwitterUtils.tryGetStatus(account, statusID, new TwitterUtils.StatusCallback() {
+        TwitterUtils.tryGetStatus(twitter, account, statusID, new TwitterUtils.StatusCallback() {
             @Override
             public void success(Status status) {
                 List<Command> commands = getCommands(activity, status);

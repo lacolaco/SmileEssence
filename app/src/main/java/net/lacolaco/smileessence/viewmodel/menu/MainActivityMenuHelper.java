@@ -106,15 +106,15 @@ public class MainActivityMenuHelper {
                 return true;
             }
             case R.id.actionbar_favstar: {
-                new CommandOpenURL(activity, TwitterUtils.getFavstarRecentURL(activity.getCurrentAccount().screenName)).execute();
+                new CommandOpenURL(activity, TwitterUtils.getFavstarRecentURL(activity.getAccount().screenName)).execute();
                 return true;
             }
             case R.id.actionbar_aclog: {
-                new CommandOpenURL(activity, TwitterUtils.getAclogTimelineURL(activity.getCurrentAccount().screenName)).execute();
+                new CommandOpenURL(activity, TwitterUtils.getAclogTimelineURL(activity.getAccount().screenName)).execute();
                 return true;
             }
             case R.id.actionbar_twilog: {
-                new CommandOpenURL(activity, TwitterUtils.getTwilogURL(activity.getCurrentAccount().screenName)).execute();
+                new CommandOpenURL(activity, TwitterUtils.getTwilogURL(activity.getAccount().screenName)).execute();
                 return true;
             }
             case R.id.actionbar_report: {

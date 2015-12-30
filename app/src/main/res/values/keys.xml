@@ -27,6 +27,7 @@
     <string name="key_setting_text_size">textSize</string>
     <string name="key_setting_back_to_home">onSubmit</string>
     <string name="key_setting_clear_account">clearAccount</string>
+    <string name="key_setting_clear_consumer">clearConsumer</string>
     <string name="key_setting_notify_on_unfavorited">unfavNotify</string>
     <string name="key_open_ime">openIME</string>
     <string name="key_setting_show_confirm_dialog">confirm</string>

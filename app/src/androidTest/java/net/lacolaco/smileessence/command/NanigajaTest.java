@@ -55,19 +55,19 @@ public class NanigajaTest extends ActivityInstrumentationTestCase2<MainActivity>
 
     public void testBuildNormal() throws Exception {
         Status status = mock.getStatusMock();
-        StatusCommandNanigaja nanigaja = new StatusCommandNanigaja(getActivity(), status, mock.getAccount());
+        StatusCommandNanigaja nanigaja = new StatusCommandNanigaja(getActivity(), status, mock.getTwitterMock(), mock.getAccount());
         assertEquals("な～にが" + status.getText() + "じゃ", nanigaja.build());
     }
 
     public void testBuildReply() throws Exception {
         Status status = mock.getReplyMock();
-        StatusCommandNanigaja nanigaja = new StatusCommandNanigaja(getActivity(), status, mock.getAccount());
+        StatusCommandNanigaja nanigaja = new StatusCommandNanigaja(getActivity(), status, mock.getTwitterMock(), mock.getAccount());
         assertTrue(nanigaja.build().startsWith("@" + status.getUser().getScreenName() + " な～にが"));
     }
 
     public void testBuildRetweet() throws Exception {
         Status status = mock.getRetweetMock();
-        StatusCommandNanigaja nanigaja = new StatusCommandNanigaja(getActivity(), status, mock.getAccount());
+        StatusCommandNanigaja nanigaja = new StatusCommandNanigaja(getActivity(), status, mock.getTwitterMock(), mock.getAccount());
         assertTrue(nanigaja.build().startsWith("@" + status.getRetweetedStatus().getUser().getScreenName() + " な～にが"));
     }
 
